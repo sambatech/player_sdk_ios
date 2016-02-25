@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */; };
 		E03F75371C7F991000061638 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75361C7F991000061638 /* AppDelegate.swift */; };
 		E03F75391C7F991000061638 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75381C7F991000061638 /* ViewController.swift */; };
 		E03F753C1C7F991000061638 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03F753A1C7F991000061638 /* Main.storyboard */; };
@@ -14,6 +15,7 @@
 		E03F75411C7F991000061638 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03F753F1C7F991000061638 /* LaunchScreen.storyboard */; };
 		E03F754C1C7F991000061638 /* TesteMobileIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F754B1C7F991000061638 /* TesteMobileIOSTests.swift */; };
 		E03F75571C7F991000061638 /* TesteMobileIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75561C7F991000061638 /* TesteMobileIOSUITests.swift */; };
+		E0B2C9CE1C7F9C12007C6C21 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,6 +36,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.release.xcconfig"; sourceTree = "<group>"; };
+		7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesteMobileIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75331C7F991000061638 /* TesteMobileIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesteMobileIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75361C7F991000061638 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E03F75381C7F991000061638 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -47,6 +52,7 @@
 		E03F75521C7F991000061638 /* TesteMobileIOSUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TesteMobileIOSUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75561C7F991000061638 /* TesteMobileIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesteMobileIOSUITests.swift; sourceTree = "<group>"; };
 		E03F75581C7F991000061638 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobilePlayer.framework; path = Carthage/Build/iOS/MobilePlayer.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +60,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */,
+				E0B2C9CE1C7F9C12007C6C21 /* MobilePlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -74,6 +82,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7497C5673FE37DD635863A70 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */,
+				410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		E03F752A1C7F991000061638 = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +98,8 @@
 				E03F754A1C7F991000061638 /* TesteMobileIOSTests */,
 				E03F75551C7F991000061638 /* TesteMobileIOSUITests */,
 				E03F75341C7F991000061638 /* Products */,
+				7497C5673FE37DD635863A70 /* Pods */,
+				F21D04514779579DB66225DC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -125,6 +144,15 @@
 			path = TesteMobileIOSUITests;
 			sourceTree = "<group>";
 		};
+		F21D04514779579DB66225DC /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */,
+				9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -132,9 +160,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E03F755B1C7F991000061638 /* Build configuration list for PBXNativeTarget "TesteMobileIOS" */;
 			buildPhases = (
+				4D8030030C1156C43762A725 /* Check Pods Manifest.lock */,
 				E03F752F1C7F991000061638 /* Sources */,
 				E03F75301C7F991000061638 /* Frameworks */,
 				E03F75311C7F991000061638 /* Resources */,
+				D975F163EE9CF3BFD0C94BED /* Copy Pods Resources */,
+				1EDC221AB974FF0E503993EF /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -250,6 +281,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1EDC221AB974FF0E503993EF /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		4D8030030C1156C43762A725 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D975F163EE9CF3BFD0C94BED /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		E03F752F1C7F991000061638 /* Sources */ = {
@@ -397,8 +476,13 @@
 		};
 		E03F755C1C7F991000061638 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TesteMobileIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sambatech.TesteMobileIOS;
@@ -408,8 +492,13 @@
 		};
 		E03F755D1C7F991000061638 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = TesteMobileIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sambatech.TesteMobileIOS;
@@ -484,6 +573,7 @@
 				E03F755D1C7F991000061638 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E03F755E1C7F991000061638 /* Build configuration list for PBXNativeTarget "TesteMobileIOSTests" */ = {
 			isa = XCConfigurationList;
@@ -492,6 +582,7 @@
 				E03F75601C7F991000061638 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E03F75611C7F991000061638 /* Build configuration list for PBXNativeTarget "TesteMobileIOSUITests" */ = {
 			isa = XCConfigurationList;
@@ -500,6 +591,7 @@
 				E03F75631C7F991000061638 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
