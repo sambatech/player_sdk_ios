@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */; };
 		E03F75371C7F991000061638 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75361C7F991000061638 /* AppDelegate.swift */; };
 		E03F75391C7F991000061638 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75381C7F991000061638 /* ViewController.swift */; };
@@ -15,7 +16,6 @@
 		E03F75411C7F991000061638 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03F753F1C7F991000061638 /* LaunchScreen.storyboard */; };
 		E03F754C1C7F991000061638 /* TesteMobileIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F754B1C7F991000061638 /* TesteMobileIOSTests.swift */; };
 		E03F75571C7F991000061638 /* TesteMobileIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75561C7F991000061638 /* TesteMobileIOSUITests.swift */; };
-		E0B2C9CE1C7F9C12007C6C21 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -61,7 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */,
-				E0B2C9CE1C7F9C12007C6C21 /* MobilePlayer.framework in Frameworks */,
+				9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
