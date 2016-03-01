@@ -24,10 +24,8 @@ class ViewController: UIViewController {
         playerVC.title = "Teste Mobile"
         playerVC.activityItems = [videoURL]
         presentMoviePlayerViewControllerAnimated(playerVC)
-
         
         self.playerContainer.addSubview(playerVC.view)
-        
     }
 
     override func didReceiveMemoryWarning() {
