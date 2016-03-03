@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */; };
+		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */; };
 		E03F75371C7F991000061638 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75361C7F991000061638 /* AppDelegate.swift */; };
@@ -38,6 +40,8 @@
 /* Begin PBXFileReference section */
 		410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.release.xcconfig"; sourceTree = "<group>"; };
 		7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewControlller.swift; sourceTree = "<group>"; };
+		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesteMobileIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75331C7F991000061638 /* TesteMobileIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesteMobileIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75361C7F991000061638 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -122,6 +126,8 @@
 				E03F753D1C7F991000061638 /* Assets.xcassets */,
 				E03F753F1C7F991000061638 /* LaunchScreen.storyboard */,
 				E03F75421C7F991000061638 /* Info.plist */,
+				9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */,
+				9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */,
 			);
 			path = TesteMobileIOS;
 			sourceTree = "<group>";
@@ -336,7 +342,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				E03F75391C7F991000061638 /* ViewController.swift in Sources */,
+				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
 				E03F75371C7F991000061638 /* AppDelegate.swift in Sources */,
+				9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
