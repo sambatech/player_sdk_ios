@@ -11,30 +11,31 @@ import Alamofire
 
 class MediaListViewController : UITableViewController {
 	
-	private var mediaList:[SambaMedia] = []
+	private var mediaList:[MediaInfo] = []
 	
 	override func viewDidLoad() {
 		Alamofire.request(.GET, "http://api.sambavideos.sambatech.com/v1/medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=4460&published=true")
 			.responseJSON { response in
 				if let json = response.result.value as? [AnyObject] {
-					var mediaList = [SambaMedia]()
+					
+					self.mediaList = [MediaInfo]()
 					
 					for jsonNode in json {
+						// skip non video media
 						if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
 							continue
 						}
 						
-						var outputs = [Output]()
+						/*var outputs = [Output]()
 						
 						for jsonOutput in jsonNode["files"] as! [AnyObject] {
 							outputs.append(Output(
 								url: jsonOutput["url"] as? String ?? "",
 								label: jsonOutput["outputName"] as? String ?? ""))
-						}
+						}*/
 						
-						mediaList.append(SambaMedia(
+						self.mediaList.append(MediaInfo(
 							title: jsonNode["title"] as? String ?? "",
-							outputs: outputs,
 							thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? ""))
 					}
 					
@@ -64,4 +65,20 @@ class MediaListViewController : UITableViewController {
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 		return 1
 	}
+	
+	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+		self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
+	}
+}
+
+class MediaInfo : CustomStringConvertible {
+	var title:String
+	var thumb:String
+	
+	init(title:String, thumb:String) {
+		self.title = title
+		self.thumb = thumb
+	}
+
+	var description:String { return title; }
 }
