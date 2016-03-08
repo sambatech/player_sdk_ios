@@ -11,11 +11,15 @@ import Alamofire
 
 class MediaListViewController : UITableViewController {
 	
-	private let dict = NSDictionary.init(contentsOfFile: NSBundle.mainBundle().pathForResource("Settings", ofType: "plist")!)! as! [String:String]
 	private var mediaList:[MediaInfo] = [MediaInfo]()
+	private var currentMediaInfo:MediaInfo?
 	
 	override func viewDidLoad() {
 		requestMediaSet([String.init(4421), String.init(4460)])
+	}
+	
+	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+		(segue.destinationViewController as! PlayerViewController).mediaInfo = self.currentMediaInfo
 	}
 	
 	override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -38,6 +42,7 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+		self.currentMediaInfo = mediaList[indexPath.row]
 		self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
 	}
 	
@@ -46,36 +51,36 @@ class MediaListViewController : UITableViewController {
 		
 		func request() {
 			let pid = pids[i]
+			let url = Commons.dict["svapi_endpoint"]! + "medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=" + pid + "&published=true"
 			
-			print(self.dict["svapi_endpoint"]! + "medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=" + pid + "&published=true")
+			print(url)
 			
-			Alamofire.request(.GET, self.dict["svapi_endpoint"]! + "medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=" + pid + "&published=true")
-				.responseJSON { response in
-					if let json = response.result.value as? [AnyObject] {
-						for jsonNode in json {
-							// skip non video media
-							if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
-								continue
-							}
-							
-							self.mediaList.append(MediaInfo(
-								title: jsonNode["title"] as? String ?? "",
-								thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
-								projectHash: self.dict["pid_" + pid]!,
-								mediaId: jsonNode["id"] as? String ?? ""
-							))
-						}
-						print("asdf " + String.init(i))
-						if ++i == pids.count {
-							self.tableView.reloadData()
-							return ()
+			Alamofire.request(.GET, url).responseJSON { response in
+				if let json = response.result.value as? [AnyObject] {
+					for jsonNode in json {
+						// skip non video media
+						if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
+							continue
 						}
 						
-						request()
+						self.mediaList.append(MediaInfo(
+							title: jsonNode["title"] as? String ?? "",
+							thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
+							projectHash: Commons.dict["pid_" + pid]!,
+							mediaId: jsonNode["id"] as? String ?? ""
+						))
+					}
+					
+					if ++i == pids.count {
+						self.tableView.reloadData()
 						return ()
 					}
 					
-					print("Invalid JSON format!")
+					request()
+					return ()
+				}
+				
+				print("Error: Invalid JSON format!")
 			}
 		}
 		

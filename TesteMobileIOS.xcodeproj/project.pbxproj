@@ -12,6 +12,7 @@
 		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */; };
+		9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DF691C8F82570047ECDD /* Commons.swift */; };
 		CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */; };
 		E03F75371C7F991000061638 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75361C7F991000061638 /* AppDelegate.swift */; };
 		E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75381C7F991000061638 /* PlayerViewController.swift */; };
@@ -46,6 +47,7 @@
 		9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewControlller.swift; sourceTree = "<group>"; };
 		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
+		9AD4DF691C8F82570047ECDD /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesteMobileIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75331C7F991000061638 /* TesteMobileIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesteMobileIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75361C7F991000061638 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -107,6 +109,14 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
+		9AD4DF681C8F81CF0047ECDD /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9AD4DF691C8F82570047ECDD /* Commons.swift */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
 		E03F752A1C7F991000061638 = {
 			isa = PBXGroup;
 			children = (
@@ -132,6 +142,7 @@
 		E03F75351C7F991000061638 /* TesteMobileIOS */ = {
 			isa = PBXGroup;
 			children = (
+				9AD4DF681C8F81CF0047ECDD /* Helpers */,
 				9AD4DF671C8F77880047ECDD /* Models */,
 				E03F75361C7F991000061638 /* AppDelegate.swift */,
 				E03F753A1C7F991000061638 /* Main.storyboard */,
@@ -359,6 +370,7 @@
 			files = (
 				E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */,
 				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
+				9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */,
 				E03F75371C7F991000061638 /* AppDelegate.swift in Sources */,
 				9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */,
 			);
