@@ -23,3 +23,11 @@ class SambaMedia : CustomStringConvertible {
 struct Output {
 	let url:String, label:String
 }
+
+/*var outputs = [Output]()
+
+for jsonOutput in jsonNode["files"] as! [AnyObject] {
+outputs.append(Output(
+url: jsonOutput["url"] as? String ?? "",
+label: jsonOutput["outputName"] as? String ?? ""))
+}*/

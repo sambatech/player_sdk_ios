@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A0EFFB41C8F095400888D61 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A0EFFB31C8F095400888D61 /* Settings.plist */; };
 		9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */; };
 		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
@@ -41,6 +42,7 @@
 /* Begin PBXFileReference section */
 		410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.release.xcconfig"; sourceTree = "<group>"; };
 		7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9A0EFFB31C8F095400888D61 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewControlller.swift; sourceTree = "<group>"; };
 		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
@@ -97,6 +99,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9AD4DF671C8F77880047ECDD /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		E03F752A1C7F991000061638 = {
 			isa = PBXGroup;
 			children = (
@@ -122,15 +132,16 @@
 		E03F75351C7F991000061638 /* TesteMobileIOS */ = {
 			isa = PBXGroup;
 			children = (
+				9AD4DF671C8F77880047ECDD /* Models */,
 				E03F75361C7F991000061638 /* AppDelegate.swift */,
-				E03F75381C7F991000061638 /* PlayerViewController.swift */,
 				E03F753A1C7F991000061638 /* Main.storyboard */,
-				E03F753D1C7F991000061638 /* Assets.xcassets */,
 				E03F753F1C7F991000061638 /* LaunchScreen.storyboard */,
+				E03F75381C7F991000061638 /* PlayerViewController.swift */,
+				E03F753D1C7F991000061638 /* Assets.xcassets */,
 				E03F75421C7F991000061638 /* Info.plist */,
 				9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */,
-				9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */,
 				9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */,
+				9A0EFFB31C8F095400888D61 /* Settings.plist */,
 			);
 			path = TesteMobileIOS;
 			sourceTree = "<group>";
@@ -272,6 +283,7 @@
 				E03F75411C7F991000061638 /* LaunchScreen.storyboard in Resources */,
 				9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */,
 				E03F753E1C7F991000061638 /* Assets.xcassets in Resources */,
+				9A0EFFB41C8F095400888D61 /* Settings.plist in Resources */,
 				E03F753C1C7F991000061638 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
