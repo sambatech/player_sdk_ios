@@ -6,7 +6,7 @@
 //
 //
 
-class SambaMedia : CustomStringConvertible {
+public class SambaMedia : CustomStringConvertible {
 	var title:String
 	var outputs:[Output]
 	var thumb:String
@@ -17,7 +17,7 @@ class SambaMedia : CustomStringConvertible {
 		self.thumb = thumb
 	}
 	
-	var description:String { return title; }
+	public var description:String { return title; }
 }
 
 struct Output {

@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A0D56201C90C0E100AE8279 /* SambaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0D561F1C90C0E100AE8279 /* SambaPlayer.swift */; };
+		9A0D56221C90C1FA00AE8279 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0D56211C90C1FA00AE8279 /* SambaApi.swift */; };
+		9A0D56241C90C23700AE8279 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A0D56231C90C23700AE8279 /* SambaMediaRequest.swift */; };
 		9A0EFFB41C8F095400888D61 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A0EFFB31C8F095400888D61 /* Settings.plist */; };
-		9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */; };
+		9A1B81A01C88D41B00588B2B /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */; };
 		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */; };
@@ -43,8 +46,11 @@
 /* Begin PBXFileReference section */
 		410BAF269EEDCA5A1C4FFD43 /* Pods-TesteMobileIOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.release.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.release.xcconfig"; sourceTree = "<group>"; };
 		7385C65EEDB71EFE3FE1516F /* Pods-TesteMobileIOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TesteMobileIOS.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TesteMobileIOS/Pods-TesteMobileIOS.debug.xcconfig"; sourceTree = "<group>"; };
+		9A0D561F1C90C0E100AE8279 /* SambaPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaPlayer.swift; sourceTree = "<group>"; };
+		9A0D56211C90C1FA00AE8279 /* SambaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaApi.swift; sourceTree = "<group>"; };
+		9A0D56231C90C23700AE8279 /* SambaMediaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMediaRequest.swift; sourceTree = "<group>"; };
 		9A0EFFB31C8F095400888D61 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
-		9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewControlller.swift; sourceTree = "<group>"; };
+		9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
 		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
 		9AD4DF691C8F82570047ECDD /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
@@ -105,6 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */,
+				9A0D56231C90C23700AE8279 /* SambaMediaRequest.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -150,9 +157,11 @@
 				E03F75381C7F991000061638 /* PlayerViewController.swift */,
 				E03F753D1C7F991000061638 /* Assets.xcassets */,
 				E03F75421C7F991000061638 /* Info.plist */,
-				9A1B819F1C88D41B00588B2B /* MediaListViewControlller.swift */,
+				9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */,
 				9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */,
 				9A0EFFB31C8F095400888D61 /* Settings.plist */,
+				9A0D561F1C90C0E100AE8279 /* SambaPlayer.swift */,
+				9A0D56211C90C1FA00AE8279 /* SambaApi.swift */,
 			);
 			path = TesteMobileIOS;
 			sourceTree = "<group>";
@@ -371,8 +380,11 @@
 				E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */,
 				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
 				9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */,
+				9A0D56221C90C1FA00AE8279 /* SambaApi.swift in Sources */,
+				9A0D56201C90C0E100AE8279 /* SambaPlayer.swift in Sources */,
 				E03F75371C7F991000061638 /* AppDelegate.swift in Sources */,
-				9A1B81A01C88D41B00588B2B /* MediaListViewControlller.swift in Sources */,
+				9A1B81A01C88D41B00588B2B /* MediaListViewController.swift in Sources */,
+				9A0D56241C90C23700AE8279 /* SambaMediaRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

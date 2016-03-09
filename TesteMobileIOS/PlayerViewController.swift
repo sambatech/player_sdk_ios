@@ -14,32 +14,32 @@ class PlayerViewController: UIViewController {
 
     @IBOutlet weak var playerContainer: UIView!
 	
-	var mediaInfo:MediaInfo?
+	var mediaInfo: MediaInfo?
 	
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
 
-		if let m = self.mediaInfo {
-
-			Alamofire.request(.GET, Commons.dict["playerapi_endpoint"]! + m.projectHash + "/" + m.mediaId).responseJSON { response in
-				if let token = response.result.value {
-					print(token)
-				}
-			}
-			
-			/*let videoURL = NSURL(string:  "http://gbbrfd.sambavideos.sambatech.com/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4")!
-			let playerVC = MobilePlayerViewController(contentURL: videoURL,
-				config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
-				
-			playerVC.title = "Teste Mobile"
-			playerVC.activityItems = [videoURL]
-			presentMoviePlayerViewControllerAnimated(playerVC)
-			
-			self.playerContainer.addSubview(playerVC.view)*/
+		guard let m = self.mediaInfo else {
+			print("Error: No media info found!")
+			return
 		}
-		else {
-			print("Error: No media found!")
-		}
+		
+		let sambaApi = SambaApi()
+		
+		sambaApi.requestMedia(SambaMediaRequest(
+			projectHash: m.projectHash,
+			mediaId: m.mediaId
+		),
+		callback: { media in
+			self.playMedia(media)
+		})
+	}
+	
+	private func playMedia(media: SambaMedia) {
+		let sambaPlayer = SambaPlayer(container: playerContainer)
+		
+		sambaPlayer.media = media
+		sambaPlayer.play()
     }
 
     override func didReceiveMemoryWarning() {
