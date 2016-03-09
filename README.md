@@ -1,41 +1,25 @@
-# Player SDK iOS
+# Samba Player SDK iOS
 
-Para testar o "hello world" resolvi configurar, instalar e rodar o KVVideoPlayer ( Objetive-C ) https://github.com/viki-org/VKVideoPlayer.
+###Instruções
 
-Instruções:
-Instalar o Xcode: se não conseguir instalar pela app store pegue o .dmg aqui https://developer.apple.com/downloads/?name=Xcode%207.2 ( versão 7.2 )
+**Instalar Xcode**
 
-Instalação do Cocoapods ( requisitos mínimos: Ruby 2.2+ e Rails 4+ instalados ):
+Caso não consiga instalar pela app store, é possível baixar o .dmg neste link: https://developer.apple.com/downloads/?name=Xcode%207.2 (versão 7.2)
+
+**Instalar Cocoapods**
+
+(requisitos mínimos: Ruby 2.2+ e Rails 4+ instalados)
+
+Caso ainda não tenha o Cocoapods, abra o terminal e digite:
+
 `sudo gem install cocoapods`
 
-Rodar:
-Abrir o xCode e clicar no botão "play". Dica: clique em Window -> Scale -> 50% no emulador.
+Em seguida:
 
-Ps: no caso desse projeto adicione a propriedade no VKVideoPlayer-Info.plist
-```xml
-<dict>
-    <key>NSAllowsArbitraryLoads</key>
-    <true/>
-</dict>
-```
+`pod init`
 
-Criando seu próprio projeto:
+**Instalar as dependências**
 
-Abra o Xcode
-- New Xcode Project
-- Selecionar Objective C
+Por fim, para instalar as dependências do Podfile, digite:
 
-Configurar o CocoaPods ( gerenciador de dependências ):
-- Abra o projeto via terminal
-- Digite `pod init`
-- Abra o arquivo Podfile
-- remova o comentário sobre a versão do ios ( `platform :ios, '8.0'` )
-- adicione a dependência dentro do "do" exemplo:
-
-```
-target 'TestePlayer' do
-  pod "VKVideoPlayer", "~> 0.1.1"
-end
-```
-
-- Digite `pod install` para instalar as dependências do Podfile
+`pod install`
