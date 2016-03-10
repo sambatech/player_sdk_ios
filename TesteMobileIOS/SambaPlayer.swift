@@ -12,9 +12,6 @@ import UIKit
 public class SambaPlayer {
 	
 	public var _player: AnyObject?
-	
-	private let container: UIView
-	
 	public var media: SambaMedia? {
 		didSet {
 			if media != nil { return }
@@ -23,7 +20,9 @@ public class SambaPlayer {
 		}
 	}
 	
-	init(container: UIView) {
+	private let container: UIView
+	
+	public init(container: UIView) {
 		self.container = container
 	}
 	

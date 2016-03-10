@@ -7,27 +7,44 @@
 //
 
 public class SambaMedia : CustomStringConvertible {
-	var title:String
-	var outputs:[Output]
-	var thumb:String
 	
-	init(title:String, outputs:[Output], thumb:String) {
-		self.title = title
-		self.outputs = outputs
+	public struct Output {
+		let url: String, label: String
+	}
+	
+	public var title: String = ""
+	public var url: String = "" {
+		didSet {
+			if let _ = url.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) {
+				deliveryType = "hls"
+			}
+			else if let _ = url.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) {
+				deliveryType = "progressive"
+			}
+		}
+	}
+	public var deliveryType: String = "other"
+	public var thumb: String?
+	public var isLive = false;
+	
+	init() {}
+	
+	public init(url:String, title:String?, thumb:String?) {
+		self.title = title ?? ""
+		self.url = url
 		self.thumb = thumb
 	}
 	
-	public var description:String { return title; }
+	public var description: String { return title; }
 }
 
-struct Output {
-	let url:String, label:String
+class SambaMediaConfig : SambaMedia {
+	
+	var id: String = ""
+	var projectHash: String = ""
+	var projectId: Int = 0
+	var categoryId: Int = 0;
+	//public sessionId: String = Helpers.getSessionId();
+	var theme: Int = 0xFF72BE44
+	var outputs: [SambaMedia.Output] = []
 }
-
-/*var outputs = [Output]()
-
-for jsonOutput in jsonNode["files"] as! [AnyObject] {
-outputs.append(Output(
-url: jsonOutput["url"] as? String ?? "",
-label: jsonOutput["outputName"] as? String ?? ""))
-}*/

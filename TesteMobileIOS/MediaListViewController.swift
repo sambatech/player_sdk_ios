@@ -54,7 +54,7 @@ class MediaListViewController : UITableViewController {
 
 		func request() {
 			let pid = pids[i]
-			let url = Commons.dict["svapi_endpoint"]! + "medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=" + pid + "&published=true"
+			let url = Commons.settings["svapi_endpoint"]! + "medias?access_token=079cc2f1-4733-4c92-a7b5-7e1640698caa&pid=" + pid + "&published=true"
 			
 			print(url)
 			
@@ -73,7 +73,7 @@ class MediaListViewController : UITableViewController {
 					self.mediaList.append(MediaInfo(
 						title: jsonNode["title"] as? String ?? "",
 						thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
-						projectHash: Commons.dict["pid_" + pid]!,
+						projectHash: Commons.settings["pid_" + pid]!,
 						mediaId: jsonNode["id"] as? String ?? ""
 					))
 				}

@@ -24,14 +24,13 @@ class PlayerViewController: UIViewController {
 			return
 		}
 		
-		let sambaApi = SambaApi()
-		
-		sambaApi.requestMedia(SambaMediaRequest(
+		SambaApi().requestMedia(SambaMediaRequest(
 			projectHash: m.projectHash,
 			mediaId: m.mediaId
 		),
 		callback: { media in
-			self.playMedia(media)
+			guard let _ = media else { return }
+			self.playMedia(media!)
 		})
 	}
 	
