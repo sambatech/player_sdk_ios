@@ -66,6 +66,10 @@ public class SambaApi {
 		
 		let media = SambaMediaConfig()
 		let playerConfig = json["playerConfig"]!!
+		let project = json["project"]!!
+		
+		media.projectHash = project["playerHash"] as! String
+		media.projectId = project["id"] as! Int
 		
 		if let title = json["title"] as? String {
 			media.title = title
@@ -83,14 +87,42 @@ public class SambaApi {
 				let color = Int.init(theme.stringByReplacingOccurrencesOfString("^#*", withString: ""), radix: 16) {
 			media.theme = color
 		}
-		
-		if let project = json["project"]! {
-			media.projectHash = project["playerHash"] as! String
-			media.projectId = project["id"] as! Int
-		}
-		
-		if let _ = json["deliveryRules"] {
+
+		if let rules = json["deliveryRules"] as? [AnyObject] {
+			let defaultOutput = project["defaultOutput"] as? String ?? "240p"
+			var deliveryOutputsCount = [String:Int]()
+			var deliveryType: String
+			var defaultOutputCurrent: String
+			var label: String
+			var mediaOutput: SambaMedia.Output
 			
+			for rule in rules {
+				deliveryType = (rule["urlType"] as! String).lowercaseString
+				
+				guard deliveryType == "hls" || deliveryType == "progressive",
+					let outputs = rule["outputs"] as? [AnyObject]
+						where outputs.count > 0
+							&& deliveryOutputsCount[deliveryType] != nil
+							&& outputs.count > deliveryOutputsCount[deliveryType] else {
+					continue
+				}
+				
+				deliveryOutputsCount[deliveryType] = outputs.count
+				media.deliveryType = deliveryType
+				defaultOutputCurrent = deliveryType == "hls" ? "abr_hls" : defaultOutput
+				
+				for output in outputs {
+					label = (output["outputName"] as! String).lowercaseString
+					
+					guard label != "_raw",
+						let url = output["url"] as? String else {
+						continue
+					}
+					
+					mediaOutput = SambaMedia.Output(url: url, label: label, isDefault: label == defaultOutputCurrent)
+					media.outputs.append(mediaOutput)
+				}
+			}
 		}
 		else if let liveOutput = json["liveOutput"] as? String {
 			media.isLive = true

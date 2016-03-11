@@ -9,16 +9,18 @@
 public class SambaMedia : CustomStringConvertible {
 	
 	public struct Output {
-		let url: String, label: String
+		let url: String, label: String, isDefault: Bool
 	}
 	
 	public var title: String = ""
-	public var url: String = "" {
+	public var url: String? {
 		didSet {
-			if let _ = url.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) {
+			guard let urlNotNull = url else { return }
+			
+			if let _ = urlNotNull.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) {
 				deliveryType = "hls"
 			}
-			else if let _ = url.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) {
+			else if let _ = urlNotNull.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) {
 				deliveryType = "progressive"
 			}
 		}
