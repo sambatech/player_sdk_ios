@@ -12,7 +12,10 @@ import Alamofire
 public class SambaApi {
 	
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
-		Alamofire.request(.GET, Commons.settings["playerapi_endpoint"]! + request.projectHash + (request.mediaId != nil ? "/" + request.mediaId! : "")).responseString { response in
+		Alamofire.request(.GET, Commons.settings["playerapi_endpoint"]! + request.projectHash +
+			(request.mediaId != nil ? "/" + request.mediaId! :
+				"?" + ((request.streamUrls ?? []).count > 0 ? "alternativeLive=" + request.streamUrls![0] :
+					"streamName=" + request.streamName!))).responseString { response in
 			guard let token = response.result.value else {
 				print("\(self.dynamicType) Error: No media response data!")
 				return
@@ -94,16 +97,20 @@ public class SambaApi {
 			var deliveryType: String
 			var defaultOutputCurrent: String
 			var label: String
-			var mediaOutput: SambaMedia.Output
 			
 			for rule in rules {
 				deliveryType = (rule["urlType"] as! String).lowercaseString
 				
+				// restricts media to HLS or PROGRESSIVE
+				// delivery rule must have at least one output
+				// if already registered, make sure PROGRESSIVE won't overwrite HLS
+				// otherwise see if current rule have more outputs than the registered one
 				guard deliveryType == "hls" || deliveryType == "progressive",
 					let outputs = rule["outputs"] as? [AnyObject]
 						where outputs.count > 0
-							&& deliveryOutputsCount[deliveryType] != nil
-							&& outputs.count > deliveryOutputsCount[deliveryType] else {
+							&& (deliveryOutputsCount[deliveryType] == nil
+							|| (deliveryType != "progressive" || media.deliveryType != "hls")
+							&& outputs.count > deliveryOutputsCount[deliveryType]) else {
 					continue
 				}
 				
@@ -119,8 +126,11 @@ public class SambaApi {
 						continue
 					}
 					
-					mediaOutput = SambaMedia.Output(url: url, label: label, isDefault: label == defaultOutputCurrent)
-					media.outputs.append(mediaOutput)
+					media.outputs.append(SambaMedia.Output(
+						url: url,
+						label: label,
+						isDefault: label == defaultOutputCurrent
+					))
 				}
 			}
 		}

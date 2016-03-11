@@ -31,7 +31,11 @@ public class SambaMedia : CustomStringConvertible {
 	
 	init() {}
 	
-	public init(url:String, title:String?, thumb:String?) {
+	public convenience init(_ url:String) {
+		self.init(url, title: nil, thumb: nil)
+	}
+	
+	public init(_ url:String, title:String?, thumb:String?) {
 		self.title = title ?? ""
 		self.url = url
 		self.thumb = thumb
