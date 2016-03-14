@@ -97,6 +97,7 @@ public class SambaApi {
 			var deliveryType: String
 			var defaultOutputCurrent: String
 			var label: String
+			var mediaOutputs: [SambaMedia.Output]
 			
 			for rule in rules {
 				deliveryType = (rule["urlType"] as! String).lowercaseString
@@ -115,8 +116,9 @@ public class SambaApi {
 				}
 				
 				deliveryOutputsCount[deliveryType] = outputs.count
-				media.deliveryType = deliveryType
 				defaultOutputCurrent = deliveryType == "hls" ? "abr_hls" : defaultOutput
+				mediaOutputs = []
+				media.deliveryType = deliveryType
 				
 				for output in outputs {
 					label = (output["outputName"] as! String).lowercaseString
@@ -126,17 +128,19 @@ public class SambaApi {
 						continue
 					}
 					
-					media.outputs.append(SambaMedia.Output(
+					mediaOutputs.append(SambaMedia.Output(
 						url: url,
 						label: label,
 						isDefault: label == defaultOutputCurrent
 					))
 				}
+				
+				media.outputs = mediaOutputs
 			}
 		}
 		else if let liveOutput = json["liveOutput"] as? String {
-			media.isLive = true
 			media.url = liveOutput
+			media.isLive = true
 		}
 		
 		return media

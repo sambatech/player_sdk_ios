@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MobilePlayer
 import Alamofire
 
 class PlayerViewController: UIViewController {
@@ -36,7 +35,7 @@ class PlayerViewController: UIViewController {
 	
 	private func playMedia(media: SambaMedia) {
 		let sambaPlayer = SambaPlayer(container: playerContainer)
-		
+
 		sambaPlayer.media = media
 		sambaPlayer.play()
     }
