@@ -52,8 +52,10 @@ public class SambaPlayer {
 		
 		player.title = media.title
 		player.activityItems = [videoURL]
+		player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
+		//player.view.frame = CGRect(x: 30, y: 25, width: container.frame.width, height: container.frame.height)
 
-		self.container.addSubview(player.view)
+		container.addSubview(player.view)
 	}
 	
 	public func destroy() {

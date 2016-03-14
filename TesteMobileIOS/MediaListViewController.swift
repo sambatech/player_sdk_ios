@@ -23,15 +23,32 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView!.dequeueReusableCellWithIdentifier("MediaListCellProto") ??
-			UITableViewCell(style: UITableViewCellStyle.Value1, reuseIdentifier: "MediaListCellProto")
+        let cellIdentifier = "MediaListTableViewCell"
+		let cell = tableView!.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! MediaListTableViewCell
 		
 		let media = mediaList[indexPath.row]
 		
-		cell.textLabel!.text = media.title
-		
+		cell.mediaTitle.text = media.title
+        cell.mediaDesc.text = media.description ?? ""
+        load_image(media.thumb, cell: cell)
+        
 		return cell
 	}
+    
+    func load_image(urlString:String, cell:MediaListTableViewCell) {
+        
+        let imgURL: NSURL = NSURL(string: urlString)!
+        let request: NSURLRequest = NSURLRequest(URL: imgURL)
+    
+        NSURLConnection.sendAsynchronousRequest(
+            request, queue: NSOperationQueue.mainQueue(),
+            completionHandler: {(response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
+                if error == nil {
+                    cell.mediaThumb?.image = UIImage(data: data!)
+                }
+        })
+        
+    }
 	
 	override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return mediaList.count

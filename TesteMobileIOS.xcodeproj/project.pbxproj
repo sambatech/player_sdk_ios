@@ -24,6 +24,7 @@
 		E03F75411C7F991000061638 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03F753F1C7F991000061638 /* LaunchScreen.storyboard */; };
 		E03F754C1C7F991000061638 /* TesteMobileIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F754B1C7F991000061638 /* TesteMobileIOSTests.swift */; };
 		E03F75571C7F991000061638 /* TesteMobileIOSUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75561C7F991000061638 /* TesteMobileIOSUITests.swift */; };
+		E0DBBB991C933BF0004FA96E /* MediaListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E0DBBB981C933BF0004FA96E /* MediaListTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		E03F75561C7F991000061638 /* TesteMobileIOSUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesteMobileIOSUITests.swift; sourceTree = "<group>"; };
 		E03F75581C7F991000061638 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobilePlayer.framework; path = Carthage/Build/iOS/MobilePlayer.framework; sourceTree = "<group>"; };
+		E0DBBB981C933BF0004FA96E /* MediaListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				E03F753D1C7F991000061638 /* Assets.xcassets */,
 				E03F75421C7F991000061638 /* Info.plist */,
 				9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */,
+				E0DBBB981C933BF0004FA96E /* MediaListTableViewCell.swift */,
 				9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */,
 				9A0EFFB31C8F095400888D61 /* Settings.plist */,
 				9A0D561F1C90C0E100AE8279 /* SambaPlayer.swift */,
@@ -377,6 +380,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E0DBBB991C933BF0004FA96E /* MediaListTableViewCell.swift in Sources */,
 				E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */,
 				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
 				9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */,
