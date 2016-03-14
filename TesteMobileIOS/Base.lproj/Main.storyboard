@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Player-->
@@ -17,11 +18,16 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="318" placeholderIntrinsicHeight="229" translatesAutoresizingMaskIntoConstraints="NO" id="ByW-Fi-wPy">
-                                <rect key="frame" x="0.0" y="64" width="543" height="336"/>
+                            <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="318" placeholderIntrinsicHeight="229" translatesAutoresizingMaskIntoConstraints="NO" id="ByW-Fi-wPy">
+                                <rect key="frame" x="0.0" y="64" width="318" height="229"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="ByW-Fi-wPy" firstAttribute="leading" secondItem="H42-gf-fFZ" secondAttribute="leadingMargin" constant="-20" id="ICi-d0-Po3"/>
+                            <constraint firstItem="ByW-Fi-wPy" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="ROx-jC-wy2"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ByW-Fi-wPy" secondAttribute="trailing" constant="-20" id="sle-91-4Vn"/>
+                        </constraints>
                     </view>
                     <connections>
                         <outlet property="playerContainer" destination="ByW-Fi-wPy" id="vRO-EL-Fik"/>
@@ -53,13 +59,13 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cAs-GV-oaQ">
                                             <rect key="frame" x="64" y="8" width="321" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Descrição da mídia" translatesAutoresizingMaskIntoConstraints="NO" id="9jw-XJ-HuY">
                                             <rect key="frame" x="64" y="31" width="258" height="45"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         </textView>

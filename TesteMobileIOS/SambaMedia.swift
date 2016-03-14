@@ -6,6 +6,11 @@
 //
 //
 
+/**
+ * Data entity representing a media.
+ *
+ * If `outputs` field is nil, use `url` field.
+ */
 public class SambaMedia : CustomStringConvertible {
 	
 	public struct Output {
@@ -25,9 +30,11 @@ public class SambaMedia : CustomStringConvertible {
 			}
 		}
 	}
+	public var outputs: [SambaMedia.Output]?
 	public var deliveryType: String = "other"
 	public var thumb: String?
 	public var isLive = false;
+	public var theme: Int = 0x72BE44
 	
 	init() {}
 	
@@ -44,6 +51,9 @@ public class SambaMedia : CustomStringConvertible {
 	public var description: String { return title; }
 }
 
+/**
+ * Internal extension of the media entity for player/plugins config purposes.
+ */
 class SambaMediaConfig : SambaMedia {
 	
 	var id: String = ""
@@ -51,6 +61,4 @@ class SambaMediaConfig : SambaMedia {
 	var projectId: Int = 0
 	var categoryId: Int = 0;
 	//public sessionId: String = Helpers.getSessionId();
-	var theme: Int = 0xFF72BE44
-	var outputs: [SambaMedia.Output] = []
 }

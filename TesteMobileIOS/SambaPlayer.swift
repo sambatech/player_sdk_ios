@@ -8,13 +8,13 @@
 
 import Foundation
 import UIKit
+import MobilePlayer
 
 public class SambaPlayer {
 	
 	public var _player: AnyObject?
-	public var media: SambaMedia? {
+	public var media: SambaMedia = SambaMedia() {
 		didSet {
-			if media != nil { return }
 			destroy()
 			//createThumb()
 		}
@@ -28,26 +28,41 @@ public class SambaPlayer {
 	
 	public func play() {
 		if _player == nil {
-			create()
+			try! create()
 			return
 		}
 		
 		//_player.play()
 	}
 	
-	public func create() {
-		/*let videoURL = NSURL(string:  "http://gbbrfd.sambavideos.sambatech.com/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4")!
-		let playerVC = MobilePlayerViewController(contentURL: videoURL,
-		config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
+	public func create() throws {
+		var urlWrapped = media.url
 		
-		playerVC.title = "Teste Mobile"
-		playerVC.activityItems = [videoURL]
-		presentMoviePlayerViewControllerAnimated(playerVC)
+		if let outputs = media.outputs where outputs.count > 0 {
+			urlWrapped = outputs[0].url
+		}
 		
-		self.container.addSubview(playerVC.view)*/
+		guard let url = urlWrapped else {
+			throw SambaPlayerError.NoUrlFound
+		}
+		
+		let videoURL = NSURL(string: url)!
+		let player = MobilePlayerViewController(contentURL: videoURL,
+			config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
+		
+		player.title = media.title
+		player.activityItems = [videoURL]
+		player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
+		//player.view.frame = CGRect(x: 30, y: 25, width: container.frame.width, height: container.frame.height)
+
+		container.addSubview(player.view)
 	}
 	
 	public func destroy() {
 		
 	}
+}
+
+public enum SambaPlayerError : ErrorType {
+	case NoUrlFound
 }
