@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" placeholderIntrinsicWidth="318" placeholderIntrinsicHeight="229" translatesAutoresizingMaskIntoConstraints="NO" id="ByW-Fi-wPy">
-                                <rect key="frame" x="0.0" y="64" width="318" height="229"/>
+                                <rect key="frame" x="0.0" y="64" width="543" height="336"/>
                             </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

@@ -6,8 +6,15 @@
 		],
 		"elements": [{
 			"type": "toggleButton",
-			"identifier": "play"
-		},{
+			"identifier": "play",
+            "image": "play",
+            "height": 20,
+            "width": 20,
+            "marginLeft": 8,
+            "marginRight": 8,
+            "toggledImage": "pause",
+            "widthCalculation": "asDefined"
+        },{
 			"type": "label",
 			"identifier": "currentTime"
 		},{
@@ -22,14 +29,26 @@
 			"type": "slider",
 			"identifier": "playback",
 			"trackHeight": 8,
-			"trackCornerRadius": 3,
+			"trackCornerRadius": 4,
 			"minimumTrackTintColor": "#63AA42",
 			"availableTrackTintColor": "#a3a3a3",
 			"maximumTrackTintColor": "#333333",
 			"thumbTintColor": "#fefefe",
 			"thumbBorderWidth": 1,
 			"thumbBorderColor": "#fff",
-			"marginRight": 4
-		}]
+			"marginRight": 4,
+            "thumbCornerRadius": 6,
+            "thumbWidth": 18,
+            "thumbHeight": 12
+                     
+        }, {
+            "type": "button",
+            "image": "hd",
+            "width": 20,
+            "height": 20,
+            "marginLeft": 8,
+            "marginRight": 10,
+            "widthCalculation": "asDefined"
+        }]
 	}
 }
