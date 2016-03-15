@@ -37,6 +37,7 @@ class PlayerViewController: UIViewController {
 	private func initPlayer(media: SambaMedia) {
 		let sambaPlayer = SambaPlayer()
 		
+		sambaPlayer.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
 		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media
