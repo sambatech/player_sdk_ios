@@ -29,16 +29,48 @@ class PlayerViewController: UIViewController {
 		),
 		callback: { media in
 			guard let _ = media else { return }
-			self.playMedia(media!)
+			self.initPlayer(media!)
 		})
 
 	}
 	
-	private func playMedia(media: SambaMedia) {
-		let sambaPlayer = SambaPlayer(container: playerContainer)
+	private func initPlayer(media: SambaMedia) {
+		let sambaPlayer = SambaPlayer()
+        
+        
+        addEvents(sambaPlayer)
+
+		
+		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media
 		sambaPlayer.play()
+    }
+    
+    private func addEvents(player: SambaPlayer) {
+        player.addEventListener("load") { result in
+            print("carreguei \(result)")
+            let p = result.object as! SambaPlayer
+            print(p.media.title)
+        }
+        
+        player.addEventListener("play") { result in
+            print("playei \(result)")
+            let p = result.object as! SambaPlayer
+            print(p.media.title)
+        }
+        
+        player.addEventListener("pause") { result in
+            print("pausei \(result)")
+            let p = result.object as! SambaPlayer
+            print(p.media.title)
+        }
+        
+        player.addEventListener("finish") { result in
+            print("finishei \(result)")
+            let p = result.object as! SambaPlayer
+            print(p.media.title)
+        }
     }
 
     override func didReceiveMemoryWarning() {

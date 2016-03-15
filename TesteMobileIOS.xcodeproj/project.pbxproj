@@ -17,6 +17,7 @@
 		9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */; };
 		9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DF691C8F82570047ECDD /* Commons.swift */; };
 		CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */; };
+		E003C64F1C987D5F007C4A39 /* SwiftEventBus.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E003C64E1C987D5F007C4A39 /* SwiftEventBus.framework */; };
 		E03F75371C7F991000061638 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75361C7F991000061638 /* AppDelegate.swift */; };
 		E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E03F75381C7F991000061638 /* PlayerViewController.swift */; };
 		E03F753C1C7F991000061638 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E03F753A1C7F991000061638 /* Main.storyboard */; };
@@ -56,6 +57,7 @@
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
 		9AD4DF691C8F82570047ECDD /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TesteMobileIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E003C64E1C987D5F007C4A39 /* SwiftEventBus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftEventBus.framework; path = "Pods/../build/Debug-iphoneos/SwiftEventBus.framework"; sourceTree = "<group>"; };
 		E03F75331C7F991000061638 /* TesteMobileIOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TesteMobileIOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E03F75361C7F991000061638 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E03F75381C7F991000061638 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
@@ -78,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E003C64F1C987D5F007C4A39 /* SwiftEventBus.framework in Frameworks */,
 				CB5B1B0E09367F03B77EF59B /* Pods_TesteMobileIOS.framework in Frameworks */,
 				9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */,
 			);
@@ -190,6 +193,7 @@
 		F21D04514779579DB66225DC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E003C64E1C987D5F007C4A39 /* SwiftEventBus.framework */,
 				E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */,
 				9E0BEB81F2784794BAF0DB13 /* Pods_TesteMobileIOS.framework */,
 			);
@@ -534,6 +538,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = TesteMobileIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sambatech.TesteMobileIOS;
@@ -549,6 +557,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = TesteMobileIOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = Sambatech.TesteMobileIOS;
