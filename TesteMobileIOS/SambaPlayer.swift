@@ -9,10 +9,12 @@
 import Foundation
 import UIKit
 import MobilePlayer
+import MediaPlayer
 
-public class SambaPlayer {
+public class SambaPlayer: UIView {
 	
-	public var _player: AnyObject?
+	public var player: MobilePlayerViewController?
+	
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			destroy()
@@ -20,22 +22,26 @@ public class SambaPlayer {
 		}
 	}
 	
-	private let container: UIView
-	
-	public init(container: UIView) {
-		self.container = container
-	}
+	// MARK: Public Methods
 	
 	public func play() {
-		if _player == nil {
+		if player == nil {
 			try! create()
 			return
 		}
 		
-		//_player.play()
+		player!.play()
 	}
 	
-	public func create() throws {
+	public func pause() {
+		if let _ = player {
+			player!.pause()
+		}
+	}
+	
+	// MARK: Private Methods
+	
+	private func create() throws {
 		var urlWrapped = media.url
 		
 		if let outputs = media.outputs where outputs.count > 0 {
@@ -45,8 +51,9 @@ public class SambaPlayer {
 		guard let url = urlWrapped else {
 			throw SambaPlayerError.NoUrlFound
 		}
-		
+
 		let videoURL = NSURL(string: url)!
+		
 		let player = MobilePlayerViewController(contentURL: videoURL,
 			config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
 		
@@ -54,8 +61,47 @@ public class SambaPlayer {
 		player.activityItems = [videoURL]
 		player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
 		//player.view.frame = CGRect(x: 30, y: 25, width: container.frame.width, height: container.frame.height)
-
-		container.addSubview(player.view)
+		
+		let notificationCenter = NSNotificationCenter.defaultCenter()
+		
+		notificationCenter.addObserverForName(
+			MPMoviePlayerPlaybackStateDidChangeNotification,
+			object: player.moviePlayer,
+			queue: NSOperationQueue.mainQueue()
+		) { notification in
+			print("Playback: \(player.previousState) >> \(player.state)")
+		}
+		
+		notificationCenter.addObserverForName(
+			MPMoviePlayerLoadStateDidChangeNotification,
+			object: player.moviePlayer,
+			queue: NSOperationQueue.mainQueue(),
+			usingBlock: { notification in
+				print("Load: \(player.previousState) >> \(player.state)")
+			}
+		)
+		
+		notificationCenter.addObserverForName(
+			MPMoviePlayerPlaybackDidFinishNotification,
+			object: player.moviePlayer,
+			queue: NSOperationQueue.mainQueue(),
+			usingBlock: { notification in
+				print("Finish: \(player.previousState) >> \(player.state)")
+			}
+		)
+		
+		notificationCenter.addObserverForName(
+			MPMoviePlayerTimedMetadataUpdatedNotification,
+			object: player.moviePlayer,
+			queue: NSOperationQueue.mainQueue(),
+			usingBlock: { notification in
+				print("Progress: >> \(player.state)")
+			}
+		)
+		
+		self.addSubview(player.view)
+		
+		self.player = player
 	}
 	
 	public func destroy() {

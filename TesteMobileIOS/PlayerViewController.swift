@@ -29,13 +29,15 @@ class PlayerViewController: UIViewController {
 		),
 		callback: { media in
 			guard let _ = media else { return }
-			self.playMedia(media!)
+			self.initPlayer(media!)
 		})
 
 	}
 	
-	private func playMedia(media: SambaMedia) {
-		let sambaPlayer = SambaPlayer(container: playerContainer)
+	private func initPlayer(media: SambaMedia) {
+		let sambaPlayer = SambaPlayer()
+		
+		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media
 		sambaPlayer.play()
