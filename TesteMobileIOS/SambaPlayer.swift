@@ -26,6 +26,8 @@ public class SambaPlayer {
 		self.container = container
 	}
 	
+    
+    // MARK: methods
 	public func play() {
 		if _player == nil {
 			try! create()
@@ -34,6 +36,12 @@ public class SambaPlayer {
 		
 		//_player.play()
 	}
+    
+    public func pause() {
+        if _player != nil {
+            
+        }
+    }
 	
 	public func create() throws {
 		var urlWrapped = media.url
