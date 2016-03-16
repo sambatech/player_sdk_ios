@@ -31,17 +31,15 @@ class PlayerViewController: UIViewController {
 			guard let _ = media else { return }
 			self.initPlayer(media!)
 		})
-
 	}
 	
 	private func initPlayer(media: SambaMedia) {
 		let sambaPlayer = SambaPlayer()
-        
-        
-        addEvents(sambaPlayer)
-
 		
-		sambaPlayer.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
+        addEvents(sambaPlayer)
+		
+		sambaPlayer.frame = playerContainer.bounds
+		
 		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media

@@ -19,28 +19,43 @@ public class SambaPlayer: UIView {
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			destroy()
-			//createThumb()
+			// TODO: createThumb()
 		}
 	}
 	
 	// MARK: Public Methods
 	
-    
-    // MARK: methods
 	public func play() {
 		if player == nil {
 			try! create()
 			return
 		}
 		
-		player!.play()
+		player?.play()
 	}
 	
 	public func pause() {
 		player?.pause()
 	}
 	
-	// MARK: Private Methods
+	public func stop() {
+		player?.stop()
+	}
+	
+	public func addEventListener(type: String, listener: (NSNotification!) -> () ) {
+		SwiftEventBus.onBackgroundThread(self, name: type, handler: listener)
+	}
+	
+	public func removeEventListener(type: String) {
+		SwiftEventBus.unregister(self, name: type)
+	}
+	
+	public func destroy() {
+		
+	}
+	
+	// MARK: Private Methods
+	
 	private func create() throws {
 		var urlWrapped = media.url
 		
@@ -59,31 +74,30 @@ public class SambaPlayer: UIView {
 		
 		player.title = media.title
 		player.activityItems = [videoURL]
-		//player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
-		//player.view.frame = CGRect(x: 30, y: 25, width: container.frame.width, height: container.frame.height)
+		
+		subcribeEvents()
+		
+		player.view.frame = bounds
 		
 		self.addSubview(player.view)
 		
 		self.player = player
-        
-        //Subscribing events
-        subcribe()
 	}
     
-    //MARK: Events
-    private func subcribe() {
+    // MARK: Events
+	
+    private func subcribeEvents() {
         guard let player = self.player else {
             return
         }
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
         var eventType:String = ""
-        
+		
         notificationCenter.addObserverForName(
             MPMoviePlayerPlaybackStateDidChangeNotification,
             object: player.moviePlayer,
-            queue: NSOperationQueue.mainQueue()
-            ) { notification in
+			queue: NSOperationQueue.mainQueue()) { notification in
                 switch player.state {
                 case .Playing:
                     eventType = "play"
@@ -104,6 +118,8 @@ public class SambaPlayer: UIView {
             object: player.moviePlayer,
             queue: NSOperationQueue.mainQueue(),
             usingBlock: { notification in
+				if player.state != .Idle { return }
+				
                 SwiftEventBus.post("load", sender: self)
             }
         )
@@ -122,22 +138,11 @@ public class SambaPlayer: UIView {
             object: player.moviePlayer,
             queue: NSOperationQueue.mainQueue(),
             usingBlock: { notification in
+				print(notification)
                 SwiftEventBus.post("progress", sender: self)
             }
         )
     }
-    
-    public func addEventListener(type: String, listener: (NSNotification!) -> () ) {
-        SwiftEventBus.onBackgroundThread(self, name: type, handler: listener)
-    }
-    
-    public func removeEventListener(type: String) {
-        SwiftEventBus.unregister(self, name: type)
-    }
- 	
-	public func destroy() {
-		
-	}
 }
 
 public enum SambaPlayerError : ErrorType {

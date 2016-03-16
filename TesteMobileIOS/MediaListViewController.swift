@@ -12,14 +12,15 @@ import Alamofire
 class MediaListViewController : UITableViewController {
 	
 	private var mediaList:[MediaInfo] = [MediaInfo]()
-	private var currentMediaInfo:MediaInfo?
 	
 	override func viewDidLoad() {
 		requestMediaSet([String.init(4421), String.init(4460)])
 	}
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-		(segue.destinationViewController as! PlayerViewController).mediaInfo = self.currentMediaInfo
+		if segue.identifier != "ListItemToDetail" { return }
+		
+		(segue.destinationViewController as! PlayerViewController).mediaInfo = mediaList[(tableView.indexPathForSelectedRow?.row)!]
 	}
 	
 	override func tableView(tableView: UITableView?, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -56,10 +57,6 @@ class MediaListViewController : UITableViewController {
 	
 	override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
 		return 1
-	}
-	
-	override func tableView(tableView: UITableView, didHighlightRowAtIndexPath indexPath: NSIndexPath) {
-		currentMediaInfo = mediaList[indexPath.row]
 	}
 	
 	override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
