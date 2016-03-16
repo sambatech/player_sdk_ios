@@ -39,9 +39,7 @@ public class SambaPlayer: UIView {
 	}
 	
 	public func pause() {
-		if let _ = player {
-			player!.pause()
-		}
+		player?.pause()
 	}
 	
 	// MARK: Private Methods
@@ -53,7 +51,7 @@ public class SambaPlayer: UIView {
 		}
 		
 		guard let url = urlWrapped else {
-			throw SambaPlayerError.NoUrlFound
+			throw SambaPlayerError.NoMediaUrlFound
 		}
 
 		let videoURL = NSURL(string: url)!
@@ -63,7 +61,7 @@ public class SambaPlayer: UIView {
         
 		player.title = media.title
 		player.activityItems = [videoURL]
-		player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
+		//player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
 		//player.view.frame = CGRect(x: 30, y: 25, width: container.frame.width, height: container.frame.height)
 		
 		self.addSubview(player.view)
@@ -160,5 +158,5 @@ public class SambaPlayer: UIView {
 }
 
 public enum SambaPlayerError : ErrorType {
-	case NoUrlFound
+	case NoMediaUrlFound
 }

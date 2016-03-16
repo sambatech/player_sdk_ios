@@ -40,6 +40,7 @@ class PlayerViewController: UIViewController {
         addEvents(sambaPlayer)
 
 		
+		sambaPlayer.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
 		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media
