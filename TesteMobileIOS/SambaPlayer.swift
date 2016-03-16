@@ -68,9 +68,14 @@ public class SambaPlayer: UIView {
 		}
 
 		let videoURL = NSURL(string: url)!
+		let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
+		
+		/*if let sliderIndex = config.bottomBarConfig.elements.indexOf({$0 is SliderConfig}) {
+			(config.bottomBarConfig.elements[sliderIndex] as SliderConfig).maximumTrackTintColor = media.theme
+		}*/
 		
 		let player = MobilePlayerViewController(contentURL: videoURL,
-			config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
+			config: config)
 		
 		player.title = media.title
 		player.activityItems = [videoURL]
