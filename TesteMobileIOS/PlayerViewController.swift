@@ -37,7 +37,6 @@ class PlayerViewController: UIViewController {
 	private func initPlayer(media: SambaMedia) {
 		let sambaPlayer = SambaPlayer()
         
-        
         addEvents(sambaPlayer)
 
 		
@@ -70,6 +69,12 @@ class PlayerViewController: UIViewController {
             print("finishei \(result)")
             let p = result.object as! SambaPlayer
             print(p.media.title)
+        }
+        
+        player.addEventListener("progress") { result in
+            print("progressei \(result)")
+            let p = result.object as! SambaPlayer
+            print(p.currentTime)
         }
     }
 

@@ -15,6 +15,8 @@ import SwiftEventBus
 public class SambaPlayer: UIView {
 	
 	public var player: MobilePlayerViewController?
+    var progressTimer: NSTimer?
+    public var currentTime: Int?
 	
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
@@ -58,7 +60,7 @@ public class SambaPlayer: UIView {
 		
 		let player = MobilePlayerViewController(contentURL: videoURL,
 			config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
-		
+        
 		player.title = media.title
 		player.activityItems = [videoURL]
 		player.view.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
@@ -124,9 +126,24 @@ public class SambaPlayer: UIView {
             object: player.moviePlayer,
             queue: NSOperationQueue.mainQueue(),
             usingBlock: { notification in
+                print("progressssss")
                 SwiftEventBus.post("progress", sender: self)
             }
         )
+
+        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
+        
+    }
+    
+    public func progressEvent() {
+        guard let player = self.player else {
+            return
+        }
+        
+        if player.state == .Playing {
+            self.currentTime = Int(ceil(player.moviePlayer.currentPlaybackTime))
+            SwiftEventBus.post("progress", sender: self)
+        }
     }
     
     public func addEventListener(type: String, listener: (NSNotification!) -> () ) {
@@ -138,7 +155,7 @@ public class SambaPlayer: UIView {
     }
  	
 	public func destroy() {
-		
+
 	}
 }
 
