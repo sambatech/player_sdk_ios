@@ -1,36 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ugg-Pl-SIy">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="ugg-Pl-SIy">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
-        <!--Player-->
+        <!--Player Container-->
         <scene sceneID="XPw-ra-cJ3">
             <objects>
-                <viewController id="9Et-Yp-bwl" userLabel="Player" customClass="PlayerViewController" customModule="TesteMobileIOS" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="9Et-Yp-bwl" userLabel="Player Container" customClass="PlayerViewController" customModule="TesteMobileIOS" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qqF-BV-VhR"/>
                         <viewControllerLayoutGuide type="bottom" id="9CF-Aj-o1T"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="H42-gf-fFZ">
+                    <view key="view" contentMode="scaleToFill" id="4Ru-7L-0xi">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" placeholderIntrinsicWidth="318" placeholderIntrinsicHeight="229" translatesAutoresizingMaskIntoConstraints="NO" id="ByW-Fi-wPy">
-                                <rect key="frame" x="0.0" y="64" width="318" height="229"/>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-qA-orU">
+                                <rect key="frame" x="0.0" y="64" width="600" height="240"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="240" id="Lpz-bA-2gV"/>
+                                </constraints>
                             </containerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evento: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rL-Qp-HPX">
+                                <rect key="frame" x="20" y="559" width="66" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78a-vD-DYe">
+                                <rect key="frame" x="99" y="559" width="224" height="21"/>
+                                <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
+                                <color key="textColor" red="0.43735683900523559" green="0.43735683900523559" blue="0.43735683900523559" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="ByW-Fi-wPy" firstAttribute="leading" secondItem="H42-gf-fFZ" secondAttribute="leadingMargin" constant="-20" id="ICi-d0-Po3"/>
-                            <constraint firstItem="ByW-Fi-wPy" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="ROx-jC-wy2"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ByW-Fi-wPy" secondAttribute="trailing" constant="-20" id="sle-91-4Vn"/>
+                            <constraint firstItem="A2W-qA-orU" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leading" id="Fww-Sq-IdT"/>
+                            <constraint firstAttribute="trailing" secondItem="A2W-qA-orU" secondAttribute="trailing" id="ZbS-AJ-jYt"/>
+                            <constraint firstItem="A2W-qA-orU" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="arJ-Pf-kOH"/>
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="playerContainer" destination="ByW-Fi-wPy" id="vRO-EL-Fik"/>
+                        <outlet property="playerContainer" destination="A2W-qA-orU" id="itg-2w-JKM"/>
+                        <outlet property="progressLabel" destination="78a-vD-DYe" id="nKo-Yq-CqU"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oAn-RT-wNg" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -77,7 +92,7 @@
                                     <outlet property="mediaDesc" destination="9jw-XJ-HuY" id="jtY-EH-K7W"/>
                                     <outlet property="mediaThumb" destination="uJJ-iu-RAS" id="KD4-xl-8Nb"/>
                                     <outlet property="mediaTitle" destination="cAs-GV-oaQ" id="HSX-is-7Yd"/>
-                                    <segue destination="9Et-Yp-bwl" kind="show" id="EPT-sL-qvc"/>
+                                    <segue destination="9Et-Yp-bwl" kind="show" identifier="ListItemToDetail" id="EPT-sL-qvc"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

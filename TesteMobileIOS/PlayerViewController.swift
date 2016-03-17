@@ -12,6 +12,7 @@ import Alamofire
 class PlayerViewController: UIViewController {
 
     @IBOutlet weak var playerContainer: UIView!
+    @IBOutlet weak var progressLabel: UILabel!
 	
 	var mediaInfo: MediaInfo?
 	
@@ -31,16 +32,15 @@ class PlayerViewController: UIViewController {
 			guard let _ = media else { return }
 			self.initPlayer(media!)
 		})
-
 	}
 	
 	private func initPlayer(media: SambaMedia) {
 		let sambaPlayer = SambaPlayer()
         
         addEvents(sambaPlayer)
-
 		
-		sambaPlayer.frame = CGRect(x: 30, y: 25, width: 360, height: 200)
+		sambaPlayer.frame = playerContainer.bounds
+		
 		playerContainer.addSubview(sambaPlayer)
 
 		sambaPlayer.media = media
@@ -49,33 +49,24 @@ class PlayerViewController: UIViewController {
     
     private func addEvents(player: SambaPlayer) {
         player.addEventListener("load") { result in
-            print("carreguei \(result)")
-            let p = result.object as! SambaPlayer
-            print(p.media.title)
+            self.progressLabel.text = "load"
         }
         
         player.addEventListener("play") { result in
-            print("playei \(result)")
-            let p = result.object as! SambaPlayer
-            print(p.media.title)
+            self.progressLabel.text = "play"
         }
         
         player.addEventListener("pause") { result in
-            print("pausei \(result)")
-            let p = result.object as! SambaPlayer
-            print(p.media.title)
+            print("pause")
+            self.progressLabel.text = "pause"
         }
         
         player.addEventListener("finish") { result in
-            print("finishei \(result)")
-            let p = result.object as! SambaPlayer
-            print(p.media.title)
+            self.progressLabel.text = "finish"
         }
         
         player.addEventListener("progress") { result in
-            print("progressei \(result)")
-            let p = result.object as! SambaPlayer
-            print(p.currentTime)
+            //self.progressLabel.text = "progress"
         }
     }
 
