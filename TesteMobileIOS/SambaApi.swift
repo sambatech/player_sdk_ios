@@ -86,9 +86,9 @@ public class SambaApi {
 			media.categoryId = categoryId
 		}
 		
-		if let theme = playerConfig["theme"] as? String where theme.lowercaseString != "default",
-				let color = Int.init(theme.stringByReplacingOccurrencesOfString("^#*", withString: ""), radix: 16) {
-			media.theme = color
+		if let theme = playerConfig["theme"] as? String where theme.lowercaseString != "default" {
+			//let color = Int.init(theme.stringByReplacingOccurrencesOfString("^#*", withString: "", options: .RegularExpressionSearch), radix: 16) {
+			media.theme = theme.stringByReplacingOccurrencesOfString("^#*", withString: "#", options: .RegularExpressionSearch)
 		}
 
 		if let rules = json["deliveryRules"] as? [AnyObject] {
