@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-qA-orU">
-                                <rect key="frame" x="0.0" y="64" width="600" height="337.5"/>
+                                <rect key="frame" x="0.0" y="64" width="600" height="338"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="A2W-qA-orU" secondAttribute="height" multiplier="16:9" id="Rmo-hm-oCW"/>
                                 </constraints>

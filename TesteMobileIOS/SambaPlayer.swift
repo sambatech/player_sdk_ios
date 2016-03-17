@@ -68,14 +68,25 @@ public class SambaPlayer: UIView {
 		}
 
 		let videoURL = NSURL(string: url)!
-		let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
+		
+		guard let
+			jsonString = (try? String(contentsOfURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!, encoding: NSUTF8StringEncoding)),
+			jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding),
+			var skin = (try? NSJSONSerialization.JSONObjectWithData(jsonData, options: [])) as? [String: AnyObject] else {
+			print("\(self.dynamicType) Error: Failed to parse skin JSON!")
+			return
+		}
+		
+		//let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
 		
 		/*if let sliderIndex = config.bottomBarConfig.elements.indexOf({$0 is SliderConfig}) {
 			(config.bottomBarConfig.elements[sliderIndex] as SliderConfig).maximumTrackTintColor = media.theme
 		}*/
 		
+		skin["maximumTrackTintColor"] = media.theme
+		
 		let player = MobilePlayerViewController(contentURL: videoURL,
-			config: config)
+			config: MobilePlayerConfig(dictionary: skin))
 		
 		player.title = media.title
 		player.activityItems = [videoURL]
