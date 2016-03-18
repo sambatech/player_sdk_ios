@@ -43,6 +43,10 @@ public class SambaPlayer: UIView {
 	public func stop() {
 		player?.stop()
 	}
+    
+    public func seek(pos: Int) {
+
+    }
 	
 	public func addEventListener(type: String, listener: (NSNotification!) -> () ) {
 		SwiftEventBus.onMainThread(self, name: type, handler: listener)
@@ -70,9 +74,13 @@ public class SambaPlayer: UIView {
 		}
 
 		let videoURL = NSURL(string: url)!
+		let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
 		
-		let player = MobilePlayerViewController(contentURL: videoURL,
-			config: MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!))
+		/*if let sliderIndex = config.bottomBarConfig.elements.indexOf({$0 is SliderConfig}) {
+			(config.bottomBarConfig.elements[sliderIndex] as SliderConfig).maximumTrackTintColor = media.theme
+		}*/
+		
+		let player = MobilePlayerViewController(contentURL: videoURL, config: config)
         
 		player.title = media.title
 		player.activityItems = [videoURL]
@@ -102,6 +110,7 @@ public class SambaPlayer: UIView {
                 switch player.state {
                 case .Playing:
                     eventType = "play"
+                    player.moviePlayer.setFullscreen(true, animated: false)
                 case .Paused:
                     eventType = "pause"
                 case .Buffering:
@@ -155,7 +164,7 @@ public class SambaPlayer: UIView {
         
         if player.state == .Playing {
             self.currentTime = Int(ceil(player.moviePlayer.currentPlaybackTime))
-            SwiftEventBus.post("progress", sender: self)
+            SwiftEventBus.postToMainThread("progress", sender: self)
         }
     }
 

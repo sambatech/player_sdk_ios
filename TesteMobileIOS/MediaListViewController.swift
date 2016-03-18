@@ -32,6 +32,7 @@ class MediaListViewController : UITableViewController {
 		cell.mediaTitle.text = media.title
         cell.mediaDesc.text = media.description ?? ""
         load_image(media.thumb, cell: cell)
+
         
 		return cell
 	}
