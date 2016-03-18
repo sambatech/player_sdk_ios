@@ -74,14 +74,38 @@ public class SambaPlayer: UIView {
 		}
 
 		let videoURL = NSURL(string: url)!
-		let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
+		
+		guard let jsonString = (try? String(contentsOfURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!, encoding: NSUTF8StringEncoding)),
+			jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding),
+			var skin = (try? NSJSONSerialization.JSONObjectWithData(jsonData, options: [])) as? [String: AnyObject] else {
+			
+			print("\(self.dynamicType) Error: Failed to parse skin JSON!")
+			return
+		}
+		
+		//let config = MobilePlayerConfig(fileURL: NSBundle.mainBundle().URLForResource("PlayerSkin", withExtension: "json")!)
 		
 		/*if let sliderIndex = config.bottomBarConfig.elements.indexOf({$0 is SliderConfig}) {
-			(config.bottomBarConfig.elements[sliderIndex] as SliderConfig).maximumTrackTintColor = media.theme
+			(config.bottomBarConfig.elements[sliderIndex] as SliderConfig).minimumTrackTintColor = media.theme
 		}*/
 		
-		let player = MobilePlayerViewController(contentURL: videoURL, config: config)
-        
+		if var bottomBarJson = skin["bottomBar"] as? [String: AnyObject],
+			elementsJson = bottomBarJson["elements"] as? [AnyObject] {
+
+			for (i, element) in elementsJson.enumerate() where element["identifier"] as? String == "playback" {
+				if var playbackElement = element as? [String : AnyObject] {
+					playbackElement["minimumTrackTintColor"] = media.theme
+					elementsJson[i] = playbackElement
+				}
+			}
+			
+			bottomBarJson["elements"] = elementsJson
+			skin["bottomBar"] = bottomBarJson
+		}
+
+		let player = MobilePlayerViewController(contentURL: videoURL,
+			config: MobilePlayerConfig(dictionary: skin))
+
 		player.title = media.title
 		player.activityItems = [videoURL]
 		
@@ -110,7 +134,6 @@ public class SambaPlayer: UIView {
                 switch player.state {
                 case .Playing:
                     eventType = "play"
-                    player.moviePlayer.setFullscreen(true, animated: false)
                 case .Paused:
                     eventType = "pause"
                 case .Buffering:

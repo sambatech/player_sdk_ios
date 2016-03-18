@@ -13,7 +13,9 @@ class PlayerViewController: UIViewController {
 
     @IBOutlet weak var playerContainer: UIView!
     @IBOutlet weak var progressLabel: UILabel!
-	
+	@IBOutlet weak var timeField: UITextField!
+    var sambaPlayer:SambaPlayer!
+    
 	var mediaInfo: MediaInfo?
 	
     override func viewDidAppear(animated: Bool) {
@@ -35,7 +37,7 @@ class PlayerViewController: UIViewController {
 	}
 	
 	private func initPlayer(media: SambaMedia) {
-		let sambaPlayer = SambaPlayer()
+		self.sambaPlayer = SambaPlayer()
         
         addEvents(sambaPlayer)
 		
@@ -66,12 +68,29 @@ class PlayerViewController: UIViewController {
         }
         
         player.addEventListener("progress") { result in
-            //self.progressLabel.text = "progress"
+            self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime!)
         }
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    //MARK: actions
+    @IBAction func playAction(sender: AnyObject) {
+        self.sambaPlayer.play()
+    }
+    
+    @IBAction func pauseAction(sender: AnyObject) {
+        self.sambaPlayer.pause()
+    }
+    
+    //MARK: utils
+    func secondsToHoursMinutesSeconds (seconds : Int) -> (String) {
+        let hours = Int(seconds/3600) > 9 ? String(Int(seconds/3600)) : "0" + String(Int(seconds/3600))
+        let minutes = Int((seconds % 3600) / 60) > 9 ? String(Int((seconds % 3600) / 60)) : "0" + String(Int((seconds % 3600) / 60))
+        let second = Int((seconds % 3600) % 60) > 9 ? String(Int((seconds % 3600) % 60)) : "0" + String(Int((seconds % 3600) % 60))
+        return hours + ":" + minutes + ":" + second
     }
 }
