@@ -43,7 +43,7 @@
                      
         }, {
             "type": "button",
-            "image": "hd",
+            "image": "fullscreen",
             "width": 20,
             "height": 20,
             "marginLeft": 8,
