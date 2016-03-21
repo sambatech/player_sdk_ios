@@ -1,0 +1,3 @@
+[submodule "mobileplayer-ios"]
+	path = mobileplayer-ios
+	url = git@github.com:mobileplayer/mobileplayer-ios.git

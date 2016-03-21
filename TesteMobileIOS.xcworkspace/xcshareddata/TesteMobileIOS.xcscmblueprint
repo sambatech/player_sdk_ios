@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F0EB22582F8F9A8F759293E47D63898F4A1ACB40",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8C9A28156AEB7C29BE46C919375A2667F5195FD8" : 0,
+    "F0EB22582F8F9A8F759293E47D63898F4A1ACB40" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "67FFA76D-C84D-4297-8F98-47D577368E77",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8C9A28156AEB7C29BE46C919375A2667F5195FD8" : "player_sdk_ios\/mobileplayer-ios\/",
+    "F0EB22582F8F9A8F759293E47D63898F4A1ACB40" : "player_sdk_ios\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "TesteMobileIOS",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "TesteMobileIOS.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:mobileplayer\/mobileplayer-ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8C9A28156AEB7C29BE46C919375A2667F5195FD8"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:sambatech\/player_sdk_ios.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F0EB22582F8F9A8F759293E47D63898F4A1ACB40"
+    }
+  ]
+}
