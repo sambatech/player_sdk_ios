@@ -40,9 +40,9 @@
             "thumbCornerRadius": 6,
             "thumbWidth": 18,
             "thumbHeight": 12
-                     
-        }, {
+        },{
             "type": "button",
+			"identifier": "fullscreenButton",
             "image": "fullscreen",
             "width": 20,
             "height": 20,

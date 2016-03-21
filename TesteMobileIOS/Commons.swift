@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Commons {
+class Helpers {
 	static let settings = NSDictionary.init(contentsOfFile: NSBundle.mainBundle().pathForResource("Settings", ofType: "plist")!)! as! [String:String]
 	
 	static func matchesForRegexInText(regex: String!, text: String!) -> [String] {

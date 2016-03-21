@@ -68,7 +68,7 @@ class PlayerViewController: UIViewController {
         }
         
         player.addEventListener("progress") { result in
-            self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime!)
+            self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime)
         }
     }
 

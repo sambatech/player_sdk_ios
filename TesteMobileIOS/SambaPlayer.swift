@@ -14,15 +14,22 @@ import SwiftEventBus
 
 public class SambaPlayer: UIView {
 	
-	public var player: MobilePlayerViewController?
-    var progressTimer: NSTimer?
-    public var currentTime: Int?
+    public private(set) var currentTime: Int = 0
+	
+	private var player: MobilePlayerViewController?
+	private var progressTimer: NSTimer?
+	
+	// MARK: Properties
 	
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			destroy()
 			// TODO: createThumb()
 		}
+	}
+	
+	public var isPlaying: Bool {
+		return player?.state == .Playing
 	}
 	
 	// MARK: Public Methods
@@ -93,7 +100,7 @@ public class SambaPlayer: UIView {
 			elementsJson = bottomBarJson["elements"] as? [AnyObject] {
 
 			for (i, element) in elementsJson.enumerate() where element["identifier"] as? String == "playback" {
-				if var playbackElement = element as? [String : AnyObject] {
+				if var playbackElement = element as? [String: AnyObject] {
 					playbackElement["minimumTrackTintColor"] = media.theme
 					elementsJson[i] = playbackElement
 				}
@@ -103,8 +110,11 @@ public class SambaPlayer: UIView {
 			skin["bottomBar"] = bottomBarJson
 		}
 
-		let player = MobilePlayerViewController(contentURL: videoURL,
-			config: MobilePlayerConfig(dictionary: skin))
+		let player = MobilePlayerViewController(
+			contentURL: videoURL,
+			config: MobilePlayerConfig(dictionary: skin),
+			prerollViewController: nil,
+			pauseOverlayViewController: PlayOverlayViewController(self))
 
 		player.title = media.title
 		player.activityItems = [videoURL]
@@ -114,23 +124,26 @@ public class SambaPlayer: UIView {
 		self.addSubview(player.view)
 		
 		self.player = player
-        
+		
         subcribeEvents()
 	}
     
     // MARK: Events
+	
     private func subcribeEvents() {
         guard let player = self.player else {
             return
         }
         
         let notificationCenter = NSNotificationCenter.defaultCenter()
-        var eventType:String = ""
+		let queue = NSOperationQueue.mainQueue()
+		let playerCore = player.moviePlayer
+		var eventType:String = ""
 		
         notificationCenter.addObserverForName(
             MPMoviePlayerPlaybackStateDidChangeNotification,
-            object: player.moviePlayer,
-			queue: NSOperationQueue.mainQueue()) { notification in
+            object: playerCore,
+			queue: queue) { notification in
                 switch player.state {
                 case .Playing:
                     eventType = "play"
@@ -147,19 +160,18 @@ public class SambaPlayer: UIView {
         
         notificationCenter.addObserverForName(
             MPMoviePlayerLoadStateDidChangeNotification,
-            object: player.moviePlayer,
-            queue: NSOperationQueue.mainQueue(),
+            object: playerCore,
+            queue: queue,
             usingBlock: { notification in
 				if player.state != .Idle { return }
-				
                 SwiftEventBus.postToMainThread("load", sender: self)
             }
         )
         
         notificationCenter.addObserverForName(
             MPMoviePlayerPlaybackDidFinishNotification,
-            object: player.moviePlayer,
-            queue: NSOperationQueue.mainQueue(),
+            object: playerCore,
+            queue: queue,
             usingBlock: { notification in
                 SwiftEventBus.postToMainThread("finish", sender: self)
             }
@@ -167,20 +179,22 @@ public class SambaPlayer: UIView {
         
         notificationCenter.addObserverForName(
             MPMoviePlayerTimedMetadataUpdatedNotification,
-            object: player.moviePlayer,
-            queue: NSOperationQueue.mainQueue(),
+            object: playerCore,
+            queue: queue,
             usingBlock: { notification in
-
-				print(notification)
                 SwiftEventBus.postToMainThread("progress", sender: self)
             }
         )
 
         progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
-        
+		
+		(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
+			print("Fullscreen")
+			self.player?.fillVideo()
+		}, forControlEvents: .TouchUpInside)
     }
     
-    public func progressEvent() {
+    func progressEvent() {
         guard let player = self.player else {
             return
         }
@@ -190,10 +204,21 @@ public class SambaPlayer: UIView {
             SwiftEventBus.postToMainThread("progress", sender: self)
         }
     }
-
-
 }
 
 public enum SambaPlayerError : ErrorType {
 	case NoMediaUrlFound
 }
+
+/*/// Indicates if player controls are hidden. Setting its value will animate controls in or out.
+public var controlsHidden: Bool {
+	get {
+		return controlsView.controlsHidden
+	}
+	set {
+		if newValue && state == .Paused { return }
+		
+		newValue ? hideControlsTimer?.invalidate() : resetHideControlsTimer()
+		controlsView.controlsHidden = newValue
+	}
+}*/

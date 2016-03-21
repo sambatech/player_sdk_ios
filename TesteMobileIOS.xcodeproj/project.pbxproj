@@ -13,6 +13,7 @@
 		9A0EFFB41C8F095400888D61 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A0EFFB31C8F095400888D61 /* Settings.plist */; };
 		9A1B81A01C88D41B00588B2B /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */; };
 		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
+		9A2F87F31CA0477F00EDC294 /* PlayOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */; };
 		9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DF691C8F82570047ECDD /* Commons.swift */; };
@@ -54,6 +55,7 @@
 		9A0EFFB31C8F095400888D61 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
 		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
+		9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayOverlayViewController.swift; sourceTree = "<group>"; };
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
 		9AD4DF691C8F82570047ECDD /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		9AF96F671C9887B8000122FF /* SwiftEventBus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftEventBus.framework; path = "Pods/../build/Debug-iphoneos/SwiftEventBus.framework"; sourceTree = "<group>"; };
@@ -112,6 +114,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		9A2F87F11CA0452000EDC294 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */,
+			);
+			name = ViewControllers;
+			sourceTree = "<group>";
+		};
 		9AD4DF671C8F77880047ECDD /* Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -121,12 +131,12 @@
 			name = Models;
 			sourceTree = "<group>";
 		};
-		9AD4DF681C8F81CF0047ECDD /* Helpers */ = {
+		9AD4DF681C8F81CF0047ECDD /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				9AD4DF691C8F82570047ECDD /* Commons.swift */,
 			);
-			name = Helpers;
+			name = Utils;
 			sourceTree = "<group>";
 		};
 		E03F752A1C7F991000061638 = {
@@ -154,7 +164,8 @@
 		E03F75351C7F991000061638 /* TesteMobileIOS */ = {
 			isa = PBXGroup;
 			children = (
-				9AD4DF681C8F81CF0047ECDD /* Helpers */,
+				9A2F87F11CA0452000EDC294 /* ViewControllers */,
+				9AD4DF681C8F81CF0047ECDD /* Utils */,
 				9AD4DF671C8F77880047ECDD /* Models */,
 				E03F75361C7F991000061638 /* AppDelegate.swift */,
 				E03F753A1C7F991000061638 /* Main.storyboard */,
@@ -390,6 +401,7 @@
 				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
 				9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */,
 				9A0D56221C90C1FA00AE8279 /* SambaApi.swift in Sources */,
+				9A2F87F31CA0477F00EDC294 /* PlayOverlayViewController.swift in Sources */,
 				9A0D56201C90C0E100AE8279 /* SambaPlayer.swift in Sources */,
 				E03F75371C7F991000061638 /* AppDelegate.swift in Sources */,
 				9A1B81A01C88D41B00588B2B /* MediaListViewController.swift in Sources */,
