@@ -14,6 +14,7 @@
 		9A1B81A01C88D41B00588B2B /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */; };
 		9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */; };
 		9A2F87F31CA0477F00EDC294 /* PlayOverlayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */; };
+		9A9964711CA2E8F10075D1C5 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9964701CA2E8F10075D1C5 /* OutputMenuViewController.swift */; };
 		9ACE93021C80C9CB00837B61 /* MobilePlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E0B2C9CD1C7F9C12007C6C21 /* MobilePlayer.framework */; };
 		9AD0ABFA1C89C83800B1C70E /* PlayerSkin.json in Resources */ = {isa = PBXBuildFile; fileRef = 9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */; };
 		9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD4DF691C8F82570047ECDD /* Commons.swift */; };
@@ -56,6 +57,7 @@
 		9A1B819F1C88D41B00588B2B /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
 		9A1B81A11C88E0CE00588B2B /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayOverlayViewController.swift; sourceTree = "<group>"; };
+		9A9964701CA2E8F10075D1C5 /* OutputMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputMenuViewController.swift; sourceTree = "<group>"; };
 		9AD0ABF91C89C83800B1C70E /* PlayerSkin.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PlayerSkin.json; sourceTree = "<group>"; };
 		9AD4DF691C8F82570047ECDD /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
 		9AF96F671C9887B8000122FF /* SwiftEventBus.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftEventBus.framework; path = "Pods/../build/Debug-iphoneos/SwiftEventBus.framework"; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				9A2F87F21CA0477F00EDC294 /* PlayOverlayViewController.swift */,
+				9A9964701CA2E8F10075D1C5 /* OutputMenuViewController.swift */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -282,7 +285,7 @@
 				TargetAttributes = {
 					E03F75321C7F991000061638 = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = A68AA84976;
+						DevelopmentTeam = GP968EQAM9;
 					};
 					E03F75461C7F991000061638 = {
 						CreatedOnToolsVersion = 7.2.1;
@@ -397,6 +400,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E0DBBB991C933BF0004FA96E /* MediaListTableViewCell.swift in Sources */,
+				9A9964711CA2E8F10075D1C5 /* OutputMenuViewController.swift in Sources */,
 				E03F75391C7F991000061638 /* PlayerViewController.swift in Sources */,
 				9A1B81A21C88E0CE00588B2B /* SambaMedia.swift in Sources */,
 				9AD4DF6A1C8F82570047ECDD /* Commons.swift in Sources */,

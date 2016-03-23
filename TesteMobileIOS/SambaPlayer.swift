@@ -12,7 +12,7 @@ import MobilePlayer
 import MediaPlayer
 import SwiftEventBus
 
-public class SambaPlayer: UIView {
+public class SambaPlayer: UIViewController {
 	
     public private(set) var currentTime: Int = 0
 	
@@ -119,9 +119,9 @@ public class SambaPlayer: UIView {
 		player.title = media.title
 		player.activityItems = [videoURL]
 		
-		player.view.frame = bounds
+		player.view.frame = view.bounds
 		
-		self.addSubview(player.view)
+		view.addSubview(player.view)
 		
 		self.player = player
 		
@@ -186,12 +186,32 @@ public class SambaPlayer: UIView {
             }
         )
 
-        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
+		/*(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
+			//print("Fullscreen")
+			//SwiftEventBus.postToMainThread("fullscreen", sender: self)
+			//OutputMenuViewController(self.media.outputs!)
+		}, forControlEvents: .TouchUpInside)*/
 		
-		(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
-			print("Fullscreen")
-			self.player?.fillVideo()
-		}, forControlEvents: .TouchUpInside)
+        progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
+
+		// creates output menu when multiple outputs
+		if let outputs = media.outputs where outputs.count > 1,
+			let parent = self.parentViewController {
+			
+			let outputMenu = OutputMenuViewController(outputs)
+			let pickerView = UIPickerView(frame: parent.view.frame)
+			
+			pickerView.dataSource = outputMenu
+			pickerView.delegate = outputMenu
+			pickerView.showsSelectionIndicator = true
+			
+			(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
+				self.pause()
+				parent.view.addSubview(pickerView)
+				pickerView.reloadAllComponents()
+				pickerView.reloadComponent(0)
+			}, forControlEvents: .TouchUpInside)
+		}
     }
     
     func progressEvent() {

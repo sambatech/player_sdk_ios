@@ -9,21 +9,23 @@
 import Foundation
 import MobilePlayer
 
-public class PlayOverlayViewController : MobilePlayerOverlayViewController {
+class PlayOverlayViewController : MobilePlayerOverlayViewController {
 	
 	private let sambaPlayer: SambaPlayer
 	private var imageView: UIImageView?
 	
-	public init(_ sambaPlayer: SambaPlayer) {
+	init(_ sambaPlayer: SambaPlayer) {
 		self.sambaPlayer = sambaPlayer
 		super.init(nibName: nil, bundle: nil)
 	}
 
-	public required init?(coder aDecoder: NSCoder) {
+	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	public override func viewWillAppear(animated: Bool) {
+	override func viewWillAppear(animated: Bool) {
+		super.viewDidAppear(animated)
+		
 		if imageView != nil { return }
 		
 		if let image = UIImage(named: "play") {

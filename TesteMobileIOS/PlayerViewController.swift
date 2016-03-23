@@ -14,8 +14,8 @@ class PlayerViewController: UIViewController {
     @IBOutlet weak var playerContainer: UIView!
     @IBOutlet weak var progressLabel: UILabel!
 	@IBOutlet weak var timeField: UITextField!
+	
     var sambaPlayer:SambaPlayer!
-    
 	var mediaInfo: MediaInfo?
 	
     override func viewDidAppear(animated: Bool) {
@@ -31,8 +31,8 @@ class PlayerViewController: UIViewController {
 			mediaId: m.mediaId
 		),
 		callback: { media in
-			guard let _ = media else { return }
-			self.initPlayer(media!)
+			guard let media = media else { return }
+			self.initPlayer(media)
 		})
 	}
 	
@@ -41,9 +41,10 @@ class PlayerViewController: UIViewController {
         
         addEvents(sambaPlayer)
 		
-		sambaPlayer.frame = playerContainer.bounds
+		sambaPlayer.view.frame = playerContainer.bounds
 		
-		playerContainer.addSubview(sambaPlayer)
+		addChildViewController(sambaPlayer)
+		playerContainer.addSubview(sambaPlayer.view)
 
 		sambaPlayer.media = media
 		sambaPlayer.play()
