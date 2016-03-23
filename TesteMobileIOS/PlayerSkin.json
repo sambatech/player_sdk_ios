@@ -10,8 +10,8 @@
             "image": "play",
             "height": 20,
             "width": 20,
-            "marginLeft": 8,
-            "marginRight": 8,
+            "marginLeft": 12,
+            "marginRight": 12,
             "toggledImage": "pause",
             "widthCalculation": "asDefined"
         },{
@@ -36,19 +36,26 @@
 			"thumbTintColor": "#fefefe",
 			"thumbBorderWidth": 1,
 			"thumbBorderColor": "#fff",
-			"marginRight": 4,
+		    "marginLeft": 4,
             "thumbCornerRadius": 6,
             "thumbWidth": 18,
             "thumbHeight": 12
-        },{
-            "type": "button",
+		 },{
+			"type": "button",
+			"identifier": "hdButton",
+			"image": "hd",
+			"width": 24,
+			"height": 18,
+			"marginLeft": 12,
+			"widthCalculation": "asDefined"
+		 },{
+			"type": "button",
 			"identifier": "fullscreenButton",
-            "image": "fullscreen",
-            "width": 20,
-            "height": 20,
-            "marginLeft": 8,
-            "marginRight": 10,
-            "widthCalculation": "asDefined"
-        }]
+			"image": "fullscreen",
+			"width": 24,
+			"height": 18,
+			"marginLeft": 16,
+			"marginRight": 16
+		 }]
 	}
 }

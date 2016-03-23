@@ -60,7 +60,6 @@ class PlayerViewController: UIViewController {
         }
         
         player.addEventListener("pause") { result in
-            print("pause")
             self.progressLabel.text = "pause"
         }
         

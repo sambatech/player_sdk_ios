@@ -71,9 +71,11 @@ public class SambaPlayer: UIViewController {
 	
 	private func create() throws {
 		var urlWrapped = media.url
+		var hasMultipleOutputs = false
 		
 		if let outputs = media.outputs where outputs.count > 0 {
 			urlWrapped = outputs[0].url
+			hasMultipleOutputs = outputs.count > 1
 		}
 		
 		guard let url = urlWrapped else {
@@ -99,6 +101,7 @@ public class SambaPlayer: UIViewController {
 		if var bottomBarJson = skin["bottomBar"] as? [String: AnyObject],
 			elementsJson = bottomBarJson["elements"] as? [AnyObject] {
 
+			// TODO: check hasMultipleOutputs show/hide HD button
 			for (i, element) in elementsJson.enumerate() where element["identifier"] as? String == "playback" {
 				if var playbackElement = element as? [String: AnyObject] {
 					playbackElement["minimumTrackTintColor"] = media.theme
@@ -186,38 +189,29 @@ public class SambaPlayer: UIViewController {
             }
         )
 
-		/*(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
-			//print("Fullscreen")
-			//SwiftEventBus.postToMainThread("fullscreen", sender: self)
-			//OutputMenuViewController(self.media.outputs!)
-		}, forControlEvents: .TouchUpInside)*/
+		(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
+			print("fullscreen!")
+		}, forControlEvents: .TouchUpInside)
 		
         progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
 
 		// creates output menu when multiple outputs
 		if let outputs = media.outputs where outputs.count > 1,
 			let parent = self.parentViewController {
-			
+				
 			let outputMenu = OutputMenuViewController(outputs)
-			let pickerView = UIPickerView(frame: parent.view.frame)
 			
-			pickerView.dataSource = outputMenu
-			pickerView.delegate = outputMenu
-			pickerView.showsSelectionIndicator = true
-			
-			(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
+			(player.getViewForElementWithIdentifier("hdButton") as? UIButton)?.addCallback({
 				self.pause()
-				parent.view.addSubview(pickerView)
-				pickerView.reloadAllComponents()
-				pickerView.reloadComponent(0)
+				parent.addChildViewController(outputMenu)
+				parent.view.addSubview(outputMenu.view)
+				outputMenu.didMoveToParentViewController(parent)
 			}, forControlEvents: .TouchUpInside)
 		}
     }
     
     func progressEvent() {
-        guard let player = self.player else {
-            return
-        }
+        guard let player = self.player else { return }
         
         if player.state == .Playing {
             self.currentTime = Int(ceil(player.moviePlayer.currentPlaybackTime))
