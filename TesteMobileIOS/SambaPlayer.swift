@@ -191,21 +191,16 @@ public class SambaPlayer: UIViewController {
 
 		(player.getViewForElementWithIdentifier("fullscreenButton") as? UIButton)?.addCallback({
 			print("fullscreen!")
+			self.presentMoviePlayerViewControllerAnimated(self.player)
 		}, forControlEvents: .TouchUpInside)
 		
         progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
 
 		// creates output menu when multiple outputs
-		if let outputs = media.outputs where outputs.count > 1,
-			let parent = self.parentViewController {
-				
-			let outputMenu = OutputMenuViewController(outputs)
-			
+		if let outputs = media.outputs where outputs.count > 1 {
 			(player.getViewForElementWithIdentifier("hdButton") as? UIButton)?.addCallback({
 				self.pause()
-				parent.addChildViewController(outputMenu)
-				parent.view.addSubview(outputMenu.view)
-				outputMenu.didMoveToParentViewController(parent)
+				self.presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
 			}, forControlEvents: .TouchUpInside)
 		}
     }
