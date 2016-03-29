@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 class Helpers {
 	static let settings = NSDictionary.init(contentsOfFile: NSBundle.mainBundle().pathForResource("Settings", ofType: "plist")!)! as! [String:String]
@@ -28,5 +29,35 @@ class Helpers {
 		}
 		
 		return []
+	}
+}
+
+class CallbackContainer {
+	let callback: () -> Void
+	
+	init(callback: () -> Void) {
+		self.callback = callback
+	}
+	
+	@objc func callCallback() {
+		callback()
+	}
+}
+
+extension UIControl {
+	
+	public func addCallback(callback: () -> Void, forControlEvents controlEvents: UIControlEvents) -> UnsafePointer<Void> {
+		let callbackContainer = CallbackContainer(callback: callback)
+		let key = unsafeAddressOf(callbackContainer)
+		objc_setAssociatedObject(self, key, callbackContainer, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		addTarget(callbackContainer, action: "callCallback", forControlEvents: controlEvents)
+		return key
+	}
+	
+	public func removeCallbackForKey(key: UnsafePointer<Void>) {
+		if let callbackContainer = objc_getAssociatedObject(self, key) as? CallbackContainer {
+			removeTarget(callbackContainer, action: "callCallback", forControlEvents: .AllEvents)
+			objc_setAssociatedObject(self, key, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+		}
 	}
 }
