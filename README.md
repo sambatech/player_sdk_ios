@@ -1,7 +1,7 @@
 #SambaPlayer SDK para iOS
 
 ##Introdução
-O SambaPlayer SDK facilita diversas etapas do desenvolvimento de aplicativos que lidam com vídeo em iOS.
+O SambaPlayer SDK facilita diversas etapas do desenvolvimento de aplicativos que trabalham com vídeo em iOS.
 
 ##Features
 - Integração com serviços da Samba Tech (http://sambatech.com/): Samba Videos e STTM
@@ -20,10 +20,10 @@ Com o Xcode **fechado**, execute o comando:
 ```
 $ pod install
 ```
-Em seguida, abra seu projeto através do arquivo `.xcworkspace` recém criado pelo Cococapods.
+Em seguida, abra seu projeto através do arquivo `SeuProjeto.xcworkspace` recém criado pelo Cocoapods.
 
 ##Suporte
-Quaisquer perguntas, sugestões ou bugs, basta criar uma nova issue que responderemos assim que possível.
+Quaisquer perguntas, sugestões ou notificação de bugs, basta criar uma nova issue que responderemos assim que possível.
 
 ##Requisitos
 - iOS 6.1+
