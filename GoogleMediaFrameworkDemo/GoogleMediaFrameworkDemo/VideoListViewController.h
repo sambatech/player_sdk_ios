@@ -20,7 +20,7 @@
 
 @property(nonatomic, strong) UITableView *tableView;
 @property(nonatomic, strong) NSArray *videos;
-@property(nonatomic, strong) GMFIMASDKAdService *adService;
+@property(nonatomic, strong) GMFAdService *adService;
 @property(nonatomic, strong) GMFPlayerViewController *videoPlayerViewController;
 @property(nonatomic) BOOL isVideoPlayerDisplayed;
 
