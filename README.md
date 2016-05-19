@@ -22,8 +22,27 @@ $ pod install
 ```
 Em seguida, abra seu projeto através do arquivo `SeuProjeto.xcworkspace` recém criado pelo Cocoapods.
 
+##Carthage
+
+Caso seu projeto possua dependências em Swift ou bibliotecas estáticas, utilize o [Carthage](https://github.com/Carthage/Carthage). Este é um utilitário responsável por compilar projetos do Github gerando frameworks binários.
+
+Para instalá-lo, pode ser usado o [Homebrew](http://brew.sh/) através do seguinte comando:
+
+```bash
+$ brew update
+$ brew install carthage
+```
+
+Caso ainda não exista, crie um arquivo na raíz do seu projeto chamado `Cartfile` e inclua:
+
+```ogdl
+github "SambaPlayerSDK" ~> 0.1
+```
+
+Basta executar `carthage update` para compilar o `SambaPlayerSDK.framework`. Em seguida, inclua-o arrastando para seu projeto Xcode.
+
 ##Suporte
 Quaisquer perguntas, sugestões ou notificação de bugs, basta criar uma nova issue que responderemos assim que possível.
 
 ##Requisitos
-- iOS 6.1+
+- iOS 8.0+

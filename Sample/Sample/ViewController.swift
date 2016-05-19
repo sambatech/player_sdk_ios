@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController/*, GMFVideoPlayerDelegate*/ {
+class ViewController: UIViewController {
 
 	@IBOutlet var videoContainer: UIView!
 	
@@ -18,31 +18,17 @@ class ViewController: UIViewController/*, GMFVideoPlayerDelegate*/ {
 		let gmf = GMFPlayerViewController()
 		
 		gmf.loadStreamWithURL(NSURL(string: "http://gbbrpvbps-sambavideos.akamaized.net/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4"))
+		gmf.videoTitle = "My Video!!"
 
 		addChildViewController(gmf)
+		gmf.didMoveToParentViewController(self)
 		gmf.view.frame = videoContainer.frame
 		videoContainer.addSubview(gmf.view)
+		videoContainer.setNeedsDisplay()
 		
 		gmf.play()
 
 		//presentViewController(gmf, animated: true, completion: nil)
 	}
-	
-	func videoPlayer(videoPlayer:GMFVideoPlayer, stateDidChangeFrom fromState:GMFPlayerState, to toState:GMFPlayerState) {
-		
-	}
-	
-	// Called whenever media time changes during playback.
-	/*- (void)videoPlayer:(GMFVideoPlayer *)videoPlayer
-	currentMediaTimeDidChangeToTime:(NSTimeInterval)time;
-	
-	// Called when the media duration changes during playback
-	- (void)videoPlayer:(GMFVideoPlayer *)videoPlayer
-	currentTotalTimeDidChangeToTime:(NSTimeInterval)time;
-	
-	@optional
-	// Called whenever buffered media time changes during playback or while loading or paused.
-	- (void)videoPlayer:(GMFVideoPlayer *)videoPlayer
-	bufferedMediaTimeDidChangeToTime:(NSTimeInterval)time;*/
 }
 

@@ -22,3 +22,7 @@ DerivedData
 #CocoaPods
 Pods
 Podfile.lock
+
+# Carthage
+Carthage
+Cartfile.*

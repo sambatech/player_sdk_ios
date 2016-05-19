@@ -7,18 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		091630DADB2CD0CB0C2CEC56 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F2FC56314E7355B64E7EFF0D /* libPods.a */; };
-		88CE3E941A1D8D141D574D51 /* libPods-Sample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C063FCE1BFE38896CA377F8F /* libPods-Sample.a */; };
+		1B2A691BA366FF7BF2FD26F1 /* libPods-Sample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 619076849F8D91F608C3A991 /* libPods-Sample.a */; };
+		9A1BFBD51CEE4F1A0003597B /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1BFBD41CEE4F1A0003597B /* Alamofire.framework */; };
 		9A314D1D1CECBAE700672126 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A314D1C1CECBAE700672126 /* AppDelegate.swift */; };
 		9A314D1F1CECBAE700672126 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A314D1E1CECBAE700672126 /* ViewController.swift */; };
 		9A314D221CECBAE700672126 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D201CECBAE700672126 /* Main.storyboard */; };
 		9A314D241CECBAE700672126 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D231CECBAE700672126 /* Assets.xcassets */; };
 		9A314D271CECBAE700672126 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D251CECBAE700672126 /* LaunchScreen.storyboard */; };
+		9A4BE75B1CEE576200400E66 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BE75A1CEE576200400E66 /* SambaApi.swift */; };
+		9A4BE7601CEE57DC00400E66 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BE75F1CEE57DC00400E66 /* Commons.swift */; };
+		9A4BE7621CEE57F600400E66 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BE7611CEE57F600400E66 /* SambaMedia.swift */; };
+		9A4BE7641CEE57FA00400E66 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4BE7631CEE57FA00400E66 /* SambaMediaRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		2397933CBA867E1AEA775A5C /* Pods-Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.release.xcconfig"; sourceTree = "<group>"; };
-		40F80CEDDB7E244D01EF0D76 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		474BC909A511677E94996B5F /* Pods-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.debug.xcconfig"; sourceTree = "<group>"; };
+		619076849F8D91F608C3A991 /* libPods-Sample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A1BFBD41CEE4F1A0003597B /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
 		9A21B3661CED05AD00AC957A /* Sample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sample-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A314D191CECBAE700672126 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A314D1C1CECBAE700672126 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -27,10 +32,11 @@
 		9A314D231CECBAE700672126 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A314D261CECBAE700672126 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9A314D281CECBAE700672126 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		B9D2320048C06C00DD726CE6 /* Pods-Sample.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.debug.xcconfig"; sourceTree = "<group>"; };
-		C063FCE1BFE38896CA377F8F /* libPods-Sample.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Sample.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DBE1119A4C0741956532B138 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
-		F2FC56314E7355B64E7EFF0D /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A4BE75A1CEE576200400E66 /* SambaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaApi.swift; sourceTree = "<group>"; };
+		9A4BE75F1CEE57DC00400E66 /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
+		9A4BE7611CEE57F600400E66 /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
+		9A4BE7631CEE57FA00400E66 /* SambaMediaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMediaRequest.swift; sourceTree = "<group>"; };
+		E9B69A227579946C026D7E73 /* Pods-Sample.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sample.release.xcconfig"; path = "Pods/Target Support Files/Pods-Sample/Pods-Sample.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -38,21 +44,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				091630DADB2CD0CB0C2CEC56 /* libPods.a in Frameworks */,
-				88CE3E941A1D8D141D574D51 /* libPods-Sample.a in Frameworks */,
+				1B2A691BA366FF7BF2FD26F1 /* libPods-Sample.a in Frameworks */,
+				9A1BFBD51CEE4F1A0003597B /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2E07EDE556BE6C10D3A5B5A6 /* Frameworks */ = {
+		7D67FC9DF9AAFC49B1427AB1 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F2FC56314E7355B64E7EFF0D /* libPods.a */,
-				C063FCE1BFE38896CA377F8F /* libPods-Sample.a */,
+				474BC909A511677E94996B5F /* Pods-Sample.debug.xcconfig */,
+				E9B69A227579946C026D7E73 /* Pods-Sample.release.xcconfig */,
 			);
-			name = Frameworks;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 		9A314D101CECBAE700672126 = {
@@ -60,8 +66,8 @@
 			children = (
 				9A314D1B1CECBAE700672126 /* Sample */,
 				9A314D1A1CECBAE700672126 /* Products */,
-				AAC14E2E27E1024F06DE2A93 /* Pods */,
-				2E07EDE556BE6C10D3A5B5A6 /* Frameworks */,
+				7D67FC9DF9AAFC49B1427AB1 /* Pods */,
+				A7B045F2FDE205C9E2C927E2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -79,23 +85,41 @@
 				9A314D1C1CECBAE700672126 /* AppDelegate.swift */,
 				9A314D1E1CECBAE700672126 /* ViewController.swift */,
 				9A314D201CECBAE700672126 /* Main.storyboard */,
+				9A4BE7661CEE584600400E66 /* Util */,
 				9A314D231CECBAE700672126 /* Assets.xcassets */,
 				9A314D251CECBAE700672126 /* LaunchScreen.storyboard */,
+				9A4BE7651CEE581400400E66 /* Model */,
 				9A314D281CECBAE700672126 /* Info.plist */,
 				9A21B3661CED05AD00AC957A /* Sample-Bridging-Header.h */,
+				9A4BE75A1CEE576200400E66 /* SambaApi.swift */,
 			);
 			path = Sample;
 			sourceTree = "<group>";
 		};
-		AAC14E2E27E1024F06DE2A93 /* Pods */ = {
+		9A4BE7651CEE581400400E66 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				40F80CEDDB7E244D01EF0D76 /* Pods.debug.xcconfig */,
-				DBE1119A4C0741956532B138 /* Pods.release.xcconfig */,
-				B9D2320048C06C00DD726CE6 /* Pods-Sample.debug.xcconfig */,
-				2397933CBA867E1AEA775A5C /* Pods-Sample.release.xcconfig */,
+				9A4BE7611CEE57F600400E66 /* SambaMedia.swift */,
+				9A4BE7631CEE57FA00400E66 /* SambaMediaRequest.swift */,
 			);
-			name = Pods;
+			name = Model;
+			sourceTree = "<group>";
+		};
+		9A4BE7661CEE584600400E66 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				9A4BE75F1CEE57DC00400E66 /* Commons.swift */,
+			);
+			name = Util;
+			sourceTree = "<group>";
+		};
+		A7B045F2FDE205C9E2C927E2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9A1BFBD41CEE4F1A0003597B /* Alamofire.framework */,
+				619076849F8D91F608C3A991 /* libPods-Sample.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,12 +129,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9A314D2B1CECBAE700672126 /* Build configuration list for PBXNativeTarget "Sample" */;
 			buildPhases = (
-				070133F8A509155E2E01D5C6 /* Check Pods Manifest.lock */,
+				8DAEDDA9ECCE5F9EBEC5E5CA /* 📦 Check Pods Manifest.lock */,
 				9A314D151CECBAE700672126 /* Sources */,
 				9A314D161CECBAE700672126 /* Frameworks */,
 				9A314D171CECBAE700672126 /* Resources */,
-				8DABAEEDC2A888A56E759F6C /* Embed Pods Frameworks */,
-				35CF9E862E1C41AEE9397BF3 /* Copy Pods Resources */,
+				A3D2015DC98CE70EB64D5491 /* 📦 Embed Pods Frameworks */,
+				CE43ADE4ED71ADDB6830EE5E /* 📦 Copy Pods Resources */,
+				9A1BFBD61CEE4FF10003597B /* Run Script */,
 			);
 			buildRules = (
 			);
@@ -169,14 +194,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		070133F8A509155E2E01D5C6 /* Check Pods Manifest.lock */ = {
+		8DAEDDA9ECCE5F9EBEC5E5CA /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -184,34 +209,49 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		35CF9E862E1C41AEE9397BF3 /* Copy Pods Resources */ = {
+		9A1BFBD61CEE4FF10003597B /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/Alamofire.framework",
 			);
-			name = "Copy Pods Resources";
+			name = "Run Script";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sample/Pods-Sample-resources.sh\"\n";
-			showEnvVarsInLog = 0;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
 		};
-		8DABAEEDC2A888A56E759F6C /* Embed Pods Frameworks */ = {
+		A3D2015DC98CE70EB64D5491 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Embed Pods Frameworks";
+			name = "📦 Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sample/Pods-Sample-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE43ADE4ED71ADDB6830EE5E /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Sample/Pods-Sample-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -221,8 +261,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A4BE7601CEE57DC00400E66 /* Commons.swift in Sources */,
+				9A4BE7641CEE57FA00400E66 /* SambaMediaRequest.swift in Sources */,
 				9A314D1F1CECBAE700672126 /* ViewController.swift in Sources */,
+				9A4BE75B1CEE576200400E66 /* SambaApi.swift in Sources */,
 				9A314D1D1CECBAE700672126 /* AppDelegate.swift in Sources */,
+				9A4BE7621CEE57F600400E66 /* SambaMedia.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,9 +379,13 @@
 		};
 		9A314D2C1CECBAE700672126 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B9D2320048C06C00DD726CE6 /* Pods-Sample.debug.xcconfig */;
+			baseConfigurationReference = 474BC909A511677E94996B5F /* Pods-Sample.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Sample;
@@ -347,9 +395,13 @@
 		};
 		9A314D2D1CECBAE700672126 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2397933CBA867E1AEA775A5C /* Pods-Sample.release.xcconfig */;
+			baseConfigurationReference = E9B69A227579946C026D7E73 /* Pods-Sample.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = Sample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Sample;
