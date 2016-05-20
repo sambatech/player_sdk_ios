@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>svapi_endpoint</key>
+	<string>http://api.sambavideos.sambatech.com/v1/</string>
+	<key>svapi_token</key>
+	<string>45156754-86c1-4216-b060-10e7af11286a</string>
+	<key>myjson_endpoint</key>
+	<string>https://api.myjson.com/bins/</string>
+	<key>playerapi_endpoint</key>
+	<string>https://fast.player.liquidplatform.com/pApiv2/v1/</string>
+	<key>pid_4421</key>
+	<string>bc6a17435f3f389f37a514c171039b75</string>
+	<key>pid_4460</key>
+	<string>36098808ae444ca5de4acf231949e312</string>
+</dict>
+</plist>

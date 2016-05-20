@@ -1,34 +1,96 @@
 //
 //  ViewController.swift
-//  Sample
+//  TesteMobileIOS
 //
-//  Created by Leandro Zanol on 5/18/16.
-//  Copyright © 2016 Samba Tech. All rights reserved.
+//  Created by Thiago Miranda on 25/02/16.
+//  Copyright © 2016 Sambatech. All rights reserved.
 //
 
 import UIKit
+import Alamofire
 
-class ViewController: UIViewController {
-
-	@IBOutlet var videoContainer: UIView!
+class PlayerViewController: UIViewController {
+	
+	@IBOutlet weak var playerContainer: UIView!
+	@IBOutlet weak var progressLabel: UILabel!
+	@IBOutlet weak var timeField: UITextField!
+	
+	var sambaPlayer:SambaPlayer!
+	var mediaInfo: MediaInfo?
 	
 	override func viewDidAppear(animated: Bool) {
 		super.viewDidAppear(animated)
 		
-		let gmf = GMFPlayerViewController()
+		guard let m = self.mediaInfo else {
+			print("Error: No media info found!")
+			return
+		}
 		
-		gmf.loadStreamWithURL(NSURL(string: "http://gbbrpvbps-sambavideos.akamaized.net/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4"))
-		gmf.videoTitle = "My Video!!"
-
-		addChildViewController(gmf)
-		gmf.didMoveToParentViewController(self)
-		gmf.view.frame = videoContainer.frame
-		videoContainer.addSubview(gmf.view)
-		videoContainer.setNeedsDisplay()
+		SambaApi().requestMedia(SambaMediaRequest(
+			projectHash: m.projectHash,
+			mediaId: m.mediaId
+			),
+			callback: { media in
+				guard let media = media else { return }
+				self.initPlayer(media)
+		})
+	}
+	
+	private func initPlayer(media: SambaMedia) {
+		self.sambaPlayer = SambaPlayer()
 		
-		gmf.play()
-
-		//presentViewController(gmf, animated: true, completion: nil)
+		addEvents(sambaPlayer)
+		
+		sambaPlayer.view.frame = playerContainer.bounds
+		
+		addChildViewController(sambaPlayer)
+		playerContainer.addSubview(sambaPlayer.view)
+		
+		sambaPlayer.media = media
+		sambaPlayer.play()
+	}
+	
+	private func addEvents(player: SambaPlayer) {
+		player.addEventListener("load") { result in
+			self.progressLabel.text = "load"
+		}
+		
+		player.addEventListener("play") { result in
+			self.progressLabel.text = "play"
+		}
+		
+		player.addEventListener("pause") { result in
+			self.progressLabel.text = "pause"
+		}
+		
+		player.addEventListener("finish") { result in
+			self.progressLabel.text = "finish"
+		}
+		
+		player.addEventListener("progress") { result in
+			self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime)
+		}
+	}
+	
+	override func didReceiveMemoryWarning() {
+		super.didReceiveMemoryWarning()
+		// Dispose of any resources that can be recreated.
+	}
+	
+	//MARK: actions
+	@IBAction func playAction(sender: AnyObject) {
+		self.sambaPlayer.play()
+	}
+	
+	@IBAction func pauseAction(sender: AnyObject) {
+		self.sambaPlayer.pause()
+	}
+	
+	//MARK: utils
+	func secondsToHoursMinutesSeconds (seconds : Int) -> (String) {
+		let hours = Int(seconds/3600) > 9 ? String(Int(seconds/3600)) : "0" + String(Int(seconds/3600))
+		let minutes = Int((seconds % 3600) / 60) > 9 ? String(Int((seconds % 3600) / 60)) : "0" + String(Int((seconds % 3600) / 60))
+		let second = Int((seconds % 3600) % 60) > 9 ? String(Int((seconds % 3600) % 60)) : "0" + String(Int((seconds % 3600) % 60))
+		return hours + ":" + minutes + ":" + second
 	}
 }
-
