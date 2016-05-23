@@ -46,11 +46,11 @@ NSString *const kActionButtonNameKey = @"kActionButtonNameKey";
 NSString *const kActionButtonTargetKey = @"kActionButtonTargetKey";
 NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
-@interface GMFPlayerViewController ()
+/*@interface GMFPlayerViewController ()
 
 @property(nonatomic, strong) GMFVideoPlayer *player;
 
-@end
+@end*/
 
 @implementation GMFPlayerViewController {
   GMFPlayerView *_playerView;

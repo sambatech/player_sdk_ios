@@ -38,6 +38,7 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
   UITapGestureRecognizer *_tapRecognizer;
 }
 
+@property(nonatomic, strong) GMFVideoPlayer *player;
 @property(nonatomic, readonly) GMFPlayerView *playerView;
 @property(nonatomic, strong) UIViewController <GMFPlayerOverlayViewControllerProtocol> *videoPlayerOverlayViewController;
 

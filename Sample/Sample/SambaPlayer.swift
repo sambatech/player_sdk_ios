@@ -12,10 +12,16 @@ import MediaPlayer
 
 public class SambaPlayer: UIViewController {
 	
-    public private(set) var currentTime: Int = 0
+	public var delegate: SambaPlayerDelegate?
 	
-	private var player: GMFPlayerViewController?
-	private var progressTimer: NSTimer?
+	public var currentTime: Int {
+		return Int(_player?.currentMediaTime() ?? 0)
+	}
+	
+	private var _player: GMFPlayerViewController?
+	private var _progressTimer: NSTimer = NSTimer()
+	private var _hasStarted: Bool = false
+	private var _stopping: Bool = false
 	
 	// MARK: Properties
 	
@@ -27,41 +33,43 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	public var isPlaying: Bool {
-		return false;
+		return _player?.player.state.rawValue == 3
 	}
 	
 	// MARK: Public Methods
 	
 	public func play() {
-		if player == nil {
+		if _player == nil {
 			try! create()
 			return
 		}
 		
-		player?.play()
+		_player?.play()
 	}
 	
 	public func pause() {
-		player?.pause()
+		_player?.pause()
 	}
 	
 	public func stop() {
+		_stopping = true
+		pause()
+		seek(0)
 	}
     
     public func seek(pos: Int) {
-
+		_player?.player.seekToTime(NSTimeInterval.init(pos))
     }
 	
-	public func addEventListener(type: String, listener: (NSNotification!) -> () ) {
-		//SwiftEventBus.onMainThread(self, name: type, handler: listener)
-	}
-	
-	public func removeEventListener(type: String) {
-		//SwiftEventBus.unregister(self, name: type)
-	}
-	
 	public func destroy() {
+		guard let player = _player else { return }
 		
+		stopTimer()
+		player.player.reset()
+		player.view.removeFromSuperview()
+		player.removeFromParentViewController()
+		
+		_player = nil
 	}
 	
 	// MARK: Private Methods
@@ -92,18 +100,62 @@ public class SambaPlayer: UIViewController {
 		view.addSubview(gmf.view)
 		view.setNeedsDisplay()
 		
-		//NSNotificationCenter.defaultCenter().addObserver(self, selector: "asdf:", name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: "playbackStateHandler:", name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
 		
 		gmf.play()
 		
-		self.player = gmf
+		_player = gmf
 	}
 	
-//	@objc private func asdf(NSNotification notification) {
-//		print(notification);
-//	}
+	@objc private func playbackStateHandler(notification: NSNotification) {
+		switch Int((_player?.player.state.rawValue)!) {
+		case 2:
+			delegate?.onLoad()
+		case 3:
+			if !_hasStarted {
+				_hasStarted = true
+				delegate?.onStart()
+			}
+			
+			delegate?.onResume()
+			startTimer()
+		case 4:
+			stopTimer()
+			
+			if !_stopping {
+				delegate?.onPause()
+			}
+			else { _stopping = false }
+		case 7:
+			stopTimer()
+			delegate?.onFinish()
+		default: break
+		}
+	}
+	
+	@objc private func progressEvent() {
+		delegate?.onProgress()
+	}
+	
+	private func startTimer() {
+		stopTimer()
+		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("progressEvent"), userInfo: nil, repeats: true)
+	}
+	
+	private func stopTimer() {
+		_progressTimer.invalidate()
+	}
 }
 
 public enum SambaPlayerError : ErrorType {
 	case NoMediaUrlFound
+}
+
+public protocol SambaPlayerDelegate {
+	func onLoad()
+	func onStart()
+	func onResume()
+	func onPause()
+	func onProgress()
+	func onFinish()
 }

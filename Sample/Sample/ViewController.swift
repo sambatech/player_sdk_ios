@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 
-class PlayerViewController: UIViewController {
+class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	
 	@IBOutlet weak var playerContainer: UIView!
 	@IBOutlet weak var progressLabel: UILabel!
@@ -39,42 +39,38 @@ class PlayerViewController: UIViewController {
 	private func initPlayer(media: SambaMedia) {
 		self.sambaPlayer = SambaPlayer()
 		
-		addEvents(sambaPlayer)
-		
 		sambaPlayer.view.frame = playerContainer.bounds
 		
 		addChildViewController(sambaPlayer)
 		playerContainer.addSubview(sambaPlayer.view)
 		
+		sambaPlayer.delegate = self
 		sambaPlayer.media = media
 		sambaPlayer.play()
 	}
 	
-	private func addEvents(player: SambaPlayer) {
-		player.addEventListener("load") { result in
-			self.progressLabel.text = "load"
-		}
-		
-		player.addEventListener("play") { result in
-			self.progressLabel.text = "play"
-		}
-		
-		player.addEventListener("pause") { result in
-			self.progressLabel.text = "pause"
-		}
-		
-		player.addEventListener("finish") { result in
-			self.progressLabel.text = "finish"
-		}
-		
-		player.addEventListener("progress") { result in
-			self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime)
-		}
+	func onLoad() {
+		self.progressLabel.text = "load"
 	}
 	
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
+	func onStart() {
+		self.progressLabel.text = "start"
+	}
+	
+	func onResume() {
+		self.progressLabel.text = "resume"
+	}
+	
+	func onPause() {
+		self.progressLabel.text = "pause"
+	}
+	
+	func onProgress() {
+		self.timeField.text = self.secondsToHoursMinutesSeconds(self.sambaPlayer.currentTime)
+	}
+	
+	func onFinish() {
+		self.progressLabel.text = "finish"
 	}
 	
 	//MARK: actions
