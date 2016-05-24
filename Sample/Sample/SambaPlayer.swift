@@ -38,6 +38,28 @@ public class SambaPlayer: UIViewController {
 	
 	// MARK: Public Methods
 	
+	public init() {
+		super.init(nibName: nil, bundle: nil)
+	}
+	
+	public convenience init(_ parentViewController: UIViewController) {
+		self.init(parentViewController, parentView: parentViewController.view)
+	}
+	
+	public convenience init(_ parentViewController: UIViewController, parentView: UIView) {
+		self.init()
+		
+		parentViewController.addChildViewController(self)
+		didMoveToParentViewController(parentViewController)
+		view.frame = parentView.bounds
+		parentView.addSubview(view)
+		parentView.setNeedsDisplay()
+	}
+	
+	public required init?(coder aDecoder: NSCoder) {
+	    fatalError("init(coder:) has not been implemented")
+	}
+
 	public func play() {
 		if _player == nil {
 			try! create()
@@ -52,13 +74,15 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	public func stop() {
+		// avoid dispatching events
 		_stopping = true
+		
 		pause()
 		seek(0)
 	}
     
     public func seek(pos: Int) {
-		_player?.player.seekToTime(NSTimeInterval.init(pos))
+		_player?.player.seekToTime(NSTimeInterval(pos))
     }
 	
 	public func destroy() {
@@ -68,6 +92,7 @@ public class SambaPlayer: UIViewController {
 		player.player.reset()
 		player.view.removeFromSuperview()
 		player.removeFromParentViewController()
+		NSNotificationCenter.defaultCenter().removeObserver(self)
 		
 		_player = nil
 	}
@@ -90,9 +115,10 @@ public class SambaPlayer: UIViewController {
 
 		let gmf = GMFPlayerViewController()
 		
+		gmf.videoTitle = media.title
+		
 		//http://gbbrpvbps-sambavideos.akamaized.net/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4
 		gmf.loadStreamWithURL(NSURL(string: url))
-		gmf.videoTitle = media.title
 		
 		addChildViewController(gmf)
 		gmf.didMoveToParentViewController(self)
@@ -100,7 +126,7 @@ public class SambaPlayer: UIViewController {
 		view.addSubview(gmf.view)
 		view.setNeedsDisplay()
 		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: "playbackStateHandler:", name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		NSNotificationCenter.defaultCenter().addObserver(self, selector: Selector("playbackStateHandler:"), name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
 		
 		gmf.play()
 		
@@ -144,6 +170,11 @@ public class SambaPlayer: UIViewController {
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
+	}
+	
+	private func initIma() {
+//		let ima = GMFIMASDKAdService(GMFVideoPlayer: gmf)
+//		gmf.registerAdService(ima)
 	}
 }
 

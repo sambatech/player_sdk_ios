@@ -37,13 +37,8 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	}
 	
 	private func initPlayer(media: SambaMedia) {
-		self.sambaPlayer = SambaPlayer()
-		
-		sambaPlayer.view.frame = playerContainer.bounds
-		
-		addChildViewController(sambaPlayer)
-		playerContainer.addSubview(sambaPlayer.view)
-		
+		self.sambaPlayer = SambaPlayer(self, parentView: playerContainer)
+
 		sambaPlayer.delegate = self
 		sambaPlayer.media = media
 		sambaPlayer.play()
