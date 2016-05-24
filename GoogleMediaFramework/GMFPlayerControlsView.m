@@ -250,10 +250,10 @@ static const CGFloat kGMFBarPaddingX = 8;
   }
 }
 
-- (void)applyControlTintColor:(UIColor *)color {
+- (void)applyControlTintColor:(UIColor *)color { //SDK Samba customization
   [_scrubber setMinimumTrackTintColor:color];
-  [_scrubber setThumbTintColor:color];
-  [_minimizeButton GMF_applyTintColor:color];
+  //[_scrubber setThumbTintColor:color];
+  //[_minimizeButton GMF_applyTintColor:color];
 }
 
 #pragma mark Private Methods

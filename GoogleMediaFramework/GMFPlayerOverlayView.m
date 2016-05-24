@@ -286,14 +286,14 @@
   [_playerControlsView enableSeekbarInteraction];
 }
 
-- (void)applyControlTintColor:(UIColor *)color {
+- (void)applyControlTintColor:(UIColor *)color { //SDK Samba customization
   // Tint the images for play, pause, and replay.
-  _playImage = [_playImage GMF_createTintedImage:color];
-  _pauseImage = [_pauseImage GMF_createTintedImage:color];
-  _replayImage = [_replayImage GMF_createTintedImage:color];
+  //_playImage = [_playImage GMF_createTintedImage:color];
+  //_pauseImage = [_pauseImage GMF_createTintedImage:color];
+  //_replayImage = [_replayImage GMF_createTintedImage:color];
   
   // Tint the play/pause/replay button and the controls view.
-  [_playPauseReplayButton GMF_applyTintColor:color];
+  //[_playPauseReplayButton GMF_applyTintColor:color];
   [_playerControlsView applyControlTintColor:color];
 }
 
