@@ -29,7 +29,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		
 		view = NSBundle.mainBundle().loadNibNamed("OutputMenu", owner: self, options: nil).first as! UIView
 		
-		cancelButton.addCallback({ self.close() }, forControlEvents: .TouchUpInside)
+		//cancelButton.addCallback({ self.close() }, forControlEvents: .TouchUpInside)
 	}
 
 	required init?(coder aDecoder: NSCoder) {

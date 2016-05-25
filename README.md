@@ -20,7 +20,7 @@ Com o Xcode **fechado**, execute o comando:
 ```
 $ pod install
 ```
-Em seguida, abra seu projeto através do arquivo `SeuProjeto.xcworkspace` recém criado pelo Cocoapods.
+Em seguida, abra seu projeto através do arquivo `SeuProjeto.xcworkspace` recém criado pelo CocoaPods.
 
 ##Carthage
 
@@ -40,6 +40,12 @@ github "SambaPlayerSDK" ~> 0.1
 ```
 
 Basta executar `carthage update` para compilar o `SambaPlayerSDK.framework`. Em seguida, inclua-o arrastando para seu projeto Xcode.
+
+##Outros
+
+Há um comportamento [conhecido](https://github.com/CocoaPods/CocoaPods/wiki/Generate-ASCII-format-xcodeproj) em que o CocoaPods modifica o arquivo do projeto (*.xcodeproj/project.pbxproj) ao baixar as dependências convertendo-o de PList para XML, que pode causar conflito neste arquivo inteiro ao mesclá-lo.
+
+Para mitigar este comportamento, basta instalar o utilitário [xcproj](https://github.com/0xced/xcproj) e executar `xcproj touch` na pasta do projeto, que o arquivo de projeto será revertido para PList.
 
 ##Suporte
 Quaisquer perguntas, sugestões ou notificação de bugs, basta criar uma nova issue que responderemos assim que possível.

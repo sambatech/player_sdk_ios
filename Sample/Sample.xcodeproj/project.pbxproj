@@ -8,9 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		1B2A691BA366FF7BF2FD26F1 /* libPods-Sample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 619076849F8D91F608C3A991 /* libPods-Sample.a */; };
-		9A1BFBD51CEE4F1A0003597B /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1BFBD41CEE4F1A0003597B /* Alamofire.framework */; };
 		9A314D1D1CECBAE700672126 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A314D1C1CECBAE700672126 /* AppDelegate.swift */; };
-		9A314D1F1CECBAE700672126 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A314D1E1CECBAE700672126 /* ViewController.swift */; };
+		9A314D1F1CECBAE700672126 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A314D1E1CECBAE700672126 /* PlayerViewController.swift */; };
 		9A314D221CECBAE700672126 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D201CECBAE700672126 /* Main.storyboard */; };
 		9A314D241CECBAE700672126 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D231CECBAE700672126 /* Assets.xcassets */; };
 		9A314D271CECBAE700672126 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A314D251CECBAE700672126 /* LaunchScreen.storyboard */; };
@@ -24,6 +23,7 @@
 		9A97C3FE1CEF9C7300F33E7F /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A97C3FB1CEF9C7300F33E7F /* MediaListViewController.swift */; };
 		9A97C3FF1CEF9C7300F33E7F /* MediaListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A97C3FC1CEF9C7300F33E7F /* MediaListTableViewCell.swift */; };
 		9A97C4001CEF9C7300F33E7F /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A97C3FD1CEF9C7300F33E7F /* Settings.plist */; };
+		9AE740CC1CF6506000018072 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A1BFBD41CEE4F1A0003597B /* Alamofire.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 		9A21B3661CED05AD00AC957A /* Sample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sample-Bridging-Header.h"; sourceTree = "<group>"; };
 		9A314D191CECBAE700672126 /* Sample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A314D1C1CECBAE700672126 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9A314D1E1CECBAE700672126 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		9A314D1E1CECBAE700672126 /* PlayerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
 		9A314D211CECBAE700672126 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9A314D231CECBAE700672126 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9A314D261CECBAE700672126 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -57,7 +57,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1B2A691BA366FF7BF2FD26F1 /* libPods-Sample.a in Frameworks */,
-				9A1BFBD51CEE4F1A0003597B /* Alamofire.framework in Frameworks */,
+				9AE740CC1CF6506000018072 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,7 +97,7 @@
 				9A89C4611CF4A560001BC442 /* OutputMenuViewController.swift */,
 				9A89C4621CF4A560001BC442 /* OutputMenu.xib */,
 				9A314D1C1CECBAE700672126 /* AppDelegate.swift */,
-				9A314D1E1CECBAE700672126 /* ViewController.swift */,
+				9A314D1E1CECBAE700672126 /* PlayerViewController.swift */,
 				9A314D201CECBAE700672126 /* Main.storyboard */,
 				9A4BE7661CEE584600400E66 /* Utils */,
 				9A314D231CECBAE700672126 /* Assets.xcassets */,
@@ -301,7 +301,7 @@
 				9A4BE7641CEE57FA00400E66 /* SambaMediaRequest.swift in Sources */,
 				9A97C3FA1CEF45F400F33E7F /* SambaPlayer.swift in Sources */,
 				9A97C3FE1CEF9C7300F33E7F /* MediaListViewController.swift in Sources */,
-				9A314D1F1CECBAE700672126 /* ViewController.swift in Sources */,
+				9A314D1F1CECBAE700672126 /* PlayerViewController.swift in Sources */,
 				9A4BE75B1CEE576200400E66 /* SambaApi.swift in Sources */,
 				9A97C3FF1CEF9C7300F33E7F /* MediaListTableViewCell.swift in Sources */,
 				9A314D1D1CECBAE700672126 /* AppDelegate.swift in Sources */,

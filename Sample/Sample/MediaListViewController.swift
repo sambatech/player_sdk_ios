@@ -31,9 +31,9 @@ class MediaListViewController : UITableViewController {
 		
 		cell.mediaTitle.text = media.title
         cell.mediaDesc.text = media.description ?? ""
+		
         load_image(media.thumb, cell: cell)
 
-        
 		return cell
 	}
     
@@ -93,7 +93,9 @@ class MediaListViewController : UITableViewController {
 					))
 				}
 				
-				if ++i == pids.count {
+				i += 1
+				
+				if i == pids.count {
 					self.tableView.reloadData()
 					return
 				}

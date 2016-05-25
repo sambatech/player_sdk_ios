@@ -32,32 +32,18 @@ class Helpers {
 	}
 }
 
-class CallbackContainer {
-	let callback: () -> Void
-	
-	init(callback: () -> Void) {
-		self.callback = callback
-	}
-	
-	@objc func callCallback() {
-		callback()
-	}
-}
-
-extension UIControl {
-	
-	public func addCallback(callback: () -> Void, forControlEvents controlEvents: UIControlEvents) -> UnsafePointer<Void> {
-		let callbackContainer = CallbackContainer(callback: callback)
-		let key = unsafeAddressOf(callbackContainer)
-		objc_setAssociatedObject(self, key, callbackContainer, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
-		addTarget(callbackContainer, action: "callCallback", forControlEvents: controlEvents)
-		return key
-	}
-	
-	public func removeCallbackForKey(key: UnsafePointer<Void>) {
-		if let callbackContainer = objc_getAssociatedObject(self, key) as? CallbackContainer {
-			removeTarget(callbackContainer, action: "callCallback", forControlEvents: .AllEvents)
-			objc_setAssociatedObject(self, key, nil, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+extension UIColor {
+	convenience init(_ rgba: UInt) {
+		let t = rgba > 0xFFFFFF ? 3 : 2
+		
+		var array = [CGFloat](count: 4, repeatedValue: 1.0)
+		var n: UInt
+		
+		for i in 0...t {
+			n = UInt((t - i)*8)
+			array[i] = CGFloat((rgba & 0xFF << n) >> n)/255.0
 		}
+		
+		self.init(red: array[0], green: array[1], blue: array[2], alpha: array[3])
 	}
 }
