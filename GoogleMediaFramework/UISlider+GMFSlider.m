@@ -31,4 +31,10 @@
 
   return YES;
 }
+
+- (CGRect)trackRectForBounds:(CGRect)bounds {
+	CGRect rect = CGRectMake(0, (self.frame.size.height - 8)/2, self.frame.size.width, 8);
+	return rect;
+}
+
 @end

@@ -16,4 +16,6 @@
 
 @interface UISlider (GMFSlider)
 
+- (CGRect)trackRectForBounds:(CGRect)bounds;
+
 @end
