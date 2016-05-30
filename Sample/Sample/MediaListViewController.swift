@@ -65,7 +65,7 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	private func requestMediaSet(pids:[String]) {
-		var i = 0;
+		var i = 0
 
 		func request() {
 			let pid = pids[i]
@@ -124,5 +124,5 @@ class MediaInfo : CustomStringConvertible {
 		self.mediaId = mediaId
 	}
 
-	var description:String { return title; }
+	var description:String { return title }
 }
