@@ -5,7 +5,7 @@
 	<key>svapi_endpoint</key>
 	<string>http://api.sambavideos.sambatech.com/v1/</string>
 	<key>svapi_token</key>
-	<string>45156754-86c1-4216-b060-10e7af11286a</string>
+	<string>ec8f5393-8e54-4ef2-842e-3f6cf0ea6287</string>
 	<key>myjson_endpoint</key>
 	<string>https://api.myjson.com/bins/</string>
 	<key>playerapi_endpoint</key>

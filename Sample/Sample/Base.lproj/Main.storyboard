@@ -76,7 +76,7 @@
             </objects>
             <point key="canvasLocation" x="-304" y="929"/>
         </scene>
-        <!--Media List-->
+        <!--SambaPlayer SDK Sample-->
         <scene sceneID="g2i-Wp-xec">
             <objects>
                 <tableViewController id="diY-80-TBT" customClass="MediaListViewController" customModule="Sample" customModuleProvider="target" sceneMemberID="viewController">
@@ -123,12 +123,13 @@
                             <outlet property="delegate" destination="diY-80-TBT" id="h9U-vv-GaK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Media List" id="iEc-Jm-0w5">
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="EsF-gu-xSg">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ytk-rm-P3j">
-                                <rect key="frame" x="447" y="7" width="133" height="30"/>
+                    <navigationItem key="navigationItem" title="SambaPlayer SDK Sample" id="iEc-Jm-0w5">
+                        <barButtonItem key="rightBarButtonItem" image="dfpIcon" style="plain" id="EsF-gu-xSg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ytk-rm-P3j">
+                                <rect key="frame" x="542" y="5" width="38" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                <state key="normal" backgroundImage="dfpIcon"/>
                                 <connections>
                                     <action selector="toggleDfp:forEvent:" destination="diY-80-TBT" eventType="touchUpInside" id="zy0-lR-uDj"/>
                                 </connections>
@@ -165,5 +166,6 @@
     </scenes>
     <resources>
         <image name="bee" width="49" height="50"/>
+        <image name="dfpIcon" width="150" height="150"/>
     </resources>
 </document>

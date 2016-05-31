@@ -13,11 +13,18 @@ class MediaListViewController : UITableViewController {
 	
 	@IBOutlet weak var dfpToggle: UIButton!
 	private var mediaList:[MediaInfo] = [MediaInfo]()
+	private var mediaListBackup:[MediaInfo] = [MediaInfo]()
 	private var currentDfp: String = "4xtfj"
+	private var dfpActive: Bool = false
+	
 	
 	override func viewDidLoad() {
 		requestMediaSet([String.init(4421), String.init(4460)])
 		self.tableView.backgroundColor = UIColor.clearColor()
+		
+		//Button
+		let dfpIcon = dfpToggle.currentBackgroundImage?.tintPhoto(UIColor.lightGrayColor())
+		dfpToggle.setImage(dfpIcon, forState: UIControlState.Normal)
 	}
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -74,7 +81,7 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	private func requestMediaSet(pids:[String]) {
-		var i = 0;
+		var i = 0
 
 		func request() {
 			let pid = pids[i]
@@ -88,18 +95,23 @@ class MediaListViewController : UITableViewController {
 					return
 				}
 				
+				
 				for jsonNode in json {
 					// skip non video media
 					if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
 						continue
 					}
 					
-					self.mediaList.append(MediaInfo(
+					let m = MediaInfo(
 						title: jsonNode["title"] as? String ?? "",
 						thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
 						projectHash: Helpers.settings["pid_" + pid]!,
-						mediaId: jsonNode["id"] as? String ?? ""
-					))
+						mediaId: jsonNode["id"] as? String ?? "",
+						description: nil,
+						mediaAd: nil
+					)
+					
+					self.mediaList.append(m)
 				}
 				
 				i += 1
@@ -120,7 +132,6 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	private func requestAds(hash: String) {
-		//https://api.myjson.com/bins/4xtfj
 		let url = "\(Helpers.settings["myjson_endpoint"]!)\(hash)"
 		Alamofire.request(.GET, url).responseJSON { response in
 			guard let json = response.result.value as? [AnyObject] else {
@@ -128,31 +139,64 @@ class MediaListViewController : UITableViewController {
 				return
 			}
 			
-			for jsonNode in json {
-				print(jsonNode["name"] as! String)
-				print(jsonNode["url"] as! String)
+			var dfpIndex:Int = 0
+			self.mediaListBackup = self.mediaList
+			var dfpMediaList = [MediaInfo]()
+			
+			for media in self.mediaList {
+				if dfpIndex < json.count {
+					let m = MediaInfo(
+						title: media.title,
+						thumb: media.thumb,
+						projectHash: media.projectHash,
+						mediaId: media.mediaId,
+						description: json[dfpIndex]["name"] as? String,
+						mediaAd: json[dfpIndex]["url"] as? String
+					)
+					
+					dfpMediaList.append(m)
+					
+					dfpIndex += 1
+				}else {
+					dfpIndex = 0
+				}
 			}
+			self.mediaList = dfpMediaList
+			self.tableView.reloadData()
 			
 		}
 		
 	}
 	@IBAction func toggleDfp(sender: UIButton, forEvent event: UIEvent) {
-		requestAds(currentDfp)
+		if !dfpActive {
+			let dfpIcon = sender.currentBackgroundImage?.tintPhoto(UIColor.clearColor())
+			sender.setImage(dfpIcon, forState: UIControlState.Normal)
+			requestAds(currentDfp)
+		}else {
+			self.mediaList = self.mediaListBackup
+			self.tableView.reloadData()
+			let dfpIcon = dfpToggle.currentBackgroundImage?.tintPhoto(UIColor.lightGrayColor())
+			dfpToggle.setImage(dfpIcon, forState: UIControlState.Normal)
+		}
+		dfpActive = !dfpActive
 	}
 }
 
-class MediaInfo : CustomStringConvertible {
+class MediaInfo {
 	let title:String
 	let thumb:String
 	let projectHash:String
 	let mediaId:String
+	let mediaAd:String?
+	let description:String?
 	
-	init(title:String, thumb:String, projectHash:String, mediaId:String) {
+	init(title:String, thumb:String, projectHash:String, mediaId:String, description:String?, mediaAd:String?) {
 		self.title = title
 		self.thumb = thumb
 		self.projectHash = projectHash
 		self.mediaId = mediaId
+		self.description = description ?? title
+		self.mediaAd = mediaAd
 	}
-
-	var description:String { return title; }
+	
 }

@@ -22,6 +22,7 @@ public class SambaPlayer: UIViewController {
 	private var _progressTimer: NSTimer = NSTimer()
 	private var _hasStarted: Bool = false
 	private var _stopping: Bool = false
+	private var _fullscreenAnimating: Bool = false
 	private var _parentView: UIView?
 	
 	// MARK: Properties
@@ -93,11 +94,41 @@ public class SambaPlayer: UIViewController {
 		
 		stopTimer()
 		player.player.reset()
-		player.view.removeFromSuperview()
-		player.removeFromParentViewController()
+		detachVC(player)
 		NSNotificationCenter.defaultCenter().removeObserver(self)
 		
 		_player = nil
+	}
+	
+	override public func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+		guard let player = _player where !_fullscreenAnimating else { return }
+		
+		print("landscape? \(player != presentedViewController)")
+		
+		if player != presentedViewController {
+			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
+				_fullscreenAnimating = true
+				
+				let p = UIViewController()
+				
+				attachVC(p)
+				detachVC(player)
+				
+				p.presentViewController(player, animated: true) {
+					self._fullscreenAnimating = false
+				}
+			}
+		}
+		else if UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) {
+			_fullscreenAnimating = true
+			
+			detachVC(player) {
+				self._fullscreenAnimating = false
+				self.attachVC(player)
+			}
+		}
+		
+		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 	}
 	
 	// MARK: Private Methods
@@ -122,17 +153,14 @@ public class SambaPlayer: UIViewController {
 		
 		//http://gbbrpvbps-sambavideos.akamaized.net/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4
 		gmf.loadStreamWithURL(NSURL(string: url))
-		
-		addChildViewController(gmf)
-		gmf.didMoveToParentViewController(self)
-		gmf.view.frame = view.frame
-		view.addSubview(gmf.view)
-		view.setNeedsDisplay()
+		attachVC(gmf)
 		
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SambaPlayer.playbackStateHandler),
 		                                                 name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
 		
 		gmf.controlTintColor = UIColor(media.theme)
+		
+		// IMA
 		
 		if let adUrl = media.adUrl,
 			ima = GMFIMASDKAdService(GMFVideoPlayer: gmf) {
@@ -184,24 +212,23 @@ public class SambaPlayer: UIViewController {
 		_progressTimer.invalidate()
 	}
 	
-	public override func didRotateFromInterfaceOrientation(fromInterfaceOrientation: UIInterfaceOrientation) {
-		// In either case, the length of the thin side will be the smaller of statusBarFrame.height
-        // and statusBarFrame.height.
-		let statusBaFrame = UIApplication.sharedApplication().statusBarFrame.size
-		let statusBarOffSet = min(statusBaFrame.height, statusBaFrame.width)
+	private func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
+		let p: UIViewController = vcParent ?? self
 		
-        // Get the dimensions of the view which contains the table view and video player.
-		let containerWidth = self._parentView!.bounds.size.width
-		let containerHeight = self._parentView!.bounds.size.height - statusBarOffSet
-		
-		if(UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation))
-		{
-			self._player?.view.frame = CGRectMake(0, 0, containerWidth, containerHeight - 44)
+		p.addChildViewController(vc)
+		vc.didMoveToParentViewController(p)
+		vc.view.frame = p.view.frame
+		p.view.addSubview(vc.view)
+		p.view.setNeedsDisplay()
+	}
+	
+	private func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
+		if vc == presentedViewController {
+			vc.dismissViewControllerAnimated(true, completion: callback)
 		}
-		
-		if(UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation))
-		{
-			self._player?.view.frame = CGRectMake(0, 0, self.view.bounds.width, self.view.bounds.height)
+		else {
+			vc.view.removeFromSuperview()
+			vc.removeFromParentViewController()
 		}
 	}
 }
