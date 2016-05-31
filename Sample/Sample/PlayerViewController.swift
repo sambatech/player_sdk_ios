@@ -39,7 +39,7 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	private func initPlayer(media: SambaMedia) {
 		self.sambaPlayer = SambaPlayer(self, parentView: playerContainer)
 
-		media.adUrl = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/1011235/640x480_WebDigital_PreRoll&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp"
+		//media.adUrl = "https://pubads.g.doubleclick.net/gampad/ads?sz=640x480&iu=/1011235/640x480_WebDigital_PreRoll&impl=s&gdfp_req=1&env=vp&output=xml_vast2&unviewed_position_start=1&url=[referrer_url]&description_url=[description_url]&correlator=[timestamp"
 
 		sambaPlayer.delegate = self
 		sambaPlayer.media = media

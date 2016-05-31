@@ -11,10 +11,13 @@ import Alamofire
 
 class MediaListViewController : UITableViewController {
 	
+	@IBOutlet weak var dfpToggle: UIButton!
 	private var mediaList:[MediaInfo] = [MediaInfo]()
+	private var currentDfp: String = "4xtfj"
 	
 	override func viewDidLoad() {
 		requestMediaSet([String.init(4421), String.init(4460)])
+		self.tableView.backgroundColor = UIColor.clearColor()
 	}
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -32,6 +35,12 @@ class MediaListViewController : UITableViewController {
 		cell.mediaTitle.text = media.title
         cell.mediaDesc.text = media.description ?? ""
 		
+		if indexPath.row % 2 == 0 {
+			cell.contentView.backgroundColor = UIColor.darkGrayColor()
+		}else {
+			cell.contentView.backgroundColor = UIColor.lightGrayColor()
+		}
+
         load_image(media.thumb, cell: cell)
 
 		return cell
@@ -108,6 +117,27 @@ class MediaListViewController : UITableViewController {
 		if i < pids.count {
 			request()
 		}
+	}
+	
+	private func requestAds(hash: String) {
+		//https://api.myjson.com/bins/4xtfj
+		let url = "\(Helpers.settings["myjson_endpoint"]!)\(hash)"
+		Alamofire.request(.GET, url).responseJSON { response in
+			guard let json = response.result.value as? [AnyObject] else {
+				print("Error: Invalid JSON format!")
+				return
+			}
+			
+			for jsonNode in json {
+				print(jsonNode["name"] as! String)
+				print(jsonNode["url"] as! String)
+			}
+			
+		}
+		
+	}
+	@IBAction func toggleDfp(sender: UIButton, forEvent event: UIEvent) {
+		requestAds(currentDfp)
 	}
 }
 

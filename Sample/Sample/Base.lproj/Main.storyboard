@@ -103,7 +103,6 @@
                                         </label>
                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" text="Descrição da mídia" translatesAutoresizingMaskIntoConstraints="NO" id="9jw-XJ-HuY">
                                             <rect key="frame" x="64" y="31" width="258" height="45"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -111,7 +110,6 @@
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </tableViewCellContentView>
-                                <color key="backgroundColor" red="0.67450980392156867" green="0.69411764705882351" blue="0.74509803921568629" alpha="1" colorSpace="calibratedRGB"/>
                                 <connections>
                                     <outlet property="mediaDesc" destination="9jw-XJ-HuY" id="jtY-EH-K7W"/>
                                     <outlet property="mediaThumb" destination="uJJ-iu-RAS" id="KD4-xl-8Nb"/>
@@ -125,7 +123,21 @@
                             <outlet property="delegate" destination="diY-80-TBT" id="h9U-vv-GaK"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Media List" id="iEc-Jm-0w5"/>
+                    <navigationItem key="navigationItem" title="Media List" id="iEc-Jm-0w5">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="EsF-gu-xSg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Ytk-rm-P3j">
+                                <rect key="frame" x="447" y="7" width="133" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="toggleDfp:forEvent:" destination="diY-80-TBT" eventType="touchUpInside" id="zy0-lR-uDj"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="dfpToggle" destination="Ytk-rm-P3j" id="mra-1n-i0B"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTO-Im-uWM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -139,6 +151,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="8O5-xa-7Cd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
