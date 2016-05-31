@@ -103,18 +103,12 @@ public class SambaPlayer: UIViewController {
 	override public func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
 		guard let player = _player where !_fullscreenAnimating else { return }
 		
-		print("landscape? \(player != presentedViewController)")
-		
-		if player != presentedViewController {
+		if player.parentViewController == self {
 			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
 				_fullscreenAnimating = true
-				
-				let p = UIViewController()
-				
-				attachVC(p)
 				detachVC(player)
 				
-				p.presentViewController(player, animated: true) {
+				presentViewController(player, animated: true) {
 					self._fullscreenAnimating = false
 				}
 			}
@@ -122,10 +116,7 @@ public class SambaPlayer: UIViewController {
 		else if UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) {
 			_fullscreenAnimating = true
 			
-			detachVC(player) {
-				self._fullscreenAnimating = false
-				self.attachVC(player)
-			}
+			detachVC(player) { self._fullscreenAnimating = false }
 		}
 		
 		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
@@ -148,17 +139,14 @@ public class SambaPlayer: UIViewController {
 		}
 
 		let gmf = GMFPlayerViewController()
-		
 		gmf.videoTitle = media.title
-		
-		//http://gbbrpvbps-sambavideos.akamaized.net/account/37/2/2015-11-05/video/cb7a5d7441741d8bcb29abc6521d9a85/marina_360p.mp4
+		gmf.controlTintColor = UIColor(media.theme)
 		gmf.loadStreamWithURL(NSURL(string: url))
+		
 		attachVC(gmf)
 		
 		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SambaPlayer.playbackStateHandler),
 		                                                 name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
-		
-		gmf.controlTintColor = UIColor(media.theme)
 		
 		// IMA
 		
@@ -223,7 +211,7 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	private func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
-		if vc == presentedViewController {
+		if vc.parentViewController != self {
 			vc.dismissViewControllerAnimated(true, completion: callback)
 		}
 		else {

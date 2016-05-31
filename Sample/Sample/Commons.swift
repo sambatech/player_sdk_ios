@@ -30,6 +30,14 @@ class Helpers {
 		
 		return []
 	}
+	
+	static func getTopMostVC() -> UIViewController? {
+		func f(vc: UIViewController?) -> UIViewController? {
+			return vc?.presentedViewController == nil ? vc : f(vc?.presentedViewController)
+		}
+		
+		return f(UIApplication.sharedApplication().keyWindow?.rootViewController)
+	}
 }
 
 extension UIColor {
