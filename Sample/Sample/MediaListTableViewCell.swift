@@ -19,6 +19,9 @@ class MediaListTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+		//self.layer.masksToBounds = true
+		self.layer.borderWidth = 0.5
+		self.layer.borderColor = UIColor( red: 0, green: 0, blue:0, alpha: 1.0 ).CGColor
     }
 
     override func setSelected(selected: Bool, animated: Bool) {

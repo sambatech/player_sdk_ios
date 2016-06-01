@@ -39,6 +39,8 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	}
 	
 	private func initPlayer(media: SambaMedia) {
+		media.adUrl = mediaInfo?.mediaAd
+		
 		sambaPlayer = SambaPlayer(self, parentView: playerContainer)
 		sambaPlayer.delegate = self
 		sambaPlayer.media = media
