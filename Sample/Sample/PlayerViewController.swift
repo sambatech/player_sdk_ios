@@ -26,6 +26,8 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 			return
 		}
 		
+		guard sambaPlayer == nil else { return }
+		
 		SambaApi().requestMedia(SambaMediaRequest(
 			projectHash: m.projectHash,
 			mediaId: m.mediaId
