@@ -12,7 +12,6 @@ import UIKit
 class OutputMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 	
 	@IBOutlet var tableView: UITableView!
-	@IBOutlet var cancelButton: UIButton!
 	
 	private let cellIdentifier: String = "outputCell"
 	private let player: SambaPlayer
@@ -28,16 +27,14 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
 		
 		view = NSBundle.mainBundle().loadNibNamed("OutputMenu", owner: self, options: nil).first as! UIView
-		
-		//cancelButton.addCallback({ self.close() }, forControlEvents: .TouchUpInside)
 	}
 
 	required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
-	func close() {
-		self.dismissViewControllerAnimated(false, completion: { self.player.play() })
+	@IBAction func closeHandler(sender: AnyObject) {
+		close()
 	}
 	
 	// MARK: UITableViewDataSource implementation
@@ -59,7 +56,12 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+		// TODO: change output in player
 		print(outputs[indexPath.row])
 		close()
+	}
+	
+	func close() {
+		dismissViewControllerAnimated(false, completion: { self.player.play() })
 	}
 }

@@ -200,7 +200,8 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	@objc private func hdTouchHandler() {
-		print("HD!")
+		pause()
+		presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
 	}
 	
 	@objc private func playbackStateHandler() {
