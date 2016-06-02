@@ -262,7 +262,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 }
 
 - (CGFloat)preferredHeight {
-  return [[GMFResources playerBarBackgroundImage] size].height;
+  return [[GMFResources playerBarBackgroundImage] size].height * 1.5;
 }
 
 - (void)setDelegate:(id<GMFPlayerControlsViewDelegate>)delegate {
