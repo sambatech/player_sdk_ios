@@ -19,3 +19,4 @@
 #import "GMFPlayerState.h"
 #import "GMFPlayerViewController.h"
 #import "GMFVideoPlayer.h"
+#import "GMFResources.h"

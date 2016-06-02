@@ -109,7 +109,7 @@ public class SambaPlayer: UIViewController {
 				_fullscreenAnimating = true
 				_isFullscreen = true
 				
-				//player.videoPlayerOverlayViewController.player
+				player.controls().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
 				presentViewController(player, animated: true) {
@@ -123,6 +123,8 @@ public class SambaPlayer: UIViewController {
 			detachVC(player) {
 				self._fullscreenAnimating = false
 				self._isFullscreen = false
+				
+				player.controls().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
 				self.attachVC(player)
 			}
 		}

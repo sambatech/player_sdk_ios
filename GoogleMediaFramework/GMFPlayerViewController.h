@@ -91,5 +91,7 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (UIView<GMFPlayerControlsProtocol> *)playerOverlayView;
 
+- (GMFPlayerControlsView*)controls;
+
 @end
 

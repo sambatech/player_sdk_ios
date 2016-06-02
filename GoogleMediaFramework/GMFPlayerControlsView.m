@@ -100,7 +100,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   return self;
 }
 
-- (void)setMinimizeButton:(UIImage*)image {
+- (void)setMinimizeButtonImage:(UIImage*)image {
 	[_minimizeButton setImage:image forState:UIControlStateNormal];
 }
 
