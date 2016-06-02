@@ -28,6 +28,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UIButton *_minimizeButton;
   UILabel *_secondsPlayedLabel;
   UILabel *_totalSecondsLabel;
+  UILabel *_timeSeparator; // Samba SDK Player
   UISlider *_scrubber;
   NSTimeInterval _totalSeconds;
   NSTimeInterval _mediaTime;
@@ -45,15 +46,23 @@ static const CGFloat kGMFBarPaddingX = 8;
     [self addSubview:_backgroundView];
 
     _secondsPlayedLabel = [UILabel GMF_clearLabelForPlayerControls];
-    [_secondsPlayedLabel setFont:[UIFont fontWithName:@"Helvetica" size:16.0]];
+    [_secondsPlayedLabel setFont:[UIFont fontWithName:@"Arial" size:10.0]]; //Samba SDK Player
     [_secondsPlayedLabel setTextAlignment:NSTextAlignmentCenter];
     [_secondsPlayedLabel setIsAccessibilityElement:NO];
     [self addSubview:_secondsPlayedLabel];
 
     _totalSecondsLabel = [UILabel GMF_clearLabelForPlayerControls];
-    [_totalSecondsLabel setFont:[UIFont fontWithName:@"Helvetica" size:16.0]];
+    [_totalSecondsLabel setFont:[UIFont fontWithName:@"Arial" size:10.0]];
     [_totalSecondsLabel setIsAccessibilityElement:NO];
     [self addSubview:_totalSecondsLabel];
+	  
+	//Separator //Samba SDK Player
+	_timeSeparator = [UILabel GMF_clearLabelForPlayerControls];
+	[_timeSeparator setFont:[UIFont fontWithName:@"Arial" size:10.0]];
+	[_timeSeparator setTextAlignment:NSTextAlignmentCenter];
+	[_timeSeparator setIsAccessibilityElement:NO];
+	[_timeSeparator setText:@"/"];
+	[self addSubview:_timeSeparator];
 
     // Seekbar
     _scrubber = [[UISlider alloc] init];
@@ -105,17 +114,19 @@ static const CGFloat kGMFBarPaddingX = 8;
 }
 
 
-- (void)setupLayoutConstraints {
+- (void)setupLayoutConstraints { //Samba SDK Player
   [_backgroundView setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_secondsPlayedLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_totalSecondsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_scrubber setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_minimizeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+  [_timeSeparator setTranslatesAutoresizingMaskIntoConstraints:NO];
 
   NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_backgroundView,
                                                                  _secondsPlayedLabel,
+																 _timeSeparator,
+																 _totalSecondsLabel,
                                                                  _scrubber,
-                                                                 _totalSecondsLabel,
                                                                  _minimizeButton);
   
   NSArray *constraints = [[NSArray alloc] init];
@@ -151,23 +162,6 @@ static const CGFloat kGMFBarPaddingX = 8;
                                              multiplier:1.0f
                                                constant:-1*kGMFBarPaddingX]];
   
-  // Make the total seconds label occupy the full height of the view.
-  constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_totalSecondsLabel]|"
-                                                         options:NSLayoutFormatAlignAllBaseline
-                                                         metrics:nil
-                                                           views:viewsDictionary]];
-
-  // Position the total seconds label kGMFBarPaddingX from the left of the minimize button
-  constraints = [constraints arrayByAddingObject:
-                 [NSLayoutConstraint constraintWithItem:_totalSecondsLabel
-                                              attribute:NSLayoutAttributeRight
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:_minimizeButton
-                                              attribute:NSLayoutAttributeLeft
-                                             multiplier:1.0f
-                                               constant:-1*kGMFBarPaddingX]];
-  
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
                  [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrubber]|"
@@ -180,7 +174,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                  [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeRight
                                               relatedBy:NSLayoutRelationEqual
-                                                 toItem:_totalSecondsLabel
+                                                 toItem:_minimizeButton
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
                                                constant:-8.0f]];
@@ -190,11 +184,47 @@ static const CGFloat kGMFBarPaddingX = 8;
                  [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeLeft
                                               relatedBy:NSLayoutRelationEqual
-                                                 toItem:_secondsPlayedLabel
+                                                 toItem:_totalSecondsLabel
                                               attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
                                                constant:8.0f]];
-  
+	
+  // Make the total seconds label occupy the full height of the view.
+  constraints = [constraints arrayByAddingObjectsFromArray:
+				 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_totalSecondsLabel]|"
+											 options:NSLayoutFormatAlignAllBaseline
+												metrics:nil
+												views:viewsDictionary]];
+	 
+  // Position the total seconds label kGMFBarPaddingX from the left of the scrubber
+  constraints = [constraints arrayByAddingObject:
+	 [NSLayoutConstraint constraintWithItem:_totalSecondsLabel
+										attribute:NSLayoutAttributeLeft
+										relatedBy:NSLayoutRelationEqual
+									    toItem:_timeSeparator
+									    attribute:NSLayoutAttributeRight
+									    multiplier:1.0f
+									    constant:2.0f]];
+	
+	
+	// Make the time separator label occupy the full height of the view.
+	constraints = [constraints arrayByAddingObjectsFromArray:
+				   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeSeparator]|"
+														   options:NSLayoutFormatAlignAllBaseline
+														   metrics:nil
+															 views:viewsDictionary]];
+	
+	// Position the time separator label kGMFBarPaddingX from the left of the totalSeconds
+	constraints = [constraints arrayByAddingObject:
+				   [NSLayoutConstraint constraintWithItem:_timeSeparator
+												attribute:NSLayoutAttributeLeft
+												relatedBy:NSLayoutRelationEqual
+												   toItem:_secondsPlayedLabel
+												attribute:NSLayoutAttributeRight
+											   multiplier:1.0f
+											constant:2.0f]];
+	
+	
   // Make the seconds played label occupy the full height of the view
   constraints = [constraints arrayByAddingObjectsFromArray:
                  [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_secondsPlayedLabel]|"

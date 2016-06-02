@@ -81,7 +81,7 @@
     [self addSubview:_playerControlsView];
     
     _topBarView = [[GMFTopBarView alloc] init];
-    [_topBarView setLogoImage:[GMFResources playerBarPlayButtonImage]];
+    //[_topBarView setLogoImage:[GMFResources playerBarPlayButtonImage]]; //SDK Samba customization
 
 
     [self addSubview:_topBarView];
