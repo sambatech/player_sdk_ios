@@ -25,6 +25,8 @@ NSString * const kGMFPlayerCurrentMediaTimeDidChangeNotification =
     @"kGMFPlayerCurrentMediaTimeDidChangeNotification";
 NSString * const kGMFPlayerCurrentTotalTimeDidChangeNotification =
     @"kGMFPlayerCurrentTotalTimeDidChangeNotification";
+NSString * const kGMFPlayerDidMinimizeNotification =
+	@"kGMFPlayerDidMinimizeNotification";
 NSString * const kGMFPlayerPlaybackStateDidChangeNotification =
     @"kGMFPlayerPlaybackStateDidChangeNotification";
 NSString * const kGMFPlayerStateDidChangeToFinishedNotification =
@@ -401,33 +403,15 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 }
 
 - (void)didPressMinimize {
-  // Notify first to give observers a chance to remove themselves.
-  [self notifyUserWillMinimize];
   [self notifyUserDidMinimize];
-  [self resetPlayerAndPlayerView];
-}
-
-- (void)notifyUserWillMinimize {
-  NSDictionary *userInfo = @{
-                             kGMFPlayerPlaybackWillFinishReasonUserInfoKey:
-                               [NSNumber numberWithInt:GMFPlayerFinishReasonUserExited]
-                             };
-  [[NSNotificationCenter defaultCenter]
-      postNotificationName:kGMFPlayerStateWillChangeToFinishedNotification
-                    object:self
-                  userInfo:userInfo];
 }
 
 // Notifies a listener that the user minimized the video player by tapping the minimize button.
 - (void)notifyUserDidMinimize {
-  NSDictionary *userInfo = @{
-                             kGMFPlayerPlaybackDidFinishReasonUserInfoKey:
-                               [NSNumber numberWithInt:GMFPlayerFinishReasonUserExited]
-                             };
   [[NSNotificationCenter defaultCenter]
-      postNotificationName:kGMFPlayerStateDidChangeToFinishedNotification
+      postNotificationName:kGMFPlayerDidMinimizeNotification
                     object:self
-                  userInfo:userInfo];
+                  userInfo:nil];
 }
 
 // Notifies a listener that the curent media time has changed. The listener is expected to check
@@ -460,7 +444,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 // View was removed, clear player and notify observers.
 - (void)dealloc {
   // Call this first to give things a chance to remove observers.
-  [self notifyUserDidMinimize];
+  [self playerStateDidChangeToFinished];
   [self resetPlayerAndPlayerView];
 
   [_tapRecognizer setDelegate:nil];

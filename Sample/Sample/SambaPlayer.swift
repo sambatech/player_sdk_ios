@@ -24,6 +24,7 @@ public class SambaPlayer: UIViewController {
 	private var _stopping: Bool = false
 	private var _fullscreenAnimating: Bool = false
 	private var _parentView: UIView?
+	private var _isFullscreen: Bool = false
 	
 	// MARK: Properties
 	
@@ -100,12 +101,15 @@ public class SambaPlayer: UIViewController {
 		_player = nil
 	}
 	
-	override public func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
 		guard let player = _player where !_fullscreenAnimating else { return }
 		
 		if player.parentViewController == self {
 			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
 				_fullscreenAnimating = true
+				_isFullscreen = true
+				
+				//player.videoPlayerOverlayViewController.player
 				detachVC(player)
 				
 				presentViewController(player, animated: true) {
@@ -116,10 +120,18 @@ public class SambaPlayer: UIViewController {
 		else if UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) {
 			_fullscreenAnimating = true
 			
-			detachVC(player) { self._fullscreenAnimating = false }
+			detachVC(player) {
+				self._fullscreenAnimating = false
+				self._isFullscreen = false
+				self.attachVC(player)
+			}
 		}
 		
 		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+	}
+	
+	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+		return UIInterfaceOrientationMask.AllButUpsideDown
 	}
 	
 	// MARK: Private Methods
@@ -145,8 +157,13 @@ public class SambaPlayer: UIViewController {
 		
 		attachVC(gmf)
 		
-		NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(SambaPlayer.playbackStateHandler),
-		                                                 name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		let nc = NSNotificationCenter.defaultCenter()
+			
+		nc.addObserver(self, selector: #selector(playbackStateHandler),
+		               name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		
+		nc.addObserver(self, selector: #selector(fullscreenHandler),
+		               name: kGMFPlayerDidMinimizeNotification, object: gmf)
 		
 		// IMA
 		
@@ -159,6 +176,17 @@ public class SambaPlayer: UIViewController {
 		gmf.play()
 		
 		_player = gmf
+	}
+	
+	@objc private func fullscreenHandler() {
+		if _isFullscreen {
+			print("exiting fullscreen")
+			UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
+		}
+		else {
+			print("entering fullscreen")
+			UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
+		}
 	}
 	
 	@objc private func playbackStateHandler() {

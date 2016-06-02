@@ -85,18 +85,23 @@ static const CGFloat kGMFBarPaddingX = 8;
                   action:@selector(didScrubbingEnd:)
         forControlEvents:UIControlEventTouchUpOutside];
     [self addSubview:_scrubber];
+	
+	_minimizeButton = [self playerButtonWithImage:[GMFResources playerBarMinimizeButtonImage]
+										 action:@selector(didPressMinimize:)
+							 accessibilityLabel:
+					 NSLocalizedStringFromTable(@"Minimize",
+												@"GoogleMediaFramework",
+												nil)];
 
-    _minimizeButton = [self playerButtonWithImage:[GMFResources playerBarMinimizeButtonImage]
-                                           action:@selector(didPressMinimize:)
-                               accessibilityLabel:
-                                   NSLocalizedStringFromTable(@"Minimize",
-                                                              @"GoogleMediaFramework",
-                                                              nil)];
-    [self addSubview:_minimizeButton];
+	[self addSubview:_minimizeButton];
 
     [self setupLayoutConstraints];
   }
   return self;
+}
+
+- (void)setMinimizeButton:(UIImage*)image {
+	[_minimizeButton setImage:image forState:UIControlStateNormal];
 }
 
 - (id)initWithFrame:(CGRect)frame {
