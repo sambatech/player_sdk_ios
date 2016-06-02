@@ -21,6 +21,7 @@
 - (void)didPressPause;
 - (void)didPressReplay;
 - (void)didPressMinimize;
+- (void)didPressHd;
 
 // User seeked to a given time relative to the start of the video.
 - (void)didSeekToTime:(NSTimeInterval)time;
@@ -57,6 +58,9 @@
 - (void)enableSeekbarInteraction;
 
 - (void)applyControlTintColor:(UIColor *)color;
+
+-(void)hideHdButton;
+-(void)showHdButton;
 
 @end
 

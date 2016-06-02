@@ -26,6 +26,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 @implementation GMFPlayerControlsView {
   UIImageView *_backgroundView;
   UIButton *_minimizeButton;
+  UIButton *_hdButton;
   UILabel *_secondsPlayedLabel;
   UILabel *_totalSecondsLabel;
   UILabel *_timeSeparator; // Samba SDK Player
@@ -33,6 +34,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSTimeInterval _totalSeconds;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
+  NSLayoutConstraint* _hdHideConstraint;
   BOOL _userScrubbing;
 
   __weak id<GMFPlayerControlsViewDelegate> _delegate;
@@ -46,19 +48,19 @@ static const CGFloat kGMFBarPaddingX = 8;
     [self addSubview:_backgroundView];
 
     _secondsPlayedLabel = [UILabel GMF_clearLabelForPlayerControls];
-    [_secondsPlayedLabel setFont:[UIFont fontWithName:@"Arial" size:10.0]]; //Samba SDK Player
+    [_secondsPlayedLabel setFont:[UIFont fontWithName:@"Arial" size:14.0]]; //Samba SDK Player
     [_secondsPlayedLabel setTextAlignment:NSTextAlignmentCenter];
     [_secondsPlayedLabel setIsAccessibilityElement:NO];
     [self addSubview:_secondsPlayedLabel];
 
     _totalSecondsLabel = [UILabel GMF_clearLabelForPlayerControls];
-    [_totalSecondsLabel setFont:[UIFont fontWithName:@"Arial" size:10.0]];
+    [_totalSecondsLabel setFont:[UIFont fontWithName:@"Arial" size:14.0]];
     [_totalSecondsLabel setIsAccessibilityElement:NO];
     [self addSubview:_totalSecondsLabel];
 	  
 	//Separator //Samba SDK Player
 	_timeSeparator = [UILabel GMF_clearLabelForPlayerControls];
-	[_timeSeparator setFont:[UIFont fontWithName:@"Arial" size:10.0]];
+	[_timeSeparator setFont:[UIFont fontWithName:@"Arial" size:14.0]];
 	[_timeSeparator setTextAlignment:NSTextAlignmentCenter];
 	[_timeSeparator setIsAccessibilityElement:NO];
 	[_timeSeparator setText:@"/"];
@@ -86,16 +88,34 @@ static const CGFloat kGMFBarPaddingX = 8;
         forControlEvents:UIControlEventTouchUpOutside];
     [self addSubview:_scrubber];
 	
+	  _hdButton = [self playerButtonWithImage:[GMFResources playerBarHdButtonImage]
+									   action:@selector(didPressHd:)
+						   accessibilityLabel:
+				   NSLocalizedStringFromTable(@"Output",
+											  @"GoogleMediaFramework",
+											  nil)];
+	  
+	  _hdHideConstraint = [NSLayoutConstraint constraintWithItem:_hdButton
+													   attribute:NSLayoutAttributeWidth
+													   relatedBy:NSLayoutRelationEqual
+														  toItem:nil
+													   attribute:NSLayoutAttributeNotAnAttribute
+													  multiplier:1.0f
+														constant:0];
+	  
 	_minimizeButton = [self playerButtonWithImage:[GMFResources playerBarMinimizeButtonImage]
 										 action:@selector(didPressMinimize:)
 							 accessibilityLabel:
 					 NSLocalizedStringFromTable(@"Minimize",
 												@"GoogleMediaFramework",
 												nil)];
-
+	  
+	[self addSubview:_hdButton];
 	[self addSubview:_minimizeButton];
 
     [self setupLayoutConstraints];
+	  
+	[self hideHdButton];
   }
   return self;
 }
@@ -104,16 +124,27 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[_minimizeButton setImage:image forState:UIControlStateNormal];
 }
 
+- (void)hideHdButton {
+	[self addConstraint:_hdHideConstraint];
+}
+
+- (void)showHdButton {
+	[self removeConstraint:_hdHideConstraint];
+}
+
 - (id)initWithFrame:(CGRect)frame {
   NSAssert(false, @"Invalid initializer.");
   return nil;
 }
 
 - (void)dealloc {
-  [_scrubber removeTarget:self
-                   action:NULL
-         forControlEvents:UIControlEventAllEvents];
-  [_minimizeButton removeTarget:self
+	[_scrubber removeTarget:self
+				   action:NULL
+		 forControlEvents:UIControlEventAllEvents];
+	[_hdButton removeTarget:self
+						   action:NULL
+				 forControlEvents:UIControlEventTouchUpInside];
+	[_minimizeButton removeTarget:self
                       action:NULL
             forControlEvents:UIControlEventTouchUpInside];
 }
@@ -124,6 +155,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   [_secondsPlayedLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_totalSecondsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_scrubber setTranslatesAutoresizingMaskIntoConstraints:NO];
+  [_hdButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_minimizeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_timeSeparator setTranslatesAutoresizingMaskIntoConstraints:NO];
 
@@ -132,6 +164,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 																 _timeSeparator,
 																 _totalSecondsLabel,
                                                                  _scrubber,
+																 _hdButton,
                                                                  _minimizeButton);
   
   NSArray *constraints = [[NSArray alloc] init];
@@ -149,7 +182,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
-  
+	
   // Make the minimize button occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
                  [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_minimizeButton]|"
@@ -165,8 +198,25 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_backgroundView
                                               attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
-                                               constant:-1*kGMFBarPaddingX]];
-  
+											   constant:-kGMFBarPaddingX]];
+	
+  // Make the hd button occupy the full height of the view.
+  constraints = [constraints arrayByAddingObjectsFromArray:
+				   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_hdButton]|"
+														   options:NSLayoutFormatAlignAllBaseline
+														   metrics:nil
+															 views:viewsDictionary]];
+	
+	// Position the hd button kGMFBarPaddingX from the right of the minimize button.
+  constraints = [constraints arrayByAddingObject:
+			   [NSLayoutConstraint constraintWithItem:_hdButton
+											attribute:NSLayoutAttributeRight
+											relatedBy:NSLayoutRelationEqual
+											   toItem:_minimizeButton
+											attribute:NSLayoutAttributeLeft
+										   multiplier:1.0f
+											 constant:-kGMFBarPaddingX]];
+	
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
                  [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrubber]|"
@@ -179,10 +229,10 @@ static const CGFloat kGMFBarPaddingX = 8;
                  [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeRight
                                               relatedBy:NSLayoutRelationEqual
-                                                 toItem:_minimizeButton
+                                                 toItem:_hdButton
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
-                                               constant:-8.0f]];
+                                               constant:-kGMFBarPaddingX]];
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
   constraints = [constraints arrayByAddingObject:
@@ -192,7 +242,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_totalSecondsLabel
                                               attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
-                                               constant:8.0f]];
+                                               constant:kGMFBarPaddingX]];
 	
   // Make the total seconds label occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
@@ -245,7 +295,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_backgroundView
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
-                                               constant:8.0f]];
+                                               constant:kGMFBarPaddingX]];
   [self addConstraints:constraints];
 }
 
@@ -325,6 +375,10 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)didPressMinimize:(id)sender {
   [_delegate didPressMinimize];
+}
+
+-(void)didPressHd:(id)sender {
+  [_delegate didPressHd];
 }
 
 - (void)didScrubbingStart:(id)sender {

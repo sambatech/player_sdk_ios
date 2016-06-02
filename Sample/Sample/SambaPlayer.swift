@@ -23,8 +23,9 @@ public class SambaPlayer: UIViewController {
 	private var _hasStarted: Bool = false
 	private var _stopping: Bool = false
 	private var _fullscreenAnimating: Bool = false
-	private var _parentView: UIView?
 	private var _isFullscreen: Bool = false
+	private var _hasMultipleOutputs: Bool = false
+	private var _parentView: UIView?
 	
 	// MARK: Properties
 	
@@ -109,7 +110,7 @@ public class SambaPlayer: UIViewController {
 				_fullscreenAnimating = true
 				_isFullscreen = true
 				
-				player.controls().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+				player.getControls().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
 				presentViewController(player, animated: true) {
@@ -124,7 +125,7 @@ public class SambaPlayer: UIViewController {
 				self._fullscreenAnimating = false
 				self._isFullscreen = false
 				
-				player.controls().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
+				player.getControls().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
 				self.attachVC(player)
 			}
 		}
@@ -133,19 +134,25 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-		return UIInterfaceOrientationMask.AllButUpsideDown
+		return .AllButUpsideDown
+	}
+	
+	public override func viewDidDisappear(animated: Bool) {
+		super.viewDidDisappear(animated)
+		
+		guard !_fullscreenAnimating else { return }
+		
+		destroy()
 	}
 	
 	// MARK: Private Methods
 	
 	private func create() throws {
 		var urlWrapped = media.url
-		// TODO: check hasMultipleOutputs show/hide HD button
-		var hasMultipleOutputs = false
 		
 		if let outputs = media.outputs where outputs.count > 0 {
 			urlWrapped = outputs[0].url
-			hasMultipleOutputs = outputs.count > 1
+			_hasMultipleOutputs = outputs.count > 1
 		}
 		
 		guard let url = urlWrapped else {
@@ -164,8 +171,11 @@ public class SambaPlayer: UIViewController {
 		nc.addObserver(self, selector: #selector(playbackStateHandler),
 		               name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
 		
-		nc.addObserver(self, selector: #selector(fullscreenHandler),
+		nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
 		               name: kGMFPlayerDidMinimizeNotification, object: gmf)
+		
+		nc.addObserver(self, selector: #selector(hdTouchHandler),
+		               name: kGMFPlayerDidPressHdNotification, object: gmf)
 		
 		// IMA
 		
@@ -180,20 +190,26 @@ public class SambaPlayer: UIViewController {
 		_player = gmf
 	}
 	
-	@objc private func fullscreenHandler() {
+	@objc private func fullscreenTouchHandler() {
 		if _isFullscreen {
-			print("exiting fullscreen")
 			UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
 		}
 		else {
-			print("entering fullscreen")
 			UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
 		}
+	}
+	
+	@objc private func hdTouchHandler() {
+		print("HD!")
 	}
 	
 	@objc private func playbackStateHandler() {
 		switch Int((_player?.player.state.rawValue)!) {
 		case 2:
+			if _hasMultipleOutputs {
+				_player?.getControls().showHdButton()
+			}
+			
 			delegate?.onLoad()
 		case 3:
 			if !_hasStarted {

@@ -53,6 +53,10 @@
   return [self imageNamed:@"player_control_minimize"];
 }
 
++ (UIImage *)playerBarHdButtonImage {
+  return [self imageNamed:@"player_control_hd"];
+}
+
 + (UIImage *)playerBarScrubberThumbImage {
   return [self imageNamed:@"player_scrubber_thumb"];
 }

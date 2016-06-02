@@ -27,6 +27,8 @@ NSString * const kGMFPlayerCurrentTotalTimeDidChangeNotification =
     @"kGMFPlayerCurrentTotalTimeDidChangeNotification";
 NSString * const kGMFPlayerDidMinimizeNotification =
 	@"kGMFPlayerDidMinimizeNotification";
+NSString * const kGMFPlayerDidPressHdNotification =
+	@"kGMFPlayerDidPressHdNotification";
 NSString * const kGMFPlayerPlaybackStateDidChangeNotification =
     @"kGMFPlayerPlaybackStateDidChangeNotification";
 NSString * const kGMFPlayerStateDidChangeToFinishedNotification =
@@ -226,7 +228,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return _player;
 }
 
-- (GMFPlayerControlsView*)controls {
+- (GMFPlayerControlsView*)getControls {
 	return [(GMFPlayerOverlayViewController*)_videoPlayerOverlayViewController playerControlsView];
 }
 
@@ -410,12 +412,23 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   [self notifyUserDidMinimize];
 }
 
+- (void)didPressHd {
+	[self notifyUserDidHd];
+}
+
 // Notifies a listener that the user minimized the video player by tapping the minimize button.
 - (void)notifyUserDidMinimize {
   [[NSNotificationCenter defaultCenter]
       postNotificationName:kGMFPlayerDidMinimizeNotification
                     object:self
                   userInfo:nil];
+}
+
+- (void)notifyUserDidHd {
+	[[NSNotificationCenter defaultCenter]
+	 postNotificationName:kGMFPlayerDidPressHdNotification
+	 object:self
+	 userInfo:nil];
 }
 
 // Notifies a listener that the curent media time has changed. The listener is expected to check

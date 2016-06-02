@@ -22,6 +22,7 @@
 extern NSString * const kGMFPlayerCurrentMediaTimeDidChangeNotification;
 extern NSString * const kGMFPlayerCurrentTotalTimeDidChangeNotification;
 extern NSString * const kGMFPlayerDidMinimizeNotification;
+extern NSString * const kGMFPlayerDidPressHdNotification;
 extern NSString * const kGMFPlayerPlaybackStateDidChangeNotification;
 extern NSString * const kGMFPlayerStateDidChangeToFinishedNotification;
 extern NSString * const kGMFPlayerStateWillChangeToFinishedNotification;
@@ -91,7 +92,7 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (UIView<GMFPlayerControlsProtocol> *)playerOverlayView;
 
-- (GMFPlayerControlsView*)controls;
+- (GMFPlayerControlsView*)getControls;
 
 @end
 

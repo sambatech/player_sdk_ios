@@ -25,6 +25,7 @@
 + (UIImage *)playerBarReplayLargeButtonImage;
 + (UIImage *)playerBarMinimizeButtonImage;
 + (UIImage *)playerBarMaximizeButtonImage;
++ (UIImage *)playerBarHdButtonImage;
 + (UIImage *)playerBarScrubberThumbImage;
 + (UIImage *)playerBarBackgroundImage;
 + (UIImage *)playerTitleBarBackgroundImage;
