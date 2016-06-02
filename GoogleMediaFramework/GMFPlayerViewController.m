@@ -226,6 +226,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return _player;
 }
 
+- (GMFPlayerControlsView*)controls {
+	return [(GMFPlayerOverlayViewController*)_videoPlayerOverlayViewController playerControlsView];
+}
+
 - (UIView<GMFPlayerControlsProtocol> *)playerOverlayView {
   return [_videoPlayerOverlayViewController playerOverlayView];
 }

@@ -43,6 +43,8 @@
 // Call updateScrubberAndTime to make the change visible.
 - (void)setMediaTime:(NSTimeInterval)mediaTime;
 
+- (void)setMinimizeButtonImage:(UIImage*)image;
+
 - (void)updateScrubberAndTime;
 
 - (CGFloat)preferredHeight;
