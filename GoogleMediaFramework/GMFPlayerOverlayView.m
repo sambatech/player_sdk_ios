@@ -32,6 +32,7 @@
   NSString *_pauseLabel;
   NSString *_replayLabel;
   UIButton *_playPauseReplayButton;
+  UIColor *_currentColor;
   BOOL _isTopBarEnabled;
   CurrentPlayPauseReplayIcon _currentPlayPauseReplayIcon;
 }
@@ -271,11 +272,13 @@
 }
 
 - (void)setSeekbarTrackColorDefault {
-  // Light blue
-  [_playerControlsView setSeekbarTrackColor:[UIColor colorWithRed:0.08235294117
+  // Light blue]
+	
+  /*[_playerControlsView setSeekbarTrackColor:[UIColor colorWithRed:0.08235294117
                                                             green:0.49411764705
                                                              blue:0.98431372549
-                                                            alpha:1.0]];
+                                                            alpha:1.0]];*/
+	[_playerControlsView setSeekbarTrackColor:_currentColor];
 }
 
 - (void)disableSeekbarInteraction {
@@ -294,6 +297,7 @@
   
   // Tint the play/pause/replay button and the controls view.
   //[_playPauseReplayButton GMF_applyTintColor:color];
+  _currentColor = color;
   [_playerControlsView applyControlTintColor:color];
 }
 
