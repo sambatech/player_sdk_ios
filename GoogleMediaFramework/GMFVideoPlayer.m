@@ -100,8 +100,11 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 // Creates an AVPlayerItem and AVPlayer instance when preparing to play a new content URL.
 - (void)handlePlayableAsset:(AVAsset *)asset;
 
-// Updates the current |playerItem| and |player| and removes and re-adds observers.
-- (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem player:(AVPlayer *)player;
+// Updates the current |player| and |playerItem| and removes and re-adds observers.
+- (void)setAndObservePlayer:(AVPlayer *)player playerItem:(AVPlayerItem *)playerItem;
+
+// Updates the current |playerItem| and removes and re-adds observers.
+- (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem;
 
 // Updates the internal player state and notifies the delegate.
 - (void)setState:(GMFPlayerState)state;
@@ -259,37 +262,41 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   // Recreating the AVPlayer instance because of issues when playing HLS then non-HLS back to
   // back, and vice-versa.
   AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
-  [self setAndObservePlayerItem:playerItem player:player];
+  [self setAndObservePlayer:player playerItem:playerItem];
 }
 
-- (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem player:(AVPlayer *)player {
-  // Player item observers.
-  [_playerItem removeObserver:self forKeyPath:kStatusKey];
-  [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                  name:AVPlayerItemDidPlayToEndTimeNotification
-                                                object:_playerItem];
+- (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem {
+	// Player item observers.
+	[_playerItem removeObserver:self forKeyPath:kStatusKey];
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+													name:AVPlayerItemDidPlayToEndTimeNotification
+												  object:_playerItem];
+	
+	_playerItem = playerItem;
+	if (_playerItem) {
+		[_playerItem addObserver:self
+					  forKeyPath:kStatusKey
+						 options:0
+						 context:kGMFPlayerItemStatusContext];
+		
+		__weak GMFVideoPlayer *weakSelf = self;
+		[[NSNotificationCenter defaultCenter]
+		 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
+		 object:_playerItem
+		 queue:[NSOperationQueue mainQueue]
+		 usingBlock:^(NSNotification *note) {
+			 GMFVideoPlayer *strongSelf = weakSelf;
+			 if (!strongSelf) {
+				 return;
+			 }
+			 [strongSelf playbackDidReachEnd];
+		 }];
+	}
+}
 
-  _playerItem = playerItem;
-  if (_playerItem) {
-    [_playerItem addObserver:self
-                  forKeyPath:kStatusKey
-                     options:0
-                     context:kGMFPlayerItemStatusContext];
-
-    __weak GMFVideoPlayer *weakSelf = self;
-    [[NSNotificationCenter defaultCenter]
-        addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
-                    object:_playerItem
-                     queue:[NSOperationQueue mainQueue]
-                usingBlock:^(NSNotification *note) {
-                    GMFVideoPlayer *strongSelf = weakSelf;
-                    if (!strongSelf) {
-                      return;
-                    }
-                    [strongSelf playbackDidReachEnd];
-                }];
-  }
-
+- (void)setAndObservePlayer:(AVPlayer *)player playerItem:(AVPlayerItem *)playerItem {
+  [self setAndObservePlayerItem:playerItem];
+	
   // Player observers.
   [_player removeObserver:self forKeyPath:kRateKey];
   [_player removeObserver:self forKeyPath:kDurationKey];
@@ -313,6 +320,19 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     // necessary than to call setPlayer:nil and reuse it for future playbacks.
     _renderingView = nil;
   }
+}
+
+- (void)switchUrl:(NSString*)url {
+	if (!_player) return;
+	
+	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:[AVAsset assetWithURL:[NSURL URLWithString:url]]];
+	CMTime t = _player.currentTime;
+	
+	if (t.value > 1.0f) t.value -= 1.0f;
+	
+	[item seekToTime:t];
+	[self setAndObservePlayerItem:item];
+	[_player replaceCurrentItemWithPlayerItem:item];
 }
 
 - (void)setState:(GMFPlayerState)state {
@@ -485,7 +505,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   _pendingPlay = NO;
   _manuallyPaused = NO;
   [self stopPlaybackStatusPoller];
-  [self setAndObservePlayerItem:nil player:nil];
+  [self setAndObservePlayer:nil playerItem:nil];
   _lastReportedPlaybackTime = 0;
   _lastReportedBufferTime = 0;
 }

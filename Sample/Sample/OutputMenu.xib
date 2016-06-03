@@ -15,40 +15,43 @@
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VZ8-SW-SQO">
-                    <rect key="frame" x="180" y="105" width="240" height="390"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZ8-SW-SQO">
+                    <rect key="frame" x="150" y="50" width="300" height="500"/>
                     <subviews>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ef8-MP-9CC">
-                            <rect key="frame" x="10" y="50" width="220" height="290"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                            <connections>
-                                <outlet property="dataSource" destination="-1" id="m47-Jc-am7"/>
-                                <outlet property="delegate" destination="-1" id="3Zv-GJ-2uy"/>
-                            </connections>
-                        </tableView>
-                        <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLd-aH-98y">
-                            <rect key="frame" x="170" y="348" width="60" height="30"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLd-aH-98y">
+                            <rect key="frame" x="220" y="454" width="60" height="30"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                             <state key="normal" title="Cancelar"/>
                             <connections>
                                 <action selector="closeHandler:" destination="-1" eventType="touchUpInside" id="gtd-PG-E8m"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Qualidade" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8wU-GW-Tgn">
-                            <rect key="frame" x="10" y="10" width="78" height="21"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Qualidade" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8wU-GW-Tgn">
+                            <rect key="frame" x="22" y="16" width="78" height="21"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ef8-MP-9CC">
+                            <rect key="frame" x="22" y="80" width="256" height="340"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <outlet property="dataSource" destination="-1" id="m47-Jc-am7"/>
+                                <outlet property="delegate" destination="-1" id="3Zv-GJ-2uy"/>
+                            </connections>
+                        </tableView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="bLd-aH-98y" secondAttribute="trailing" constant="10" id="030-lL-HhH"/>
-                        <constraint firstItem="8wU-GW-Tgn" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="10" id="1LO-eZ-qxU"/>
-                        <constraint firstAttribute="bottom" secondItem="bLd-aH-98y" secondAttribute="bottom" constant="12" id="LvF-5v-y0M"/>
-                        <constraint firstAttribute="width" constant="240" id="OE2-zL-p4h"/>
-                        <constraint firstItem="ef8-MP-9CC" firstAttribute="height" secondItem="VZ8-SW-SQO" secondAttribute="height" id="oLY-l6-uuD"/>
-                        <constraint firstItem="8wU-GW-Tgn" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="10" id="wwt-Wz-f4C"/>
+                        <constraint firstItem="8wU-GW-Tgn" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="8Fh-8I-73M"/>
+                        <constraint firstItem="ef8-MP-9CC" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="80" id="NHg-QP-EZg"/>
+                        <constraint firstItem="8wU-GW-Tgn" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="16" id="RXM-Ad-q5g"/>
+                        <constraint firstAttribute="trailing" secondItem="ef8-MP-9CC" secondAttribute="trailing" constant="22" id="UUX-dq-1X1"/>
+                        <constraint firstAttribute="bottom" secondItem="bLd-aH-98y" secondAttribute="bottom" constant="16" id="V9M-7S-K0D"/>
+                        <constraint firstItem="ef8-MP-9CC" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="VKu-Y3-SSI"/>
+                        <constraint firstAttribute="width" constant="300" id="i0y-sq-9Ri"/>
+                        <constraint firstAttribute="bottom" secondItem="ef8-MP-9CC" secondAttribute="bottom" constant="80" id="pgm-LJ-gba"/>
+                        <constraint firstAttribute="trailing" secondItem="bLd-aH-98y" secondAttribute="trailing" constant="20" id="xrk-g9-ptr"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -59,8 +62,9 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="BN7-mS-yZP"/>
-                <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="sJF-sP-6yT"/>
+                <constraint firstItem="VZ8-SW-SQO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="O8j-WE-gww"/>
+                <constraint firstAttribute="bottom" secondItem="VZ8-SW-SQO" secondAttribute="bottom" constant="50" id="kgf-MW-GLk"/>
+                <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="viz-er-6xd"/>
             </constraints>
         </view>
     </objects>

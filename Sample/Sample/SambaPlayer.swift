@@ -19,13 +19,14 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	private var _player: GMFPlayerViewController?
+	private var _parentView: UIView?
 	private var _progressTimer: NSTimer = NSTimer()
 	private var _hasStarted: Bool = false
 	private var _stopping: Bool = false
 	private var _fullscreenAnimating: Bool = false
 	private var _isFullscreen: Bool = false
 	private var _hasMultipleOutputs: Bool = false
-	private var _parentView: UIView?
+	private var _lastOutput: Int = -1
 	
 	// MARK: Properties
 	
@@ -91,6 +92,14 @@ public class SambaPlayer: UIViewController {
 		_player?.player.seekToTime(NSTimeInterval(pos))
     }
 	
+	public func switchOutput(value: Int) {
+		guard let outputs = media.outputs
+			where value != _lastOutput && value < outputs.count else { return }
+		
+		_lastOutput = value
+		_player?.player.switchUrl(outputs[value].url)
+	}
+	
 	public func destroy() {
 		guard let player = _player else { return }
 		
@@ -145,6 +154,29 @@ public class SambaPlayer: UIViewController {
 		destroy()
 	}
 	
+	// MARK: Internal Methods
+	
+	func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
+		let p: UIViewController = vcParent ?? self
+		
+		p.addChildViewController(vc)
+		vc.didMoveToParentViewController(p)
+		vc.view.frame = p.view.frame
+		p.view.addSubview(vc.view)
+		p.view.setNeedsDisplay()
+	}
+	
+	func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
+		if vc.parentViewController != self {
+			vc.dismissViewControllerAnimated(true, completion: callback)
+		}
+		else {
+			vc.view.removeFromSuperview()
+			vc.removeFromParentViewController()
+			callback?()
+		}
+	}
+	
 	// MARK: Private Methods
 	
 	private func create() throws {
@@ -152,6 +184,11 @@ public class SambaPlayer: UIViewController {
 		
 		if let outputs = media.outputs where outputs.count > 0 {
 			urlWrapped = outputs[0].url
+			
+			for output in outputs where output.isDefault {
+				urlWrapped = output.url
+			}
+			
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
@@ -190,20 +227,6 @@ public class SambaPlayer: UIViewController {
 		_player = gmf
 	}
 	
-	@objc private func fullscreenTouchHandler() {
-		if _isFullscreen {
-			UIDevice.currentDevice().setValue(UIInterfaceOrientation.Portrait.rawValue, forKey: "orientation")
-		}
-		else {
-			UIDevice.currentDevice().setValue(UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
-		}
-	}
-	
-	@objc private func hdTouchHandler() {
-		pause()
-		presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
-	}
-	
 	@objc private func playbackStateHandler() {
 		switch Int((_player?.player.state.rawValue)!) {
 		case 2:
@@ -237,33 +260,32 @@ public class SambaPlayer: UIViewController {
 	@objc private func progressEvent() {
 		delegate?.onProgress()
 	}
+	
+	@objc private func fullscreenTouchHandler() {
+		UIDevice.currentDevice().setValue(_isFullscreen ? UIInterfaceOrientation.Portrait.rawValue :
+			UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
+	}
+	
+	@objc private func hdTouchHandler() {
+		pause()
+		showHdMenu()
+	}
 
 	private func startTimer() {
 		stopTimer()
-		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(SambaPlayer.progressEvent), userInfo: nil, repeats: true)
+		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
 	}
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
 	}
 	
-	private func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
-		let p: UIViewController = vcParent ?? self
-		
-		p.addChildViewController(vc)
-		vc.didMoveToParentViewController(p)
-		vc.view.frame = p.view.frame
-		p.view.addSubview(vc.view)
-		p.view.setNeedsDisplay()
-	}
-	
-	private func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
-		if vc.parentViewController != self {
-			vc.dismissViewControllerAnimated(true, completion: callback)
+	private func showHdMenu() {
+		if _isFullscreen {
+			attachVC(OutputMenuViewController(self))
 		}
 		else {
-			vc.view.removeFromSuperview()
-			vc.removeFromParentViewController()
+			presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
 		}
 	}
 }

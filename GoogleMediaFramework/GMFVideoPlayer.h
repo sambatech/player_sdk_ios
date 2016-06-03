@@ -65,6 +65,7 @@
 - (void)pause;
 - (void)replay;
 - (void)seekToTime:(NSTimeInterval)time;
+- (void)switchUrl:(NSString*)url;
 
 // Querying the player.
 - (NSTimeInterval)currentMediaTime;

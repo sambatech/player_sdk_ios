@@ -33,10 +33,6 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
-	@IBAction func closeHandler(sender: AnyObject) {
-		close()
-	}
-	
 	// MARK: UITableViewDataSource implementation
 	
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -56,12 +52,15 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	}
 	
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		// TODO: change output in player
-		print(outputs[indexPath.row])
+		player.switchOutput(indexPath.row)
 		close()
 	}
 	
 	func close() {
-		dismissViewControllerAnimated(false, completion: { self.player.play() })
+		player.detachVC(self) { self.player.play() }
+	}
+	
+	@IBAction func closeHandler(sender: AnyObject) {
+		close()
 	}
 }
