@@ -182,7 +182,7 @@
 }
 
 - (CGFloat)preferredHeight {
-  return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.5;
+  return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.0;
 }
 
 @end
