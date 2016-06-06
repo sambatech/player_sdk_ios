@@ -61,6 +61,9 @@ public class SambaPlayer: UIViewController {
 		parentView.setNeedsDisplay()
 		
 		self._parentView = parentView
+		
+		
+		let tracker = Tracking(player: self, media: self.media)
 	}
 	
 	public required init?(coder aDecoder: NSCoder) {
