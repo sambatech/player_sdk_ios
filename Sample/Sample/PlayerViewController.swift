@@ -71,6 +71,8 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 		self.progressLabel.text = "finish"
 	}
 	
+	func onDestroy() {}
+	
 	//MARK: actions
 	@IBAction func playAction(sender: AnyObject) {
 		self.sambaPlayer.play()

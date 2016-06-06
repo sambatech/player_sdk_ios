@@ -12,23 +12,30 @@ import MediaPlayer
 
 public class SambaPlayer: UIViewController {
 	
-	public var delegate: SambaPlayerDelegate?
+	private var _player: GMFPlayerViewController?
+	private var _parentView: UIView?
+	private var _delegates = [SambaPlayerDelegate]()
+	private var _progressTimer = NSTimer()
+	private var _hasStarted = false
+	private var _stopping = false
+	private var _fullscreenAnimating = false
+	private var _isFullscreen = false
+	private var _hasMultipleOutputs = false
+	private var _lastOutput = -1
+	
+	// MARK: Properties
+	
+	public var delegate: SambaPlayerDelegate? {
+		// TODO: remove this (add eventbus alike control)
+		didSet {
+			guard let value = delegate else { return }
+			_delegates.append(value)
+		}
+	}
 	
 	public var currentTime: Int {
 		return Int(_player?.currentMediaTime() ?? 0)
 	}
-	
-	private var _player: GMFPlayerViewController?
-	private var _parentView: UIView?
-	private var _progressTimer: NSTimer = NSTimer()
-	private var _hasStarted: Bool = false
-	private var _stopping: Bool = false
-	private var _fullscreenAnimating: Bool = false
-	private var _isFullscreen: Bool = false
-	private var _hasMultipleOutputs: Bool = false
-	private var _lastOutput: Int = -1
-	
-	// MARK: Properties
 	
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
@@ -61,9 +68,6 @@ public class SambaPlayer: UIViewController {
 		parentView.setNeedsDisplay()
 		
 		self._parentView = parentView
-		
-		
-		let tracker = Tracking(player: self, media: self.media)
 	}
 	
 	public required init?(coder aDecoder: NSCoder) {
@@ -105,6 +109,8 @@ public class SambaPlayer: UIViewController {
 	
 	public func destroy() {
 		guard let player = _player else { return }
+		
+		for delegate in _delegates { delegate.onDestroy() }
 		
 		stopTimer()
 		player.player.reset()
@@ -225,6 +231,8 @@ public class SambaPlayer: UIViewController {
 			ima.requestAdsWithRequest(adUrl)
 		}
 		
+		let _ = Tracking(self)
+		
 		gmf.play()
 		
 		_player = gmf
@@ -237,31 +245,31 @@ public class SambaPlayer: UIViewController {
 				_player?.getControls().showHdButton()
 			}
 			
-			delegate?.onLoad()
+			for delegate in _delegates { delegate.onLoad() }
 		case 3:
 			if !_hasStarted {
 				_hasStarted = true
-				delegate?.onStart()
+				for delegate in _delegates { delegate.onStart() }
 			}
 			
-			delegate?.onResume()
+			for delegate in _delegates { delegate.onResume() }
 			startTimer()
 		case 4:
 			stopTimer()
 			
 			if !_stopping {
-				delegate?.onPause()
+				for delegate in _delegates { delegate.onPause() }
 			}
 			else { _stopping = false }
 		case 7:
 			stopTimer()
-			delegate?.onFinish()
+			for delegate in _delegates { delegate.onFinish() }
 		default: break
 		}
 	}
 	
 	@objc private func progressEvent() {
-		delegate?.onProgress()
+		for delegate in _delegates { delegate.onProgress() }
 	}
 	
 	@objc private func fullscreenTouchHandler() {
@@ -270,8 +278,9 @@ public class SambaPlayer: UIViewController {
 	}
 	
 	@objc private func hdTouchHandler() {
-		pause()
-		showHdMenu()
+		print("HD button tapped")
+		//pause()
+		//showHdMenu()
 	}
 
 	private func startTimer() {
@@ -304,4 +313,5 @@ public protocol SambaPlayerDelegate {
 	func onPause()
 	func onProgress()
 	func onFinish()
+	func onDestroy()
 }

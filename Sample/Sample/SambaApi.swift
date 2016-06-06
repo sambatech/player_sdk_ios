@@ -69,6 +69,7 @@ public class SambaApi {
 		
 		let media = SambaMediaConfig()
 		let playerConfig = json["playerConfig"]!!
+		let apiConfig = json["apiConfig"]!!
 		let project = json["project"]!!
 		
 		media.projectHash = project["playerHash"] as! String
@@ -88,6 +89,16 @@ public class SambaApi {
 		
 		if let theme = playerConfig["theme"] as? String where theme.lowercaseString != "default" {
 			media.theme = UInt(theme.stringByReplacingOccurrencesOfString("^#*", withString: "", options: .RegularExpressionSearch), radix: 16)!
+		}
+		
+		if let sttm = apiConfig["sttm"] as? [String:AnyObject] {
+			if let url = sttm["url"] as? String {
+				media.sttmUrl = url
+			}
+			
+			if let key = sttm["key"] as? String {
+				media.sttmKey = key
+			}
 		}
 
 		if let rules = json["deliveryRules"] as? [AnyObject] {

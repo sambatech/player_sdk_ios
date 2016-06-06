@@ -38,6 +38,30 @@ class Helpers {
 		
 		return f(UIApplication.sharedApplication().keyWindow?.rootViewController)
 	}
+	
+	static func getSessionId() -> String {
+		func getSessionComponent() -> String {
+			let n = String(format: "%x", Int(arc4random()>>16) + Int(UInt16.max))
+			return n.substringFromIndex(n.startIndex.advancedBy(1))
+		}
+		
+		var s = ""
+		
+		for i in 0...7 {
+			s += getSessionComponent()
+			
+			switch i {
+			case 1: fallthrough
+			case 2: fallthrough
+			case 3: fallthrough
+			case 4:
+				s += "-"
+			default: break
+			}
+		}
+		
+		return s
+	}
 }
 
 extension UIColor {

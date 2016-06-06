@@ -8,39 +8,103 @@
 
 import Foundation
 
-public class Tracking: SambaPlayerDelegate {
-	private var _player:SambaPlayer
-	private var _media:SambaMedia
+class Tracking: SambaPlayerDelegate {
+	private var _player: SambaPlayer
+	private var _media: SambaMedia
+	private var _sttm = STTM()
 	
-	init(player:SambaPlayer, media:SambaMedia){
-		self._player = player
-		self._media = media
-		
-		self._player.delegate = self
+	init(_ player: SambaPlayer) {
+		_player = player
+		_media = player.media
+		_player.delegate = self
 	}
 	
-	public func onLoad() {
+	func onLoad() {
 		print("onload")
 	}
 	
-	public func onStart() {
+	func onStart() {
 		print("onstart")
 	}
 	
-	public func onResume() {
+	func onResume() {
 		print("onresume")
 	}
 	
-	public func onPause() {
+	func onPause() {
 		print("onpause")
 	}
 	
-	public func onProgress() {
+	func onProgress() {
 		print("onprogress")
 	}
 	
-	public func onFinish() {
+	func onFinish() {
 		print("onfinish")
 	}
 	
+	func onDestroy() {
+		_sttm.destroy()
+	}
+}
+
+class STTM {
+	private var _timer: NSTimer?
+	private var _targets = [String]()
+	private var _progresses = NSMutableOrderedSet()
+	private var _trackedRetentions = Set<Int>()
+	
+	init() {
+		_timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(timerHandler), userInfo: nil, repeats: true)
+	}
+	
+	func trackStart() {
+		_targets.append("play")
+	}
+	
+	func trackProgress(time: Float, duration: Float) {
+		var p = Int(100*time/duration)
+		
+		if p > 99 {
+			p = 99
+		}
+		
+		_progresses.addObject(String(format: "p%02d", p))
+		
+		if !_trackedRetentions.contains(p) {
+			_progresses.addObject(String(format: "r%02d", p))
+		}
+		
+		_trackedRetentions.insert(p)
+		
+		if _progresses.count >= 5 {
+			collectProgress()
+		}
+	}
+	
+	func trackComplete() {
+		_targets.append("complete")
+	}
+	
+	func destroy() {
+		_timer?.invalidate()
+	}
+	
+	private func collectProgress() {
+		if _progresses.count == 0 { return }
+		
+		_progresses.sortUsingComparator { $0.localizedCaseInsensitiveCompare($1 as! String) }
+		_targets.append((_progresses.array as! [String]).joinWithSeparator(","))
+		_progresses.removeAllObjects()
+	}
+	
+	@objc private func timerHandler() {
+		if _targets.isEmpty { return }
+		
+		/*new UrlTracker().execute(String.format("%s?sttmm=%s&sttmk=%s&sttms=%s&sttmu=123&sttmw=%s",
+			media.sttmUrl, TextUtils.join(",", targets), media.sttmKey, media.sessionId,
+			String.format("pid:%s/cat:%s/mid:%s", media.projectId, media.categoryId, media.id)));*/
+		
+		_targets.removeAll()
+	}
 }

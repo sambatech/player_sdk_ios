@@ -17,7 +17,7 @@ public class SambaMedia : CustomStringConvertible {
 		let url: String, label: String, isDefault: Bool
 	}
 
-	public var title: String = ""
+	public var title = ""
 	public var url: String? {
 		didSet {
 			guard let urlNonNull = url else { return }
@@ -32,7 +32,7 @@ public class SambaMedia : CustomStringConvertible {
 	}
 	public var adUrl: String?
 	public var outputs: [SambaMedia.Output]?
-	public var deliveryType: String = "other"
+	public var deliveryType = "other"
 	public var thumb: String?
 	public var isLive = false;
 
@@ -58,9 +58,11 @@ public class SambaMedia : CustomStringConvertible {
  */
 class SambaMediaConfig : SambaMedia {
 
-	var id: String = ""
-	var projectHash: String = ""
-	var projectId: Int = 0
-	var categoryId: Int = 0;
-	//public sessionId: String = Helpers.getSessionId();
+	var id = ""
+	var projectHash = ""
+	var projectId = 0
+	var categoryId = 0;
+	var sessionId = Helpers.getSessionId()
+	var sttmUrl = "http://sttm.sambatech.com.br/collector/__sttm.gif"
+	var sttmKey = "ae810ebc7f0654c4fadc50935adcf5ec"
 }
