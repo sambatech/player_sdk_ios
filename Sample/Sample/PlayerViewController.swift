@@ -83,7 +83,7 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	}
 	
 	//MARK: utils
-	func secondsToHoursMinutesSeconds (seconds : Int) -> (String) {
+	func secondsToHoursMinutesSeconds (seconds : Float) -> (String) {
 		let hours = Int(seconds/3600) > 9 ? String(Int(seconds/3600)) : "0" + String(Int(seconds/3600))
 		let minutes = Int((seconds % 3600) / 60) > 9 ? String(Int((seconds % 3600) / 60)) : "0" + String(Int((seconds % 3600) / 60))
 		let second = Int((seconds % 3600) % 60) > 9 ? String(Int((seconds % 3600) % 60)) : "0" + String(Int((seconds % 3600) % 60))

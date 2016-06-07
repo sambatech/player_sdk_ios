@@ -33,8 +33,12 @@ public class SambaPlayer: UIViewController {
 		}
 	}
 	
-	public var currentTime: Int {
-		return Int(_player?.currentMediaTime() ?? 0)
+	public var currentTime: Float {
+		return Float(_player?.currentMediaTime() ?? 0)
+	}
+	
+	public var duration: Float {
+		return Float(_player?.totalMediaTime() ?? 0)
 	}
 	
 	public var media: SambaMedia = SambaMedia() {
@@ -285,7 +289,7 @@ public class SambaPlayer: UIViewController {
 
 	private func startTimer() {
 		stopTimer()
-		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
+		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
 	}
 	
 	private func stopTimer() {
@@ -306,6 +310,7 @@ public enum SambaPlayerError : ErrorType {
 	case NoMediaUrlFound
 }
 
+// TODO: research how to have optional impls
 public protocol SambaPlayerDelegate {
 	func onLoad()
 	func onStart()

@@ -35,7 +35,6 @@ public class SambaMedia : CustomStringConvertible {
 	public var deliveryType = "other"
 	public var thumb: String?
 	public var isLive = false;
-
 	public var theme: UInt = 0x72BE44
 
 	init() {}
