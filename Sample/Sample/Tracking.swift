@@ -57,7 +57,10 @@ class STTM {
 	}
 	
 	func trackStart() {
+		#if DEBUG
 		print("start")
+		#endif
+		
 		_targets.append("play")
 	}
 	
@@ -67,7 +70,11 @@ class STTM {
 		if p > 99 {
 			p = 99
 		}
+		
+		#if DEBUG
 		print("progress", p)
+		#endif
+		
 		_progresses.addObject(String(format: "p%02d", p))
 		
 		if !_trackedRetentions.contains(p) {
@@ -82,18 +89,28 @@ class STTM {
 	}
 	
 	func trackComplete() {
+		#if DEBUG
 		print("complete")
+		#endif
+		
 		_targets.append("complete")
 	}
 	
 	func destroy() {
+		#if DEBUG
 		print("destroy")
+		#endif
+		
 		_timer?.invalidate()
 	}
 	
 	private func collectProgress() {
 		guard _progresses.count > 0 else { return }
+		
+		#if DEBUG
 		print("collect", _progresses.count)
+		#endif
+		
 		_progresses.sortUsingComparator { $0.localizedCaseInsensitiveCompare($1 as! String) }
 		_targets.append((_progresses.array as! [String]).joinWithSeparator(","))
 		_progresses.removeAllObjects()
@@ -102,9 +119,13 @@ class STTM {
 	@objc private func timerHandler() {
 		guard !_targets.isEmpty else { return }
 		
-		print("send", "\(_media.sttmUrl)?sttmm=\(_targets.joinWithSeparator(","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)")
+		let url = "\(_media.sttmUrl)?sttmm=\(_targets.joinWithSeparator(","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)"
 		
-		Alamofire.request(.GET, "\(_media.sttmUrl)?sttmm=\(_targets.joinWithSeparator(","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)")
+		#if DEBUG
+		print("send", url)
+		#endif
+		
+		Alamofire.request(.GET, url)
 		
 		_targets.removeAll()
 	}
