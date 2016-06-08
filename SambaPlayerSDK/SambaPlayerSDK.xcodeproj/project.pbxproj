@@ -7,73 +7,107 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9AB9DC651CEB916E00580BDB /* SambaPlayerSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB9DC641CEB916E00580BDB /* SambaPlayerSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9ADD37DD1D08549600EB194B /* SambaPlayerSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9ADD37E41D08549600EB194B /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */; };
+		9ADD37E91D08549600EB194B /* SambaPlayerSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADD37E81D08549600EB194B /* SambaPlayerSDKTests.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9ADD37E51D08549600EB194B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9ADD37D01D08549600EB194B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9ADD37D81D08549600EB194B;
+			remoteInfo = SambaPlayerSDK;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
-		9AB9DC611CEB916E00580BDB /* SambaPlayerSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayerSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9AB9DC641CEB916E00580BDB /* SambaPlayerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SambaPlayerSDK.h; sourceTree = "<group>"; };
-		9AB9DC661CEB916E00580BDB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayerSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SambaPlayerSDK.h; sourceTree = "<group>"; };
+		9ADD37DE1D08549600EB194B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9ADD37E31D08549600EB194B /* SambaPlayerSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SambaPlayerSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9ADD37E81D08549600EB194B /* SambaPlayerSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaPlayerSDKTests.swift; sourceTree = "<group>"; };
+		9ADD37EA1D08549600EB194B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		9AB9DC5D1CEB916E00580BDB /* Frameworks */ = {
+		9ADD37D51D08549600EB194B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9ADD37E01D08549600EB194B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ADD37E41D08549600EB194B /* SambaPlayerSDK.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9AB9DC571CEB916E00580BDB = {
+		9ADD37CF1D08549600EB194B = {
 			isa = PBXGroup;
 			children = (
-				9AB9DC631CEB916E00580BDB /* SambaPlayerSDK */,
-				9AB9DC621CEB916E00580BDB /* Products */,
+				9ADD37DB1D08549600EB194B /* SambaPlayerSDK */,
+				9ADD37E71D08549600EB194B /* SambaPlayerSDKTests */,
+				9ADD37DA1D08549600EB194B /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		9AB9DC621CEB916E00580BDB /* Products */ = {
+		9ADD37DA1D08549600EB194B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9AB9DC611CEB916E00580BDB /* SambaPlayerSDK.framework */,
+				9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */,
+				9ADD37E31D08549600EB194B /* SambaPlayerSDKTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9AB9DC631CEB916E00580BDB /* SambaPlayerSDK */ = {
+		9ADD37DB1D08549600EB194B /* SambaPlayerSDK */ = {
 			isa = PBXGroup;
 			children = (
-				9AB9DC641CEB916E00580BDB /* SambaPlayerSDK.h */,
-				9AB9DC661CEB916E00580BDB /* Info.plist */,
+				9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */,
+				9ADD37DE1D08549600EB194B /* Info.plist */,
 			);
 			path = SambaPlayerSDK;
+			sourceTree = "<group>";
+		};
+		9ADD37E71D08549600EB194B /* SambaPlayerSDKTests */ = {
+			isa = PBXGroup;
+			children = (
+				9ADD37E81D08549600EB194B /* SambaPlayerSDKTests.swift */,
+				9ADD37EA1D08549600EB194B /* Info.plist */,
+			);
+			path = SambaPlayerSDKTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
-		9AB9DC5E1CEB916E00580BDB /* Headers */ = {
+		9ADD37D61D08549600EB194B /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AB9DC651CEB916E00580BDB /* SambaPlayerSDK.h in Headers */,
+				9ADD37DD1D08549600EB194B /* SambaPlayerSDK.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		9AB9DC601CEB916E00580BDB /* SambaPlayerSDK */ = {
+		9ADD37D81D08549600EB194B /* SambaPlayerSDK */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 9AB9DC691CEB916E00580BDB /* Build configuration list for PBXNativeTarget "SambaPlayerSDK" */;
+			buildConfigurationList = 9ADD37ED1D08549600EB194B /* Build configuration list for PBXNativeTarget "SambaPlayerSDK" */;
 			buildPhases = (
-				9AB9DC5C1CEB916E00580BDB /* Sources */,
-				9AB9DC5D1CEB916E00580BDB /* Frameworks */,
-				9AB9DC5E1CEB916E00580BDB /* Headers */,
-				9AB9DC5F1CEB916E00580BDB /* Resources */,
+				9ADD37D41D08549600EB194B /* Sources */,
+				9ADD37D51D08549600EB194B /* Frameworks */,
+				9ADD37D61D08549600EB194B /* Headers */,
+				9ADD37D71D08549600EB194B /* Resources */,
 			);
 			buildRules = (
 			);
@@ -81,43 +115,74 @@
 			);
 			name = SambaPlayerSDK;
 			productName = SambaPlayerSDK;
-			productReference = 9AB9DC611CEB916E00580BDB /* SambaPlayerSDK.framework */;
+			productReference = 9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */;
 			productType = "com.apple.product-type.framework";
+		};
+		9ADD37E21D08549600EB194B /* SambaPlayerSDKTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9ADD37F01D08549600EB194B /* Build configuration list for PBXNativeTarget "SambaPlayerSDKTests" */;
+			buildPhases = (
+				9ADD37DF1D08549600EB194B /* Sources */,
+				9ADD37E01D08549600EB194B /* Frameworks */,
+				9ADD37E11D08549600EB194B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9ADD37E61D08549600EB194B /* PBXTargetDependency */,
+			);
+			name = SambaPlayerSDKTests;
+			productName = SambaPlayerSDKTests;
+			productReference = 9ADD37E31D08549600EB194B /* SambaPlayerSDKTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		9AB9DC581CEB916E00580BDB /* Project object */ = {
+		9ADD37D01D08549600EB194B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0720;
+				LastSwiftUpdateCheck = 0730;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Samba Tech";
 				TargetAttributes = {
-					9AB9DC601CEB916E00580BDB = {
-						CreatedOnToolsVersion = 7.2.1;
+					9ADD37D81D08549600EB194B = {
+						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = GP968EQAM9;
+					};
+					9ADD37E21D08549600EB194B = {
+						CreatedOnToolsVersion = 7.3.1;
 						DevelopmentTeam = GP968EQAM9;
 					};
 				};
 			};
-			buildConfigurationList = 9AB9DC5B1CEB916E00580BDB /* Build configuration list for PBXProject "SambaPlayerSDK" */;
+			buildConfigurationList = 9ADD37D31D08549600EB194B /* Build configuration list for PBXProject "SambaPlayerSDK" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 9AB9DC571CEB916E00580BDB;
-			productRefGroup = 9AB9DC621CEB916E00580BDB /* Products */;
+			mainGroup = 9ADD37CF1D08549600EB194B;
+			productRefGroup = 9ADD37DA1D08549600EB194B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				9AB9DC601CEB916E00580BDB /* SambaPlayerSDK */,
+				9ADD37D81D08549600EB194B /* SambaPlayerSDK */,
+				9ADD37E21D08549600EB194B /* SambaPlayerSDKTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		9AB9DC5F1CEB916E00580BDB /* Resources */ = {
+		9ADD37D71D08549600EB194B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ADD37E11D08549600EB194B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -127,20 +192,37 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		9AB9DC5C1CEB916E00580BDB /* Sources */ = {
+		9ADD37D41D08549600EB194B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		9ADD37DF1D08549600EB194B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ADD37E91D08549600EB194B /* SambaPlayerSDKTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9ADD37E61D08549600EB194B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9ADD37D81D08549600EB194B /* SambaPlayerSDK */;
+			targetProxy = 9ADD37E51D08549600EB194B /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
-		9AB9DC671CEB916E00580BDB /* Debug */ = {
+		9ADD37EB1D08549600EB194B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -174,7 +256,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -185,10 +267,11 @@
 			};
 			name = Debug;
 		};
-		9AB9DC681CEB916E00580BDB /* Release */ = {
+		9ADD37EC1D08549600EB194B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -216,7 +299,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -226,7 +309,7 @@
 			};
 			name = Release;
 		};
-		9AB9DC6A1CEB916E00580BDB /* Debug */ = {
+		9ADD37EE1D08549600EB194B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
@@ -242,7 +325,7 @@
 			};
 			name = Debug;
 		};
-		9AB9DC6B1CEB916E00580BDB /* Release */ = {
+		9ADD37EF1D08549600EB194B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				DEFINES_MODULE = YES;
@@ -258,27 +341,55 @@
 			};
 			name = Release;
 		};
+		9ADD37F11D08549600EB194B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SambaPlayerSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayerSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9ADD37F21D08549600EB194B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = SambaPlayerSDKTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayerSDKTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		9AB9DC5B1CEB916E00580BDB /* Build configuration list for PBXProject "SambaPlayerSDK" */ = {
+		9ADD37D31D08549600EB194B /* Build configuration list for PBXProject "SambaPlayerSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9AB9DC671CEB916E00580BDB /* Debug */,
-				9AB9DC681CEB916E00580BDB /* Release */,
+				9ADD37EB1D08549600EB194B /* Debug */,
+				9ADD37EC1D08549600EB194B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		9AB9DC691CEB916E00580BDB /* Build configuration list for PBXNativeTarget "SambaPlayerSDK" */ = {
+		9ADD37ED1D08549600EB194B /* Build configuration list for PBXNativeTarget "SambaPlayerSDK" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9AB9DC6A1CEB916E00580BDB /* Debug */,
-				9AB9DC6B1CEB916E00580BDB /* Release */,
+				9ADD37EE1D08549600EB194B /* Debug */,
+				9ADD37EF1D08549600EB194B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9ADD37F01D08549600EB194B /* Build configuration list for PBXNativeTarget "SambaPlayerSDKTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ADD37F11D08549600EB194B /* Debug */,
+				9ADD37F21D08549600EB194B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = 9AB9DC581CEB916E00580BDB /* Project object */;
+	rootObject = 9ADD37D01D08549600EB194B /* Project object */;
 }
