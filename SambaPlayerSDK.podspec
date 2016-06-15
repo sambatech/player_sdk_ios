@@ -9,9 +9,10 @@ Pod::Spec.new do |s|
 
 	s.ios.deployment_target = '8.0'
 
-	s.preserve_paths = 'vendor/'
-	s.vendored_frameworks = 'vendor/GoogleAds-IMA-iOS-SDK.framework'
-	#s.dependency 'GoogleMediaFramework', :path => 'gmf/'
+	s.preserve_paths = 'Vendor'
+	s.vendored_frameworks = 'Vendor/GoogleInteractiveMediaAds.framework'
 	s.dependency 'Alamofire', '~> 3.4'
-	s.source_files = 'Source/*.swift'
+
+	s.source_files = 'Source/*.swift', 'Vendor/GoogleMediaFramework'
+	s.resources = 'Vendor/GoogleMediaFramework/Resources/**'
 end

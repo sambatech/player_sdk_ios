@@ -7,6 +7,24 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A1E4CD91D1197F60042F129 /* SambaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD01D1197F60042F129 /* SambaPlayer.swift */; };
+		9A1E4CDA1D1197F60042F129 /* SambaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD01D1197F60042F129 /* SambaPlayer.swift */; };
+		9A1E4CDB1D1197F60042F129 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD11D1197F60042F129 /* OutputMenu.xib */; };
+		9A1E4CDC1D1197F60042F129 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD11D1197F60042F129 /* OutputMenu.xib */; };
+		9A1E4CDD1D1197F60042F129 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD21D1197F60042F129 /* SambaApi.swift */; };
+		9A1E4CDE1D1197F60042F129 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD21D1197F60042F129 /* SambaApi.swift */; };
+		9A1E4CDF1D1197F60042F129 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD31D1197F60042F129 /* Commons.swift */; };
+		9A1E4CE01D1197F60042F129 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD31D1197F60042F129 /* Commons.swift */; };
+		9A1E4CE11D1197F60042F129 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD41D1197F60042F129 /* Tracking.swift */; };
+		9A1E4CE21D1197F60042F129 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD41D1197F60042F129 /* Tracking.swift */; };
+		9A1E4CE31D1197F60042F129 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD51D1197F60042F129 /* OutputMenuViewController.swift */; };
+		9A1E4CE41D1197F60042F129 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD51D1197F60042F129 /* OutputMenuViewController.swift */; };
+		9A1E4CE51D1197F60042F129 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD61D1197F60042F129 /* SambaMedia.swift */; };
+		9A1E4CE61D1197F60042F129 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD61D1197F60042F129 /* SambaMedia.swift */; };
+		9A1E4CE71D1197F60042F129 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD71D1197F60042F129 /* SambaMediaRequest.swift */; };
+		9A1E4CE81D1197F60042F129 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD71D1197F60042F129 /* SambaMediaRequest.swift */; };
+		9A1E4CE91D1197F60042F129 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD81D1197F60042F129 /* Settings.plist */; };
+		9A1E4CEA1D1197F60042F129 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A1E4CD81D1197F60042F129 /* Settings.plist */; };
 		9ADD37DD1D08549600EB194B /* SambaPlayerSDK.h in Headers */ = {isa = PBXBuildFile; fileRef = 9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9ADD37E41D08549600EB194B /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */; };
 		9ADD37E91D08549600EB194B /* SambaPlayerSDKTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADD37E81D08549600EB194B /* SambaPlayerSDKTests.swift */; };
@@ -23,9 +41,18 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A1E4CD01D1197F60042F129 /* SambaPlayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SambaPlayer.swift; path = Source/SambaPlayer.swift; sourceTree = "<group>"; };
+		9A1E4CD11D1197F60042F129 /* OutputMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = OutputMenu.xib; path = Source/OutputMenu.xib; sourceTree = "<group>"; };
+		9A1E4CD21D1197F60042F129 /* SambaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SambaApi.swift; path = Source/SambaApi.swift; sourceTree = "<group>"; };
+		9A1E4CD31D1197F60042F129 /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Commons.swift; path = Source/Commons.swift; sourceTree = "<group>"; };
+		9A1E4CD41D1197F60042F129 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Tracking.swift; path = Source/Tracking.swift; sourceTree = "<group>"; };
+		9A1E4CD51D1197F60042F129 /* OutputMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OutputMenuViewController.swift; path = Source/OutputMenuViewController.swift; sourceTree = "<group>"; };
+		9A1E4CD61D1197F60042F129 /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SambaMedia.swift; path = Source/SambaMedia.swift; sourceTree = "<group>"; };
+		9A1E4CD71D1197F60042F129 /* SambaMediaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SambaMediaRequest.swift; path = Source/SambaMediaRequest.swift; sourceTree = "<group>"; };
+		9A1E4CD81D1197F60042F129 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist; name = Settings.plist; path = Source/Settings.plist; sourceTree = "<group>"; };
 		9ADD37D91D08549600EB194B /* SambaPlayerSDK.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayerSDK.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SambaPlayerSDK.h; sourceTree = "<group>"; };
-		9ADD37DE1D08549600EB194B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SambaPlayerSDK.h; path = Source/SambaPlayerSDK.h; sourceTree = "<group>"; };
+		9ADD37DE1D08549600EB194B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = Source/Info.plist; sourceTree = "<group>"; };
 		9ADD37E31D08549600EB194B /* SambaPlayerSDKTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SambaPlayerSDKTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ADD37E81D08549600EB194B /* SambaPlayerSDKTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaPlayerSDKTests.swift; sourceTree = "<group>"; };
 		9ADD37EA1D08549600EB194B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -71,6 +98,15 @@
 		9ADD37DB1D08549600EB194B /* SambaPlayerSDK */ = {
 			isa = PBXGroup;
 			children = (
+				9A1E4CD01D1197F60042F129 /* SambaPlayer.swift */,
+				9A1E4CD11D1197F60042F129 /* OutputMenu.xib */,
+				9A1E4CD21D1197F60042F129 /* SambaApi.swift */,
+				9A1E4CD31D1197F60042F129 /* Commons.swift */,
+				9A1E4CD41D1197F60042F129 /* Tracking.swift */,
+				9A1E4CD51D1197F60042F129 /* OutputMenuViewController.swift */,
+				9A1E4CD61D1197F60042F129 /* SambaMedia.swift */,
+				9A1E4CD71D1197F60042F129 /* SambaMediaRequest.swift */,
+				9A1E4CD81D1197F60042F129 /* Settings.plist */,
 				9ADD37DC1D08549600EB194B /* SambaPlayerSDK.h */,
 				9ADD37DE1D08549600EB194B /* Info.plist */,
 			);
@@ -179,6 +215,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1E4CDB1D1197F60042F129 /* OutputMenu.xib in Resources */,
+				9A1E4CE91D1197F60042F129 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -186,6 +224,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1E4CDC1D1197F60042F129 /* OutputMenu.xib in Resources */,
+				9A1E4CEA1D1197F60042F129 /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +236,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1E4CE11D1197F60042F129 /* Tracking.swift in Sources */,
+				9A1E4CE51D1197F60042F129 /* SambaMedia.swift in Sources */,
+				9A1E4CD91D1197F60042F129 /* SambaPlayer.swift in Sources */,
+				9A1E4CDF1D1197F60042F129 /* Commons.swift in Sources */,
+				9A1E4CE71D1197F60042F129 /* SambaMediaRequest.swift in Sources */,
+				9A1E4CE31D1197F60042F129 /* OutputMenuViewController.swift in Sources */,
+				9A1E4CDD1D1197F60042F129 /* SambaApi.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -203,7 +250,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A1E4CE21D1197F60042F129 /* Tracking.swift in Sources */,
+				9A1E4CE01D1197F60042F129 /* Commons.swift in Sources */,
+				9A1E4CE41D1197F60042F129 /* OutputMenuViewController.swift in Sources */,
+				9A1E4CE61D1197F60042F129 /* SambaMedia.swift in Sources */,
 				9ADD37E91D08549600EB194B /* SambaPlayerSDKTests.swift in Sources */,
+				9A1E4CDE1D1197F60042F129 /* SambaApi.swift in Sources */,
+				9A1E4CDA1D1197F60042F129 /* SambaPlayer.swift in Sources */,
+				9A1E4CE81D1197F60042F129 /* SambaMediaRequest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +366,7 @@
 		9ADD37EE1D08549600EB194B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -322,12 +377,14 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayerSDK;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
 		9ADD37EF1D08549600EB194B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -380,6 +437,7 @@
 				9ADD37EF1D08549600EB194B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9ADD37F01D08549600EB194B /* Build configuration list for PBXNativeTarget "SambaPlayerSDKTests" */ = {
 			isa = XCConfigurationList;
@@ -388,6 +446,7 @@
 				9ADD37F21D08549600EB194B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

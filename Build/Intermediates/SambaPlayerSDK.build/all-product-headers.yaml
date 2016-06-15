@@ -1,0 +1,33 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "SambaPlayerSDK-Swift.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Headers/SambaPlayerSDK-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "SambaPlayerSDK.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/SambaPlayerSDK/Source/SambaPlayerSDK.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/Build/Intermediates/SambaPlayerSDK.build/Debug-iphonesimulator/SambaPlayerSDK.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}
