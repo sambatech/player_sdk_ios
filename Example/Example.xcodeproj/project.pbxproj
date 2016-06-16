@@ -7,8 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A80D1BA1D12F3A1004DD227 /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A80D1B71D12F3A1004DD227 /* MediaListViewController.swift */; };
+		9A80D1BB1D12F3A1004DD227 /* PlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A80D1B81D12F3A1004DD227 /* PlayerViewController.swift */; };
+		9A80D1BC1D12F3A1004DD227 /* MediaListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A80D1B91D12F3A1004DD227 /* MediaListTableViewCell.swift */; };
+		9A80D1C21D12F63A004DD227 /* Configs.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A80D1C11D12F63A004DD227 /* Configs.plist */; };
+		9A80D1C41D12F6A2004DD227 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A80D1C31D12F6A2004DD227 /* Helpers.swift */; };
 		9ADF54A91D10B46A0016C49A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADF54A81D10B46A0016C49A /* AppDelegate.swift */; };
-		9ADF54AB1D10B46A0016C49A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADF54AA1D10B46A0016C49A /* ViewController.swift */; };
 		9ADF54AE1D10B46A0016C49A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9ADF54AC1D10B46A0016C49A /* Main.storyboard */; };
 		9ADF54B01D10B46A0016C49A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ADF54AF1D10B46A0016C49A /* Assets.xcassets */; };
 		9ADF54B31D10B46A0016C49A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9ADF54B11D10B46A0016C49A /* LaunchScreen.storyboard */; };
@@ -18,9 +22,13 @@
 /* Begin PBXFileReference section */
 		3B82A2EA27E95BE12E8DCEBD /* Pods-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Example/Pods-Example.release.xcconfig"; sourceTree = "<group>"; };
 		7774D280D6AD198CB942AD78 /* Pods_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A80D1B71D12F3A1004DD227 /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
+		9A80D1B81D12F3A1004DD227 /* PlayerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerViewController.swift; sourceTree = "<group>"; };
+		9A80D1B91D12F3A1004DD227 /* MediaListTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListTableViewCell.swift; sourceTree = "<group>"; };
+		9A80D1C11D12F63A004DD227 /* Configs.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Configs.plist; sourceTree = "<group>"; };
+		9A80D1C31D12F6A2004DD227 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		9ADF54A51D10B46A0016C49A /* Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ADF54A81D10B46A0016C49A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		9ADF54AA1D10B46A0016C49A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		9ADF54AD1D10B46A0016C49A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		9ADF54AF1D10B46A0016C49A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9ADF54B21D10B46A0016C49A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -78,12 +86,16 @@
 		9ADF54A71D10B46A0016C49A /* Example */ = {
 			isa = PBXGroup;
 			children = (
+				9A80D1B71D12F3A1004DD227 /* MediaListViewController.swift */,
+				9A80D1B81D12F3A1004DD227 /* PlayerViewController.swift */,
+				9A80D1B91D12F3A1004DD227 /* MediaListTableViewCell.swift */,
 				9ADF54A81D10B46A0016C49A /* AppDelegate.swift */,
-				9ADF54AA1D10B46A0016C49A /* ViewController.swift */,
 				9ADF54AC1D10B46A0016C49A /* Main.storyboard */,
 				9ADF54AF1D10B46A0016C49A /* Assets.xcassets */,
 				9ADF54B11D10B46A0016C49A /* LaunchScreen.storyboard */,
 				9ADF54B41D10B46A0016C49A /* Info.plist */,
+				9A80D1C11D12F63A004DD227 /* Configs.plist */,
+				9A80D1C31D12F6A2004DD227 /* Helpers.swift */,
 			);
 			path = Example;
 			sourceTree = "<group>";
@@ -150,6 +162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A80D1C21D12F63A004DD227 /* Configs.plist in Resources */,
 				9ADF54B31D10B46A0016C49A /* LaunchScreen.storyboard in Resources */,
 				9ADF54B01D10B46A0016C49A /* Assets.xcassets in Resources */,
 				9ADF54AE1D10B46A0016C49A /* Main.storyboard in Resources */,
@@ -211,8 +224,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ADF54AB1D10B46A0016C49A /* ViewController.swift in Sources */,
 				9ADF54A91D10B46A0016C49A /* AppDelegate.swift in Sources */,
+				9A80D1BA1D12F3A1004DD227 /* MediaListViewController.swift in Sources */,
+				9A80D1BC1D12F3A1004DD227 /* MediaListTableViewCell.swift in Sources */,
+				9A80D1C41D12F6A2004DD227 /* Helpers.swift in Sources */,
+				9A80D1BB1D12F3A1004DD227 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -328,6 +344,12 @@
 			baseConfigurationReference = BF08D0A80CFEFC783A582FA9 /* Pods-Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Alamofire\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SambaPlayerSDK\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SambaPlayerSDK/Vendor/GoogleMediaFramework\"",
+				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Example;
@@ -340,6 +362,12 @@
 			baseConfigurationReference = 3B82A2EA27E95BE12E8DCEBD /* Pods-Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/Alamofire\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SambaPlayerSDK\"",
+					"\"$PODS_CONFIGURATION_BUILD_DIR/SambaPlayerSDK/Vendor/GoogleMediaFramework\"",
+				);
 				INFOPLIST_FILE = Example/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Example;

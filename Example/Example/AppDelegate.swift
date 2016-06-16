@@ -1,8 +1,8 @@
 //
 //  AppDelegate.swift
-//  Example
+//  Sample
 //
-//  Created by Leandro Zanol on 6/14/16.
+//  Created by Leandro Zanol on 5/18/16.
 //  Copyright © 2016 Samba Tech. All rights reserved.
 //
 

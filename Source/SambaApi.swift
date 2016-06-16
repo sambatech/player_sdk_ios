@@ -11,8 +11,11 @@ import Alamofire
 
 public class SambaApi {
 	
+	public init() {}
+	
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
-		Alamofire.request(.GET, Helpers.settings["playerapi_endpoint"]! + request.projectHash +
+		//Alamofire.request(.GET, Helpers.settings["playerapi_endpoint"]! + request.projectHash +
+		Alamofire.request(.GET, "https://fast.player.liquidplatform.com/pApiv2/v1/" + request.projectHash +
 			(request.mediaId != nil ? "/" + request.mediaId! :
 				"?" + ((request.streamUrls ?? []).count > 0 ? "alternativeLive=" + request.streamUrls![0] :
 					"streamName=" + request.streamName!))).responseString { response in

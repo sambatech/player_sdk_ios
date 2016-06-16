@@ -11,7 +11,6 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.1.0'
-  s.dependency 'Alamofire', '~> 3.4'
 
   s.source_files = 'GoogleMediaFramework'
   s.resources = 'Resources/**'
