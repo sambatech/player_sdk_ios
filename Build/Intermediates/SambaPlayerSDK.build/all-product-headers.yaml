@@ -8,13 +8,118 @@
       'contents': [
         {
           'type': 'file',
+          'name': "GMFAdService.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFAdService.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFContentPlayhead.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFContentPlayhead.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFIMASDKAdService.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFIMASDKAdService.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerControlsProtocol.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsProtocol.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerControlsView.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsView.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerFinishReason.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerFinishReason.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerOverlayView.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayView.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerOverlayViewController.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayViewController.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerState.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerState.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerView.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerView.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFPlayerViewController.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerViewController.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFResources.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFResources.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFTopBarView.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFTopBarView.h"
+        },
+        {
+          'type': 'file',
+          'name': "GMFVideoPlayer.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFVideoPlayer.h"
+        },
+        {
+          'type': 'file',
+          'name': "GVPVideoPlayerSDK-Prefix.pch",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GVPVideoPlayerSDK-Prefix.pch"
+        },
+        {
+          'type': 'file',
+          'name': "GoogleMediaFramework-Prefix.pch",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GoogleMediaFramework-Prefix.pch"
+        },
+        {
+          'type': 'file',
+          'name': "GoogleMediaFramework.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GoogleMediaFramework.h"
+        },
+        {
+          'type': 'file',
           'name': "SambaPlayerSDK-Swift.h",
           'external-contents': "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Headers/SambaPlayerSDK-Swift.h"
         },
         {
           'type': 'file',
           'name': "SambaPlayerSDK.h",
-          'external-contents': "/Users/zanol/projects/player-sdk-ios/SambaPlayerSDK/Source/SambaPlayerSDK.h"
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/SambaPlayerSDK/SambaPlayerSDK.h"
+        },
+        {
+          'type': 'file',
+          'name': "UIButton+GMFTintableButton.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/UIButton+GMFTintableButton.h"
+        },
+        {
+          'type': 'file',
+          'name': "UIImage+GMFTintableImage.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/UIImage+GMFTintableImage.h"
+        },
+        {
+          'type': 'file',
+          'name': "UILabel+GMFLabels.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/UILabel+GMFLabels.h"
+        },
+        {
+          'type': 'file',
+          'name': "UISlider+GMFSlider.h",
+          'external-contents': "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/UISlider+GMFSlider.h"
         }
       ]
     },

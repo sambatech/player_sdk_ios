@@ -1,0 +1,10 @@
+framework module GMF {
+  umbrella header "GMF.h"
+
+  export *
+  module * { export * }
+}
+
+module GMF.__Swift {
+    exclude header "GMF-Swift.h"
+}

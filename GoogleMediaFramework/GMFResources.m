@@ -73,7 +73,7 @@
 
 + (UIImage *)imageNamed:(NSString *)name
             stretchable:(BOOL)stretchable {
-  UIImage *image = [UIImage imageNamed:name];
+  UIImage *image = [UIImage imageNamed:name inBundle:[NSBundle bundleForClass:GMFResources.self] compatibleWithTraitCollection:nil];
 
   NSAssert(image, @"There is no image called %@", name);
   if (stretchable) {

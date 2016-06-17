@@ -1,0 +1,238 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "SambaMedia"
+- "SambaMediaConfig"
+provides-nominal:
+- "C14SambaPlayerSDK10SambaMedia"
+- "VC14SambaPlayerSDK10SambaMedia6Output"
+- "C14SambaPlayerSDK16SambaMediaConfig"
+provides-member:
+- ["C14SambaPlayerSDK10SambaMedia", ""]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", ""]
+- ["C14SambaPlayerSDK16SambaMediaConfig", ""]
+provides-dynamic-lookup:
+depends-top-level:
+- "SambaMedia"
+- "IntegerLiteralType"
+- "Bool"
+- "CustomStringConvertible"
+- "String"
+- "StringLiteralType"
+- !private "??"
+- "BooleanLiteralType"
+- "SambaMediaConfig"
+- "FloatLiteralType"
+- "UInt"
+- "Helpers"
+depends-member:
+- ["Ps9AnyObject", "Helpers"]
+- ["Ps9AnyObject", "Output"]
+- ["Ps9AnyObject", "categoryId"]
+- !private ["Ps9AnyObject", "deliveryType"]
+- ["Ps9AnyObject", "description"]
+- ["Ps9AnyObject", "getSessionId"]
+- ["Ps9AnyObject", "id"]
+- ["Ps9AnyObject", "init"]
+- ["Ps9AnyObject", "projectHash"]
+- ["Ps9AnyObject", "projectId"]
+- !private ["Ps9AnyObject", "rangeOfString"]
+- ["Ps9AnyObject", "sessionId"]
+- ["Ps9AnyObject", "sttmKey"]
+- ["Ps9AnyObject", "sttmUrl"]
+- !private ["Ps9AnyObject", "thumb"]
+- !private ["Ps9AnyObject", "title"]
+- !private ["Ps9AnyObject", "url"]
+- ["Ps9AnyObject", ""]
+- !private ["Ps23ArrayLiteralConvertible", "RegularExpressionSearch"]
+- !private ["Ps11CVarArgType", "rangeOfString"]
+- !private ["Ps10Comparable", "rangeOfString"]
+- ["Ps28CustomDebugStringConvertible", "Some"]
+- !private ["Ps28CustomDebugStringConvertible", "rangeOfString"]
+- ["Ps23CustomStringConvertible", "Helpers"]
+- ["Ps23CustomStringConvertible", "Output"]
+- ["Ps23CustomStringConvertible", "categoryId"]
+- !private ["Ps23CustomStringConvertible", "deliveryType"]
+- ["Ps23CustomStringConvertible", "description"]
+- ["Ps23CustomStringConvertible", "id"]
+- ["Ps23CustomStringConvertible", "init"]
+- ["Ps23CustomStringConvertible", "projectHash"]
+- ["Ps23CustomStringConvertible", "projectId"]
+- !private ["Ps23CustomStringConvertible", "rangeOfString"]
+- ["Ps23CustomStringConvertible", "sessionId"]
+- ["Ps23CustomStringConvertible", "sttmKey"]
+- ["Ps23CustomStringConvertible", "sttmUrl"]
+- !private ["Ps23CustomStringConvertible", "thumb"]
+- !private ["Ps23CustomStringConvertible", "title"]
+- !private ["Ps23CustomStringConvertible", "url"]
+- ["Ps23CustomStringConvertible", ""]
+- !private ["Ps9Equatable", "RegularExpressionSearch"]
+- !private ["Ps9Equatable", "rangeOfString"]
+- !private ["Ps41ExtendedGraphemeClusterLiteralConvertible", "rangeOfString"]
+- !private ["Ps8Hashable", "rangeOfString"]
+- ["C14SambaPlayerSDK7Helpers", "getSessionId"]
+- !private ["Ps14MirrorPathType", "rangeOfString"]
+- !private ["PSo8NSCoding", "rangeOfString"]
+- !private ["PSo9NSCopying", "rangeOfString"]
+- !private ["PSo16NSMutableCopying", "rangeOfString"]
+- !private ["CSo8NSObject", "rangeOfString"]
+- !private ["PSo16NSObjectProtocol", "rangeOfString"]
+- !private ["PSo14NSSecureCoding", "rangeOfString"]
+- !private ["CSo8NSString", "rangeOfString"]
+- !private ["VSC22NSStringCompareOptions", "RegularExpressionSearch"]
+- ["Ps21NilLiteralConvertible", "Some"]
+- !private ["Ps13OptionSetType", "RegularExpressionSearch"]
+- ["Sq", "Some"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "Bool"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "String"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "init"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "isDefault"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "label"]
+- ["VC14SambaPlayerSDK10SambaMedia6Output", "url"]
+- !private ["Ps16OutputStreamType", "rangeOfString"]
+- !private ["Ps16RawRepresentable", "RegularExpressionSearch"]
+- ["C14SambaPlayerSDK10SambaMedia", "Bool"]
+- ["C14SambaPlayerSDK10SambaMedia", "Helpers"]
+- ["C14SambaPlayerSDK10SambaMedia", "Output"]
+- ["C14SambaPlayerSDK10SambaMedia", "SambaMedia"]
+- ["C14SambaPlayerSDK10SambaMedia", "String"]
+- ["C14SambaPlayerSDK10SambaMedia", "UInt"]
+- ["C14SambaPlayerSDK10SambaMedia", "adUrl"]
+- ["C14SambaPlayerSDK10SambaMedia", "categoryId"]
+- ["C14SambaPlayerSDK10SambaMedia", "deinit"]
+- ["C14SambaPlayerSDK10SambaMedia", "deliveryType"]
+- ["C14SambaPlayerSDK10SambaMedia", "description"]
+- ["C14SambaPlayerSDK10SambaMedia", "id"]
+- ["C14SambaPlayerSDK10SambaMedia", "init"]
+- ["C14SambaPlayerSDK10SambaMedia", "isLive"]
+- ["C14SambaPlayerSDK10SambaMedia", "outputs"]
+- ["C14SambaPlayerSDK10SambaMedia", "projectHash"]
+- ["C14SambaPlayerSDK10SambaMedia", "projectId"]
+- ["C14SambaPlayerSDK10SambaMedia", "sessionId"]
+- ["C14SambaPlayerSDK10SambaMedia", "sttmKey"]
+- ["C14SambaPlayerSDK10SambaMedia", "sttmUrl"]
+- ["C14SambaPlayerSDK10SambaMedia", "theme"]
+- ["C14SambaPlayerSDK10SambaMedia", "thumb"]
+- ["C14SambaPlayerSDK10SambaMedia", "title"]
+- ["C14SambaPlayerSDK10SambaMedia", "url"]
+- ["C14SambaPlayerSDK10SambaMedia", ""]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "Helpers"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "categoryId"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "deinit"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "id"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "init"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "projectHash"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "projectId"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "sessionId"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "sttmKey"]
+- ["C14SambaPlayerSDK16SambaMediaConfig", "sttmUrl"]
+- !private ["Ps14SetAlgebraType", "RegularExpressionSearch"]
+- !private ["Ps10Streamable", "rangeOfString"]
+- !private ["SS", "rangeOfString"]
+- !private ["Ps30StringInterpolationConvertible", "rangeOfString"]
+- !private ["Ps24StringLiteralConvertible", "rangeOfString"]
+- !private ["P9Alamofire20URLStringConvertible", "rangeOfString"]
+- !private ["Ps31UnicodeScalarLiteralConvertible", "rangeOfString"]
+- !private ["Ps49_BuiltinExtendedGraphemeClusterLiteralConvertible", "rangeOfString"]
+- !private ["Ps32_BuiltinStringLiteralConvertible", "rangeOfString"]
+- !private ["Ps37_BuiltinUTF16StringLiteralConvertible", "rangeOfString"]
+- !private ["Ps39_BuiltinUnicodeScalarLiteralConvertible", "rangeOfString"]
+- !private ["Ps21_ObjectiveCBridgeable", "rangeOfString"]
+- ["Ps12_Reflectable", "Some"]
+- !private ["Ps12_Reflectable", "rangeOfString"]
+depends-nominal:
+- "Ps9AnyObject"
+- !private "Ps23ArrayLiteralConvertible"
+- !private "Ps11CVarArgType"
+- !private "Ps10Comparable"
+- "Ps28CustomDebugStringConvertible"
+- "Ps23CustomStringConvertible"
+- !private "Ps9Equatable"
+- !private "Ps41ExtendedGraphemeClusterLiteralConvertible"
+- !private "Ps8Hashable"
+- "C14SambaPlayerSDK7Helpers"
+- !private "Ps14MirrorPathType"
+- !private "PSo8NSCoding"
+- !private "PSo9NSCopying"
+- !private "PSo16NSMutableCopying"
+- !private "CSo8NSObject"
+- !private "PSo16NSObjectProtocol"
+- !private "PSo14NSSecureCoding"
+- !private "CSo8NSString"
+- !private "VSC22NSStringCompareOptions"
+- "Ps21NilLiteralConvertible"
+- !private "Ps13OptionSetType"
+- "Sq"
+- "VC14SambaPlayerSDK10SambaMedia6Output"
+- !private "Ps16OutputStreamType"
+- !private "Ps16RawRepresentable"
+- "C14SambaPlayerSDK10SambaMedia"
+- "C14SambaPlayerSDK16SambaMediaConfig"
+- !private "Ps14SetAlgebraType"
+- !private "Ps10Streamable"
+- !private "SS"
+- !private "Ps30StringInterpolationConvertible"
+- !private "Ps24StringLiteralConvertible"
+- !private "P9Alamofire20URLStringConvertible"
+- !private "Ps31UnicodeScalarLiteralConvertible"
+- !private "Ps49_BuiltinExtendedGraphemeClusterLiteralConvertible"
+- !private "Ps32_BuiltinStringLiteralConvertible"
+- !private "Ps37_BuiltinUTF16StringLiteralConvertible"
+- !private "Ps39_BuiltinUnicodeScalarLiteralConvertible"
+- !private "Ps21_ObjectiveCBridgeable"
+- "Ps12_Reflectable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAUiElements.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAStreamRequest.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAStreamManager.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMASettings.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAPictureInPictureProxy.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMACompanionAdSlot.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsRequest.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsRenderingSettings.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsManager.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsLoader.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdEvent.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdError.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdDisplayContainer.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdPodInfo.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAd.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdPlaybackInfo.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAVideoDisplay.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAVPlayerVideoDisplay.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAContentPlayhead.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAVPlayerContentPlayhead.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/GoogleInteractiveMediaAds.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Modules/module.modulemap"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFResources.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerFinishReason.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFIMASDKAdService.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayViewController.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerState.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFVideoPlayer.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFTopBarView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsProtocol.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerViewController.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFAdService.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GoogleMediaFramework.h"
+- "/Users/zanol/projects/player-sdk-ios/SambaPlayerSDK/SambaPlayerSDK.h"
+- "/Users/zanol/projects/player-sdk-ios/Build/Intermediates/SambaPlayerSDK.build/Debug-iphonesimulator/SambaPlayerSDK.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Modules/Alamofire.swiftmodule/x86_64.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Headers/Alamofire-Swift.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Headers/Alamofire-umbrella.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Modules/module.modulemap"
+interface-hash: "db161b729fbf2e4c7f68639a1d931358"

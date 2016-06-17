@@ -14,5 +14,5 @@ Pod::Spec.new do |s|
 	s.dependency 'Alamofire', '~> 3.4'
 
 	s.source_files = 'Source/*.swift', 'Vendor/GoogleMediaFramework/GoogleMediaFramework', 'Vendor'
-	s.resources = 'Vendor/GoogleMediaFramework/Resources/**'
+	s.resource_bundles = { 'SambaPlayerSDK' => ['Vendor/GoogleMediaFramework/Resources/**'] }
 end

@@ -1,0 +1,367 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "MediaListTableViewCell"
+provides-nominal:
+- "C4Test22MediaListTableViewCell"
+provides-member:
+- ["C4Test22MediaListTableViewCell", ""]
+provides-dynamic-lookup:
+- "mediaThumb"
+- "mediaDesc"
+- "mediaTitle"
+- "awakeFromNib"
+- "setSelected"
+depends-top-level:
+- "UITableViewCell"
+- "Bool"
+- "MediaListTableViewCell"
+- "UILabel"
+- !private "UIColor"
+- "UIImageView"
+- "UITextView"
+depends-member:
+- !private ["Ps9AnyObject", "CGColor"]
+- !private ["Ps9AnyObject", "UIColor"]
+- ["Ps9AnyObject", "awakeFromNib"]
+- !private ["Ps9AnyObject", "borderColor"]
+- !private ["Ps9AnyObject", "borderWidth"]
+- ["Ps9AnyObject", "init"]
+- !private ["Ps9AnyObject", "layer"]
+- ["Ps9AnyObject", "mediaDesc"]
+- ["Ps9AnyObject", "mediaThumb"]
+- ["Ps9AnyObject", "mediaTitle"]
+- ["Ps9AnyObject", "setSelected"]
+- ["Ps9AnyObject", ""]
+- !private ["CSo7CALayer", "borderColor"]
+- !private ["CSo7CALayer", "borderWidth"]
+- !private ["PSo13CAMediaTiming", "borderColor"]
+- !private ["PSo13CAMediaTiming", "borderWidth"]
+- !private ["V12CoreGraphics7CGFloat", "deinit"]
+- !private ["Ps11CVarArgType", "CGColor"]
+- !private ["Ps11CVarArgType", "UIColor"]
+- ["Ps11CVarArgType", "awakeFromNib"]
+- !private ["Ps11CVarArgType", "borderColor"]
+- !private ["Ps11CVarArgType", "borderWidth"]
+- ["Ps11CVarArgType", "init"]
+- !private ["Ps11CVarArgType", "layer"]
+- ["Ps11CVarArgType", "mediaDesc"]
+- ["Ps11CVarArgType", "mediaThumb"]
+- ["Ps11CVarArgType", "mediaTitle"]
+- ["Ps11CVarArgType", "setSelected"]
+- ["Ps11CVarArgType", ""]
+- !private ["Ps28CustomDebugStringConvertible", "CGColor"]
+- !private ["Ps28CustomDebugStringConvertible", "UIColor"]
+- ["Ps28CustomDebugStringConvertible", "awakeFromNib"]
+- !private ["Ps28CustomDebugStringConvertible", "borderColor"]
+- !private ["Ps28CustomDebugStringConvertible", "borderWidth"]
+- ["Ps28CustomDebugStringConvertible", "init"]
+- !private ["Ps28CustomDebugStringConvertible", "layer"]
+- ["Ps28CustomDebugStringConvertible", "mediaDesc"]
+- ["Ps28CustomDebugStringConvertible", "mediaThumb"]
+- ["Ps28CustomDebugStringConvertible", "mediaTitle"]
+- ["Ps28CustomDebugStringConvertible", "setSelected"]
+- ["Ps28CustomDebugStringConvertible", ""]
+- !private ["Ps23CustomStringConvertible", "CGColor"]
+- !private ["Ps23CustomStringConvertible", "UIColor"]
+- ["Ps23CustomStringConvertible", "awakeFromNib"]
+- !private ["Ps23CustomStringConvertible", "borderColor"]
+- !private ["Ps23CustomStringConvertible", "borderWidth"]
+- ["Ps23CustomStringConvertible", "init"]
+- !private ["Ps23CustomStringConvertible", "layer"]
+- ["Ps23CustomStringConvertible", "mediaDesc"]
+- ["Ps23CustomStringConvertible", "mediaThumb"]
+- ["Ps23CustomStringConvertible", "mediaTitle"]
+- ["Ps23CustomStringConvertible", "setSelected"]
+- ["Ps23CustomStringConvertible", ""]
+- !private ["Ps9Equatable", "CGColor"]
+- !private ["Ps9Equatable", "UIColor"]
+- ["Ps9Equatable", "awakeFromNib"]
+- !private ["Ps9Equatable", "borderColor"]
+- !private ["Ps9Equatable", "borderWidth"]
+- ["Ps9Equatable", "init"]
+- !private ["Ps9Equatable", "layer"]
+- ["Ps9Equatable", "mediaDesc"]
+- ["Ps9Equatable", "mediaThumb"]
+- ["Ps9Equatable", "mediaTitle"]
+- ["Ps9Equatable", "setSelected"]
+- ["Ps9Equatable", ""]
+- !private ["Ps8Hashable", "CGColor"]
+- !private ["Ps8Hashable", "UIColor"]
+- ["Ps8Hashable", "awakeFromNib"]
+- !private ["Ps8Hashable", "borderColor"]
+- !private ["Ps8Hashable", "borderWidth"]
+- ["Ps8Hashable", "init"]
+- !private ["Ps8Hashable", "layer"]
+- ["Ps8Hashable", "mediaDesc"]
+- ["Ps8Hashable", "mediaThumb"]
+- ["Ps8Hashable", "mediaTitle"]
+- ["Ps8Hashable", "setSelected"]
+- ["Ps8Hashable", ""]
+- ["C4Test22MediaListTableViewCell", "Bool"]
+- !private ["C4Test22MediaListTableViewCell", "UIColor"]
+- ["C4Test22MediaListTableViewCell", "UIImageView"]
+- ["C4Test22MediaListTableViewCell", "UILabel"]
+- ["C4Test22MediaListTableViewCell", "UITextView"]
+- ["C4Test22MediaListTableViewCell", "awakeFromNib"]
+- ["C4Test22MediaListTableViewCell", "deinit"]
+- ["C4Test22MediaListTableViewCell", "init"]
+- !private ["C4Test22MediaListTableViewCell", "layer"]
+- ["C4Test22MediaListTableViewCell", "mediaDesc"]
+- ["C4Test22MediaListTableViewCell", "mediaThumb"]
+- ["C4Test22MediaListTableViewCell", "mediaTitle"]
+- ["C4Test22MediaListTableViewCell", "setSelected"]
+- !private ["PSo8NSCoding", "CGColor"]
+- !private ["PSo8NSCoding", "UIColor"]
+- ["PSo8NSCoding", "awakeFromNib"]
+- !private ["PSo8NSCoding", "borderColor"]
+- !private ["PSo8NSCoding", "borderWidth"]
+- ["PSo8NSCoding", "init"]
+- !private ["PSo8NSCoding", "layer"]
+- ["PSo8NSCoding", "mediaDesc"]
+- ["PSo8NSCoding", "mediaThumb"]
+- ["PSo8NSCoding", "mediaTitle"]
+- ["PSo8NSCoding", "setSelected"]
+- ["PSo8NSCoding", ""]
+- !private ["PSo9NSCopying", "CGColor"]
+- !private ["PSo9NSCopying", "init"]
+- ["CSo8NSObject", "Bool"]
+- !private ["CSo8NSObject", "CGColor"]
+- !private ["CSo8NSObject", "UIColor"]
+- ["CSo8NSObject", "UIImageView"]
+- ["CSo8NSObject", "UILabel"]
+- ["CSo8NSObject", "UITextView"]
+- ["CSo8NSObject", "awakeFromNib"]
+- !private ["CSo8NSObject", "borderColor"]
+- !private ["CSo8NSObject", "borderWidth"]
+- ["CSo8NSObject", "init"]
+- !private ["CSo8NSObject", "layer"]
+- ["CSo8NSObject", "mediaDesc"]
+- ["CSo8NSObject", "mediaThumb"]
+- ["CSo8NSObject", "mediaTitle"]
+- ["CSo8NSObject", "setSelected"]
+- !private ["PSo16NSObjectProtocol", "CGColor"]
+- !private ["PSo16NSObjectProtocol", "UIColor"]
+- ["PSo16NSObjectProtocol", "awakeFromNib"]
+- !private ["PSo16NSObjectProtocol", "borderColor"]
+- !private ["PSo16NSObjectProtocol", "borderWidth"]
+- ["PSo16NSObjectProtocol", "init"]
+- !private ["PSo16NSObjectProtocol", "layer"]
+- ["PSo16NSObjectProtocol", "mediaDesc"]
+- ["PSo16NSObjectProtocol", "mediaThumb"]
+- ["PSo16NSObjectProtocol", "mediaTitle"]
+- ["PSo16NSObjectProtocol", "setSelected"]
+- ["PSo16NSObjectProtocol", ""]
+- !private ["PSo14NSSecureCoding", "CGColor"]
+- !private ["PSo14NSSecureCoding", "init"]
+- !private ["PSo29UIAccessibilityIdentification", "UIColor"]
+- ["PSo29UIAccessibilityIdentification", "awakeFromNib"]
+- ["PSo29UIAccessibilityIdentification", "init"]
+- !private ["PSo29UIAccessibilityIdentification", "layer"]
+- ["PSo29UIAccessibilityIdentification", "mediaDesc"]
+- ["PSo29UIAccessibilityIdentification", "mediaThumb"]
+- ["PSo29UIAccessibilityIdentification", "mediaTitle"]
+- ["PSo29UIAccessibilityIdentification", "setSelected"]
+- ["PSo29UIAccessibilityIdentification", ""]
+- !private ["PSo12UIAppearance", "UIColor"]
+- ["PSo12UIAppearance", "awakeFromNib"]
+- ["PSo12UIAppearance", "init"]
+- !private ["PSo12UIAppearance", "layer"]
+- ["PSo12UIAppearance", "mediaDesc"]
+- ["PSo12UIAppearance", "mediaThumb"]
+- ["PSo12UIAppearance", "mediaTitle"]
+- ["PSo12UIAppearance", "setSelected"]
+- ["PSo12UIAppearance", ""]
+- !private ["PSo21UIAppearanceContainer", "UIColor"]
+- ["PSo21UIAppearanceContainer", "awakeFromNib"]
+- ["PSo21UIAppearanceContainer", "init"]
+- !private ["PSo21UIAppearanceContainer", "layer"]
+- ["PSo21UIAppearanceContainer", "mediaDesc"]
+- ["PSo21UIAppearanceContainer", "mediaThumb"]
+- ["PSo21UIAppearanceContainer", "mediaTitle"]
+- ["PSo21UIAppearanceContainer", "setSelected"]
+- ["PSo21UIAppearanceContainer", ""]
+- !private ["CSo7UIColor", "CGColor"]
+- !private ["CSo7UIColor", "init"]
+- !private ["PSo17UICoordinateSpace", "UIColor"]
+- ["PSo17UICoordinateSpace", "awakeFromNib"]
+- ["PSo17UICoordinateSpace", "init"]
+- !private ["PSo17UICoordinateSpace", "layer"]
+- ["PSo17UICoordinateSpace", "mediaDesc"]
+- ["PSo17UICoordinateSpace", "mediaThumb"]
+- ["PSo17UICoordinateSpace", "mediaTitle"]
+- ["PSo17UICoordinateSpace", "setSelected"]
+- ["PSo17UICoordinateSpace", ""]
+- !private ["PSo13UIDynamicItem", "UIColor"]
+- ["PSo13UIDynamicItem", "awakeFromNib"]
+- ["PSo13UIDynamicItem", "init"]
+- !private ["PSo13UIDynamicItem", "layer"]
+- ["PSo13UIDynamicItem", "mediaDesc"]
+- ["PSo13UIDynamicItem", "mediaThumb"]
+- ["PSo13UIDynamicItem", "mediaTitle"]
+- ["PSo13UIDynamicItem", "setSelected"]
+- ["PSo13UIDynamicItem", ""]
+- !private ["PSo18UIFocusEnvironment", "UIColor"]
+- ["PSo18UIFocusEnvironment", "awakeFromNib"]
+- ["PSo18UIFocusEnvironment", "init"]
+- !private ["PSo18UIFocusEnvironment", "layer"]
+- ["PSo18UIFocusEnvironment", "mediaDesc"]
+- ["PSo18UIFocusEnvironment", "mediaThumb"]
+- ["PSo18UIFocusEnvironment", "mediaTitle"]
+- ["PSo18UIFocusEnvironment", "setSelected"]
+- ["PSo18UIFocusEnvironment", ""]
+- !private ["PSo27UIGestureRecognizerDelegate", "UIColor"]
+- ["PSo27UIGestureRecognizerDelegate", "awakeFromNib"]
+- ["PSo27UIGestureRecognizerDelegate", "init"]
+- !private ["PSo27UIGestureRecognizerDelegate", "layer"]
+- ["PSo27UIGestureRecognizerDelegate", "mediaDesc"]
+- ["PSo27UIGestureRecognizerDelegate", "mediaThumb"]
+- ["PSo27UIGestureRecognizerDelegate", "mediaTitle"]
+- ["PSo27UIGestureRecognizerDelegate", "setSelected"]
+- ["PSo27UIGestureRecognizerDelegate", ""]
+- ["CSo11UIResponder", "Bool"]
+- !private ["CSo11UIResponder", "UIColor"]
+- ["CSo11UIResponder", "UIImageView"]
+- ["CSo11UIResponder", "UILabel"]
+- ["CSo11UIResponder", "UITextView"]
+- ["CSo11UIResponder", "awakeFromNib"]
+- ["CSo11UIResponder", "init"]
+- !private ["CSo11UIResponder", "layer"]
+- ["CSo11UIResponder", "mediaDesc"]
+- ["CSo11UIResponder", "mediaThumb"]
+- ["CSo11UIResponder", "mediaTitle"]
+- ["CSo11UIResponder", "setSelected"]
+- ["CSo15UITableViewCell", "Bool"]
+- !private ["CSo15UITableViewCell", "UIColor"]
+- ["CSo15UITableViewCell", "UIImageView"]
+- ["CSo15UITableViewCell", "UILabel"]
+- ["CSo15UITableViewCell", "UITextView"]
+- ["CSo15UITableViewCell", "awakeFromNib"]
+- ["CSo15UITableViewCell", "init"]
+- !private ["CSo15UITableViewCell", "layer"]
+- ["CSo15UITableViewCell", "mediaDesc"]
+- ["CSo15UITableViewCell", "mediaThumb"]
+- ["CSo15UITableViewCell", "mediaTitle"]
+- ["CSo15UITableViewCell", "setSelected"]
+- ["CSo15UITableViewCell", ""]
+- !private ["PSo18UITraitEnvironment", "UIColor"]
+- ["PSo18UITraitEnvironment", "awakeFromNib"]
+- ["PSo18UITraitEnvironment", "init"]
+- !private ["PSo18UITraitEnvironment", "layer"]
+- ["PSo18UITraitEnvironment", "mediaDesc"]
+- ["PSo18UITraitEnvironment", "mediaThumb"]
+- ["PSo18UITraitEnvironment", "mediaTitle"]
+- ["PSo18UITraitEnvironment", "setSelected"]
+- ["PSo18UITraitEnvironment", ""]
+- ["CSo6UIView", "Bool"]
+- !private ["CSo6UIView", "UIColor"]
+- ["CSo6UIView", "UIImageView"]
+- ["CSo6UIView", "UILabel"]
+- ["CSo6UIView", "UITextView"]
+- ["CSo6UIView", "awakeFromNib"]
+- ["CSo6UIView", "init"]
+- !private ["CSo6UIView", "layer"]
+- ["CSo6UIView", "mediaDesc"]
+- ["CSo6UIView", "mediaThumb"]
+- ["CSo6UIView", "mediaTitle"]
+- ["CSo6UIView", "setSelected"]
+- !private ["Ps24_ColorLiteralConvertible", "CGColor"]
+- !private ["Ps24_ColorLiteralConvertible", "init"]
+- !private ["Ps12_Reflectable", "UIColor"]
+- ["Ps12_Reflectable", "awakeFromNib"]
+- ["Ps12_Reflectable", "init"]
+- !private ["Ps12_Reflectable", "layer"]
+- ["Ps12_Reflectable", "mediaDesc"]
+- ["Ps12_Reflectable", "mediaThumb"]
+- ["Ps12_Reflectable", "mediaTitle"]
+- ["Ps12_Reflectable", "setSelected"]
+- ["Ps12_Reflectable", ""]
+depends-nominal:
+- "Ps9AnyObject"
+- !private "CSo7CALayer"
+- !private "PSo13CAMediaTiming"
+- !private "V12CoreGraphics7CGFloat"
+- "Ps11CVarArgType"
+- "Ps28CustomDebugStringConvertible"
+- "Ps23CustomStringConvertible"
+- "Ps9Equatable"
+- "Ps8Hashable"
+- "C4Test22MediaListTableViewCell"
+- "PSo8NSCoding"
+- !private "PSo9NSCopying"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- !private "PSo14NSSecureCoding"
+- "PSo29UIAccessibilityIdentification"
+- "PSo12UIAppearance"
+- "PSo21UIAppearanceContainer"
+- !private "CSo7UIColor"
+- "PSo17UICoordinateSpace"
+- "PSo13UIDynamicItem"
+- "PSo18UIFocusEnvironment"
+- "PSo27UIGestureRecognizerDelegate"
+- "CSo11UIResponder"
+- "CSo15UITableViewCell"
+- "PSo18UITraitEnvironment"
+- "CSo6UIView"
+- !private "Ps24_ColorLiteralConvertible"
+- "Ps12_Reflectable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Test/Test-Bridging-Header.h"
+- "/Users/zanol/projects/player-sdk-ios/./SambaPlayerSDK/SambaPlayerSDK.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAUiElements.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAStreamRequest.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAStreamManager.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMASettings.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAPictureInPictureProxy.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMACompanionAdSlot.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsRequest.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsRenderingSettings.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsManager.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdsLoader.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdEvent.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdError.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdDisplayContainer.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdPodInfo.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAd.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAdPlaybackInfo.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAVideoDisplay.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAVPlayerVideoDisplay.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAContentPlayhead.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/IMAAVPlayerContentPlayhead.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Headers/GoogleInteractiveMediaAds.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/GoogleInteractiveMediaAds.framework/Modules/module.modulemap"
+- "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Headers/SambaPlayerSDK-Swift.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFResources.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerFinishReason.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFIMASDKAdService.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayViewController.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerState.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFVideoPlayer.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFTopBarView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerControlsProtocol.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerOverlayView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerView.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFPlayerViewController.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GMFAdService.h"
+- "/Users/zanol/projects/player-sdk-ios/GoogleMediaFramework/GoogleMediaFramework.h"
+- "/Users/zanol/projects/player-sdk-ios/SambaPlayerSDK/SambaPlayerSDK.h"
+- "/Users/zanol/projects/player-sdk-ios/Build/Intermediates/SambaPlayerSDK.build/Debug-iphonesimulator/SambaPlayerSDK.build/module.modulemap"
+- "/Users/zanol/projects/player-sdk-ios/Build/Products/Debug-iphonesimulator/SambaPlayerSDK.framework/Modules/SambaPlayerSDK.swiftmodule/x86_64.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Modules/Alamofire.swiftmodule/x86_64.swiftmodule"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Headers/Alamofire-Swift.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Headers/Alamofire-umbrella.h"
+- "/Users/zanol/projects/player-sdk-ios/Frameworks/Alamofire.framework/Modules/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/AVFoundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreMedia.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreAudio.swiftmodule"
+interface-hash: "4ebcbc3e610d3813fccc784e2c7d9ab5"

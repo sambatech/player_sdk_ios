@@ -1,0 +1,10 @@
+framework module SambaPlayerSDK {
+  umbrella header "SambaPlayerSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module SambaPlayerSDK.Swift {
+    header "SambaPlayerSDK-Swift.h"
+}

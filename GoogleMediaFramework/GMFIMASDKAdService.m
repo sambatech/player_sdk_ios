@@ -261,6 +261,10 @@
   // Noop
 }
 
+- (void)didPressHd {
+	// Noop
+}
+
 #pragma mark Debug Methods
 
 // Helper/debug method for displaying ad events in the application log.

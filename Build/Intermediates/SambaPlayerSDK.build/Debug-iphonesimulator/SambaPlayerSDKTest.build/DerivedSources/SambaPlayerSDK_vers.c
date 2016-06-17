@@ -1,0 +1,1 @@
+ const unsigned char SambaPlayerSDKVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:SambaPlayerSDK  PROJECT:SambaPlayerSDK-1" "\n"; const double SambaPlayerSDKVersionNumber __attribute__ ((used)) = (double)1.;
