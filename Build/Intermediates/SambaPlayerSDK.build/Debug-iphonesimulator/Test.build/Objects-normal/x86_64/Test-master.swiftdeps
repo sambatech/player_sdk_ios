@@ -1,9 +1,0 @@
-version: "Apple Swift version 2.2 (swiftlang-703.0.18.8 clang-703.0.31)"
-options: "f2fcf93b5b4bc281d0a443412df020bf"
-build_time: [519521900, 989107000]
-inputs:
-  "/Users/zanol/projects/player-sdk-ios/Test/AppDelegate.swift": [518649363, 0]
-  "/Users/zanol/projects/player-sdk-ios/Test/MediaListViewController.swift": [518649364, 0]
-  "/Users/zanol/projects/player-sdk-ios/Test/MediaListTableViewCell.swift": [518649364, 0]
-  "/Users/zanol/projects/player-sdk-ios/Test/Helpers.swift": [519521898, 0]
-  "/Users/zanol/projects/player-sdk-ios/Test/PlayerViewController.swift": [518649364, 0]

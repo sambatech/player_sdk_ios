@@ -12,8 +12,8 @@ import Alamofire
 class MediaListViewController : UITableViewController {
 	
 	@IBOutlet weak var dfpToggle: UIButton!
-	private var mediaList:[MediaInfo] = [MediaInfo]()
-	private var mediaListBackup:[MediaInfo] = [MediaInfo]()
+	private var mediaList: [MediaInfo] = [MediaInfo]()
+	private var mediaListBackup: [MediaInfo] = [MediaInfo]()
 	private var currentDfp: String = "4xtfj"
 	private var dfpActive: Bool = false
 	
@@ -165,8 +165,8 @@ class MediaListViewController : UITableViewController {
 			self.tableView.reloadData()
 			
 		}
-		
 	}
+	
 	@IBAction func toggleDfp(sender: UIButton, forEvent event: UIEvent) {
 		if !dfpActive {
 			let dfpIcon = sender.currentBackgroundImage?.tintPhoto(UIColor.clearColor())

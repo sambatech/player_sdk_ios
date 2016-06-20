@@ -1,6 +1,0 @@
-version: "Apple Swift version 2.2 (swiftlang-703.0.18.8 clang-703.0.31)"
-options: "54f6f17643782edc15298620e9a4fe70"
-build_time: [519517387, 640441000]
-inputs:
-  "/Users/zanol/Desktop/GMF/GMF/GMFTest/ViewController.swift": !dirty [519514780, 0]
-  "/Users/zanol/Desktop/GMF/GMF/GMFTest/AppDelegate.swift": !dirty [519487156, 0]
