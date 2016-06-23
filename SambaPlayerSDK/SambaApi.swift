@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Alamofire
 
 public class SambaApi {
 	
@@ -15,21 +14,16 @@ public class SambaApi {
 	
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
 		//Alamofire.request(.GET, Helpers.settings["playerapi_endpoint"]! + request.projectHash +
-		Alamofire.request(.GET, "https://fast.player.liquidplatform.com/pApiv2/v1/" + request.projectHash +
-			(request.mediaId != nil ? "/" + request.mediaId! :
-				"?" + ((request.streamUrls ?? []).count > 0 ? "alternativeLive=" + request.streamUrls![0] :
-					"streamName=" + request.streamName!))).responseString { response in
-			guard let token = response.result.value else {
-				print("\(self.dynamicType) Error: No media response data!")
-				return
-			}
-
-			var tokenBase64: String = token
+		Helpers.requestURL("https://fast.player.liquidplatform.com/pApiv2/v1/\(request.projectHash)/" + (request.mediaId ??
+			"?\((request.streamUrls ?? []).count > 0 ? "alternativeLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
+			guard let responseText = responseText else { return }
+			
+			var tokenBase64: String = responseText
 			
 			if let mediaId = request.mediaId,
 					m = mediaId.rangeOfString("\\d(?=[a-zA-Z]*$)", options: .RegularExpressionSearch),
 					delimiter = Int(mediaId[m]) {
-				tokenBase64 = token.substringWithRange(token.startIndex.advancedBy(delimiter)..<token.endIndex.advancedBy(-delimiter))
+				tokenBase64 = responseText.substringWithRange(responseText.startIndex.advancedBy(delimiter)..<responseText.endIndex.advancedBy(-delimiter))
 			}
 			
 			tokenBase64 = tokenBase64.stringByReplacingOccurrencesOfString("-", withString: "+")
@@ -43,16 +37,16 @@ public class SambaApi {
 			default: break
 			}
 			
-			guard let data = NSData(base64EncodedString: tokenBase64, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) else {
-				print("\(self.dynamicType) Error: Base64 token failed to create encoded data")
+			guard let jsonText = NSData(base64EncodedString: tokenBase64, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) else {
+				print("\(self.dynamicType) Error: Base64 token failed to create encoded data.")
 				return
 			}
 			
 			do {
-				callback(self.parseMedia(try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)))
+				callback(self.parseMedia(try NSJSONSerialization.JSONObjectWithData(jsonText, options: .AllowFragments)))
 			}
 			catch {
-				print("\(self.dynamicType) Error: Failed to parse JSON string")
+				print("\(self.dynamicType) Error: Failed to parse JSON string.")
 			}
 		}
 	}

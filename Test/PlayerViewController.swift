@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import SambaPlayerSDK
 
 class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	
@@ -15,7 +16,7 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	@IBOutlet weak var progressLabel: UILabel!
 	@IBOutlet weak var timeField: UITextField!
 	
-	var sambaPlayer:SambaPlayer!
+	var sambaPlayer: SambaPlayer!
 	var mediaInfo: MediaInfo?
 	
 	override func viewDidAppear(animated: Bool) {
@@ -41,10 +42,12 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	private func initPlayer(media: SambaMedia) {
 		media.adUrl = mediaInfo?.mediaAd
 		
-		sambaPlayer = SambaPlayer(self, parentView: playerContainer)
-		sambaPlayer.delegate = self
-		sambaPlayer.media = media
-		sambaPlayer.play()
+		dispatch_async(dispatch_get_main_queue()) {
+			self.sambaPlayer = SambaPlayer(self, parentView: self.playerContainer)
+			self.sambaPlayer.delegate = self
+			self.sambaPlayer.media = media
+			self.sambaPlayer.play()
+		}
 	}
 	
 	func onLoad() {

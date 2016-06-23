@@ -62,6 +62,40 @@ class Helpers {
 		
 		return s
 	}
+	
+	static func requestURL(url: String, _ callback: (String? -> ())? = nil) {
+		guard let url = NSURL(string: url) else {
+			print("\(self.dynamicType) Error: Invalid URL format.")
+			return
+		}
+		
+		let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(NSURLRequest(URL: url)) { data, response, error in
+			if let error = error {
+				print("\(self.dynamicType) Error: \(error.localizedDescription)")
+				return
+			}
+			
+			guard let response = response as? NSHTTPURLResponse else {
+				print("\(self.dynamicType) Error: No response from server.")
+				return
+			}
+			
+			guard case 200..<300 = response.statusCode else {
+				print("\(self.dynamicType) Error: Invalid server response (\(response.statusCode)).")
+				return
+			}
+			
+			guard let data = data, responseText = String(data: data, encoding: NSUTF8StringEncoding) else {
+				print("\(self.dynamicType) Error: \(error?.description ?? "Unable to get data.")")
+				callback?(nil)
+				return
+			}
+			
+			callback?(responseText)
+		}
+		
+		requestTask.resume()
+	}
 }
 
 extension UIColor {

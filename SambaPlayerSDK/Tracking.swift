@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Alamofire
 
 class Tracking: SambaPlayerDelegate {
 	private var _player: SambaPlayer
@@ -125,7 +124,7 @@ class STTM {
 		print("send", url)
 		#endif
 		
-		Alamofire.request(.GET, url)
+		Helpers.requestURL(url)
 		
 		_targets.removeAll()
 	}

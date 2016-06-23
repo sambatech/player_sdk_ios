@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A91E8D81D14BD0000C30DD3 /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayerSDK.framework */; };
+		9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
+		9A07D6AA1D1C87D000780633 /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayerSDK.framework */; };
 		9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 		9A91E9021D14BFA200C30DD3 /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A91E8F71D14BFA200C30DD3 /* MediaListViewController.swift */; };
 		9A91E9031D14BFA200C30DD3 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A91E8F81D14BFA200C30DD3 /* Helpers.swift */; };
@@ -19,7 +20,6 @@
 		9A91E90A1D14BFA200C30DD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E9001D14BFA200C30DD3 /* Assets.xcassets */; };
 		9A91E90E1D14BFB200C30DD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90C1D14BFB200C30DD3 /* LaunchScreen.storyboard */; };
 		9A91E90F1D14BFB200C30DD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90D1D14BFB200C30DD3 /* Main.storyboard */; };
-		9AA033B21D1873F500908957 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
 		9AA033B31D1873F500908957 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9AF3250B1D1473C100B6E450 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 9AF325071D1458BA00B6E450 /* Resources */; };
 		9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B31D14B5B900B6E450 /* GMFAdService.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -59,8 +59,7 @@
 		9AF325F91D14B5B900B6E450 /* UISlider+GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* UISlider+GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* UISlider+GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* UISlider+GMFSlider.m */; };
 		9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
-		9AF326121D14B6C200B6E450 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
-		9AF3261F1D14B7E700B6E450 /* Commons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF326141D14B7E700B6E450 /* Commons.swift */; };
+		9AF3261F1D14B7E700B6E450 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF326141D14B7E700B6E450 /* Helpers.swift */; };
 		9AF326211D14B7E700B6E450 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF326161D14B7E700B6E450 /* OutputMenu.xib */; };
 		9AF326221D14B7E700B6E450 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF326171D14B7E700B6E450 /* OutputMenuViewController.swift */; };
 		9AF326231D14B7E700B6E450 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF326181D14B7E700B6E450 /* SambaApi.swift */; };
@@ -138,7 +137,7 @@
 		9AF325D61D14B5B900B6E450 /* UISlider+GMFSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UISlider+GMFSlider.m"; path = "GoogleMediaFramework/UISlider+GMFSlider.m"; sourceTree = "<group>"; };
 		9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		9AF326111D14B6C200B6E450 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Alamofire.framework; sourceTree = "<group>"; };
-		9AF326141D14B7E700B6E450 /* Commons.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Commons.swift; sourceTree = "<group>"; };
+		9AF326141D14B7E700B6E450 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		9AF326151D14B7E700B6E450 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9AF326161D14B7E700B6E450 /* OutputMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutputMenu.xib; sourceTree = "<group>"; };
 		9AF326171D14B7E700B6E450 /* OutputMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OutputMenuViewController.swift; sourceTree = "<group>"; };
@@ -158,8 +157,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */,
-				9AA033B21D1873F500908957 /* Alamofire.framework in Frameworks */,
-				9A91E8D81D14BD0000C30DD3 /* SambaPlayerSDK.framework in Frameworks */,
+				9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */,
+				9A07D6AA1D1C87D000780633 /* SambaPlayerSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -168,7 +167,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */,
-				9AF326121D14B6C200B6E450 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -269,7 +267,7 @@
 		9AF326131D14B7E700B6E450 /* SambaPlayerSDK */ = {
 			isa = PBXGroup;
 			children = (
-				9AF326141D14B7E700B6E450 /* Commons.swift */,
+				9AF326141D14B7E700B6E450 /* Helpers.swift */,
 				9AF326151D14B7E700B6E450 /* Info.plist */,
 				9AF326161D14B7E700B6E450 /* OutputMenu.xib */,
 				9AF326171D14B7E700B6E450 /* OutputMenuViewController.swift */,
@@ -442,7 +440,7 @@
 				9AF326251D14B7E700B6E450 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,
 				9AF325E91D14B5B900B6E450 /* GMFPlayerViewController.m in Sources */,
-				9AF3261F1D14B7E700B6E450 /* Commons.swift in Sources */,
+				9AF3261F1D14B7E700B6E450 /* Helpers.swift in Sources */,
 				9AF325F61D14B5B900B6E450 /* UIImage+GMFTintableImage.m in Sources */,
 				9AF326231D14B7E700B6E450 /* SambaApi.swift in Sources */,
 				9AF326261D14B7E700B6E450 /* SambaPlayer.swift in Sources */,
@@ -611,6 +609,8 @@
 				INFOPLIST_FILE = SambaPlayerSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayerSDK;
 				PRODUCT_NAME = SambaPlayerSDK;
 				SKIP_INSTALL = YES;
@@ -634,6 +634,7 @@
 				INFOPLIST_FILE = SambaPlayerSDK/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayerSDK;
 				PRODUCT_NAME = SambaPlayerSDK;
 				SKIP_INSTALL = YES;
