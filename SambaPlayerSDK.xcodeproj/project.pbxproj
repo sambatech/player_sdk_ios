@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
-		9A07D6AA1D1C87D000780633 /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayerSDK.framework */; };
+		9A76AF1D1D1DD75B00FC7353 /* SambaPlayerSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A76AF1C1D1DD75B00FC7353 /* SambaPlayerSDK.framework */; };
 		9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 		9A91E9021D14BFA200C30DD3 /* MediaListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A91E8F71D14BFA200C30DD3 /* MediaListViewController.swift */; };
 		9A91E9031D14BFA200C30DD3 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A91E8F81D14BFA200C30DD3 /* Helpers.swift */; };
@@ -86,6 +86,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		9A76AF1C1D1DD75B00FC7353 /* SambaPlayerSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SambaPlayerSDK.framework; path = Carthage/Build/iOS/SambaPlayerSDK.framework; sourceTree = SOURCE_ROOT; };
 		9A91E8C61D14BCBF00C30DD3 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A91E8F71D14BFA200C30DD3 /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
 		9A91E8F81D14BFA200C30DD3 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -158,7 +159,7 @@
 			files = (
 				9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 				9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */,
-				9A07D6AA1D1C87D000780633 /* SambaPlayerSDK.framework in Frameworks */,
+				9A76AF1D1D1DD75B00FC7353 /* SambaPlayerSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,6 +259,7 @@
 		9AF325FB1D14B5E300B6E450 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9A76AF1C1D1DD75B00FC7353 /* SambaPlayerSDK.framework */,
 				9AF326111D14B6C200B6E450 /* Alamofire.framework */,
 				9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */,
 			);
@@ -471,6 +473,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -490,6 +493,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -596,7 +600,7 @@
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -621,7 +625,7 @@
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_MODULES = NO;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
