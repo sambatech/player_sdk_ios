@@ -18,7 +18,6 @@ DerivedData
 *.hmap
 *.xcworkspace
 !default.xcworkspace
-*.xcscheme
 
 #CocoaPods
 Pods
