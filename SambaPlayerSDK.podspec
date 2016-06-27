@@ -5,14 +5,13 @@ Pod::Spec.new do |s|
 	s.summary = 'Samba Tech media player SDK for iOS'
 	s.homepage = 'http://sambatech.com'
 	s.authors = { 'Samba Tech Player Team' => 'player@sambatech.com' }
-	s.source = { :git => 'https://github.com/sambatech/player_sdk_ios.git', :tag => String(s.version) }
+	s.source = { :git => 'https://github.com/sambatech/player_sdk_ios.git', :tag => s.version.to_s }
 
 	s.ios.deployment_target = '8.0'
 
-	s.preserve_paths = 'Vendor/**'
-	s.vendored_frameworks = 'Vendor/GoogleInteractiveMediaAds.framework'
-	s.dependency 'Alamofire', '~> 3.4'
+	s.vendored_frameworks = 'Frameworks/GoogleInteractiveMediaAds.framework'
 
-	s.source_files = 'Source/*.swift', 'Vendor/GoogleMediaFramework/GoogleMediaFramework', 'Vendor'
-	s.resource_bundles = { 'SambaPlayerSDK' => ['Vendor/GoogleMediaFramework/Resources/**'] }
+	s.xcconfig = { 'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}"' }
+	s.source_files = 'SambaPlayerSDK/*.swift', 'GoogleMediaFramework/*.{h,m}'
+	s.resource_bundles = { 'SambaPlayerSDK' => ['Resources/**'] }
 end
