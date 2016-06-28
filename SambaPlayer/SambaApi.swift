@@ -8,9 +8,9 @@
 
 import Foundation
 
-public class SambaApi {
+@objc public class SambaApi : NSObject {
 	
-	public init() {}
+	public override init() {}
 	
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
 		//Alamofire.request(.GET, Helpers.settings["playerapi_endpoint"]! + request.projectHash +

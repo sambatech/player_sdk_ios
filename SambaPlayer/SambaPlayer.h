@@ -6,5 +6,6 @@
 //  Copyright © 2016 Samba Tech. All rights reserved.
 //
 
+#import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 #import "GoogleMediaFramework.h"

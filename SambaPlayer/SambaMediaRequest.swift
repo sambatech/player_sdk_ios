@@ -8,14 +8,14 @@
 
 import Foundation
 
-public class SambaMediaRequest {
+@objc public class SambaMediaRequest : NSObject {
 	
 	public var projectHash: String
 	public var mediaId: String?
 	public var streamName: String?
 	public var streamUrls: [String]?
 	
-	init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?) {
+	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?) {
 		self.projectHash = projectHash
 		self.mediaId = mediaId
 		self.streamName = streamName

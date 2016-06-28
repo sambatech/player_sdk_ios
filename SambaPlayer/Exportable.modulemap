@@ -1,0 +1,8 @@
+framework module SambaPlayer {
+	umbrella header "SambaPlayer.h"
+	
+	export *
+	module * { export * }
+	
+	link framework "AVFoundation"
+}

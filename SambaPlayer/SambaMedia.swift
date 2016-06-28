@@ -11,7 +11,7 @@
  *
  * If `outputs` field is nil, use `url` field.
  */
-public class SambaMedia : CustomStringConvertible {
+@objc public class SambaMedia : NSObject {
 
 	public struct Output {
 		let url: String, label: String, isDefault: Bool
@@ -37,7 +37,7 @@ public class SambaMedia : CustomStringConvertible {
 	public var isLive = false;
 	public var theme: UInt = 0x72BE44
 
-	init() {}
+	public override init() {}
 
 	public convenience init(_ url:String) {
 		self.init(url, title: nil, thumb: nil)
@@ -49,7 +49,7 @@ public class SambaMedia : CustomStringConvertible {
 		self.thumb = thumb
 	}
 	
-	public var description: String { return title; }
+	public override var description: String { return title; }
 }
 
 /**
