@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class SambaPlayer: UIViewController {
+public class SambaPlayer : UIViewController {
 	
 	private var _player: GMFPlayerViewController?
 	private var _parentView: UIView?

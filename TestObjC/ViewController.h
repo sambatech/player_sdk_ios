@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@import SambaPlayerSDK;
+@import SambaPlayer;
 
 @interface ViewController : UIViewController
 

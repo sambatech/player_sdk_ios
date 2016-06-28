@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9AF324D81D14356E00B6E450"
-               BuildableName = "SambaPlayerSDK.framework"
-               BlueprintName = "SambaPlayerSDK"
-               ReferencedContainer = "container:SambaPlayerSDK.xcodeproj">
+               BuildableName = "SambaPlayer.framework"
+               BlueprintName = "SambaPlayer"
+               ReferencedContainer = "container:SambaPlayer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
             BlueprintIdentifier = "9A91E8C51D14BCBF00C30DD3"
             BuildableName = "Test.app"
             BlueprintName = "Test"
-            ReferencedContainer = "container:SambaPlayerSDK.xcodeproj">
+            ReferencedContainer = "container:SambaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9AF324D81D14356E00B6E450"
-            BuildableName = "SambaPlayerSDK.framework"
-            BlueprintName = "SambaPlayerSDK"
-            ReferencedContainer = "container:SambaPlayerSDK.xcodeproj">
+            BuildableName = "SambaPlayer.framework"
+            BlueprintName = "SambaPlayer"
+            ReferencedContainer = "container:SambaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -73,9 +73,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9AF324D81D14356E00B6E450"
-            BuildableName = "SambaPlayerSDK.framework"
-            BlueprintName = "SambaPlayerSDK"
-            ReferencedContainer = "container:SambaPlayerSDK.xcodeproj">
+            BuildableName = "SambaPlayer.framework"
+            BlueprintName = "SambaPlayer"
+            ReferencedContainer = "container:SambaPlayer.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

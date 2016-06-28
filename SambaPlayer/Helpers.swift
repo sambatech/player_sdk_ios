@@ -86,7 +86,10 @@ class Helpers {
 			}
 			
 			guard let data = data, responseText = String(data: data, encoding: NSUTF8StringEncoding) else {
+				#if DEBUG
 				print("\(self.dynamicType) Error: \(error?.description ?? "Unable to get data.")")
+				#endif
+				
 				callback?(nil)
 				return
 			}
