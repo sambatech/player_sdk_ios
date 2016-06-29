@@ -516,7 +516,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "mkdir \"${SRCROOT}/../Build\" 2> /dev/null\nmkdir \"${SRCROOT}/../Build/iOS\" 2> /dev/null\ncp -r \"${SCRIPT_INPUT_FILE_0}\" \"${SRCROOT}/../Build/iOS\"";
+			shellScript = "# trusting on Carthage dir structs!\nmkdir \"${SRCROOT}/../../Build\" 2> /dev/null\nmkdir \"${SRCROOT}/../../Build/iOS\" 2> /dev/null\ncp -r \"${SCRIPT_INPUT_FILE_0}\" \"${SRCROOT}/../../Build/iOS\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
