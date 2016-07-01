@@ -31,6 +31,13 @@ Basta executar `carthage update` para compilar o `SambaPlayer.framework`. Em seg
 
 ![readme1](https://cloud.githubusercontent.com/assets/484062/16528649/85e947ce-3f94-11e6-8806-6020775d8d02.gif)
 
+Por fim, efetue as seguintes configurações em *Target -> Build Settings*:
+
+- *Packaging -> Defines Module -> Yes*
+- *Search Paths -> Framework Search Paths*
+- *Linking -> Runpath Search Paths*
+- *Build Options -> Embedded Content Contains Swift Code -> Yes*
+
 ##Suporte
 Quaisquer perguntas, sugestões ou notificação de bugs, basta criar uma nova issue que responderemos assim que possível.
 
