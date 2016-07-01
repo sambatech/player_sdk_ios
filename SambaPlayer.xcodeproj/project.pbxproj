@@ -272,10 +272,10 @@
 			isa = PBXGroup;
 			children = (
 				9A5267EE1D22D5BD00C9C015 /* SambaPlayer */,
+				9AF325B21D14B59700B6E450 /* GoogleMediaFramework */,
 				9A91E8C71D14BCBF00C30DD3 /* Test */,
 				9AEC54EC1D21C9E300EB1C4C /* TestObjC */,
 				9AF325FB1D14B5E300B6E450 /* Frameworks */,
-				9AF325B21D14B59700B6E450 /* GoogleMediaFramework */,
 				9AF325071D1458BA00B6E450 /* Resources */,
 				9A91E8C11D14BC5F00C30DD3 /* Products */,
 				9A91E8C61D14BCBF00C30DD3 /* Test.app */,
@@ -510,13 +510,12 @@
 			files = (
 			);
 			inputPaths = (
-				"$(SRCROOT)/Frameworks/GoogleInteractiveMediaAds.framework",
 			);
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# trusting on Carthage dir structs!\nmkdir \"${SRCROOT}/../../Build\" 2> /dev/null\nmkdir \"${SRCROOT}/../../Build/iOS\" 2> /dev/null\ncp -r \"${SCRIPT_INPUT_FILE_0}\" \"${SRCROOT}/../../Build/iOS\"";
+			shellScript = "#mkdir \"${TARGET_BUILD_DIR}/../Temp/${TARGET_NAME}\" 2> /dev/null\nlipo -create \"${TARGET_BUILD_DIR}/../Release-iphoneos/${EXECUTABLE_PATH}\" \"${TARGET_BUILD_DIR}/../Release-iphonesimulator/${EXECUTABLE_PATH}\" -output \"${TARGET_BUILD_DIR}/../${TARGET_NAME}\"\n\n# Carthage dir structs\nif [ -d \"${SRCROOT}/../../Carthage\" ]; then\n    mkdir \"${SRCROOT}/../../Build\" 2> /dev/null\n    mkdir \"${SRCROOT}/../../Build/iOS\" 2> /dev/null\n    cp -r \"$(SRCROOT)/Frameworks/GoogleInteractiveMediaAds.framework\" \"${SRCROOT}/../../Build/iOS\"\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -716,6 +715,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -760,6 +760,7 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -783,7 +784,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;

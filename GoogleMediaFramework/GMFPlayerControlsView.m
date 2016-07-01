@@ -133,6 +133,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 }
 
 - (id)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
   NSAssert(false, @"Invalid initializer.");
   return nil;
 }

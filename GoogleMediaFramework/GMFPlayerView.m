@@ -32,6 +32,7 @@
 }
 
 - (id)initWithFrame:(CGRect)frame {
+  self = [super initWithFrame:frame];
   NSAssert(false, @"initWithFrame not available, use init.");
   return nil;
 }

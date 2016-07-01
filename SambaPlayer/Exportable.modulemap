@@ -4,5 +4,14 @@ framework module SambaPlayer {
 	export *
 	module * { export * }
 	
-	link framework "AVFoundation"
+	//link framework "AVFoundation"
 }
+
+/*framework module GoogleMediaFramework {
+	module GoogleMediaFramework {
+		header "GoogleMediaFramework.h"
+		
+		export *
+		//module * { export * }
+	}
+}*/
