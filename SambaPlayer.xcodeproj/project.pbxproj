@@ -414,7 +414,7 @@
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
 				9AF324D71D14356E00B6E450 /* Resources */,
-				9AF668001D24409F00AEFF89 /* ShellScript */,
+				9A1D83E01D26B04600A5A838 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -504,9 +504,9 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9AF668001D24409F00AEFF89 /* ShellScript */ = {
+		9A1D83E01D26B04600A5A838 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
+			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
@@ -515,7 +515,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#mkdir \"${TARGET_BUILD_DIR}/../Temp/${TARGET_NAME}\" 2> /dev/null\nlipo -create \"${TARGET_BUILD_DIR}/../Release-iphoneos/${EXECUTABLE_PATH}\" \"${TARGET_BUILD_DIR}/../Release-iphonesimulator/${EXECUTABLE_PATH}\" -output \"${TARGET_BUILD_DIR}/../${TARGET_NAME}\"\n\n# Carthage dir structs\nif [ -d \"${SRCROOT}/../../Carthage\" ]; then\n    mkdir \"${SRCROOT}/../../Build\" 2> /dev/null\n    mkdir \"${SRCROOT}/../../Build/iOS\" 2> /dev/null\n    cp -r \"$(SRCROOT)/Frameworks/GoogleInteractiveMediaAds.framework\" \"${SRCROOT}/../../Build/iOS\"\nfi";
+			shellScript = ./setup.sh;
 		};
 /* End PBXShellScriptBuildPhase section */
 
