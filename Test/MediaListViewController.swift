@@ -19,7 +19,8 @@ class MediaListViewController : UITableViewController {
 	
 	
 	override func viewDidLoad() {
-		requestMediaSet([String.init(4421), String.init(4460)])
+		//requestMediaSet([String.init(4421), String.init(4460)])
+		requestMediaSet([String.init(533)])
 		self.tableView.backgroundColor = UIColor.clearColor()
 		
 		//Button
@@ -89,40 +90,52 @@ class MediaListViewController : UITableViewController {
 			
 			print(url)
 			
-			Alamofire.request(.GET, url).responseJSON { response in
-				guard let json = response.result.value as? [AnyObject] else {
-					print("Error: Invalid JSON format!")
-					return
+			Helpers.requestURL(url) { responseText in
+				guard let responseText = responseText,
+					jsonData = responseText.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false) else { return }
+				
+				var jsonOpt: [AnyObject]?
+				
+				do {
+					jsonOpt = try NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments) as? [AnyObject]
+				}
+				catch {
+					print("\(self.dynamicType) Erro ao dar parse em JSON string.")
 				}
 				
-				
-				for jsonNode in json {
-					// skip non video media
-					if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
-						continue
+				guard let json = jsonOpt else {
+					print("\(self.dynamicType) Object JSON inválido.")
+					return
+				}
+				dispatch_async(dispatch_get_main_queue()) {
+					for jsonNode in json {
+						// skip non video media
+						if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
+							continue
+						}
+						
+						let m = MediaInfo(
+							title: jsonNode["title"] as? String ?? "",
+							thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
+							projectHash: Helpers.settings["pid_" + pid]!,
+							mediaId: jsonNode["id"] as? String ?? "",
+							description: nil,
+							mediaAd: nil
+						)
+						
+						self.mediaList.append(m)
 					}
 					
-					let m = MediaInfo(
-						title: jsonNode["title"] as? String ?? "",
-						thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
-						projectHash: Helpers.settings["pid_" + pid]!,
-						mediaId: jsonNode["id"] as? String ?? "",
-						description: nil,
-						mediaAd: nil
-					)
+					i += 1
 					
-					self.mediaList.append(m)
-				}
-				
-				i += 1
-				
-				if i == pids.count {
-					self.tableView.reloadData()
+					if i == pids.count {
+						self.tableView.reloadData()
+						return
+					}
+					
+					request()
 					return
 				}
-				
-				request()
-				return
 			}
 		}
 		
@@ -133,9 +146,21 @@ class MediaListViewController : UITableViewController {
 	
 	private func requestAds(hash: String) {
 		let url = "\(Helpers.settings["myjson_endpoint"]!)\(hash)"
-		Alamofire.request(.GET, url).responseJSON { response in
-			guard let json = response.result.value as? [AnyObject] else {
-				print("Error: Invalid JSON format!")
+		Helpers.requestURL(url) { responseText in
+			guard let responseText = responseText,
+				jsonData = NSData(contentsOfFile: responseText) else { return }
+			
+			var jsonOpt: [AnyObject]?
+			
+			do {
+				jsonOpt = try NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments) as? [AnyObject]
+			}
+			catch {
+				print("\(self.dynamicType) Erro ao dar parse em JSON string.")
+			}
+			
+			guard let json = jsonOpt else {
+				print("\(self.dynamicType) Object JSON inválido.")
 				return
 			}
 			

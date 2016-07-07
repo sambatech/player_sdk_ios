@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
 		9A2B2F4F1D2DD13600F118AB /* SambaPlayer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9A3A71021D2F0B9900B4F2A1 /* SambaPlayer.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FC1D22D5BD00C9C015 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F11D22D5BD00C9C015 /* OutputMenu.xib */; };
 		9A5267FD1D22D5BD00C9C015 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* OutputMenuViewController.swift */; };
@@ -30,7 +30,6 @@
 		9A91E90A1D14BFA200C30DD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E9001D14BFA200C30DD3 /* Assets.xcassets */; };
 		9A91E90E1D14BFB200C30DD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90C1D14BFB200C30DD3 /* LaunchScreen.storyboard */; };
 		9A91E90F1D14BFB200C30DD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90D1D14BFB200C30DD3 /* Main.storyboard */; };
-		9AA033B31D1873F500908957 /* Alamofire.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9AEC54EF1D21C9E300EB1C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54EE1D21C9E300EB1C4C /* main.m */; };
 		9AEC54F21D21C9E300EB1C4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54F11D21C9E300EB1C4C /* AppDelegate.m */; };
 		9AEC54F51D21C9E300EB1C4C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54F41D21C9E300EB1C4C /* ViewController.m */; };
@@ -89,15 +88,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9AA033B41D1873F500908957 /* Embed Frameworks */ = {
+		9AA033B41D1873F500908957 /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
-			dstSubfolderSpec = 10;
+			dstSubfolderSpec = 11;
 			files = (
-				9AA033B31D1873F500908957 /* Alamofire.framework in Embed Frameworks */,
+				9A3A71021D2F0B9900B4F2A1 /* SambaPlayer.framework in Copy Files */,
 			);
-			name = "Embed Frameworks";
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -185,7 +184,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */,
-				9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,7 +385,7 @@
 				9A91E8C21D14BCBF00C30DD3 /* Sources */,
 				9A91E8C31D14BCBF00C30DD3 /* Frameworks */,
 				9A91E8C41D14BCBF00C30DD3 /* Resources */,
-				9AA033B41D1873F500908957 /* Embed Frameworks */,
+				9AA033B41D1873F500908957 /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -607,15 +605,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
@@ -627,15 +623,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
@@ -653,7 +647,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -670,7 +663,6 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -719,6 +711,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALID_ARCHS = "arm64 armv7 armv7s";
@@ -763,6 +756,7 @@
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -775,7 +769,6 @@
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -787,9 +780,7 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@executable_path/SharedFrameworks";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -799,7 +790,6 @@
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -811,9 +801,7 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@executable_path/SharedFrameworks";
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 			};
