@@ -9,9 +9,8 @@ Pod::Spec.new do |s|
 
 	s.ios.deployment_target = '8.0'
 
-	s.vendored_frameworks = 'Frameworks/GoogleInteractiveMediaAds.framework'
-
-	s.xcconfig = { 'USER_HEADER_SEARCH_PATHS' => '"${PODS_ROOT}"' }
-	s.source_files = 'SambaPlayerSDK/*.swift', 'GoogleMediaFramework/*.{h,m}'
+	s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.2.1'
+	
+	s.source_files = 'SambaPlayer/*.swift', 'GoogleMediaFramework/*.{h,m}'
 	s.resource_bundles = { 'SambaPlayerSDK' => ['Resources/**'] }
 end

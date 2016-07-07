@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9A07D6A91D1C647A00780633 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF326111D14B6C200B6E450 /* Alamofire.framework */; };
+		9A2B2F4F1D2DD13600F118AB /* SambaPlayer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FC1D22D5BD00C9C015 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F11D22D5BD00C9C015 /* OutputMenu.xib */; };
 		9A5267FD1D22D5BD00C9C015 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* OutputMenuViewController.swift */; };
@@ -78,6 +79,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		9A2B2F4E1D2DD11A00F118AB /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 11;
+			files = (
+				9A2B2F4F1D2DD13600F118AB /* SambaPlayer.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		9AA033B41D1873F500908957 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -104,7 +115,6 @@
 		9A5267F81D22D5BD00C9C015 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A5267F91D22D5BD00C9C015 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		9A52680C1D230C0500C9C015 /* Exportable.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Exportable.modulemap; sourceTree = "<group>"; };
-		9A7F07771D23259D004BFF6F /* SambaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SambaPlayer.framework; path = "Build/Products/Release-iphoneos/SambaPlayer.framework"; sourceTree = SOURCE_ROOT; };
 		9A91E8C61D14BCBF00C30DD3 /* Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Test.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A91E8F71D14BFA200C30DD3 /* MediaListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MediaListViewController.swift; sourceTree = "<group>"; };
 		9A91E8F81D14BFA200C30DD3 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
@@ -329,7 +339,6 @@
 		9AF325FB1D14B5E300B6E450 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9A7F07771D23259D004BFF6F /* SambaPlayer.framework */,
 				9AF326111D14B6C200B6E450 /* Alamofire.framework */,
 				9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */,
 			);
@@ -396,6 +405,7 @@
 				9AEC54E71D21C9E200EB1C4C /* Sources */,
 				9AEC54E81D21C9E200EB1C4C /* Frameworks */,
 				9AEC54E91D21C9E200EB1C4C /* Resources */,
+				9A2B2F4E1D2DD11A00F118AB /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -639,13 +649,11 @@
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
+					"${inherited}",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Build/Products/Release-iphoneos",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -658,13 +666,11 @@
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
+					"${inherited}",
 					"$(PROJECT_DIR)/Frameworks",
-					"$(PROJECT_DIR)/Carthage/Build/iOS",
-					"$(PROJECT_DIR)/Build/Products/Release-iphoneos",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -710,7 +716,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -755,7 +761,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -773,7 +779,6 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -781,13 +786,12 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				INSTALL_PATH = "@executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
-				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -799,7 +803,6 @@
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -807,13 +810,12 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				INSTALL_PATH = "@executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
-				SKIP_INSTALL = YES;
 			};
 			name = Release;
 		};
