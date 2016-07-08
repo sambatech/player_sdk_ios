@@ -147,6 +147,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
                                              selector:@selector(onAudioSessionInterruption:)
                                                  name:AVAudioSessionInterruptionNotification
                                                object:[AVAudioSession sharedInstance]];
+	_backgroundColor = [UIColor blackColor];
   }
   return self;
 }
@@ -313,7 +314,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
                  context:kGMFPlayerDurationContext];
     _renderingView = [[GMFPlayerLayerView alloc] init];
     [[_renderingView playerLayer] setVideoGravity:AVLayerVideoGravityResizeAspect];
-    [[_renderingView playerLayer] setBackgroundColor:[[UIColor blackColor] CGColor]];
+	[self setBackgroundColor: _backgroundColor];
     [[_renderingView playerLayer] setPlayer:_player];
   } else {
     // It is faster to discard the rendering view and create a new one when
@@ -343,6 +344,15 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     // Call this last in case the delegate removes references/destroys self.
     [_delegate videoPlayer:self stateDidChangeFrom:prevState to:state];
   }
+}
+
+- (void)setBackgroundColor:(UIColor*)backgroundColor {
+	if (_renderingView == nil) {
+		_backgroundColor = backgroundColor;
+		return;
+	}
+	
+	[[_renderingView playerLayer] setBackgroundColor:[backgroundColor CGColor]];
 }
 
 - (void)startPlaybackStatusPoller {

@@ -50,6 +50,8 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 // Default: No tint color.
 @property(nonatomic, strong) UIColor *controlTintColor;
 
+@property(nonatomic, strong) UIColor* backgroundColor;
+
 // Default: No title.
 @property(nonatomic, strong) NSString *videoTitle;
 
@@ -57,6 +59,8 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 @property(nonatomic, strong) UIImage *logoImage;
 
 - (id)init;
+
+- (id)initWithInitedBlock:(void (^)(void))initedBlock;
 
 - (void)loadStreamWithURL:(NSURL *)URL;
 
@@ -91,6 +95,8 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 - (void)setDefaultVideoPlayerOverlayDelegate;
 
 - (UIView<GMFPlayerControlsProtocol> *)playerOverlayView;
+
+- (GMFPlayerOverlayViewController*)playerOverlay;
 
 - (GMFPlayerControlsView*)getControls;
 

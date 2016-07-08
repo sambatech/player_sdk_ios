@@ -59,8 +59,11 @@
 
 - (void)applyControlTintColor:(UIColor *)color;
 
--(void)hideHdButton;
--(void)showHdButton;
+- (void)hideHdButton;
+- (void)showHdButton;
+- (void)hideFullscreenButton;
+- (void)showHFullscreenutton;
+- (void)hideBackground;
 
 @end
 

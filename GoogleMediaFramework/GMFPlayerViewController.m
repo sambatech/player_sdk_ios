@@ -62,7 +62,8 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
   BOOL _isUserScrubbing;
   BOOL _wasPlayingBeforeSeeking;
-  
+  void (^_initedBlock)(void);
+
   // If there is no overlay view created yet, but we receive a request to create action button,
   // we store the request in a mutable array of dictionaries which we use to construct the the
   // action buttons when the overlay view is created.
@@ -81,6 +82,11 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
     }
   }
   return self;
+}
+
+- (id)initWithInitedBlock:(void (^)(void))initedBlock {
+	_initedBlock = initedBlock;
+	return [self init];
 }
 
 - (void)setControlsVisibility:(BOOL)visible animated:(BOOL)animated {
@@ -189,7 +195,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   [_playerView.gestureCapturingView addGestureRecognizer:_tapRecognizer];
 
   if (!_videoPlayerOverlayViewController){
-      _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] init];
+      _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] initWithInitedBlock:_initedBlock];
       [self addChildViewController:self.videoPlayerOverlayViewController];
   }
   
@@ -236,6 +242,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return [_videoPlayerOverlayViewController playerOverlayView];
 }
 
+- (GMFPlayerOverlayViewController*)playerOverlay {
+	return (GMFPlayerOverlayViewController*)_videoPlayerOverlayViewController;
+}
+
 - (GMFPlayerState)playbackState {
   return _player.state;
 }
@@ -253,6 +263,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   if (self.playerOverlayView && [self.playerOverlayView respondsToSelector:@selector(applyControlTintColor:)]) {
     [self.playerOverlayView applyControlTintColor:controlTintColor];
   }
+}
+
+- (void)setBackgroundColor:(UIColor *)backgroundColor {
+	[_player setBackgroundColor:backgroundColor];
 }
 
 - (void) setVideoTitle:(NSString *)videoTitle {

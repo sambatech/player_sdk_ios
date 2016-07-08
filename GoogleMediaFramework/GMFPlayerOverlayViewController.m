@@ -30,14 +30,22 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 
 @implementation GMFPlayerOverlayViewController
 
+void (^_initedBlock)(void);
+
 // TODO(tensafefrogs): Figure out a nice way to display playback errors here.
 - (id)init {
   self = [super init];
   if (self) {
     _isAdDisplayed = NO;
     _autoHideEnabled = YES;
+	_controlsHideEnabled = YES;
   }
   return self;
+}
+
+- (id)initWithInitedBlock:(void (^)(void))initedBlock {
+	_initedBlock = initedBlock;
+	return [self init];
 }
 
 - (void)loadView {
@@ -57,6 +65,9 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
   [self.playerOverlayView setDelegate:self.delegate];
   [_playerOverlayView showSpinner];
   [self playerStateDidChangeToState:_playerState];
+	
+  if (_initedBlock != nil)
+	_initedBlock();
 }
 
 - (void)setDelegate:(id <GMFPlayerOverlayViewControllerDelegate>) delegate {
@@ -152,9 +163,15 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 }
 
 - (void)hidePlayerControlsAnimated:(BOOL)animated {
+  if (!_controlsHideEnabled) return;
+
   [self animatePlayerControlsToHidden:animated
                     animationDuration:kAutoHideUserForcedAnimationDuration
                            afterDelay:0];
+}
+
+- (void)setControlsHideEnabled:(BOOL)value {
+	_controlsHideEnabled = value;
 }
 
 - (void)playerControlsDidHide {

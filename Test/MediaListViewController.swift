@@ -109,14 +109,25 @@ class MediaListViewController : UITableViewController {
 				}
 				dispatch_async(dispatch_get_main_queue()) {
 					for jsonNode in json {
-						// skip non video media
-						if (jsonNode["qualifier"] as? String ?? "").lowercaseString != "video" {
-							continue
+						// skip non video or audio media
+						switch (jsonNode["qualifier"] as? String ?? "").lowercaseString {
+						case "video", "audio": break
+						default: continue
 						}
 						
+						var thumbUrl: String = ""
+
+						if let thumbs = jsonNode["thumbs"] as? [AnyObject] {
+							for thumb in thumbs {
+								if let url = thumb["url"] as? String {
+									thumbUrl = url
+								}
+							}
+						}
+
 						let m = MediaInfo(
 							title: jsonNode["title"] as? String ?? "",
-							thumb: jsonNode["thumbs"]!![0]["url"] as? String ?? "",
+							thumb: thumbUrl,
 							projectHash: Helpers.settings["pid_" + pid]!,
 							mediaId: jsonNode["id"] as? String ?? "",
 							description: nil,

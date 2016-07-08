@@ -58,7 +58,7 @@ import Foundation
 		}
 		
 		switch qualifier.lowercaseString {
-		case "video", "live": break
+		case "video", "live", "audio": break
 		default:
 			print("\(self.dynamicType) Error: Invalid media qualifier")
 			return nil
@@ -71,6 +71,7 @@ import Foundation
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
+		media.isAudio = qualifier.lowercaseString == "audio"
 		
 		if let title = json["title"] as? String {
 			media.title = title
@@ -130,7 +131,8 @@ import Foundation
 				for output in outputs {
 					label = (output["outputName"] as! String).lowercaseString
 					
-					guard label != "_raw",
+					// if audio, raw file can be considered
+					guard media.isAudio || label != "_raw",
 						let url = output["url"] as? String else {
 						continue
 					}
@@ -152,5 +154,4 @@ import Foundation
 		
 		return media
 	}
-    
 }

@@ -30,6 +30,7 @@
 
 @property (nonatomic, weak) id<GMFPlayerOverlayViewControllerDelegate> delegate;
 @property (nonatomic, strong) UIView<GMFPlayerControlsProtocol> *playerOverlayView;
+@property (nonatomic) BOOL controlsHideEnabled;
 // Set this to YES when the user is scrubbing. This will cause the spinner to be shown regardless
 // of state.
 @property (nonatomic) BOOL userScrubbing;
@@ -58,6 +59,9 @@
 @property(nonatomic, weak) id<GMFPlayerOverlayViewControllerDelegate>
     videoPlayerOverlayViewControllerDelegate;
 @property (nonatomic) BOOL isAdDisplayed;
+@property (nonatomic) BOOL controlsHideEnabled;
+
+- (id)initWithInitedBlock:(void (^)(void))initedBlock;
 
 - (void)playerStateDidChangeToState:(GMFPlayerState)toState;
 

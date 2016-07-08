@@ -35,6 +35,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
   NSLayoutConstraint* _hdHideConstraint;
+  NSLayoutConstraint* _minimizeHideConstraint;
   BOOL _userScrubbing;
 
   __weak id<GMFPlayerControlsViewDelegate> _delegate;
@@ -110,6 +111,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 												@"GoogleMediaFramework",
 												nil)];
 	  
+	  _minimizeHideConstraint = [NSLayoutConstraint constraintWithItem:_minimizeButton
+													   attribute:NSLayoutAttributeWidth
+													   relatedBy:NSLayoutRelationEqual
+														  toItem:nil
+													   attribute:NSLayoutAttributeNotAnAttribute
+													  multiplier:1.0f
+															  constant:0];
+	  
 	[self addSubview:_hdButton];
 	[self addSubview:_minimizeButton];
 
@@ -130,6 +139,18 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)showHdButton {
 	[self removeConstraint:_hdHideConstraint];
+}
+
+- (void)hideFullscreenButton {
+	[self addConstraint:_minimizeHideConstraint];
+}
+
+- (void)showFullscreenButton {
+	[self removeConstraint:_minimizeHideConstraint];
+}
+
+- (void)hideBackground {
+	_backgroundView.hidden = YES;
 }
 
 - (id)initWithFrame:(CGRect)frame {

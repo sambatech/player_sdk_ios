@@ -22,11 +22,15 @@
 		didSet {
 			guard let urlNonNull = url else { return }
 
-			if let _ = urlNonNull.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) {
+			if urlNonNull.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) != nil {
 				deliveryType = "hls"
 			}
-			else if let _ = urlNonNull.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) {
+			else if urlNonNull.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) != nil {
 				deliveryType = "progressive"
+			}
+			
+			if urlNonNull.rangeOfString("\\.mp3$", options: .RegularExpressionSearch) != nil {
+				isAudio = true
 			}
 		}
 	}
@@ -34,7 +38,8 @@
 	public var outputs: [SambaMedia.Output]?
 	public var deliveryType = "other"
 	public var thumb: String?
-	public var isLive = false;
+	public var isLive = false
+	public var isAudio = false
 	public var theme: UInt = 0x72BE44
 
 	public override init() {}
@@ -49,7 +54,7 @@
 		self.thumb = thumb
 	}
 	
-	public override var description: String { return title; }
+	public override var description: String { return title }
 }
 
 /**
@@ -60,7 +65,7 @@ class SambaMediaConfig : SambaMedia {
 	var id = ""
 	var projectHash = ""
 	var projectId = 0
-	var categoryId = 0;
+	var categoryId = 0
 	var sessionId = Helpers.getSessionId()
 	var sttmUrl = "http://sttm.sambatech.com.br/collector/__sttm.gif"
 	var sttmKey = "ae810ebc7f0654c4fadc50935adcf5ec"

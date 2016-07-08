@@ -208,9 +208,25 @@ public class SambaPlayer : UIViewController {
 			throw SambaPlayerError.NoMediaUrlFound
 		}
 
-		let gmf = GMFPlayerViewController()
+		let gmf = GMFPlayerViewController(initedBlock: {
+			if self._hasMultipleOutputs {
+				self._player?.getControls().showHdButton()
+			}
+			
+			if self.media.isAudio {
+				self._player?.getControls().hideBackground()
+				self._player?.getControls().hideFullscreenButton()
+				self._player?.playerOverlay().controlsHideEnabled = false;
+			}
+		})
+		
 		gmf.videoTitle = media.title
 		gmf.controlTintColor = UIColor(media.theme)
+		
+		if media.isAudio {
+			gmf.backgroundColor = UIColor(0x434343)
+		}
+		
 		gmf.loadStreamWithURL(NSURL(string: url))
 		
 		attachVC(gmf)
@@ -244,10 +260,6 @@ public class SambaPlayer : UIViewController {
 	@objc private func playbackStateHandler() {
 		switch Int((_player?.player.state.rawValue)!) {
 		case 2:
-			if _hasMultipleOutputs {
-				_player?.getControls().showHdButton()
-			}
-			
 			for delegate in _delegates { delegate.onLoad() }
 		case 3:
 			if !_hasStarted {
