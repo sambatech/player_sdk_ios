@@ -98,7 +98,8 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (GMFPlayerOverlayViewController*)playerOverlay;
 
-- (GMFPlayerControlsView*)getControls;
+- (GMFPlayerControlsView*)getControlsView;
+
+- (void)hideBackground;
 
 @end
-

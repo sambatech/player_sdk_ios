@@ -44,6 +44,7 @@
 // Call updateScrubberAndTime to make the change visible.
 - (void)setMediaTime:(NSTimeInterval)mediaTime;
 
+- (void)setPlayButtonImage:(UIImage*)image;
 - (void)setMinimizeButtonImage:(UIImage*)image;
 
 - (void)updateScrubberAndTime;
@@ -59,10 +60,12 @@
 
 - (void)applyControlTintColor:(UIColor *)color;
 
+- (void)hidePlayButton;
+- (void)showPlayButton;
 - (void)hideHdButton;
 - (void)showHdButton;
 - (void)hideFullscreenButton;
-- (void)showHFullscreenutton;
+- (void)showFullscreenButton;
 - (void)hideBackground;
 
 @end

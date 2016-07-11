@@ -30,8 +30,6 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 
 @implementation GMFPlayerOverlayViewController
 
-void (^_initedBlock)(void);
-
 // TODO(tensafefrogs): Figure out a nice way to display playback errors here.
 - (id)init {
   self = [super init];
@@ -41,11 +39,6 @@ void (^_initedBlock)(void);
 	_controlsHideEnabled = YES;
   }
   return self;
-}
-
-- (id)initWithInitedBlock:(void (^)(void))initedBlock {
-	_initedBlock = initedBlock;
-	return [self init];
 }
 
 - (void)loadView {
@@ -65,9 +58,6 @@ void (^_initedBlock)(void);
   [self.playerOverlayView setDelegate:self.delegate];
   [_playerOverlayView showSpinner];
   [self playerStateDidChangeToState:_playerState];
-	
-  if (_initedBlock != nil)
-	_initedBlock();
 }
 
 - (void)setDelegate:(id <GMFPlayerOverlayViewControllerDelegate>) delegate {
@@ -170,10 +160,6 @@ void (^_initedBlock)(void);
                            afterDelay:0];
 }
 
-- (void)setControlsHideEnabled:(BOOL)value {
-	_controlsHideEnabled = value;
-}
-
 - (void)playerControlsDidHide {
   // Override in a subclass to be notified when _autoHideView is hidden.
   [_videoPlayerOverlayViewControllerDelegate playerControlsDidHide];
@@ -212,8 +198,8 @@ void (^_initedBlock)(void);
 }
 
 - (void)updateAutoHideEnabled {
-  BOOL enabled = _isAdDisplayed || ((_playerState == kGMFPlayerStatePlaying) &&
-                                    !self.userScrubbing);
+  BOOL enabled = _controlsHideEnabled && (_isAdDisplayed || ((_playerState == kGMFPlayerStatePlaying) &&
+                                    !self.userScrubbing));
   if (_autoHideEnabled != enabled) {
     _autoHideEnabled = enabled;
     if (!enabled) {

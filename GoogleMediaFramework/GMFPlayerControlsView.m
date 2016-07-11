@@ -27,6 +27,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UIImageView *_backgroundView;
   UIButton *_minimizeButton;
   UIButton *_hdButton;
+  UIButton *_playButton;
   UILabel *_secondsPlayedLabel;
   UILabel *_totalSecondsLabel;
   UILabel *_timeSeparator; // Samba SDK Player
@@ -35,6 +36,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
   NSLayoutConstraint* _hdHideConstraint;
+  NSLayoutConstraint* _playHideConstraint;
   NSLayoutConstraint* _minimizeHideConstraint;
   BOOL _userScrubbing;
 
@@ -88,6 +90,20 @@ static const CGFloat kGMFBarPaddingX = 8;
                   action:@selector(didScrubbingEnd:)
         forControlEvents:UIControlEventTouchUpOutside];
     [self addSubview:_scrubber];
+	  
+	  _playButton = [self playerButtonWithImage:[GMFResources playerBarPlayButtonImage]
+									   action:@selector(didPressPlay:)
+						   accessibilityLabel:
+				   NSLocalizedStringFromTable(@"Play/Pause",
+											  @"GoogleMediaFramework",
+											  nil)];
+	  _playHideConstraint = [NSLayoutConstraint constraintWithItem:_playButton
+													   attribute:NSLayoutAttributeWidth
+													   relatedBy:NSLayoutRelationEqual
+														  toItem:nil
+													   attribute:NSLayoutAttributeNotAnAttribute
+													  multiplier:1.0f
+														constant:0];
 	
 	  _hdButton = [self playerButtonWithImage:[GMFResources playerBarHdButtonImage]
 									   action:@selector(didPressHd:)
@@ -118,19 +134,33 @@ static const CGFloat kGMFBarPaddingX = 8;
 													   attribute:NSLayoutAttributeNotAnAttribute
 													  multiplier:1.0f
 															  constant:0];
-	  
+	
+	[self addSubview:_playButton];
 	[self addSubview:_hdButton];
 	[self addSubview:_minimizeButton];
 
     [self setupLayoutConstraints];
 	  
+	[self hidePlayButton];
 	[self hideHdButton];
   }
   return self;
 }
 
+- (void)setPlayButtonImage:(UIImage*)image {
+	[_playButton setImage:image forState:UIControlStateNormal];
+}
+
 - (void)setMinimizeButtonImage:(UIImage*)image {
 	[_minimizeButton setImage:image forState:UIControlStateNormal];
+}
+
+- (void)hidePlayButton {
+	[self addConstraint:_playHideConstraint];
+}
+
+- (void)showPlayButton {
+	[self removeConstraint:_playHideConstraint];
 }
 
 - (void)hideHdButton {
@@ -161,11 +191,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)dealloc {
 	[_scrubber removeTarget:self
-				   action:NULL
-		 forControlEvents:UIControlEventAllEvents];
+				     action:NULL
+		   forControlEvents:UIControlEventAllEvents];
+	[_playButton removeTarget:self
+					 action:NULL
+		   forControlEvents:UIControlEventTouchUpInside];
 	[_hdButton removeTarget:self
-						   action:NULL
-				 forControlEvents:UIControlEventTouchUpInside];
+				     action:NULL
+		   forControlEvents:UIControlEventTouchUpInside];
 	[_minimizeButton removeTarget:self
                       action:NULL
             forControlEvents:UIControlEventTouchUpInside];
@@ -174,6 +207,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)setupLayoutConstraints { //Samba SDK Player
   [_backgroundView setTranslatesAutoresizingMaskIntoConstraints:NO];
+  [_playButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_secondsPlayedLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_totalSecondsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_scrubber setTranslatesAutoresizingMaskIntoConstraints:NO];
@@ -182,6 +216,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   [_timeSeparator setTranslatesAutoresizingMaskIntoConstraints:NO];
 
   NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_backgroundView,
+																 _playButton,
                                                                  _secondsPlayedLabel,
 																 _timeSeparator,
 																 _totalSecondsLabel,
@@ -299,7 +334,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 												   toItem:_secondsPlayedLabel
 												attribute:NSLayoutAttributeRight
 											   multiplier:1.0f
-											constant:2.0f]];
+												 constant:2.0f]];
 	
 	
   // Make the seconds played label occupy the full height of the view
@@ -314,10 +349,27 @@ static const CGFloat kGMFBarPaddingX = 8;
                  [NSLayoutConstraint constraintWithItem:_secondsPlayedLabel
                                               attribute:NSLayoutAttributeLeft
                                               relatedBy:NSLayoutRelationEqual
-                                                 toItem:_backgroundView
-                                              attribute:NSLayoutAttributeLeft
+                                                 toItem:_playButton
+                                              attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
                                                constant:kGMFBarPaddingX]];
+	
+  // Make the play button occupy the full height of the view.
+  constraints = [constraints arrayByAddingObjectsFromArray:
+			   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_playButton]|"
+													   options:NSLayoutFormatAlignAllBaseline
+													   metrics:nil
+														 views:viewsDictionary]];
+
+  // Position the play button kGMFBarPaddingX to the right of the background view.
+  constraints = [constraints arrayByAddingObject:
+				   [NSLayoutConstraint constraintWithItem:_playButton
+												attribute:NSLayoutAttributeLeft
+												relatedBy:NSLayoutRelationEqual
+												   toItem:_backgroundView
+												attribute:NSLayoutAttributeLeft
+											   multiplier:1.0f
+												 constant:kGMFBarPaddingX]];
   [self addConstraints:constraints];
 }
 
@@ -384,7 +436,9 @@ static const CGFloat kGMFBarPaddingX = 8;
 }
 
 - (void)didPressPlay:(id)sender {
-  [_delegate didPressPlay];
+  if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"play"])
+    [_delegate didPressPlay];
+  else [_delegate didPressPause];
 }
 
 - (void)didPressPause:(id)sender {

@@ -49,7 +49,6 @@
  @private
   GMFPlayerOverlayView *_playerOverlayView;
   GMFPlayerState _playerState;
-  BOOL _autoHideEnabled;
   BOOL _playerControlsHidden;
 }
 
@@ -59,9 +58,8 @@
 @property(nonatomic, weak) id<GMFPlayerOverlayViewControllerDelegate>
     videoPlayerOverlayViewControllerDelegate;
 @property (nonatomic) BOOL isAdDisplayed;
+@property (nonatomic) BOOL autoHideEnabled;
 @property (nonatomic) BOOL controlsHideEnabled;
-
-- (id)initWithInitedBlock:(void (^)(void))initedBlock;
 
 - (void)playerStateDidChangeToState:(GMFPlayerState)toState;
 

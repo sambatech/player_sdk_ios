@@ -238,12 +238,14 @@
   _currentPlayPauseReplayIcon = PLAY;
   [_playPauseReplayButton setImage:_playImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_playLabel];
+  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
 }
 
 - (void)showPauseButton {
   _currentPlayPauseReplayIcon = PAUSE;
   [_playPauseReplayButton setImage:_pauseImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_pauseLabel];
+  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPauseButtonImage]];
 }
 
 - (void)showReplayButton {

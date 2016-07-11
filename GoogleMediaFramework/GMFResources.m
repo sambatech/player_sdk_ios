@@ -22,19 +22,27 @@
 @implementation GMFResources
 
 + (UIImage *)playerBarPlayButtonImage {
-  return [self imageNamed:@"player_control_play"];
+  UIImage* image = [self imageNamed:@"player_control_play"];
+  image.accessibilityIdentifier = @"play";
+  return image;
 }
 
 + (UIImage *)playerBarPlayLargeButtonImage {
-  return [self imageNamed:@"player_control_play_large"];
+  UIImage* image = [self imageNamed:@"player_control_play_large"];
+  image.accessibilityIdentifier = @"play";
+  return image;
 }
 
 + (UIImage *)playerBarPauseButtonImage {
-  return [self imageNamed:@"player_control_pause"];
+  UIImage* image = [self imageNamed:@"player_control_pause"];
+  image.accessibilityIdentifier = @"pause";
+  return image;
 }
 
 + (UIImage *)playerBarPauseLargeButtonImage {
-  return [self imageNamed:@"player_control_pause_large"];  
+  UIImage* image = [self imageNamed:@"player_control_pause_large"];
+  image.accessibilityIdentifier = @"pause";
+  return image;
 }
 
 + (UIImage *)playerBarReplayButtonImage {

@@ -97,6 +97,11 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   }
 }
 
+- (void)hideBackground {
+	[[self getControlsView] hideBackground];
+	[(GMFPlayerOverlayView*)[self playerOverlayView] disableTopBar];
+}
+
 - (void)loadStreamWithURL:(NSURL *)URL {
   [_player loadStreamWithURL:URL];
 }
@@ -174,6 +179,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
     [self.videoPlayerOverlayViewController removeFromParentViewController];
     _videoPlayerOverlayViewController = videoPlayerOverlayViewController;
     [self addChildViewController:self.videoPlayerOverlayViewController];
+	
     if (self.playerView){
         [self.playerView setOverlayView:[videoPlayerOverlayViewController playerOverlayView]];
     }
@@ -195,7 +201,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   [_playerView.gestureCapturingView addGestureRecognizer:_tapRecognizer];
 
   if (!_videoPlayerOverlayViewController){
-      _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] initWithInitedBlock:_initedBlock];
+      _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] init];
       [self addChildViewController:self.videoPlayerOverlayViewController];
   }
   
@@ -221,6 +227,9 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
         }
     }
   [self setDefaultVideoPlayerOverlayDelegate];
+	
+  if (_initedBlock != nil)
+    _initedBlock();
 }
 
 - (void)didTapGestureCapturingView:(UITapGestureRecognizer *)recognizer {
@@ -234,8 +243,8 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return _player;
 }
 
-- (GMFPlayerControlsView*)getControls {
-	return [(GMFPlayerOverlayViewController*)_videoPlayerOverlayViewController playerControlsView];
+- (GMFPlayerControlsView*)getControlsView {
+	return ((GMFPlayerOverlayViewController*)_videoPlayerOverlayViewController).playerControlsView;
 }
 
 - (UIView<GMFPlayerControlsProtocol> *)playerOverlayView {

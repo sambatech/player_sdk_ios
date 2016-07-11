@@ -131,7 +131,7 @@ public class SambaPlayer : UIViewController {
 				_fullscreenAnimating = true
 				_isFullscreen = true
 				
-				player.getControls().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
 				presentViewController(player, animated: true) {
@@ -146,7 +146,7 @@ public class SambaPlayer : UIViewController {
 				self._fullscreenAnimating = false
 				self._isFullscreen = false
 				
-				player.getControls().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
+				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
 				self.attachVC(player)
 			}
 		}
@@ -210,15 +210,19 @@ public class SambaPlayer : UIViewController {
 
 		let gmf = GMFPlayerViewController(initedBlock: {
 			if self._hasMultipleOutputs {
-				self._player?.getControls().showHdButton()
+				self._player?.getControlsView().showHdButton()
 			}
 			
 			if self.media.isAudio {
-				self._player?.getControls().hideBackground()
-				self._player?.getControls().hideFullscreenButton()
-				self._player?.playerOverlay().controlsHideEnabled = false;
+				self._player?.hideBackground()
+				self._player?.getControlsView().hideFullscreenButton()
+				self._player?.getControlsView().showPlayButton()
+				self._player?.playerOverlay().autoHideEnabled = false
+				self._player?.playerOverlay().controlsHideEnabled = false
 			}
 		})
+		
+		_player = gmf
 		
 		gmf.videoTitle = media.title
 		gmf.controlTintColor = UIColor(media.theme)
@@ -244,7 +248,8 @@ public class SambaPlayer : UIViewController {
 		
 		// IMA
 		
-		if let adUrl = media.adUrl,
+		if !media.isAudio,
+			let adUrl = media.adUrl,
 			ima = GMFIMASDKAdService(GMFVideoPlayer: gmf) {
 			gmf.registerAdService(ima)
 			ima.requestAdsWithRequest(adUrl)
@@ -253,8 +258,6 @@ public class SambaPlayer : UIViewController {
 		let _ = Tracking(self)
 		
 		gmf.play()
-		
-		_player = gmf
 	}
 	
 	@objc private func playbackStateHandler() {
