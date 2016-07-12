@@ -34,6 +34,7 @@
   UIButton *_playPauseReplayButton;
   UIColor *_currentColor;
   BOOL _isTopBarEnabled;
+  CGRect _padding;
   CurrentPlayPauseReplayIcon _currentPlayPauseReplayIcon;
 }
 
@@ -77,7 +78,8 @@
     [self addSubview:_spinner];
 
     // Player control bar
-    _playerControlsView = [[GMFPlayerControlsView alloc] init];
+    //_playerControlsView = [[GMFPlayerControlsView alloc] initWithPadding:_padding];
+	_playerControlsView = [[GMFPlayerControlsView alloc] init];
     [self setSeekbarTrackColorDefault];
     [self addSubview:_playerControlsView];
     
@@ -90,6 +92,16 @@
     [self setupLayoutConstraints];
   }
   return self;
+}
+
+- (id)initWithControlsPadding:(CGRect)padding {
+  _padding = padding;
+  return [self init];
+}
+
+- (id)initWithControlsPadding:(CGRect)padding andFrame:(CGRect)frame {
+	_padding = padding;
+	return [self initWithFrame:frame];
 }
 
 - (void)setupLayoutConstraints {
@@ -154,7 +166,7 @@
       @"titleBarheight": @([_topBarView preferredHeight])
   };
   constraints = [constraints arrayByAddingObjectsFromArray:
-      [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_playerControlsView(controlsBarHeight)]|"
+      [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:[_playerControlsView(controlsBarHeight)]-%.0f-|", _padding.size.height]
                                               options:NSLayoutFormatAlignAllBottom
                                               metrics:metrics
                                                 views:viewsDictionary]];
@@ -185,22 +197,38 @@
 }
 
 - (void)showSpinner {
+  if (_controlsOnly) return;
   [_playPauseReplayButton setHidden:YES];
   [_spinner startAnimating];
   [_spinner setHidden:NO];
 }
 
 - (void)hideSpinner {
+  if (_controlsOnly) return;
   [_playPauseReplayButton setHidden:NO];
   [_spinner stopAnimating];
   [_spinner setHidden:YES];
 }
 
 - (void)setPlayerBarVisible:(BOOL)visible {
+  if (_controlsOnly) return;
   [_topBarView setAlpha:(_isTopBarEnabled && visible) ? 1 : 0];
   [_playerControlsView setAlpha:visible ? 1 : 0];
   [_playPauseReplayButton setAlpha:visible ? 1 : 0];
   
+  [self setNeedsLayout];
+  [self layoutIfNeeded];
+}
+
+- (void)setControlsOnly:(BOOL)state {
+  _controlsOnly = state;
+
+  [_playerControlsView setHidden:!state];
+  [_playPauseReplayButton setHidden:state];
+  [_spinner stopAnimating];
+  [_spinner setHidden:state];
+  [_topBarView setHidden:state];
+
   [self setNeedsLayout];
   [self layoutIfNeeded];
 }
@@ -235,20 +263,30 @@
 }
 
 - (void)showPlayButton {
+  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
+
+  if (_controlsOnly) return;
+
   _currentPlayPauseReplayIcon = PLAY;
   [_playPauseReplayButton setImage:_playImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_playLabel];
-  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
 }
 
 - (void)showPauseButton {
+  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPauseButtonImage]];
+
+  if (_controlsOnly) return;
+
   _currentPlayPauseReplayIcon = PAUSE;
   [_playPauseReplayButton setImage:_pauseImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_pauseLabel];
-  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPauseButtonImage]];
 }
 
 - (void)showReplayButton {
+  [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
+
+  if (_controlsOnly) return;
+
   _currentPlayPauseReplayIcon = REPLAY;
   [_playPauseReplayButton setImage:_replayImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_replayLabel];

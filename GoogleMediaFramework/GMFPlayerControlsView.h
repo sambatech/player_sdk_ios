@@ -32,6 +32,8 @@
 
 @interface GMFPlayerControlsView : UIView
 
+- (id)initWithPadding:(CGRect)padding;
+
 // Set the total duration of the video. May be NaN or Infinity if the
 // total time is unknown. Call updateScrubberAndTime to make the change visible.
 - (void)setTotalTime:(NSTimeInterval)totalTime;

@@ -62,6 +62,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
   BOOL _isUserScrubbing;
   BOOL _wasPlayingBeforeSeeking;
+  CGRect _controlsPadding;
   void (^_initedBlock)(void);
 
   // If there is no overlay view created yet, but we receive a request to create action button,
@@ -84,7 +85,9 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return self;
 }
 
-- (id)initWithInitedBlock:(void (^)(void))initedBlock {
+- (id)initWithControlsPadding:(CGRect)controlsPadding
+			  andInitedBlock:(void (^)(void))initedBlock {
+	_controlsPadding = controlsPadding;
 	_initedBlock = initedBlock;
 	return [self init];
 }
@@ -201,7 +204,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   [_playerView.gestureCapturingView addGestureRecognizer:_tapRecognizer];
 
   if (!_videoPlayerOverlayViewController){
-      _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] init];
+	  _videoPlayerOverlayViewController = [[GMFPlayerOverlayViewController alloc] initWithControlsPadding:_controlsPadding];
       [self addChildViewController:self.videoPlayerOverlayViewController];
   }
   

@@ -41,13 +41,17 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 	
 	private func initPlayer(media: SambaMedia) {
 		media.adUrl = mediaInfo?.mediaAd
-		
-		dispatch_async(dispatch_get_main_queue()) {
-			self.sambaPlayer = SambaPlayer(self, parentView: self.playerContainer)
-			self.sambaPlayer.delegate = self
-			self.sambaPlayer.media = media
-			self.sambaPlayer.play()
+	
+		if media.isAudio {
+			var frame = self.playerContainer.frame
+			frame.size.height = 50
+			self.playerContainer.frame = frame
 		}
+		
+		self.sambaPlayer = SambaPlayer(self, parentView: self.playerContainer)
+		self.sambaPlayer.delegate = self
+		self.sambaPlayer.media = media
+		self.sambaPlayer.play()
 	}
 	
 	func onLoad() {

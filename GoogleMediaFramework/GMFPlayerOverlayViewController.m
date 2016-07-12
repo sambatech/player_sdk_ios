@@ -28,7 +28,9 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 
 @end
 
-@implementation GMFPlayerOverlayViewController
+@implementation GMFPlayerOverlayViewController {
+  CGRect _controlsPadding;
+}
 
 // TODO(tensafefrogs): Figure out a nice way to display playback errors here.
 - (id)init {
@@ -49,8 +51,13 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
                                 kPaddingTop,
                                 screenWidth,
                                 screenHeight);
-  _playerOverlayView = [[GMFPlayerOverlayView alloc] initWithFrame:frameRect];
+  _playerOverlayView = [[GMFPlayerOverlayView alloc] initWithControlsPadding:_controlsPadding andFrame:frameRect];
   [self setView:_playerOverlayView];
+}
+
+- (id)initWithControlsPadding:(CGRect)controlsPadding {
+  _controlsPadding = controlsPadding;
+  return [self init];
 }
 
 - (void)viewDidLoad {

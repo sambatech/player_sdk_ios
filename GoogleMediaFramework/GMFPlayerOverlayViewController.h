@@ -61,6 +61,8 @@
 @property (nonatomic) BOOL autoHideEnabled;
 @property (nonatomic) BOOL controlsHideEnabled;
 
+- (id)initWithControlsPadding:(CGRect)controlsPadding;
+
 - (void)playerStateDidChangeToState:(GMFPlayerState)toState;
 
 - (void)playerControlsDidHide;

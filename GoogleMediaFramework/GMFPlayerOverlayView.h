@@ -34,7 +34,10 @@ typedef enum CurrentPlayPauseReplayIcon {
 @property(nonatomic, readonly) GMFTopBarView *topBarView;
 @property(nonatomic, strong) UIColor *playPauseResetButtonBackgroundColor;
 @property(nonatomic, weak) id<GMFPlayerControlsViewDelegate> delegate;
+@property(nonatomic) BOOL controlsOnly;
 
+- (id)initWithControlsPadding:(CGRect)padding;
+- (id)initWithControlsPadding:(CGRect)padding andFrame:(CGRect)frame;
 
 // Show/hide the loading spinner
 - (void)showSpinner;

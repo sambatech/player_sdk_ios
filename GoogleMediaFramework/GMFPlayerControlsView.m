@@ -38,7 +38,9 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSLayoutConstraint* _hdHideConstraint;
   NSLayoutConstraint* _playHideConstraint;
   NSLayoutConstraint* _minimizeHideConstraint;
+  NSLayoutConstraint* _scrubberRightConstraint;
   BOOL _userScrubbing;
+  CGRect _padding;
 
   __weak id<GMFPlayerControlsViewDelegate> _delegate;
 }
@@ -147,6 +149,11 @@ static const CGFloat kGMFBarPaddingX = 8;
   return self;
 }
 
+- (id)initWithPadding:(CGRect)padding {
+  _padding = padding;
+  return [self init];
+}
+
 - (void)setPlayButtonImage:(UIImage*)image {
 	[_playButton setImage:image forState:UIControlStateNormal];
 }
@@ -173,10 +180,16 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)hideFullscreenButton {
 	[self addConstraint:_minimizeHideConstraint];
+	[self removeConstraint:_scrubberRightConstraint];
+	_scrubberRightConstraint.constant = 0;
+	[self addConstraint:_scrubberRightConstraint];
 }
 
 - (void)showFullscreenButton {
 	[self removeConstraint:_minimizeHideConstraint];
+	[self removeConstraint:_scrubberRightConstraint];
+	_scrubberRightConstraint.constant = -kGMFBarPaddingX;
+	[self addConstraint:_scrubberRightConstraint];
 }
 
 - (void)hideBackground {
@@ -242,7 +255,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the minimize button occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_minimizeButton]|"
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_minimizeButton]-%.0f-|", _padding.origin.y, _padding.size.height]
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
@@ -259,7 +272,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the hd button occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-				   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_hdButton]|"
+				   [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_hdButton]-%.0f-|", _padding.origin.y, _padding.size.height]
 														   options:NSLayoutFormatAlignAllBaseline
 														   metrics:nil
 															 views:viewsDictionary]];
@@ -276,14 +289,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_scrubber]|"
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", _padding.origin.y, _padding.size.height]
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
   
   // Position the scrubber kGMFBarPaddingX to the left of the total seconds label.
   constraints = [constraints arrayByAddingObject:
-                 [NSLayoutConstraint constraintWithItem:_scrubber
+                 _scrubberRightConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeRight
                                               relatedBy:NSLayoutRelationEqual
                                                  toItem:_hdButton
@@ -303,7 +316,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the total seconds label occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-				 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_totalSecondsLabel]|"
+				 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_totalSecondsLabel]-%.0f-|", _padding.origin.y, _padding.size.height]
 											 options:NSLayoutFormatAlignAllBaseline
 												metrics:nil
 												views:viewsDictionary]];
@@ -321,7 +334,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
 	// Make the time separator label occupy the full height of the view.
 	constraints = [constraints arrayByAddingObjectsFromArray:
-				   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_timeSeparator]|"
+				   [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_timeSeparator]-%.0f-|", _padding.origin.y, _padding.size.height]
 														   options:NSLayoutFormatAlignAllBaseline
 														   metrics:nil
 															 views:viewsDictionary]];
@@ -339,7 +352,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the seconds played label occupy the full height of the view
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_secondsPlayedLabel]|"
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_secondsPlayedLabel]-%.0f-|", _padding.origin.y, _padding.size.height]
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
@@ -356,7 +369,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the play button occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-			   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_playButton]|"
+			   [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_playButton]-%.0f-|", _padding.origin.y, _padding.size.height]
 													   options:NSLayoutFormatAlignAllBaseline
 													   metrics:nil
 														 views:viewsDictionary]];

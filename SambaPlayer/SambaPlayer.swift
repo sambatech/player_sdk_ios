@@ -64,11 +64,13 @@ public class SambaPlayer : UIViewController {
 	public convenience init(_ parentViewController: UIViewController, parentView: UIView) {
 		self.init()
 		
-		parentViewController.addChildViewController(self)
-		didMoveToParentViewController(parentViewController)
-		view.frame = parentView.bounds
-		parentView.addSubview(view)
-		parentView.setNeedsDisplay()
+		dispatch_async(dispatch_get_main_queue()) {
+			parentViewController.addChildViewController(self)
+			self.didMoveToParentViewController(parentViewController)
+			self.view.frame = parentView.bounds
+			parentView.addSubview(self.view)
+			parentView.setNeedsDisplay()
+		}
 		
 		self._parentView = parentView
 	}
@@ -79,7 +81,7 @@ public class SambaPlayer : UIViewController {
 
 	public func play() {
 		if _player == nil {
-			try! create()
+			dispatch_async(dispatch_get_main_queue()) { try! self.create() }
 			return
 		}
 		
@@ -134,8 +136,10 @@ public class SambaPlayer : UIViewController {
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
-				presentViewController(player, animated: true) {
-					self._fullscreenAnimating = false
+				dispatch_async(dispatch_get_main_queue()) {
+					self.presentViewController(player, animated: true) {
+						self._fullscreenAnimating = false
+					}
 				}
 			}
 		}
@@ -171,21 +175,25 @@ public class SambaPlayer : UIViewController {
 	func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
 		let p: UIViewController = vcParent ?? self
 		
-		p.addChildViewController(vc)
-		vc.didMoveToParentViewController(p)
-		vc.view.frame = p.view.frame
-		p.view.addSubview(vc.view)
-		p.view.setNeedsDisplay()
+		dispatch_async(dispatch_get_main_queue()) {
+			p.addChildViewController(vc)
+			vc.didMoveToParentViewController(p)
+			vc.view.frame = p.view.frame
+			p.view.addSubview(vc.view)
+			p.view.setNeedsDisplay()
+		}
 	}
 	
 	func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
-		if vc.parentViewController != self {
-			vc.dismissViewControllerAnimated(true, completion: callback)
-		}
-		else {
-			vc.view.removeFromSuperview()
-			vc.removeFromParentViewController()
-			callback?()
+		dispatch_async(dispatch_get_main_queue()) {
+			if vc.parentViewController != self {
+				vc.dismissViewControllerAnimated(true, completion: callback)
+			}
+			else {
+				vc.view.removeFromSuperview()
+				vc.removeFromParentViewController()
+				callback?()
+			}
 		}
 	}
 	
@@ -208,7 +216,7 @@ public class SambaPlayer : UIViewController {
 			throw SambaPlayerError.NoMediaUrlFound
 		}
 
-		let gmf = GMFPlayerViewController(initedBlock: {
+		let gmf = GMFPlayerViewController.init(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0), andInitedBlock: {
 			if self._hasMultipleOutputs {
 				self._player?.getControlsView().showHdButton()
 			}
@@ -217,6 +225,7 @@ public class SambaPlayer : UIViewController {
 				self._player?.hideBackground()
 				self._player?.getControlsView().hideFullscreenButton()
 				self._player?.getControlsView().showPlayButton()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 				self._player?.playerOverlay().autoHideEnabled = false
 				self._player?.playerOverlay().controlsHideEnabled = false
 			}
@@ -315,7 +324,9 @@ public class SambaPlayer : UIViewController {
 			attachVC(OutputMenuViewController(self))
 		}
 		else {
-			presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
+			dispatch_async(dispatch_get_main_queue()) {
+				self.presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
+			}
 		}
 	}
 }
