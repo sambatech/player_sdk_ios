@@ -1,8 +1,8 @@
 //
 //  SambaApi.swift
-//  TesteMobileIOS
+//  SambaPlayer SDK
 //
-//  Created by Leandro Zanol on 3/9/16.
+//  Created by Leandro Zanol, Priscila Magalhães, Thiago Miranda on 07/07/16.
 //  Copyright © 2016 Sambatech. All rights reserved.
 //
 
@@ -10,10 +10,22 @@ import Foundation
 
 @objc public class SambaApi : NSObject {
 	
+	/**
+	Default constructor
+	
+	*/
 	public override init() {}
 	
+	/**
+	Request media from SambaPlayer API<br><br>
+	The SambaPlayer API returns a base64 string with the encoded media info and its decoded before intiate
+	
+	- Parameters:
+		- request: SambaMediaRequest - Request to our api
+		- callback: SambaMedia - Callback when the request is made passing our SambaMedia object
+	
+	*/
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
-		//Helpers.settings["playerapi_endpoint"]!
 		Helpers.requestURL("http://playerapitest2.liquidplatform.com:7091/v1/\(request.projectHash)/" + (request.mediaId ??
 			"?\((request.streamUrls ?? []).count > 0 ? "alternativeLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
 			guard let responseText = responseText else { return }
@@ -51,6 +63,8 @@ import Foundation
 		}
 	}
 	
+	
+	//Colect the important media info and its desired outputs<br><br>
 	private func parseMedia(json: AnyObject) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
 			print("\(self.dynamicType) Error: No media qualifier")

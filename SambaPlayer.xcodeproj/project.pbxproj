@@ -445,7 +445,7 @@
 				TargetAttributes = {
 					9A91E8C51D14BCBF00C30DD3 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = GP968EQAM9;
+						DevelopmentTeam = A68AA84976;
 					};
 					9AEC54EA1D21C9E200EB1C4C = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -453,7 +453,7 @@
 					};
 					9AF324D81D14356E00B6E450 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = GP968EQAM9;
+						DevelopmentTeam = A68AA84976;
 					};
 				};
 			};
@@ -605,6 +605,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -612,8 +614,9 @@
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test.XXX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -623,6 +626,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -630,8 +635,9 @@
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test.XXX;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
 			};
 			name = Release;
@@ -769,6 +775,8 @@
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -783,6 +791,7 @@
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
+				PROVISIONING_PROFILE = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -790,6 +799,8 @@
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -804,6 +815,7 @@
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

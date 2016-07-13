@@ -1,9 +1,9 @@
 //
 //  SambaPlayer.swift
+//  SambaPlayer SDK
 //
-//
-//  Created by Leandro Zanol on 3/9/16.
-//
+//  Created by Leandro Zanol, Priscila Magalhães, Thiago Miranda on 07/07/16.
+//  Copyright © 2016 Sambatech. All rights reserved.
 //
 
 import Foundation
@@ -24,43 +24,60 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Properties
 	
+	///Stores the delegated methods for the player events
 	public var delegate: SambaPlayerDelegate? {
-		// TODO: remove this (add eventbus alike control)
+		
 		didSet {
 			guard let value = delegate else { return }
 			_delegates.append(value)
 		}
 	}
 	
+	///Current media time
 	public var currentTime: Float {
 		return Float(_player?.currentMediaTime() ?? 0)
 	}
 	
+	///Current media duration
 	public var duration: Float {
 		return Float(_player?.totalMediaTime() ?? 0)
 	}
 	
+	///Current media
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			destroy()
-			// TODO: createThumb()
 		}
 	}
 	
+	///Flag if the media is or not playing
 	public var isPlaying: Bool {
 		return _player?.player.state.rawValue == 3
 	}
 	
 	// MARK: Public Methods
-	
+	/**
+	Default initializer
+	**/
 	public init() {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
+	/**
+	Convenience initializer
+	- parameter parentViewController:UIViewController The UIViewController in which the player is embed
+	**/
 	public convenience init(_ parentViewController: UIViewController) {
 		self.init(parentViewController, parentView: parentViewController.view)
 	}
 	
+	/**
+	Convenience initializer
+	
+	- Parameters:
+		- parentViewController:UIViewController The UIViewController which the player is embed
+		- parentView:UIView The UIView which the player is embed
+	**/
 	public convenience init(_ parentViewController: UIViewController, parentView: UIView) {
 		self.init()
 		
@@ -75,10 +92,20 @@ public class SambaPlayer : UIViewController {
 		self._parentView = parentView
 	}
 	
+	/**
+	Required initializer
+	
+	- parameter aDecoder:NSCoder
+	**/
 	public required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
-
+	
+	/**
+	Play the media<br><br>
+		
+		player.play()
+	*/
 	public func play() {
 		if _player == nil {
 			dispatch_async(dispatch_get_main_queue()) { try! self.create() }
@@ -88,10 +115,20 @@ public class SambaPlayer : UIViewController {
 		_player?.play()
 	}
 	
+	/**
+	Pause the media<br><br>
+	
+		player.pause()
+	*/
 	public func pause() {
 		_player?.pause()
 	}
 	
+	/**
+	Stop the media returning it to it´s initial time<br><br>
+	
+		player.stop()
+	*/
 	public func stop() {
 		// avoid dispatching events
 		_stopping = true
@@ -99,11 +136,25 @@ public class SambaPlayer : UIViewController {
 		pause()
 		seek(0)
 	}
-    
+	
+	/**
+	Seek the media to a given time<br><br>
+			
+		player.seek(20)
+	
+	- parameter: pos: Int Time in seconds
+	*/
     public func seek(pos: Int) {
 		_player?.player.seekToTime(NSTimeInterval(pos))
     }
 	
+	/**
+	Change the current output<br><br>
+	
+		player.switchOutput(1)
+	
+	- parameter: value: Int Index of the output
+	*/
 	public func switchOutput(value: Int) {
 		guard let outputs = media.outputs
 			where value != _lastOutput && value < outputs.count else { return }
@@ -112,6 +163,12 @@ public class SambaPlayer : UIViewController {
 		_player?.player.switchUrl(outputs[value].url)
 	}
 	
+	/**
+	Destroy the player instance<br><br>
+	
+		player.destroy()
+	
+	*/
 	public func destroy() {
 		guard let player = _player else { return }
 		
@@ -125,6 +182,13 @@ public class SambaPlayer : UIViewController {
 		_player = nil
 	}
 	
+	/**
+	Change the orientation of the player<br><br>
+	
+	- Parameters:
+		- size:CGSize
+		- withTransitionCoordinator coordinator
+	*/
 	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
 		guard let player = _player where !_fullscreenAnimating else { return }
 		
@@ -158,10 +222,19 @@ public class SambaPlayer : UIViewController {
 		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 	}
 	
+	/**
+	Get all the supported orientation<br><br>
+	- Returns: .AllButUpsideDown
+	*/
 	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
 		return .AllButUpsideDown
 	}
 	
+	/**
+	Fired up when the view disapears<br><br>
+	Destroy the player after it
+	
+	*/
 	public override func viewDidDisappear(animated: Bool) {
 		super.viewDidDisappear(animated)
 		
@@ -331,17 +404,38 @@ public class SambaPlayer : UIViewController {
 	}
 }
 
+/**
+Player known errors
+
+- NoMediaUrlFound: Media doesn´t exist
+
+*/
 public enum SambaPlayerError : ErrorType {
 	case NoMediaUrlFound
 }
 
-// TODO: research how to have optional impls
+/**
+SambaPlayerDelegate functions
+*/
 public protocol SambaPlayerDelegate {
+	///Fired up when player is loaded
 	func onLoad()
+	
+	///Fired up when player is started
 	func onStart()
+	
+	///Fired up when player is resumed ( from paused to play )
 	func onResume()
+	
+	///Fired up when player is paused
 	func onPause()
+	
+	///Fired up when player is playing ( fired each second of playing )
 	func onProgress()
+	
+	///Fired up when player is finished
 	func onFinish()
+	
+	///Fired up when player is destroyed
 	func onDestroy()
 }
