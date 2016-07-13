@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A2B2F4F1D2DD13600F118AB /* SambaPlayer.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9A0921AC1D36B3AF00171F89 /* SambaPlayer.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A3A71021D2F0B9900B4F2A1 /* SambaPlayer.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FC1D22D5BD00C9C015 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F11D22D5BD00C9C015 /* OutputMenu.xib */; };
@@ -78,14 +78,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		9A2B2F4E1D2DD11A00F118AB /* CopyFiles */ = {
+		9A2B2F4E1D2DD11A00F118AB /* Copy Files */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 11;
 			files = (
-				9A2B2F4F1D2DD13600F118AB /* SambaPlayer.framework in CopyFiles */,
+				9A0921AC1D36B3AF00171F89 /* SambaPlayer.framework in Copy Files */,
 			);
+			name = "Copy Files";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AA033B41D1873F500908957 /* Copy Files */ = {
@@ -403,7 +404,7 @@
 				9AEC54E71D21C9E200EB1C4C /* Sources */,
 				9AEC54E81D21C9E200EB1C4C /* Frameworks */,
 				9AEC54E91D21C9E200EB1C4C /* Resources */,
-				9A2B2F4E1D2DD11A00F118AB /* CopyFiles */,
+				9A2B2F4E1D2DD11A00F118AB /* Copy Files */,
 			);
 			buildRules = (
 			);
@@ -647,6 +648,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -663,6 +665,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.TestObjC;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -711,10 +714,9 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -756,11 +758,10 @@
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_CODE_SIGN_FLAGS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -779,8 +780,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
-				INSTALL_PATH = "@executable_path/SharedFrameworks";
+				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -800,8 +802,9 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
-				INSTALL_PATH = "@executable_path/SharedFrameworks";
+				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 			};
