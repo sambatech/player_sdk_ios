@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>SambaPlayer  Reference</title>
+    <link rel="stylesheet" type="text/css" href="css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="css/highlight.css" />
+    <meta charset='utf-8'>
+    <script src="js/jquery.min.js" defer></script>
+    <script src="js/jazzy.js" defer></script>
+    
+  </head>
+  <body>
+    <a title="SambaPlayer  Reference"></a>
+    <header>
+      <div class="content-wrapper">
+        <p><a href="index.html">SambaPlayer Docs</a> (91% documented)</p>
+      </div>
+    </header>
+    <div class="content-wrapper">
+      <p id="breadcrumbs">
+        <a href="index.html">SambaPlayer Reference</a>
+        <img id="carat" src="img/carat.png" />
+        SambaPlayer  Reference
+      </p>
+    </div>
+    <div class="content-wrapper">
+      <nav class="sidebar">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a href="Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Classes/SambaApi.html">SambaApi</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMedia.html">SambaMedia</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMedia.html#/s:VC11SambaPlayer10SambaMedia6Output">– Output</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMediaRequest.html">SambaMediaRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaPlayer.html">SambaPlayer</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Enums.html">Enums</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Enums/SambaPlayerError.html">SambaPlayerError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/UIImage.html">UIImage</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a href="Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Protocols/SambaPlayerDelegate.html">SambaPlayerDelegate</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+        <section>
+          <section class="section">
+            
+            <a href='#sambaplayer-sdk-para-ios' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h1 id='sambaplayer-sdk-para-ios'>SambaPlayer SDK para iOS</h1>
+<a href='#introdu-o' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='introdu-o'>Introdução</h2>
+
+<p>O SambaPlayer SDK facilita diversas etapas do desenvolvimento de aplicativos que trabalham com vídeo em iOS.</p>
+<a href='#features' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='features'>Features</h2>
+
+<ul>
+<li>Integração com serviços da Samba Tech (<a href="http://sambatech.com/):">http://sambatech.com/):</a> Samba Videos e STTM</li>
+<li>Vídeo em HLS e PROGRESSIVE</li>
+<li>VOD e Live</li>
+<li>DFP (<a href="https://www.google.com/dfp">https://www.google.com/dfp</a>)</li>
+</ul>
+<a href='#como-usar' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='como-usar'>Como usar?</h2>
+
+<p>Para utilizar o SambaPlayer SDK é necessário instalar o <a href="https://github.com/Carthage/Carthage">Carthage</a>.</p>
+
+<p>Este é um utilitário responsável por compilar projetos do Github gerando frameworks binários.</p>
+
+<p>A instalação pode ser feita através do <a href="http://brew.sh/">Homebrew</a> através do seguinte comando:</p>
+<pre class="highlight shell"><code><span class="gp">$ </span>brew update
+<span class="gp">$ </span>brew install carthage
+</code></pre>
+
+<p>Caso ainda não exista, crie um arquivo na raíz do seu projeto chamado <code>Cartfile</code> e inclua:</p>
+<pre class="highlight plaintext"><code>github "sambatech/player_sdk_ios"
+</code></pre>
+
+<p>Basta executar <code>carthage update</code> para compilar o <code>SambaPlayer.framework</code>. Em seguida, inclua-o arrastando para seu projeto Xcode:</p>
+
+<p><img src="https://cloud.githubusercontent.com/assets/484062/16528649/85e947ce-3f94-11e6-8806-6020775d8d02.gif" alt="readme1"></p>
+
+<p>Por fim, efetue as seguintes configurações em <em>Target -&gt; Build Settings</em>:</p>
+
+<ul>
+<li><em>Packaging -&gt; Defines Module -&gt; Yes</em></li>
+<li><em>Search Paths -&gt; Framework Search Paths</em></li>
+<li><em>Linking -&gt; Runpath Search Paths</em></li>
+<li><em>Build Options -&gt; Embedded Content Contains Swift Code -&gt; Yes</em></li>
+</ul>
+<a href='#suporte' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='suporte'>Suporte</h2>
+
+<p>Quaisquer perguntas, sugestões ou notificação de bugs, basta criar uma nova issue que responderemos assim que possível.</p>
+<a href='#requisitos' class='anchor' aria-hidden=true><span class="header-anchor"></span></a><h2 id='requisitos'>Requisitos</h2>
+
+<ul>
+<li>iOS 8.0+</li>
+</ul>
+
+          </section>
+        </section>
+        <section id="footer">
+          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-07-13)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+        </section>
+      </article>
+    </div>
+  </body>
+</div>
+</html>

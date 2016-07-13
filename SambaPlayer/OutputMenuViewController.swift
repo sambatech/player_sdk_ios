@@ -1,8 +1,8 @@
 //
-//  OutputMenuViewController.swift
-//  TesteMobileIOS
+//  OuptutMenuViewController.swift
+//  SambaPlayer SDK
 //
-//  Created by Leandro Zanol on 3/23/16.
+//  Created by Leandro Zanol, Priscila Magalhães, Thiago Miranda on 07/07/16.
 //  Copyright © 2016 Sambatech. All rights reserved.
 //
 

@@ -1,11 +1,10 @@
 //
-//  SambaPlayerSDK.h
-//  SambaPlayerSDK
+//  SambaPlayer.h
+//  SambaPlayer SDK
 //
-//  Created by Leandro Zanol on 6/8/16.
-//  Copyright © 2016 Samba Tech. All rights reserved.
+//  Created by Leandro Zanol, Priscila Magalhães, Thiago Miranda on 07/07/16.
+//  Copyright © 2016 Sambatech. All rights reserved.
 //
-
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
 #import "GoogleMediaFramework.h"

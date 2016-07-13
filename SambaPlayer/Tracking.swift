@@ -1,9 +1,9 @@
 //
 //  Tracking.swift
-//  Sample
+//  SambaPlayer SDK
 //
-//  Created by Thiago Miranda on 06/06/16.
-//  Copyright © 2016 Samba Tech. All rights reserved.
+//  Created by Leandro Zanol, Priscila Magalhães, Thiago Miranda on 07/07/16.
+//  Copyright © 2016 Sambatech. All rights reserved.
 //
 
 import Foundation
@@ -12,6 +12,12 @@ class Tracking: SambaPlayerDelegate {
 	private var _player: SambaPlayer
 	private var _sttm: STTM?
 	
+	/**
+	Default initializer
+	
+	- Parameters:
+		- player:SambaPlayer
+	**/
 	init(_ player: SambaPlayer) {
 		_player = player
 		
