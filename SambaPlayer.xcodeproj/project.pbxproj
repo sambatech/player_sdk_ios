@@ -457,7 +457,7 @@
 				TargetAttributes = {
 					9A91E8C51D14BCBF00C30DD3 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = A68AA84976;
+						DevelopmentTeam = GP968EQAM9;
 					};
 					9AEC54EA1D21C9E200EB1C4C = {
 						CreatedOnToolsVersion = 7.3.1;
@@ -633,8 +633,8 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test.XXX;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
@@ -654,8 +654,8 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test.XXX;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
