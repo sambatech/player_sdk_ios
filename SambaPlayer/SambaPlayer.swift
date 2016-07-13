@@ -65,7 +65,7 @@ public class SambaPlayer : UIViewController {
 	
 	/**
 	Convenience initializer
-	- parameter parentViewController:UIViewController The UIViewController in which the player is embed
+	- parameter parentViewController:UIViewController The view-controller in which the player view-controller and view should to be embedded
 	**/
 	public convenience init(_ parentViewController: UIViewController) {
 		self.init(parentViewController, parentView: parentViewController.view)
@@ -75,8 +75,8 @@ public class SambaPlayer : UIViewController {
 	Convenience initializer
 	
 	- Parameters:
-		- parentViewController:UIViewController The UIViewController which the player is embed
-		- parentView:UIView The UIView which the player is embed
+		- parentViewController:UIViewController The view-controller in which the player view-controller should to be embedded
+		- parentView:UIView The view in which the player view should to be embedded
 	**/
 	public convenience init(_ parentViewController: UIViewController, parentView: UIView) {
 		self.init()
@@ -243,7 +243,7 @@ public class SambaPlayer : UIViewController {
 		destroy()
 	}
 	
-	// MARK: Internal Methods
+	// MARK: Internal Methods (may we publish them?)
 	
 	func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
 		let p: UIViewController = vcParent ?? self

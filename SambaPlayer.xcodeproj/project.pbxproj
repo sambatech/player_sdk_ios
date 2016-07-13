@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A0921AC1D36B3AF00171F89 /* SambaPlayer.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9A0921AD1D36D14700171F89 /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
+		9A0921AE1D36D14700171F89 /* SambaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A3A71021D2F0B9900B4F2A1 /* SambaPlayer.framework in Copy Files */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FC1D22D5BD00C9C015 /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F11D22D5BD00C9C015 /* OutputMenu.xib */; };
@@ -74,19 +75,28 @@
 		9AF325F91D14B5B900B6E450 /* UISlider+GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* UISlider+GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* UISlider+GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* UISlider+GMFSlider.m */; };
 		9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
-		9AF667FF1D243FD400AEFF89 /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		9A0921AF1D36D14700171F89 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9AF324D01D14356E00B6E450 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9AF324D81D14356E00B6E450;
+			remoteInfo = SambaPlayer;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
-		9A2B2F4E1D2DD11A00F118AB /* Copy Files */ = {
+		9A0921B11D36D14700171F89 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 11;
 			files = (
-				9A0921AC1D36B3AF00171F89 /* SambaPlayer.framework in Copy Files */,
+				9A0921AE1D36D14700171F89 /* SambaPlayer.framework in Embed Frameworks */,
 			);
-			name = "Copy Files";
+			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9AA033B41D1873F500908957 /* Copy Files */ = {
@@ -192,7 +202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AF667FF1D243FD400AEFF89 /* SambaPlayer.framework in Frameworks */,
+				9A0921AD1D36D14700171F89 /* SambaPlayer.framework in Frameworks */,
 				9A52680B1D230A2100C9C015 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -404,11 +414,12 @@
 				9AEC54E71D21C9E200EB1C4C /* Sources */,
 				9AEC54E81D21C9E200EB1C4C /* Frameworks */,
 				9AEC54E91D21C9E200EB1C4C /* Resources */,
-				9A2B2F4E1D2DD11A00F118AB /* Copy Files */,
+				9A0921B11D36D14700171F89 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				9A0921B01D36D14700171F89 /* PBXTargetDependency */,
 			);
 			name = TestObjC;
 			productName = TestObjC;
@@ -454,7 +465,7 @@
 					};
 					9AF324D81D14356E00B6E450 = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = A68AA84976;
+						DevelopmentTeam = GP968EQAM9;
 					};
 				};
 			};
@@ -582,6 +593,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		9A0921B01D36D14700171F89 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9AF324D81D14356E00B6E450 /* SambaPlayer */;
+			targetProxy = 9A0921AF1D36D14700171F89 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		9AEC54F61D21C9E300EB1C4C /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -647,6 +666,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -664,6 +685,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEFINES_MODULE = YES;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -720,7 +743,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -764,7 +787,7 @@
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CODE_SIGN_FLAGS = "";
+				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
