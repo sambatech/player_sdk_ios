@@ -3,7 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Player Container-->
@@ -20,50 +20,61 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-qA-orU">
                                 <rect key="frame" x="0.0" y="64" width="600" height="338"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" secondItem="A2W-qA-orU" secondAttribute="height" multiplier="16:9" id="Rmo-hm-oCW"/>
-                                </constraints>
                             </containerView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Evento: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rL-Qp-HPX">
-                                <rect key="frame" x="20" y="559" width="66" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evento: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rL-Qp-HPX">
+                                <rect key="frame" x="20" y="559" width="62" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78a-vD-DYe">
-                                <rect key="frame" x="99" y="559" width="109" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Event" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78a-vD-DYe">
+                                <rect key="frame" x="94" y="559" width="89" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="89" id="UMw-UR-sXE"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="17"/>
                                 <color key="textColor" red="0.43735683900523559" green="0.43735683900523559" blue="0.43735683900523559" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLx-jJ-fgD">
-                                <rect key="frame" x="228" y="550" width="80" height="30"/>
-                                <state key="normal" title="Play"/>
-                                <connections>
-                                    <action selector="playAction:" destination="9Et-Yp-bwl" eventType="touchUpInside" id="qMy-ye-2Iw"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhT-VN-HMY">
-                                <rect key="frame" x="316" y="550" width="80" height="30"/>
-                                <state key="normal" title="Pause"/>
-                                <connections>
-                                    <action selector="pauseAction:" destination="9Et-Yp-bwl" eventType="touchUpInside" id="kvs-8l-haV"/>
-                                </connections>
-                            </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="00:00:00" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q4D-82-AmI">
-                                <rect key="frame" x="13" y="521" width="80" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="00:00:00" borderStyle="roundedRect" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="q4D-82-AmI">
+                                <rect key="frame" x="13" y="513" width="82" height="30"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <accessibilityTraits key="traits" staticText="YES" notEnabled="YES" updatesFrequently="YES"/>
                                 </accessibility>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eLx-jJ-fgD">
+                                <rect key="frame" x="492" y="555" width="30" height="30"/>
+                                <state key="normal" title="Play"/>
+                                <connections>
+                                    <action selector="playAction:" destination="9Et-Yp-bwl" eventType="touchUpInside" id="qMy-ye-2Iw"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RhT-VN-HMY">
+                                <rect key="frame" x="538" y="555" width="42" height="30"/>
+                                <state key="normal" title="Pause"/>
+                                <connections>
+                                    <action selector="pauseAction:" destination="9Et-Yp-bwl" eventType="touchUpInside" id="kvs-8l-haV"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="q4D-82-AmI" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leadingMargin" constant="-7" id="6UH-4H-wiN"/>
+                            <constraint firstItem="RhT-VN-HMY" firstAttribute="leading" secondItem="eLx-jJ-fgD" secondAttribute="trailing" constant="16" id="6VZ-kf-IVl"/>
+                            <constraint firstItem="78a-vD-DYe" firstAttribute="baseline" secondItem="7rL-Qp-HPX" secondAttribute="baseline" id="8Yx-G2-h6W"/>
+                            <constraint firstItem="eLx-jJ-fgD" firstAttribute="baseline" secondItem="78a-vD-DYe" secondAttribute="baseline" id="AW9-rM-m8Q"/>
                             <constraint firstItem="A2W-qA-orU" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leading" id="Fww-Sq-IdT"/>
+                            <constraint firstItem="7rL-Qp-HPX" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leadingMargin" id="Ns4-aM-yvS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="RhT-VN-HMY" secondAttribute="trailing" id="On9-dc-zaF"/>
+                            <constraint firstItem="9CF-Aj-o1T" firstAttribute="top" secondItem="A2W-qA-orU" secondAttribute="bottom" constant="198" id="Uho-nl-Ijs"/>
+                            <constraint firstItem="RhT-VN-HMY" firstAttribute="baseline" secondItem="78a-vD-DYe" secondAttribute="baseline" id="WEs-sA-oae"/>
                             <constraint firstAttribute="trailing" secondItem="A2W-qA-orU" secondAttribute="trailing" id="ZbS-AJ-jYt"/>
                             <constraint firstItem="A2W-qA-orU" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="arJ-Pf-kOH"/>
+                            <constraint firstItem="9CF-Aj-o1T" firstAttribute="top" secondItem="7rL-Qp-HPX" secondAttribute="bottom" constant="20" id="lo6-wB-Qa7"/>
+                            <constraint firstItem="78a-vD-DYe" firstAttribute="leading" secondItem="7rL-Qp-HPX" secondAttribute="trailing" constant="12" id="mbP-nl-WWT"/>
+                            <constraint firstItem="7rL-Qp-HPX" firstAttribute="top" secondItem="q4D-82-AmI" secondAttribute="bottom" constant="16" id="uwE-C3-j7H"/>
                         </constraints>
                     </view>
                     <connections>

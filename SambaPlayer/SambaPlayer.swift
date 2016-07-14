@@ -190,7 +190,18 @@ public class SambaPlayer : UIViewController {
 		- withTransitionCoordinator coordinator
 	*/
 	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-		guard let player = _player where !_fullscreenAnimating else { return }
+		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+		
+		guard !_fullscreenAnimating,
+			let player = _player else { return }
+		
+		guard !media.isAudio else {
+			var f = player.view.frame
+			f.size.width = size.width
+			player.view.frame = f
+			player.view.setNeedsDisplay()
+			return
+		}
 		
 		if player.parentViewController == self {
 			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
@@ -218,8 +229,6 @@ public class SambaPlayer : UIViewController {
 				self.attachVC(player)
 			}
 		}
-		
-		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
 	}
 	
 	/**
