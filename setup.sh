@@ -25,7 +25,7 @@ exit
 fi
 
 # checking dependency build
-if [[ ! -d "${SRCROOT}/../../Build/iOS/${EXECUTABLE_PATH}" ]]; then
+if [[ ! -d "${SRCROOT}/../../Build/iOS/${WRAPPER_NAME}" ]]; then
 echo "Info: No Carthage build found yet, waiting..." | tee setup.log
 exit
 fi
