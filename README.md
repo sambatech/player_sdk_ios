@@ -31,7 +31,7 @@ Basta executar `carthage update` para gerar o `SambaPlayer.framework` e as demai
 
 Em seguida execute o script `setup.sh`:
 ```shell
-Carthage/Checkouts/player_sdk_ios/setup.sh
+$ Carthage/Checkouts/player_sdk_ios/setup.sh
 ```
 
 Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para seu projeto Xcode:
