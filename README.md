@@ -38,7 +38,7 @@ Efetue as seguintes configurações em *Target -> Build Settings*:
 - Para funcionar `import`:
 <br>*Packaging -> Defines Module -> __Yes__*
 - Para localizar o framework em *compile time*:
-<br>*Search Paths -> Framework Search Paths -> __${PROJECT_DIR}/Frameworks__*
+<br>*Search Paths -> Framework Search Paths -> __${PROJECT_DIR}/Carthage/Build/iOS__*
 - Frameworks com código em Swift precisam ser informados:
 <br>*Build Options -> Embedded Content Contains Swift Code -> __Yes__*
 - O processo de assinatura de aplicativos [é raso e não inclui as dependências](http://stackoverflow.com/a/17396143/3688598):
@@ -51,7 +51,7 @@ Finalmente, garanta que o framework será copiado para o bundle do aplicativo:
 - Em *Target -> __Build Phases__*
 - Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
 - Escolha o local de destino ou *Destination -> __Shared Frameworks__* (sugestão acima)
-- Adicione o framework na __lista__ (área inferior)
+- Inclua o SambaPlayer.framework à __lista__ (área inferior)
 
 ## Suporte
 Quaisquer perguntas, sugestões ou notificações de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
