@@ -31,12 +31,12 @@ mkdir "${SRCROOT}/../../Build" 2> /dev/null
 mkdir "${SRCROOT}/../../Build/iOS" 2> /dev/null
 
 # merges lib to reach all archs
-echo "merging modules: ${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/ => ${BUILD_DIR}/Release-iphoneos/Build/iOS/${WRAPPER_NAME}/Modules/" | tee setup.log
-cp -r "${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/" "${BUILD_DIR}/Release-iphoneos/Build/iOS/${WRAPPER_NAME}/Modules/" 2> | tee -a setup.log
+echo "merging modules: ${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/ => ${BUILD_DIR}/Release-iphoneos/${WRAPPER_NAME}/Modules/" | tee setup.log
+cp -r "${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/" "${BUILD_DIR}/Release-iphoneos/${WRAPPER_NAME}/Modules/" 2>&1 | tee -a setup.log
 
 echo "merging archs: ${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH} + ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH} => ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" | tee -a setup.log
-lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2> | tee -a setup.log
+lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2>&1 | tee -a setup.log
 
 # copies IMA framework to Carthage's build dir
-echo "copying IMA: ${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework/ => ${SRCROOT}/../../Build/iOS/GoogleInteractiveMediaAds.framework/" | tee -a setup.log
-cp -r "${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework/" "${SRCROOT}/../../Build/iOS/GoogleInteractiveMediaAds.framework/" 2> | tee -a setup.log
+echo "copying IMA: ${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework => ${SRCROOT}/../../Build/iOS/GoogleInteractiveMediaAds.framework/" | tee -a setup.log
+cp -r "${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework" "${SRCROOT}/../../Build/iOS/" 2>&1 | tee -a setup.log
