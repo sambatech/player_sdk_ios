@@ -17,9 +17,9 @@ if [[ ! -n "${EXECUTABLE_PATH}" ]]; then
 	fi
 fi
 
-# checking dependency build
-if [[ ! -f "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" ]]; then
-	echo "Warning: No dependency build found, merges won't happen." | tee -a setup.log
+# checking dependency builds
+if [[ ! -f "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" || ! -f "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" ]]; then
+	echo "Warning: No dependency builds found yet." | tee -a setup.log
 	exit
 fi
 
@@ -27,8 +27,8 @@ archsCount=$(lipo -info "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" | rev
 
 # if binary supported archs are equal or greater than 4, consider already merged
 if [[ "${archsCount}" -ge 4 ]]; then
-echo "Already merged, end task." | tee -a setup.log
-exit
+	echo "Already merged, end task." | tee -a setup.log
+	exit
 fi
 
 # checking Carthage build dir
