@@ -11,7 +11,7 @@ if [[ ! -n "${EXECUTABLE_PATH}" ]]; then
 
 	if [[ -z "${BUILD_DIR}" || "${BUILD_DIR}" =~ '=' ]]; then
 		BUILD_DIR="${SRCROOT}/Build/Products"
-		echo "BUILD_DIR (changed) = ${BUILD_DIR}"
+		echo "BUILD_DIR (modified) = ${BUILD_DIR}"
 	fi
 fi
 
@@ -35,7 +35,7 @@ echo "merging modules: ${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modu
 cp -r "${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/" "${BUILD_DIR}/Release-iphoneos/${WRAPPER_NAME}/Modules/" 2>&1 | tee -a setup.log
 
 echo "merging archs: ${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH} + ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH} => ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" | tee -a setup.log
-lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2>&1 | tee -a setup.log
+lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2>> setup.log
 
 # copies IMA framework to Carthage's build dir
 echo "copying IMA: ${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework => ${SRCROOT}/../../Build/iOS/GoogleInteractiveMediaAds.framework/" | tee -a setup.log
