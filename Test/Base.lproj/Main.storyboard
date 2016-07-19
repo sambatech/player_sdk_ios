@@ -3,7 +3,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
         <!--Player Container-->
@@ -18,9 +20,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-qA-orU">
-                                <rect key="frame" x="0.0" y="64" width="600" height="338"/>
-                            </containerView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Evento: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7rL-Qp-HPX">
                                 <rect key="frame" x="20" y="559" width="62" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -58,20 +57,25 @@
                                     <action selector="pauseAction:" destination="9Et-Yp-bwl" eventType="touchUpInside" id="kvs-8l-haV"/>
                                 </connections>
                             </button>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="A2W-qA-orU">
+                                <rect key="frame" x="0.0" y="64" width="600" height="337"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="A2W-qA-orU" secondAttribute="height" multiplier="16:9" id="WlI-n4-EUp"/>
+                                </constraints>
+                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="A2W-qA-orU" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leading" id="0Fv-U8-FIj"/>
                             <constraint firstItem="q4D-82-AmI" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leadingMargin" constant="-7" id="6UH-4H-wiN"/>
                             <constraint firstItem="RhT-VN-HMY" firstAttribute="leading" secondItem="eLx-jJ-fgD" secondAttribute="trailing" constant="16" id="6VZ-kf-IVl"/>
                             <constraint firstItem="78a-vD-DYe" firstAttribute="baseline" secondItem="7rL-Qp-HPX" secondAttribute="baseline" id="8Yx-G2-h6W"/>
                             <constraint firstItem="eLx-jJ-fgD" firstAttribute="baseline" secondItem="78a-vD-DYe" secondAttribute="baseline" id="AW9-rM-m8Q"/>
-                            <constraint firstItem="A2W-qA-orU" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leading" id="Fww-Sq-IdT"/>
                             <constraint firstItem="7rL-Qp-HPX" firstAttribute="leading" secondItem="4Ru-7L-0xi" secondAttribute="leadingMargin" id="Ns4-aM-yvS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="RhT-VN-HMY" secondAttribute="trailing" id="On9-dc-zaF"/>
-                            <constraint firstItem="9CF-Aj-o1T" firstAttribute="top" secondItem="A2W-qA-orU" secondAttribute="bottom" constant="198" id="Uho-nl-Ijs"/>
                             <constraint firstItem="RhT-VN-HMY" firstAttribute="baseline" secondItem="78a-vD-DYe" secondAttribute="baseline" id="WEs-sA-oae"/>
-                            <constraint firstAttribute="trailing" secondItem="A2W-qA-orU" secondAttribute="trailing" id="ZbS-AJ-jYt"/>
-                            <constraint firstItem="A2W-qA-orU" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="arJ-Pf-kOH"/>
+                            <constraint firstItem="A2W-qA-orU" firstAttribute="width" secondItem="4Ru-7L-0xi" secondAttribute="width" id="e4h-yg-8ro"/>
+                            <constraint firstItem="A2W-qA-orU" firstAttribute="top" secondItem="qqF-BV-VhR" secondAttribute="bottom" id="fef-eM-s8I"/>
                             <constraint firstItem="9CF-Aj-o1T" firstAttribute="top" secondItem="7rL-Qp-HPX" secondAttribute="bottom" constant="20" id="lo6-wB-Qa7"/>
                             <constraint firstItem="78a-vD-DYe" firstAttribute="leading" secondItem="7rL-Qp-HPX" secondAttribute="trailing" constant="12" id="mbP-nl-WWT"/>
                             <constraint firstItem="7rL-Qp-HPX" firstAttribute="top" secondItem="q4D-82-AmI" secondAttribute="bottom" constant="16" id="uwE-C3-j7H"/>
@@ -135,20 +139,34 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="SambaPlayer SDK Sample" id="iEc-Jm-0w5">
-                        <barButtonItem key="rightBarButtonItem" image="dfpIcon" id="EsF-gu-xSg">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ytk-rm-P3j">
-                                <rect key="frame" x="542" y="5" width="38" height="34"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                <state key="normal" backgroundImage="dfpIcon"/>
-                                <connections>
-                                    <action selector="toggleDfp:forEvent:" destination="diY-80-TBT" eventType="touchUpInside" id="zy0-lR-uDj"/>
-                                </connections>
-                            </button>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="dfpIcon" id="EsF-gu-xSg">
+                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="Ytk-rm-P3j">
+                                    <rect key="frame" x="542" y="5" width="38" height="34"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                    <state key="normal" backgroundImage="dfpIcon"/>
+                                    <connections>
+                                        <action selector="dfpTapped" destination="diY-80-TBT" eventType="touchUpInside" id="9aY-wC-KSy"/>
+                                    </connections>
+                                </button>
+                            </barButtonItem>
+                            <barButtonItem style="plain" id="omR-hO-C20">
+                                <textField key="customView" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" id="DqM-UF-ihH">
+                                    <rect key="frame" x="401" y="7" width="133" height="30"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <action selector="dfpEditingChanged" destination="diY-80-TBT" eventType="editingChanged" id="PcJ-Jk-zfX"/>
+                                    </connections>
+                                </textField>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
-                        <outlet property="dfpToggle" destination="Ytk-rm-P3j" id="mra-1n-i0B"/>
+                        <outlet property="dfpTextField" destination="DqM-UF-ihH" id="kbj-ij-Np2"/>
+                        <outlet property="dfpToggleButton" destination="Ytk-rm-P3j" id="C49-6d-qrK"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XTO-Im-uWM" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -159,6 +159,9 @@
       // TODO: destroy loader (pending IMA SDK bugfix)
       //[self.adsLoader destroy];
       break;
+	case kIMAAdEvent_TAPPED:
+	  [self.adsManager resume];
+	  break;
     default:
       break;
   }
@@ -233,10 +236,12 @@
 #pragma mark GMFPlayerOverlayViewDelegate
 
 - (void)didPressPlay {
+	NSLog(@"resume ad");
   [self.adsManager resume];
 }
 
 - (void)didPressPause {
+	NSLog(@"pause ad");
   [self.adsManager pause];
 }
 

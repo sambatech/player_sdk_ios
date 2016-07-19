@@ -634,6 +634,7 @@
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -655,6 +656,7 @@
 				);
 				INFOPLIST_FILE = Test/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.Test;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -814,6 +816,7 @@
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				PROVISIONING_PROFILE = "";
@@ -839,6 +842,7 @@
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				PROVISIONING_PROFILE = "";

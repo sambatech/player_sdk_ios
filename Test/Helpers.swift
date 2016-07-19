@@ -12,38 +12,51 @@ import UIKit
 class Helpers {
 	static let settings = NSDictionary.init(contentsOfFile: NSBundle.mainBundle().pathForResource("Configs", ofType: "plist")!)! as! [String:String]
 	
-	static func requestURL(url: String, _ callback: (String? -> ())? = nil) {
+	static func requestURLJson(url: String, _ callback: ([AnyObject]? -> ())) {
 		guard let url = NSURL(string: url) else {
 			print("\(self.dynamicType) Error: Invalid URL format.")
 			return
 		}
 		
 		let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(NSURLRequest(URL: url)) { data, response, error in
-			if let error = error {
-				print("\(self.dynamicType) Error: \(error.localizedDescription)")
-				return
-			}
-			
-			guard let response = response as? NSHTTPURLResponse else {
-				print("\(self.dynamicType) Error: No response from server.")
-				return
-			}
-			
-			guard case 200..<300 = response.statusCode else {
-				print("\(self.dynamicType) Error: Invalid server response (\(response.statusCode)).")
-				return
-			}
-			
-			guard let data = data, responseText = String(data: data, encoding: NSUTF8StringEncoding) else {
-				#if DEBUG
-					print("\(self.dynamicType) Error: \(error?.description ?? "Unable to get data.")")
-				#endif
+			dispatch_async(dispatch_get_main_queue()) {
+				if let error = error {
+					print("\(self.dynamicType) Error: \(error.localizedDescription)")
+					callback(nil)
+					return
+				}
 				
-				callback?(nil)
-				return
+				guard let response = response as? NSHTTPURLResponse else {
+					print("\(self.dynamicType) Error: No response from server.")
+					callback(nil)
+					return
+				}
+				
+				guard case 200..<300 = response.statusCode else {
+					print("\(self.dynamicType) Error: Invalid server response (\(response.statusCode)).")
+					callback(nil)
+					return
+				}
+				
+				guard let jsonData = data else {
+					print("\(self.dynamicType) Error: \(error?.description ?? "Unable to get data.")")
+					callback(nil)
+					return
+				}
+				
+				var jsonOpt: [AnyObject]?
+				
+				do {
+					jsonOpt = try NSJSONSerialization.JSONObjectWithData(jsonData, options: .AllowFragments) as? [AnyObject]
+				}
+				catch {
+					print("\(self.dynamicType) Error parsing JSON string.")
+					callback(nil)
+					return
+				}
+				
+				callback(jsonOpt)
 			}
-			
-			callback?(responseText)
 		}
 		
 		requestTask.resume()

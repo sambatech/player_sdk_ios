@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import SambaPlayer
 
 class PlayerViewController: UIViewController, SambaPlayerDelegate {
