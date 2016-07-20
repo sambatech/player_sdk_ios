@@ -27,7 +27,7 @@ import Foundation
 	*/
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
 		Helpers.requestURL("http://playerapitest2.liquidplatform.com:7091/v1/\(request.projectHash)/" + (request.mediaId ??
-			"?\((request.streamUrls ?? []).count > 0 ? "alternativeLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
+			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
 			guard let responseText = responseText else { return }
 			
 			var tokenBase64: String = responseText
@@ -112,7 +112,7 @@ import Foundation
 				media.sttmKey = key
 			}
 		}
-
+		
 		if let rules = json["deliveryRules"] as? [AnyObject] {
 			let defaultOutput = project["defaultOutput"] as? String ?? "240p"
 			var deliveryOutputsCount = [String:Int]()
@@ -161,8 +161,8 @@ import Foundation
 				media.outputs = mediaOutputs
 			}
 		}
-		else if let liveOutput = json["liveOutput"] as? String {
-			media.url = liveOutput
+		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
+			media.url = liveOutput["baseUrl"] as? String
 			media.isLive = true
 		}
 		

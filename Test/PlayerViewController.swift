@@ -28,14 +28,26 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 		
 		guard sambaPlayer == nil else { return }
 		
-		SambaApi().requestMedia(SambaMediaRequest(
-			projectHash: m.projectHash,
-			mediaId: m.mediaId
-			),
-			callback: { media in
-				guard let media = media else { return }
-				self.initPlayer(media)
-		})
+		if (m.mediaId != nil) {
+			SambaApi().requestMedia(SambaMediaRequest(
+				projectHash: m.projectHash,
+				mediaId: m.mediaId!
+				),
+				callback: { media in
+					guard let media = media else { return }
+					self.initPlayer(media)
+			})
+		}else {
+			SambaApi().requestMedia(SambaMediaRequest(
+				projectHash: m.projectHash,
+				streamUrl: m.mediaURL!
+				),
+				callback: { media in
+					guard let media = media else { return }
+					self.initPlayer(media)
+			})
+		}
+
 	}
 	
 	private func initPlayer(media: SambaMedia) {

@@ -10,21 +10,26 @@ import AVKit
 
 class MediaListViewController : UITableViewController {
 	
+	@IBOutlet weak var liveToggleButton: UIButton!
 	@IBOutlet weak var dfpToggleButton: UIButton!
 	@IBOutlet var dfpTextField: UITextField!
 	
 	private var mediaList = [MediaInfo]()
 	private let defaultDfp: String = "4xtfj"
 	private var dfpActive: Bool = false
+	private var liveActive: Bool = false
 	
 	override func viewDidLoad() {
-		//requestMediaSet([String.init(4421), String.init(4460)])
-		requestMediaSet([String.init(533)])
 		self.tableView.backgroundColor = UIColor.clearColor()
+		makeInitialRequests()
 		
-		//Button
+		//Button dfp
 		let dfpIcon = dfpToggleButton.currentBackgroundImage?.tintPhoto(UIColor.lightGrayColor())
 		dfpToggleButton.setImage(dfpIcon, forState: UIControlState.Normal)
+		
+		//Button live
+		let liveIcon = liveToggleButton.currentBackgroundImage?.tintPhoto(UIColor.lightGrayColor())
+		liveToggleButton.setImage(liveIcon, forState: UIControlState.Normal)
 	}
 	
 	override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -76,6 +81,11 @@ class MediaListViewController : UITableViewController {
 		self.tableView.deselectRowAtIndexPath(indexPath, animated: false)
 	}
 	
+	private func makeInitialRequests() {
+		//requestMediaSet([String.init(4421), String.init(4460)])
+		requestMediaSet([String.init(533)])
+	}
+	
 	private func requestMediaSet(pids:[String]) {
 		var i = 0
 
@@ -110,7 +120,7 @@ class MediaListViewController : UITableViewController {
 
 					let m = MediaInfo(
 						title: jsonNode["title"] as? String ?? "",
-						thumb: thumbUrl,
+						thumb: (!isAudio) ? thumbUrl: "https://cdn4.iconfinder.com/data/icons/defaulticon/icons/png/256x256/media-volume-2.png",
 						projectHash: Helpers.settings["pid_" + pid]!,
 						mediaId: jsonNode["id"] as? String ?? "",
 						isAudio: isAudio
@@ -178,6 +188,83 @@ class MediaListViewController : UITableViewController {
 		dfpActive = state
 	}
 	
+	private func enableLiveButton(state: Bool) {
+		guard state != liveActive else { return }
+		
+		mediaList = [MediaInfo]()
+		if(!state) {
+			makeInitialRequests()
+			enableDfpButton(false)
+		}
+		
+		let liveIcon = liveToggleButton.currentBackgroundImage?.tintPhoto(state ? UIColor.clearColor() : UIColor.lightGrayColor())
+		liveToggleButton.setImage(liveIcon, forState: UIControlState.Normal)
+		
+		liveActive = state
+	}
+	
+	//Fill live
+	private func fillLive() {
+		let thumbURL = "http://www.impactmobile.com/files/2012/09/icon64-broadcasts.png"
+		
+		let m = MediaInfo(
+			title: "Live SBT (HLS)",
+			thumb:  thumbURL,
+			projectHash: "986e07f70986265468eae1377424d171",
+			mediaId: nil,
+			isAudio: false,
+			mediaURL: "http://gbbrlive2.sambatech.com.br/liveevent/sbt3_8fcdc5f0f8df8d4de56b22a2c6660470/livestream/manifest.m3u8"
+		)
+		
+		self.mediaList.append(m)
+		
+		let m1 = MediaInfo(
+			title: "Live VEVO (HLS)",
+			thumb: thumbURL,
+			projectHash: "986e07f70986265468eae1377424d171",
+			mediaId: nil,
+			isAudio: false,
+			mediaURL: "http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8"
+		)
+		
+		self.mediaList.append(m1)
+		
+		let m2 = MediaInfo(
+			title: "Live Denmark channel (HLS)",
+			thumb: thumbURL,
+			projectHash: "986e07f70986265468eae1377424d171",
+			mediaId: nil,
+			isAudio: false,
+			mediaURL: "http://itv08.digizuite.dk/tv2b/ngrp:ch1_all/playlist.m3u8"
+		)
+		
+		self.mediaList.append(m2)
+		
+		let m3 = MediaInfo(
+			title: "Live Denmark channel (HDS: erro!)",
+			thumb: thumbURL,
+			projectHash: "986e07f70986265468eae1377424d171",
+			mediaId: nil,
+			isAudio: false,
+			mediaURL: "http://itv08.digizuite.dk/tv2b/ngrp:ch1_all/manifest.f4m"
+		)
+		
+		self.mediaList.append(m3)
+		
+		let m4 = MediaInfo(
+			title: "Tv Diário",
+			thumb: thumbURL,
+			projectHash: "986e07f70986265468eae1377424d171",
+			mediaId: nil,
+			isAudio: false,
+			mediaURL: "http://slrp.sambavideos.sambatech.com/liveevent/tvdiario_7a683b067e5eee5c8d45e1e1883f69b9/livestream/playlist.m3u8"
+		)
+		
+		self.mediaList.append(m4)
+		
+		self.tableView.reloadData()
+	}
+	
 	@IBAction func dfpTapped() {
 		enableDfpButton(!dfpActive)
 		
@@ -189,18 +276,27 @@ class MediaListViewController : UITableViewController {
 	@IBAction func dfpEditingChanged() {
 		enableDfpButton(false)
 	}
+	
+	@IBAction func liveTapped(sender: AnyObject) {
+		enableLiveButton(!liveActive)
+		
+		if liveActive {
+			fillLive()
+		}
+	}
 }
 
 class MediaInfo {
 	let title:String
 	let thumb:String
 	let projectHash:String
-	let mediaId:String
+	let mediaId:String?
 	let isAudio:Bool
 	var mediaAd:String?
 	var description:String?
+	let mediaURL:String?
 	
-	init(title:String, thumb:String, projectHash:String, mediaId:String, isAudio:Bool = false, description:String? = nil, mediaAd:String? = nil) {
+	init(title:String, thumb:String, projectHash:String, mediaId:String? = nil, isAudio:Bool = false, description:String? = nil, mediaAd:String? = nil, mediaURL:String? = nil) {
 		self.title = title
 		self.thumb = thumb
 		self.projectHash = projectHash
@@ -208,5 +304,6 @@ class MediaInfo {
 		self.isAudio = isAudio
 		self.description = description
 		self.mediaAd = mediaAd
+		self.mediaURL = mediaURL
 	}
 }
