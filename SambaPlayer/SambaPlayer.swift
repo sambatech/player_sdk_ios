@@ -311,6 +311,11 @@ public class SambaPlayer : UIViewController {
 				self._player?.playerOverlay().autoHideEnabled = false
 				self._player?.playerOverlay().controlsHideEnabled = false
 			}
+			
+			if self.media.isLive {
+				self._player?.getControlsView().hideFullscreenButton()
+				
+			}
 		})
 		
 		_player = gmf
@@ -346,7 +351,9 @@ public class SambaPlayer : UIViewController {
 			ima.requestAdsWithRequest(adUrl)
 		}
 		
-		let _ = Tracking(self)
+		if !media.isLive {
+			let _ = Tracking(self)
+		}
 		
 		gmf.play()
 	}
