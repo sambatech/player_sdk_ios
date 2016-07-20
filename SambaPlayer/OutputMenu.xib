@@ -5,11 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OutputMenuViewController" customModule="SambaPlayerSDK" customModuleProvider="target">
-            <connections>
-                <outlet property="tableView" destination="ef8-MP-9CC" id="XNS-oG-tB5"/>
-            </connections>
-        </placeholder>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OutputMenuViewController" customModule="SambaPlayer" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view opaque="NO" contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
@@ -35,6 +31,9 @@
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ef8-MP-9CC">
                             <rect key="frame" x="22" y="80" width="256" height="340"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="256" id="pcE-Nz-YPc"/>
+                            </constraints>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="m47-Jc-am7"/>
                                 <outlet property="delegate" destination="-1" id="3Zv-GJ-2uy"/>
@@ -46,11 +45,10 @@
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="8Fh-8I-73M"/>
                         <constraint firstItem="ef8-MP-9CC" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="80" id="NHg-QP-EZg"/>
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="16" id="RXM-Ad-q5g"/>
-                        <constraint firstAttribute="trailing" secondItem="ef8-MP-9CC" secondAttribute="trailing" constant="22" id="UUX-dq-1X1"/>
                         <constraint firstAttribute="bottom" secondItem="bLd-aH-98y" secondAttribute="bottom" constant="16" id="V9M-7S-K0D"/>
                         <constraint firstItem="ef8-MP-9CC" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="VKu-Y3-SSI"/>
+                        <constraint firstAttribute="bottom" secondItem="ef8-MP-9CC" secondAttribute="bottom" constant="80" id="Vrj-vM-tLZ"/>
                         <constraint firstAttribute="width" constant="300" id="i0y-sq-9Ri"/>
-                        <constraint firstAttribute="bottom" secondItem="ef8-MP-9CC" secondAttribute="bottom" constant="80" id="pgm-LJ-gba"/>
                         <constraint firstAttribute="trailing" secondItem="bLd-aH-98y" secondAttribute="trailing" constant="20" id="xrk-g9-ptr"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>

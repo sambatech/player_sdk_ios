@@ -11,22 +11,27 @@ import UIKit
 
 class OutputMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 	
-	@IBOutlet var tableView: UITableView!
+	private let _cellIdentifier: String = "outputCell"
+	private let _player: SambaPlayer
+	private let _outputs: [SambaMedia.Output]
+	private let _selectedIndex: Int
 	
-	private let cellIdentifier: String = "outputCell"
-	private let player: SambaPlayer
-	private let outputs: [SambaMedia.Output]
-	
-	init(_ player: SambaPlayer) {
-		self.player = player
-		self.outputs = player.media.outputs!
-		
+	init(_ player: SambaPlayer, _ selectedIndex: Int = -1) {
+		_player = player
+		_outputs = player.media.outputs!
+		_selectedIndex = selectedIndex
+		print(selectedIndex)
 		super.init(nibName: nil, bundle: nil)
 		
 		transitioningDelegate = self
 		modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
 		
-		view = NSBundle.mainBundle().loadNibNamed("OutputMenu", owner: self, options: nil).first as! UIView
+		if let nib = NSBundle(forClass: self.dynamicType).loadNibNamed("OutputMenu", owner: self, options: nil).first as? UIView {
+			view = nib
+		}
+		else {
+			print("Couldn't load output menu.")
+		}
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -36,28 +41,30 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	// MARK: UITableViewDataSource implementation
 	
 	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return outputs.count
+		return _outputs.count
 	}
 	
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		var cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier)
+		let cell = tableView.dequeueReusableCellWithIdentifier(_cellIdentifier) ??
+			UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: _cellIdentifier)
 
-		if cell == nil {
-			cell = UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: cellIdentifier)
+		cell.textLabel?.text = _outputs[indexPath.row].label
+		
+		if indexPath.row == _selectedIndex {
+			//cell.contentView.backgroundColor = UIColor(_player.media.theme)
+			cell.textLabel?.shadowColor = UIColor.blackColor()
 		}
 		
-		cell?.textLabel?.text = outputs[indexPath.row].label
-		
-		return cell!
+		return cell
 	}
 	
 	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		player.switchOutput(indexPath.row)
+		_player.switchOutput(indexPath.row)
 		close()
 	}
 	
 	func close() {
-		player.detachVC(self) { self.player.play() }
+		_player.hideMenu(self)
 	}
 	
 	@IBAction func closeHandler(sender: AnyObject) {

@@ -20,7 +20,9 @@ public class SambaPlayer : UIViewController {
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
 	private var _hasMultipleOutputs = false
-	private var _lastOutput = -1
+	private var _currentOutput = -1
+	private var _currentMenu: UIViewController?
+	private var _wasPlayingBeforePause = false
 	
 	// MARK: Properties
 	
@@ -47,6 +49,10 @@ public class SambaPlayer : UIViewController {
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			destroy()
+			
+			if let index = media.outputs?.indexOf({ $0.isDefault }) {
+				_currentOutput = index
+			}
 		}
 	}
 	
@@ -121,6 +127,7 @@ public class SambaPlayer : UIViewController {
 		player.pause()
 	*/
 	public func pause() {
+		_wasPlayingBeforePause = isPlaying
 		_player?.pause()
 	}
 	
@@ -156,10 +163,11 @@ public class SambaPlayer : UIViewController {
 	- parameter: value: Int Index of the output
 	*/
 	public func switchOutput(value: Int) {
-		guard let outputs = media.outputs
-			where value != _lastOutput && value < outputs.count else { return }
+		guard value != _currentOutput,
+			let outputs = media.outputs
+			where value < outputs.count else { return }
 		
-		_lastOutput = value
+		_currentOutput = value
 		_player?.player.switchUrl(outputs[value].url)
 	}
 	
@@ -203,6 +211,20 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
+		let menu = _currentMenu
+		
+		if let menu = menu {
+			hideMenu(menu, true)
+		}
+		
+		let callback = {
+			self._fullscreenAnimating = false
+			
+			if let menu = menu {
+				self.showMenu(menu, true)
+			}
+		}
+		
 		if player.parentViewController == self {
 			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
 				_fullscreenAnimating = true
@@ -212,9 +234,7 @@ public class SambaPlayer : UIViewController {
 				detachVC(player)
 				
 				dispatch_async(dispatch_get_main_queue()) {
-					self.presentViewController(player, animated: true) {
-						self._fullscreenAnimating = false
-					}
+					self.presentViewController(player, animated: true, completion: callback)
 				}
 			}
 		}
@@ -222,11 +242,11 @@ public class SambaPlayer : UIViewController {
 			_fullscreenAnimating = true
 			
 			detachVC(player) {
-				self._fullscreenAnimating = false
 				self._isFullscreen = false
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
 				self.attachVC(player)
+				callback()
 			}
 		}
 	}
@@ -254,28 +274,30 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Internal Methods (may we publish them?)
 	
-	func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
-		let p: UIViewController = vcParent ?? self
+	func showMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+		_currentMenu = menu
 		
-		dispatch_async(dispatch_get_main_queue()) {
-			p.addChildViewController(vc)
-			vc.didMoveToParentViewController(p)
-			vc.view.frame = p.view.frame
-			p.view.addSubview(vc.view)
-			p.view.setNeedsDisplay()
+		if !mainActionOnly {
+			pause()
+		}
+		
+		if _isFullscreen {
+			attachVC(menu, _player)
+		}
+		else {
+			dispatch_async(dispatch_get_main_queue()) {
+				self.presentViewController(menu, animated: false, completion: nil)
+			}
 		}
 	}
 	
-	func detachVC(vc: UIViewController, callback: (() -> Void)? = nil) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if vc.parentViewController != self {
-				vc.dismissViewControllerAnimated(true, completion: callback)
-			}
-			else {
-				vc.view.removeFromSuperview()
-				vc.removeFromParentViewController()
-				callback?()
-			}
+	func hideMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+		detachVC(menu, _player, false)
+		
+		_currentMenu = nil
+		
+		if !mainActionOnly && _wasPlayingBeforePause {
+			play()
 		}
 	}
 	
@@ -387,11 +409,34 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	@objc private func hdTouchHandler() {
-		print("HD button tapped")
-		//pause()
-		//showHdMenu()
+		showMenu(OutputMenuViewController(self, _currentOutput))
 	}
-
+	
+	private func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
+		let p: UIViewController = vcParent ?? self
+		
+		dispatch_async(dispatch_get_main_queue()) {
+			p.addChildViewController(vc)
+			vc.didMoveToParentViewController(p)
+			vc.view.frame = p.view.frame
+			p.view.addSubview(vc.view)
+			p.view.setNeedsDisplay()
+		}
+	}
+	
+	private func detachVC(vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
+		dispatch_async(dispatch_get_main_queue()) {
+			if vc.parentViewController != (vcParent ?? self) {
+				vc.dismissViewControllerAnimated(animated, completion: callback)
+			}
+			else {
+				vc.view.removeFromSuperview()
+				vc.removeFromParentViewController()
+				callback?()
+			}
+		}
+	}
+	
 	private func startTimer() {
 		stopTimer()
 		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
@@ -399,17 +444,6 @@ public class SambaPlayer : UIViewController {
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
-	}
-	
-	private func showHdMenu() {
-		if _isFullscreen {
-			attachVC(OutputMenuViewController(self))
-		}
-		else {
-			dispatch_async(dispatch_get_main_queue()) {
-				self.presentViewController(OutputMenuViewController(self), animated: false, completion: nil)
-			}
-		}
 	}
 }
 
