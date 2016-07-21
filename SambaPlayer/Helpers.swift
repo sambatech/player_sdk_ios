@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Helpers {
-	static let settings = NSDictionary.init(contentsOfFile: NSBundle.mainBundle().pathForResource("Settings", ofType: "plist")!)! as! [String:String]
+	static let settings = NSDictionary.init(contentsOfFile: NSBundle(forClass:Helpers.self).pathForResource("Settings", ofType: "plist")!)! as! [String:String]
 	
 	static func matchesForRegexInText(regex: String!, text: String!) -> [String] {
 		do {
