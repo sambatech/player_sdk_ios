@@ -47,7 +47,7 @@
     _playImage = [GMFResources playerBarPlayLargeButtonImage];
     _pauseImage = [GMFResources playerBarPauseLargeButtonImage];
     _replayImage = [GMFResources playerBarReplayLargeButtonImage];
-    
+	  
     // Set the button label strings (for accessibility).
     _playLabel = NSLocalizedStringFromTable(@"Play",
                                             @"GoogleMediaFramework",
@@ -85,9 +85,8 @@
     
     _topBarView = [[GMFTopBarView alloc] init];
     //[_topBarView setLogoImage:[GMFResources playerBarPlayButtonImage]]; //SDK Samba customization
-
-
-    [self addSubview:_topBarView];
+	
+	[self addSubview:_topBarView];
 
     [self setupLayoutConstraints];
   }

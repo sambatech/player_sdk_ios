@@ -20,7 +20,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		_player = player
 		_outputs = player.media.outputs!
 		_selectedIndex = selectedIndex
-		print(selectedIndex)
+		
 		super.init(nibName: nil, bundle: nil)
 		
 		transitioningDelegate = self

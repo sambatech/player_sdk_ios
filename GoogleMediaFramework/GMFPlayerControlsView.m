@@ -186,7 +186,12 @@ static const CGFloat kGMFBarPaddingX = 8;
 }
 
 - (void)hideScrubber {
-	
+	_scrubber.hidden = YES;
+}
+
+- (void)hideTotalTime {
+	_totalSecondsLabel.hidden = YES;
+	_timeSeparator.hidden = YES;
 }
 
 - (void)showFullscreenButton {

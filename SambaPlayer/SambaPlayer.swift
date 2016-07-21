@@ -335,7 +335,9 @@ public class SambaPlayer : UIViewController {
 			}
 			
 			if self.media.isLive {
-				self._player?.getControlsView().hideFullscreenButton()
+				self._player?.getControlsView().hideScrubber()
+				self._player?.getControlsView().hideTotalTime()
+				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
 				
 			}
 		})
@@ -378,6 +380,10 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		gmf.play()
+	}
+	
+	func testing() {
+		print("aff")
 	}
 	
 	@objc private func playbackStateHandler() {
