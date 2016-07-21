@@ -114,7 +114,7 @@ public class SambaPlayer : UIViewController {
 	*/
 	public func play() {
 		if _player == nil {
-			dispatch_async(dispatch_get_main_queue()) { try! self.create() }
+			dispatch_async(dispatch_get_main_queue()) { self.create() }
 			return
 		}
 		
@@ -303,7 +303,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	private func create() throws {
+	private func create() {
 		var urlWrapped = media.url
 		
 		if let outputs = media.outputs where outputs.count > 0 {
@@ -317,7 +317,8 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		guard let url = urlWrapped else {
-			throw SambaPlayerError.NoMediaUrlFound
+			print("\(self.dynamicType) error: No media URL found!")
+			return
 		}
 
 		let gmf = GMFPlayerViewController.init(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0), andInitedBlock: {
@@ -452,16 +453,6 @@ public class SambaPlayer : UIViewController {
 	private func stopTimer() {
 		_progressTimer.invalidate()
 	}
-}
-
-/**
-Player known errors
-
-- NoMediaUrlFound: Media doesn´t exist
-
-*/
-public enum SambaPlayerError : ErrorType {
-	case NoMediaUrlFound
 }
 
 /**
