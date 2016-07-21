@@ -26,7 +26,7 @@ import Foundation
 	
 	*/
 	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
-		Helpers.requestURL("http://playerapitest2.liquidplatform.com:7091/v1/\(request.projectHash)/" + (request.mediaId ??
+		Helpers.requestURL("https://fast.player.liquidplatform.com/pApiv2/v1/\(request.projectHash)/" + (request.mediaId ??
 			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
 			guard let responseText = responseText else { return }
 			
