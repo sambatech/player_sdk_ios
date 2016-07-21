@@ -82,8 +82,7 @@ class MediaListViewController : UITableViewController {
 	}
 	
 	private func makeInitialRequests() {
-		//requestMediaSet([String.init(4421), String.init(4460)])
-		requestMediaSet([String.init(533)])
+		requestMediaSet([String.init(4421), String.init(4460)])
 	}
 	
 	private func requestMediaSet(pids:[String]) {
@@ -206,11 +205,12 @@ class MediaListViewController : UITableViewController {
 	//Fill live
 	private func fillLive() {
 		let thumbURL = "http://www.impactmobile.com/files/2012/09/icon64-broadcasts.png"
+		let ph = "bc6a17435f3f389f37a514c171039b75"
 		
 		let m = MediaInfo(
 			title: "Live SBT (HLS)",
 			thumb:  thumbURL,
-			projectHash: "986e07f70986265468eae1377424d171",
+			projectHash: ph,
 			mediaId: nil,
 			isAudio: false,
 			mediaURL: "http://gbbrlive2.sambatech.com.br/liveevent/sbt3_8fcdc5f0f8df8d4de56b22a2c6660470/livestream/manifest.m3u8"
@@ -221,7 +221,7 @@ class MediaListViewController : UITableViewController {
 		let m1 = MediaInfo(
 			title: "Live VEVO (HLS)",
 			thumb: thumbURL,
-			projectHash: "986e07f70986265468eae1377424d171",
+			projectHash: ph,
 			mediaId: nil,
 			isAudio: false,
 			mediaURL: "http://vevoplaylist-live.hls.adaptive.level3.net/vevo/ch1/appleman.m3u8"
@@ -232,7 +232,7 @@ class MediaListViewController : UITableViewController {
 		let m2 = MediaInfo(
 			title: "Live Denmark channel (HLS)",
 			thumb: thumbURL,
-			projectHash: "986e07f70986265468eae1377424d171",
+			projectHash: ph,
 			mediaId: nil,
 			isAudio: false,
 			mediaURL: "http://itv08.digizuite.dk/tv2b/ngrp:ch1_all/playlist.m3u8"
@@ -243,7 +243,7 @@ class MediaListViewController : UITableViewController {
 		let m3 = MediaInfo(
 			title: "Live Denmark channel (HDS: erro!)",
 			thumb: thumbURL,
-			projectHash: "986e07f70986265468eae1377424d171",
+			projectHash: ph,
 			mediaId: nil,
 			isAudio: false,
 			mediaURL: "http://itv08.digizuite.dk/tv2b/ngrp:ch1_all/manifest.f4m"
@@ -254,7 +254,7 @@ class MediaListViewController : UITableViewController {
 		let m4 = MediaInfo(
 			title: "Tv Diário",
 			thumb: thumbURL,
-			projectHash: "986e07f70986265468eae1377424d171",
+			projectHash: ph,
 			mediaId: nil,
 			isAudio: false,
 			mediaURL: "http://slrp.sambavideos.sambatech.com/liveevent/tvdiario_7a683b067e5eee5c8d45e1e1883f69b9/livestream/playlist.m3u8"

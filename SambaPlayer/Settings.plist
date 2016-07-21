@@ -3,6 +3,6 @@
 <plist version="1.0">
 <dict>
 	<key>playerapi_endpoint</key>
-	<string>http://playerapitest2.liquidplatform.com:7091/v1/</string>
+	<string>https://fast.player.liquidplatform.com/pApiv2/v1/</string>
 </dict>
 </plist>

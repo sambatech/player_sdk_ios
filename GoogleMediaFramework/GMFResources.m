@@ -69,6 +69,10 @@
   return [self imageNamed:@"player_scrubber_thumb"];
 }
 
++ (UIImage *)playerTitleLiveIcon {
+	return [self imageNamed:@"player_control_ic_live"];
+}
+
 + (UIImage *)playerBarBackgroundImage {
   return [self imageNamed:@"player_controls_background"];
 }

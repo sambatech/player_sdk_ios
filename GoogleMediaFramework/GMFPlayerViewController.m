@@ -212,7 +212,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   if (_controlTintColor && [self.playerOverlayView respondsToSelector:@selector(applyControlTintColor:)]) {
     [self.playerOverlayView applyControlTintColor:_controlTintColor];
   }
-  
+	
   // If we have received requests to create action buttons, iterate through each request (encoded
   // as a dictionary) and create the action buttons.
     if ([self.playerOverlayView respondsToSelector:@selector(addActionButtonWithImage:name:target:selector:)]){
@@ -230,6 +230,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
         }
     }
   [self setDefaultVideoPlayerOverlayDelegate];
+
 	
   if (_initedBlock != nil)
     _initedBlock();

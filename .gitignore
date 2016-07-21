@@ -26,3 +26,4 @@ Podfile.lock
 # Carthage
 Carthage
 Cartfile.*
+setup.log

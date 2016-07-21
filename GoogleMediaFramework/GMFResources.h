@@ -29,6 +29,7 @@
 + (UIImage *)playerBarScrubberThumbImage;
 + (UIImage *)playerBarBackgroundImage;
 + (UIImage *)playerTitleBarBackgroundImage;
++ (UIImage *)playerTitleLiveIcon;
 
 @end
 
