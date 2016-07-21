@@ -117,6 +117,16 @@ extension UIColor {
 	}
 }
 
+extension String {
+	func match(_ regex: String) -> String? {
+		guard let range = self.rangeOfString(regex, options: .RegularExpressionSearch) else {
+			return nil
+		}
+		
+		return self[range]
+	}
+}
+
 public extension UIImage {
 	/**
 	Tint, Colorize image with given tint color<br><br>
