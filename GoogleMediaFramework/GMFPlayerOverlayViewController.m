@@ -38,7 +38,7 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
   if (self) {
     _isAdDisplayed = NO;
     _autoHideEnabled = YES;
-	_controlsHideEnabled = YES;	
+	_controlsHideEnabled = YES;
   }
   return self;
 }
