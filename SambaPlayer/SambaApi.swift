@@ -158,7 +158,7 @@ import Foundation
 					))
 				}
 				
-				media.outputs = mediaOutputs
+				media.outputs = mediaOutputs.sort({ Int($0.label.match("^\\d+") ?? "0") < Int($1.label.match("^\\d+") ?? "0") })
 			}
 		}
 		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
