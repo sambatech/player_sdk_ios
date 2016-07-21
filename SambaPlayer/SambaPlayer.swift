@@ -384,10 +384,6 @@ public class SambaPlayer : UIViewController {
 		gmf.play()
 	}
 	
-	func testing() {
-		print("aff")
-	}
-	
 	@objc private func playbackStateHandler() {
 		switch Int((_player?.player.state.rawValue)!) {
 		case 2:

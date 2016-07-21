@@ -28,31 +28,29 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 		
 		guard sambaPlayer == nil else { return }
 		
+		let callback = { (media: SambaMedia?) in
+			guard let media = media else { return }
+			self.initPlayer(media)
+		}
+		
 		if (m.mediaId != nil) {
 			SambaApi().requestMedia(SambaMediaRequest(
 				projectHash: m.projectHash,
-				mediaId: m.mediaId!
-				),
-				callback: { media in
-					guard let media = media else { return }
-					self.initPlayer(media)
-			})
-		}else {
+				mediaId: m.mediaId!), callback: callback)
+		}
+		else {
 			SambaApi().requestMedia(SambaMediaRequest(
 				projectHash: m.projectHash,
-				streamUrl: m.mediaURL!
-				),
-				callback: { media in
-					guard let media = media else { return }
-					self.initPlayer(media)
-			})
+				streamUrl: m.mediaURL!), callback: callback)
 		}
-
 	}
 	
 	private func initPlayer(media: SambaMedia) {
-		media.adUrl = mediaInfo?.mediaAd
-	
+		// if ad injection
+		if let url = mediaInfo?.mediaAd {
+			media.adUrl = url
+		}
+
 		if media.isAudio {
 			var frame = self.playerContainer.frame
 			frame.size.height = 50

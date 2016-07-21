@@ -118,7 +118,7 @@ extension UIColor {
 }
 
 extension String {
-	func match(_ regex: String) -> String? {
+	func match(regex: String) -> String? {
 		guard let range = self.rangeOfString(regex, options: .RegularExpressionSearch) else {
 			return nil
 		}

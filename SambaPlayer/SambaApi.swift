@@ -113,6 +113,14 @@ import Foundation
 			}
 		}
 		
+		if let ads = json["advertisings"] as? [AnyObject] {
+			if ads.count > 0, let ad = ads[0] as? [String:AnyObject],
+				url = ad["tagVast"] as? String
+				where ad["adServer"]?.lowercaseString == "dfp" {
+				media.adUrl = url
+			}
+		}
+		
 		if let rules = json["deliveryRules"] as? [AnyObject] {
 			let defaultOutput = project["defaultOutput"] as? String ?? "240p"
 			var deliveryOutputsCount = [String:Int]()
