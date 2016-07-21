@@ -182,7 +182,11 @@
 }
 
 - (CGFloat)preferredHeight {
-  return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.0;
+  return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.5; //SDK SambaPlayer
+}
+
+- (void)hideBackground {
+	[_backgroundView setHidden:YES];
 }
 
 @end

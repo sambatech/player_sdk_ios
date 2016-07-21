@@ -338,7 +338,8 @@ public class SambaPlayer : UIViewController {
 				self._player?.getControlsView().hideScrubber()
 				self._player?.getControlsView().hideTotalTime()
 				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
-				
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false				
 			}
 		})
 		

@@ -42,6 +42,7 @@
   self = [super initWithFrame:frame];
   if (self) {
     _isTopBarEnabled = YES;
+	_topBarHideEnabled = YES;
     
     // Set the images.
     _playImage = [GMFResources playerBarPlayLargeButtonImage];
@@ -211,10 +212,10 @@
 
 - (void)setPlayerBarVisible:(BOOL)visible {
   if (_controlsOnly) return;
-  [_topBarView setAlpha:(_isTopBarEnabled && visible) ? 1 : 0];
+  [_topBarView setAlpha:(_isTopBarEnabled && visible) ? 1 : !_topBarHideEnabled];
   [_playerControlsView setAlpha:visible ? 1 : 0];
   [_playPauseReplayButton setAlpha:visible ? 1 : 0];
-  
+	
   [self setNeedsLayout];
   [self layoutIfNeeded];
 }
@@ -371,6 +372,10 @@
   [_playPauseReplayButton removeTarget:self
                                 action:NULL
                       forControlEvents:UIControlEventTouchUpInside];
+}
+
+- (void)hideBackground {
+	[_topBarView hideBackground];
 }
 
 @end

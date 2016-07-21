@@ -26,6 +26,9 @@
 // It is displayed to the right of the logo.
 - (void)setVideoTitle:(NSString *)videoTitle;
 
+// Hides the background gradient bar
+- (void)hideBackground;
+
 // Adds an action button to the right of the top bar.
 - (void)addActionButtonWithImage:(UIImage *)image
                             name:(NSString *)name
