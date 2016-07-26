@@ -1,5 +1,5 @@
 Pod::Spec.new do |s|
-	s.name = 'SambaPlayerSDK'
+	s.name = 'SambaPlayer'
 	s.version = '0.1.0'
 	s.license = { :type => 'MIT', :file => 'LICENSE' }
 	s.summary = 'Samba Tech media player SDK for iOS'
@@ -9,8 +9,9 @@ Pod::Spec.new do |s|
 
 	s.ios.deployment_target = '8.0'
 
-	s.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.2.1'
-	
-	s.source_files = 'SambaPlayer/*.swift', 'GoogleMediaFramework/*.{h,m}'
-	s.resource_bundles = { 'SambaPlayerSDK' => ['Resources/**'] }
+	s.ios.vendored_frameworks = 'Frameworks/SambaPlayer.framework'
+
+	s.ios.dependency 'GoogleAds-IMA-iOS-SDK', '~> 3.2.1'
+
+	s.ios.resource_bundles = { 'SambaPlayer' => ['Resources/**'] }
 end
