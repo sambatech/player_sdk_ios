@@ -227,7 +227,7 @@
   [_playPauseReplayButton setHidden:state];
   [_spinner stopAnimating];
   [_spinner setHidden:state];
-  [_topBarView setHidden:state];
+  //[_topBarView setHidden:state];
 
   [self setNeedsLayout];
   [self layoutIfNeeded];

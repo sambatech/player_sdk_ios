@@ -63,6 +63,9 @@
 	///Indicate if the media is audio or not
 	public var isAudio = false
 	
+	//Indicate if the media is live audio
+	public var isLiveAudio = false
+	
 	///Media current color theme
 	public var theme: UInt = 0x72BE44
 

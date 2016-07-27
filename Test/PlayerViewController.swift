@@ -41,7 +41,7 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 		else {
 			SambaApi().requestMedia(SambaMediaRequest(
 				projectHash: m.projectHash,
-				streamUrl: m.mediaURL!), callback: callback)
+				streamUrl: m.mediaURL!, isLiveAudio: m.isLiveAudio), callback: callback)
 		}
 	}
 	
@@ -54,6 +54,12 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 		if media.isAudio {
 			var frame = self.playerContainer.frame
 			frame.size.height = 50
+			self.playerContainer.frame = frame
+		}
+		
+		if media.isLiveAudio {
+			var frame = self.playerContainer.frame
+			frame.size.height = 100
 			self.playerContainer.frame = frame
 		}
 		

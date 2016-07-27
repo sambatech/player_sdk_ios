@@ -203,7 +203,7 @@ public class SambaPlayer : UIViewController {
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
 		
-		guard !media.isAudio else {
+		guard !media.isAudio || !media.isLiveAudio else {
 			var f = player.view.frame
 			f.size.width = size.width
 			player.view.frame = f
@@ -320,8 +320,8 @@ public class SambaPlayer : UIViewController {
 			print("\(self.dynamicType) error: No media URL found!")
 			return
 		}
-
-		let gmf = GMFPlayerViewController.init(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0), andInitedBlock: {
+		
+		let gmf = GMFPlayerViewController.init(controlsPadding: CGRectMake(0, 0, 0, (media.isAudio || media.isLiveAudio) ? 10 : 0), andInitedBlock: {
 			if self._hasMultipleOutputs {
 				self._player?.getControlsView().showHdButton()
 			}
@@ -333,15 +333,32 @@ public class SambaPlayer : UIViewController {
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 				self._player?.playerOverlay().autoHideEnabled = false
 				self._player?.playerOverlay().controlsHideEnabled = false
+				
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			}
 			
-			if self.media.isLive {
+			if self.media.isLiveAudio {
 				self._player?.getControlsView().hideScrubber()
 				self._player?.getControlsView().hideTotalTime()
 				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false				
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+				
+				self._player?.hideBackground()
+				self._player?.getControlsView().hideFullscreenButton()
+				self._player?.getControlsView().showPlayButton()
+				self._player?.playerOverlay().autoHideEnabled = false
+				self._player?.playerOverlay().controlsHideEnabled = false
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
+				
+			} else if self.media.isLive {
+				self._player?.getControlsView().hideScrubber()
+				self._player?.getControlsView().hideTotalTime()
+				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			}
+
 		})
 		
 		_player = gmf
@@ -349,7 +366,7 @@ public class SambaPlayer : UIViewController {
 		gmf.videoTitle = media.title
 		gmf.controlTintColor = UIColor(media.theme)
 		
-		if media.isAudio {
+		if media.isAudio || media.isLiveAudio {
 			gmf.backgroundColor = UIColor(0x434343)
 		}
 		
@@ -370,7 +387,7 @@ public class SambaPlayer : UIViewController {
 		
 		// IMA
 		
-		if !media.isAudio,
+		if !media.isAudio || !media.isLiveAudio,
 			let adUrl = media.adUrl,
 			ima = GMFIMASDKAdService(GMFVideoPlayer: gmf) {
 			gmf.registerAdService(ima)

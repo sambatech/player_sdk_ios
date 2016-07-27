@@ -102,7 +102,6 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
 - (void)hideBackground {
 	[[self getControlsView] hideBackground];
-	[(GMFPlayerOverlayView*)[self playerOverlayView] disableTopBar];
 }
 
 - (void)loadStreamWithURL:(NSURL *)URL {
