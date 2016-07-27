@@ -22,6 +22,9 @@ import Foundation
 	//If it´s live you can put a list of StreamURL
 	public var streamUrls: [String]?
 	
+	//If it´s live and audio
+	public var isLiveAudio: Bool?
+	
 	
 	/**
 	Default initializer
@@ -37,6 +40,24 @@ import Foundation
 		self.mediaId = mediaId
 		self.streamName = streamName
 		self.streamUrls = streamUrls
+	}
+	
+	/**
+	Second initializer
+	
+	- Parameters:
+	- projectHash:String Project Hash of the media
+	- mediaId:String ID of the media
+	- streamName:String streamName of the media live
+	- streamUrls:[String] List of streamURLs
+	- isAudio: Bool Is Audio
+	*/
+	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?, isLiveAudio: Bool?) {
+		self.projectHash = projectHash
+		self.mediaId = mediaId
+		self.streamName = streamName
+		self.streamUrls = streamUrls
+		self.isLiveAudio = isLiveAudio
 	}
 	
 	/**
@@ -57,8 +78,8 @@ import Foundation
 		- projectHash:String Project Hash of the media
 		- streamName:String streamName of the media live
 	*/
-	public convenience init(projectHash: String, streamUrl: String) {
-		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: [streamUrl])
+	public convenience init(projectHash: String, streamUrl: String, isLiveAudio: Bool?) {
+		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: [streamUrl], isLiveAudio: isLiveAudio)
 	}
 	
 	/**

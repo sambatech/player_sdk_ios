@@ -55,7 +55,7 @@ import Foundation
 			}
 			
 			do {
-				callback(self.parseMedia(try NSJSONSerialization.JSONObjectWithData(jsonText, options: .AllowFragments)))
+				callback(self.parseMedia(try NSJSONSerialization.JSONObjectWithData(jsonText, options: .AllowFragments), request: request))
 			}
 			catch {
 				print("\(self.dynamicType) Error: Failed to parse JSON string.")
@@ -65,11 +65,13 @@ import Foundation
 	
 	
 	//Colect the important media info and its desired outputs<br><br>
-	private func parseMedia(json: AnyObject) -> SambaMedia? {
+	private func parseMedia(json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
 			print("\(self.dynamicType) Error: No media qualifier")
 			return nil
 		}
+		
+		
 		
 		switch qualifier.lowercaseString {
 		case "video", "live", "audio": break
@@ -86,6 +88,10 @@ import Foundation
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
 		media.isAudio = qualifier.lowercaseString == "audio"
+		
+		if request.isLiveAudio == true {
+			media.isLiveAudio = true
+		}
 		
 		if let title = json["title"] as? String {
 			media.title = title

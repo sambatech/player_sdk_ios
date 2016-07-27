@@ -262,6 +262,15 @@ class MediaListViewController : UITableViewController {
 		
 		self.mediaList.append(m4)
 		
+		let m5 = MediaInfo(title: "Live áudio",
+		                   thumb: "https://cdn4.iconfinder.com/data/icons/defaulticon/icons/png/256x256/media-volume-2.png",
+		                   projectHash: ph,
+		                   mediaId: nil,
+		                  mediaURL: "http://slrp.sambavideos.sambatech.com/radio/pajucara4_7fbed8aac5d5d915877e6ec61e3cf0db/livestream/playlist.m3u8",
+		                  isLiveAudio: true)
+		
+		self.mediaList.append(m5)
+		
 		self.tableView.reloadData()
 	}
 	
@@ -295,8 +304,9 @@ class MediaInfo {
 	var mediaAd:String?
 	var description:String?
 	let mediaURL:String?
+	let isLiveAudio: Bool?
 	
-	init(title:String, thumb:String, projectHash:String, mediaId:String? = nil, isAudio:Bool = false, description:String? = nil, mediaAd:String? = nil, mediaURL:String? = nil) {
+	init(title:String, thumb:String, projectHash:String, mediaId:String? = nil, isAudio:Bool = false, description:String? = nil, mediaAd:String? = nil, mediaURL:String? = nil, isLiveAudio: Bool? = false) {
 		self.title = title
 		self.thumb = thumb
 		self.projectHash = projectHash
@@ -305,5 +315,6 @@ class MediaInfo {
 		self.description = description
 		self.mediaAd = mediaAd
 		self.mediaURL = mediaURL
+		self.isLiveAudio = isLiveAudio
 	}
 }
