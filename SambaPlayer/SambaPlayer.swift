@@ -203,7 +203,7 @@ public class SambaPlayer : UIViewController {
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
 		
-		guard !media.isAudio || !media.isLiveAudio else {
+		guard !media.isAudio && !media.isLiveAudio else {
 			var f = player.view.frame
 			f.size.width = size.width
 			player.view.frame = f
