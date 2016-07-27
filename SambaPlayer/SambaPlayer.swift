@@ -333,17 +333,23 @@ public class SambaPlayer : UIViewController {
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 				self._player?.playerOverlay().autoHideEnabled = false
 				self._player?.playerOverlay().controlsHideEnabled = false
+				
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			}
 			
 			if self.media.isLiveAudio {
+				self._player?.getControlsView().hideScrubber()
+				self._player?.getControlsView().hideTotalTime()
+				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+				
 				self._player?.hideBackground()
 				self._player?.getControlsView().hideFullscreenButton()
 				self._player?.getControlsView().showPlayButton()
-				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 				self._player?.playerOverlay().autoHideEnabled = false
 				self._player?.playerOverlay().controlsHideEnabled = false
-				self._player?.getControlsView().hideScrubber()
-				self._player?.getControlsView().hideTotalTime()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 				
 			} else if self.media.isLive {
 				self._player?.getControlsView().hideScrubber()

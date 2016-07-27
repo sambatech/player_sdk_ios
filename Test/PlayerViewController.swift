@@ -51,9 +51,15 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 			media.adUrl = url
 		}
 
-		if media.isAudio || media.isLiveAudio {
+		if media.isAudio {
 			var frame = self.playerContainer.frame
 			frame.size.height = 50
+			self.playerContainer.frame = frame
+		}
+		
+		if media.isLiveAudio {
+			var frame = self.playerContainer.frame
+			frame.size.height = 100
 			self.playerContainer.frame = frame
 		}
 		
