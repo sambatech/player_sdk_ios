@@ -7,10 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9A0921AD1D36D14700171F89 /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
 		9A0921AE1D36D14700171F89 /* SambaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		9A1580F91D47EB4900E74CF8 /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
-		9A1580FA1D47EB4900E74CF8 /* SambaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FD1D22D5BD00C9C015 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* OutputMenuViewController.swift */; };
 		9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F31D22D5BD00C9C015 /* SambaApi.swift */; };
@@ -32,13 +29,15 @@
 		9A91E90E1D14BFB200C30DD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90C1D14BFB200C30DD3 /* LaunchScreen.storyboard */; };
 		9A91E90F1D14BFB200C30DD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90D1D14BFB200C30DD3 /* Main.storyboard */; };
 		9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */; };
+		9AEBF9231D4920A70033FBAC /* SambaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9AEBF9251D4921EB0033FBAC /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
+		9AEBF9271D4950060033FBAC /* Fixtures in Resources */ = {isa = PBXBuildFile; fileRef = 9AF325071D1458BA00B6E450 /* Fixtures */; };
 		9AEC54EF1D21C9E300EB1C4C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54EE1D21C9E300EB1C4C /* main.m */; };
 		9AEC54F21D21C9E300EB1C4C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54F11D21C9E300EB1C4C /* AppDelegate.m */; };
 		9AEC54F51D21C9E300EB1C4C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AEC54F41D21C9E300EB1C4C /* ViewController.m */; };
 		9AEC54F81D21C9E300EB1C4C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEC54F61D21C9E300EB1C4C /* Main.storyboard */; };
 		9AEC54FA1D21C9E300EB1C4C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AEC54F91D21C9E300EB1C4C /* Assets.xcassets */; };
 		9AEC54FD1D21C9E300EB1C4C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9AEC54FB1D21C9E300EB1C4C /* LaunchScreen.storyboard */; };
-		9AF3250B1D1473C100B6E450 /* Resources in Resources */ = {isa = PBXBuildFile; fileRef = 9AF325071D1458BA00B6E450 /* Resources */; };
 		9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B31D14B5B900B6E450 /* GMFAdService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325B41D14B5B900B6E450 /* GMFAdService.m */; };
 		9AF325D91D14B5B900B6E450 /* GMFContentPlayhead.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B51D14B5B900B6E450 /* GMFContentPlayhead.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -86,7 +85,7 @@
 			remoteGlobalIDString = 9AF324D81D14356E00B6E450;
 			remoteInfo = SambaPlayer;
 		};
-		9A1580FB1D47EB4900E74CF8 /* PBXContainerItemProxy */ = {
+		9AEBF9201D48FBAF0033FBAC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 9AF324D01D14356E00B6E450 /* Project object */;
 			proxyType = 1;
@@ -98,25 +97,25 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		9A0921B11D36D14700171F89 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
-			dstSubfolderSpec = 11;
+			dstSubfolderSpec = 10;
 			files = (
 				9A0921AE1D36D14700171F89 /* SambaPlayer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
-		9A1580FD1D47EB4900E74CF8 /* Embed Frameworks */ = {
+		9AEBF9241D4920A70033FBAC /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
-			dstSubfolderSpec = 11;
+			dstSubfolderSpec = 10;
 			files = (
-				9A1580FA1D47EB4900E74CF8 /* SambaPlayer.framework in Embed Frameworks */,
+				9AEBF9231D4920A70033FBAC /* SambaPlayer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
@@ -155,7 +154,7 @@
 		9AEC54F91D21C9E300EB1C4C /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9AEC54FC1D21C9E300EB1C4C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9AEC54FE1D21C9E300EB1C4C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9AF325071D1458BA00B6E450 /* Resources */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Resources; sourceTree = SOURCE_ROOT; };
+		9AF325071D1458BA00B6E450 /* Fixtures */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Fixtures; sourceTree = SOURCE_ROOT; };
 		9AF325B31D14B5B900B6E450 /* GMFAdService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFAdService.h; path = GoogleMediaFramework/GMFAdService.h; sourceTree = "<group>"; };
 		9AF325B41D14B5B900B6E450 /* GMFAdService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdService.m; path = GoogleMediaFramework/GMFAdService.m; sourceTree = "<group>"; };
 		9AF325B51D14B5B900B6E450 /* GMFContentPlayhead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFContentPlayhead.h; path = GoogleMediaFramework/GMFContentPlayhead.h; sourceTree = "<group>"; };
@@ -202,8 +201,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A1580F91D47EB4900E74CF8 /* SambaPlayer.framework in Frameworks */,
 				9A91E8DC1D14BD9000C30DD3 /* GoogleInteractiveMediaAds.framework in Frameworks */,
+				9AEBF9251D4921EB0033FBAC /* SambaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -211,7 +210,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A0921AD1D36D14700171F89 /* SambaPlayer.framework in Frameworks */,
 				9A52680B1D230A2100C9C015 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,7 +302,7 @@
 				9A91E8C71D14BCBF00C30DD3 /* Test */,
 				9AEC54EC1D21C9E300EB1C4C /* TestObjC */,
 				9AF325FB1D14B5E300B6E450 /* Frameworks */,
-				9AF325071D1458BA00B6E450 /* Resources */,
+				9AF325071D1458BA00B6E450 /* Fixtures */,
 				9A91E8C11D14BC5F00C30DD3 /* Products */,
 				9A91E8C61D14BCBF00C30DD3 /* Test.app */,
 				9AEC54EB1D21C9E200EB1C4C /* TestObjC.app */,
@@ -405,12 +403,12 @@
 				9A91E8C21D14BCBF00C30DD3 /* Sources */,
 				9A91E8C31D14BCBF00C30DD3 /* Frameworks */,
 				9A91E8C41D14BCBF00C30DD3 /* Resources */,
-				9A1580FD1D47EB4900E74CF8 /* Embed Frameworks */,
+				9AEBF9241D4920A70033FBAC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				9A1580FC1D47EB4900E74CF8 /* PBXTargetDependency */,
+				9AEBF9211D48FBAF0033FBAC /* PBXTargetDependency */,
 			);
 			name = Test;
 			productName = Test;
@@ -525,8 +523,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AEBF9271D4950060033FBAC /* Fixtures in Resources */,
 				9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */,
-				9AF3250B1D1473C100B6E450 /* Resources in Resources */,
 				9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -609,10 +607,10 @@
 			target = 9AF324D81D14356E00B6E450 /* SambaPlayer */;
 			targetProxy = 9A0921AF1D36D14700171F89 /* PBXContainerItemProxy */;
 		};
-		9A1580FC1D47EB4900E74CF8 /* PBXTargetDependency */ = {
+		9AEBF9211D48FBAF0033FBAC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 9AF324D81D14356E00B6E450 /* SambaPlayer */;
-			targetProxy = 9A1580FB1D47EB4900E74CF8 /* PBXContainerItemProxy */;
+			targetProxy = 9AEBF9201D48FBAF0033FBAC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -640,16 +638,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Lidio Ramalho (89QU2W6X55)";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ef444872-d79b-48b3-a772-3abd9c6ec22c";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -659,16 +659,18 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Lidio Ramalho (89QU2W6X55)";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = Test/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "ef444872-d79b-48b3-a772-3abd9c6ec22c";
 				SWIFT_OBJC_BRIDGING_HEADER = "Test/Test-Bridging-Header.h";
 			};
 			name = Release;
@@ -684,7 +686,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -701,7 +703,7 @@
 					"$(PROJECT_DIR)/Frameworks",
 				);
 				INFOPLIST_FILE = TestObjC/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks @executable_path/SharedFrameworks";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -808,6 +810,7 @@
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Lidio Ramalho (89QU2W6X55)";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -821,7 +824,7 @@
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -830,6 +833,7 @@
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Lidio Ramalho (89QU2W6X55)";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -843,7 +847,7 @@
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SampleSBPlayer;
+				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 			};
 			name = Release;
