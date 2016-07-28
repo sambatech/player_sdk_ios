@@ -335,6 +335,7 @@ public class SambaPlayer : UIViewController {
 				self._player?.playerOverlay().controlsHideEnabled = false
 				
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
 			}
 			
 			if self.media.isLiveAudio {
@@ -387,14 +388,14 @@ public class SambaPlayer : UIViewController {
 		
 		// IMA
 		
-		if !media.isAudio || !media.isLiveAudio,
+		if !media.isAudio && !media.isLiveAudio,
 			let adUrl = media.adUrl,
 			ima = GMFIMASDKAdService(GMFVideoPlayer: gmf) {
 			gmf.registerAdService(ima)
 			ima.requestAdsWithRequest(adUrl)
 		}
 		
-		if !media.isLive {
+		if !media.isLive && !media.isAudio && !media.isLiveAudio {
 			let _ = Tracking(self)
 		}
 		
@@ -402,6 +403,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	@objc private func playbackStateHandler() {
+		
 		switch Int((_player?.player.state.rawValue)!) {
 		case 2:
 			for delegate in _delegates { delegate.onLoad() }
@@ -423,6 +425,7 @@ public class SambaPlayer : UIViewController {
 		case 7:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
+			
 		default: break
 		}
 	}

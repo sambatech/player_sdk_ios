@@ -339,18 +339,19 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
     stateDidChangeFrom:(GMFPlayerState)fromState
                     to:(GMFPlayerState)toState {
   [_videoPlayerOverlayViewController playerStateDidChangeToState:toState];
+	
   switch (toState) {
     case kGMFPlayerStateReadyToPlay:
-      [self playerStateDidChangeToReadyToPlay];
+	  [self playerStateDidChangeToReadyToPlay];
       break;
     case kGMFPlayerStatePlaying:
-      [self playerStateDidChangeToPlaying];
+	  [self playerStateDidChangeToPlaying];
       break;
     case kGMFPlayerStatePaused:
-      [self playerStateDidChangeToPaused];
+	  [self playerStateDidChangeToPaused];
       break;
     case kGMFPlayerStateFinished:
-      // Allow any ads provider to play any post rolls before we actually finish
+	  // Allow any ads provider to play any post rolls before we actually finish
       [self playerStateWillChangeToFinished];
       [self playerStateDidChangeToFinished];
       break;

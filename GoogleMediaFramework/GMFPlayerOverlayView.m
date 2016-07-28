@@ -284,9 +284,12 @@
 
 - (void)showReplayButton {
   [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
-
-  if (_controlsOnly) return;
-
+	
+  if (_controlsOnly) {
+	  [_playerControlsView setPlayButtonImage:[GMFResources playerBarReplayButtonImage]];
+	  
+	  return;
+  }
   _currentPlayPauseReplayIcon = REPLAY;
   [_playPauseReplayButton setImage:_replayImage forState:UIControlStateNormal];
   [_playPauseReplayButton setAccessibilityLabel:_replayLabel];

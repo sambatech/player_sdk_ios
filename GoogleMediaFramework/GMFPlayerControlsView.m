@@ -28,6 +28,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UIButton *_minimizeButton;
   UIButton *_hdButton;
   UIButton *_playButton;
+  UIButton *_playerReplayButton;
   UILabel *_secondsPlayedLabel;
   UILabel *_totalSecondsLabel;
   UILabel *_timeSeparator; // Samba SDK Player
@@ -99,6 +100,16 @@ static const CGFloat kGMFBarPaddingX = 8;
 				   NSLocalizedStringFromTable(@"Play/Pause",
 											  @"GoogleMediaFramework",
 											  nil)];
+	  
+	  
+	  _playerReplayButton = [self playerButtonWithImage:[GMFResources playerBarReplayButtonImage]
+										 action:@selector(didPressReplay:)
+							 accessibilityLabel:
+					     NSLocalizedStringFromTable(@"Replay",
+												@"GoogleMediaFramework",
+												nil)];
+	  
+	  
 	  _playHideConstraint = [NSLayoutConstraint constraintWithItem:_playButton
 													   attribute:NSLayoutAttributeWidth
 													   relatedBy:NSLayoutRelationEqual
@@ -460,7 +471,10 @@ static const CGFloat kGMFBarPaddingX = 8;
 - (void)didPressPlay:(id)sender {
   if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"play"])
     [_delegate didPressPlay];
-  else [_delegate didPressPause];
+  else if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"pause"])
+	[_delegate didPressPause];
+  else if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"replay"])
+	[_delegate didPressReplay];
 }
 
 - (void)didPressPause:(id)sender {
