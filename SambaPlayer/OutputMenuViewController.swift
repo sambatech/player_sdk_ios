@@ -30,7 +30,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 			view = nib
 		}
 		else {
-			print("Couldn't load output menu.")
+			print("\(self.dynamicType) error: Couldn't load output menu.")
 		}
 	}
 
