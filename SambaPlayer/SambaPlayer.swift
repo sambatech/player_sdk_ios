@@ -20,6 +20,7 @@ public class SambaPlayer : UIViewController {
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
 	private var _hasMultipleOutputs = false
+	private var _duration: Float = 0
 	private var _currentOutput = -1
 	private var _currentMenu: UIViewController?
 	private var _wasPlayingBeforePause = false
@@ -42,7 +43,11 @@ public class SambaPlayer : UIViewController {
 	
 	///Current media duration
 	public var duration: Float {
-		return Float(_player?.totalMediaTime() ?? 0)
+		if let d = _player?.totalMediaTime() where d > 0 {
+			_duration = Float(d)
+		}
+		
+		return _duration
 	}
 	
 	///Current media
@@ -264,8 +269,8 @@ public class SambaPlayer : UIViewController {
 	Destroy the player after it
 	
 	*/
-	public override func viewDidDisappear(animated: Bool) {
-		super.viewDidDisappear(animated)
+	public override func viewWillDisappear(animated: Bool) {
+		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
 		

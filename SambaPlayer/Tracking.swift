@@ -70,6 +70,8 @@ class STTM {
 	}
 	
 	func trackProgress(time: Float, _ duration: Float) {
+		guard duration > 0 else { return }
+		
 		var p = Int(100*time/duration)
 		
 		if p > 99 {
