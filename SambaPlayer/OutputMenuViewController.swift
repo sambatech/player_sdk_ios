@@ -11,6 +11,9 @@ import UIKit
 
 class OutputMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 	
+	@IBOutlet var tableView: UITableView!
+	@IBOutlet var heightConstraint: NSLayoutConstraint!
+	
 	private let _cellIdentifier: String = "outputCell"
 	private let _player: SambaPlayer
 	private let _outputs: [SambaMedia.Output]
@@ -36,6 +39,14 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 
 	required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func viewDidLayoutSubviews() {
+		var frame = tableView.frame
+		frame.size.height = tableView.contentSize.height
+		heightConstraint.constant = tableView.contentSize.height
+		tableView.frame = frame
+		tableView.layoutIfNeeded()
 	}
 	
 	// MARK: UITableViewDataSource implementation

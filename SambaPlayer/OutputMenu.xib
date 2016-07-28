@@ -5,17 +5,22 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OutputMenuViewController" customModule="SambaPlayer" customModuleProvider="target"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OutputMenuViewController" customModule="SambaPlayer" customModuleProvider="target">
+            <connections>
+                <outlet property="heightConstraint" destination="2ju-hb-ySK" id="M7J-eP-0Z3"/>
+                <outlet property="tableView" destination="ef8-MP-9CC" id="WXN-Ci-Kmb"/>
+            </connections>
+        </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view opaque="NO" contentMode="scaleToFill" id="iN0-l3-epB">
             <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VZ8-SW-SQO">
-                    <rect key="frame" x="150" y="50" width="300" height="500"/>
+                    <rect key="frame" x="150" y="150" width="300" height="300"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bLd-aH-98y">
-                            <rect key="frame" x="220" y="454" width="60" height="30"/>
+                            <rect key="frame" x="220" y="254" width="60" height="30"/>
                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                             <state key="normal" title="Cancelar"/>
                             <connections>
@@ -28,10 +33,11 @@
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ef8-MP-9CC">
-                            <rect key="frame" x="22" y="80" width="256" height="366"/>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ef8-MP-9CC">
+                            <rect key="frame" x="22" y="67" width="256" height="166"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <constraints>
+                                <constraint firstAttribute="height" constant="166" id="2ju-hb-ySK"/>
                                 <constraint firstAttribute="width" constant="256" id="pcE-Nz-YPc"/>
                             </constraints>
                             <connections>
@@ -43,12 +49,12 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="8Fh-8I-73M"/>
-                        <constraint firstItem="ef8-MP-9CC" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="80" id="NHg-QP-EZg"/>
+                        <constraint firstAttribute="height" secondItem="ef8-MP-9CC" secondAttribute="height" constant="134" id="C19-9A-uXa"/>
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="16" id="RXM-Ad-q5g"/>
                         <constraint firstAttribute="bottom" secondItem="bLd-aH-98y" secondAttribute="bottom" constant="16" id="V9M-7S-K0D"/>
                         <constraint firstItem="ef8-MP-9CC" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="VKu-Y3-SSI"/>
                         <constraint firstAttribute="width" constant="300" id="i0y-sq-9Ri"/>
-                        <constraint firstAttribute="bottom" secondItem="ef8-MP-9CC" secondAttribute="bottom" constant="54" id="uGK-tK-IYO"/>
+                        <constraint firstItem="ef8-MP-9CC" firstAttribute="centerY" secondItem="VZ8-SW-SQO" secondAttribute="centerY" id="txo-4Z-lt3"/>
                         <constraint firstAttribute="trailing" secondItem="bLd-aH-98y" secondAttribute="trailing" constant="20" id="xrk-g9-ptr"/>
                     </constraints>
                     <userDefinedRuntimeAttributes>
@@ -60,8 +66,7 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
             <constraints>
-                <constraint firstItem="VZ8-SW-SQO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="50" id="O8j-WE-gww"/>
-                <constraint firstAttribute="bottom" secondItem="VZ8-SW-SQO" secondAttribute="bottom" constant="50" id="kgf-MW-GLk"/>
+                <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="MQi-1L-0rg"/>
                 <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="viz-er-6xd"/>
             </constraints>
         </view>
