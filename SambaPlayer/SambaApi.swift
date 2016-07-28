@@ -87,11 +87,7 @@ import Foundation
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
-		media.isAudio = qualifier.lowercaseString == "audio"
-		
-		if request.isLiveAudio == true {
-			media.isLiveAudio = true
-		}
+		media.isAudio = request.isLiveAudio ?? (qualifier.lowercaseString == "audio")
 		
 		if let title = json["title"] as? String {
 			media.title = title
