@@ -102,14 +102,6 @@ static const CGFloat kGMFBarPaddingX = 8;
 											  nil)];
 	  
 	  
-	  _playerReplayButton = [self playerButtonWithImage:[GMFResources playerBarReplayButtonImage]
-										 action:@selector(didPressReplay:)
-							 accessibilityLabel:
-					     NSLocalizedStringFromTable(@"Replay",
-												@"GoogleMediaFramework",
-												nil)];
-	  
-	  
 	  _playHideConstraint = [NSLayoutConstraint constraintWithItem:_playButton
 													   attribute:NSLayoutAttributeWidth
 													   relatedBy:NSLayoutRelationEqual
@@ -468,7 +460,7 @@ static const CGFloat kGMFBarPaddingX = 8;
       [GMFResources playerBarScrubberThumbImage] forState:UIControlStateNormal];
 }
 
-- (void)didPressPlay:(id)sender {
+- (void)didPressPlay:(id)sender {	
   if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"play"])
     [_delegate didPressPlay];
   else if ([_playButton.currentImage.accessibilityIdentifier isEqualToString:@"pause"])

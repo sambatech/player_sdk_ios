@@ -46,7 +46,9 @@
 }
 
 + (UIImage *)playerBarReplayButtonImage {
-  return [self imageNamed:@"player_control_replay"];
+  UIImage* image = [self imageNamed:@"player_control_replay"];
+  image.accessibilityIdentifier = @"replay";
+  return image;
 }
 
 + (UIImage *)playerBarReplayLargeButtonImage {
