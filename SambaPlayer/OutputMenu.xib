@@ -49,7 +49,7 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="8Fh-8I-73M"/>
-                        <constraint firstAttribute="height" secondItem="ef8-MP-9CC" secondAttribute="height" constant="134" id="C19-9A-uXa"/>
+                        <constraint firstAttribute="height" secondItem="ef8-MP-9CC" secondAttribute="height" priority="750" constant="134" id="C19-9A-uXa"/>
                         <constraint firstItem="8wU-GW-Tgn" firstAttribute="top" secondItem="VZ8-SW-SQO" secondAttribute="top" constant="16" id="RXM-Ad-q5g"/>
                         <constraint firstAttribute="bottom" secondItem="bLd-aH-98y" secondAttribute="bottom" constant="16" id="V9M-7S-K0D"/>
                         <constraint firstItem="ef8-MP-9CC" firstAttribute="leading" secondItem="VZ8-SW-SQO" secondAttribute="leading" constant="22" id="VKu-Y3-SSI"/>
@@ -66,7 +66,9 @@
             </subviews>
             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="calibratedRGB"/>
             <constraints>
+                <constraint firstItem="VZ8-SW-SQO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="iN0-l3-epB" secondAttribute="top" constant="20" id="Gd9-Vm-H42"/>
                 <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="MQi-1L-0rg"/>
+                <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="VZ8-SW-SQO" secondAttribute="bottom" constant="20" id="jmS-2A-H7b"/>
                 <constraint firstItem="VZ8-SW-SQO" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="viz-er-6xd"/>
             </constraints>
         </view>
