@@ -57,7 +57,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	
 	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCellWithIdentifier(_cellIdentifier) ??
-			UITableViewCell.init(style: UITableViewCellStyle.Default, reuseIdentifier: _cellIdentifier)
+			UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: _cellIdentifier)
 
 		cell.textLabel?.text = _outputs[indexPath.row].label
 		

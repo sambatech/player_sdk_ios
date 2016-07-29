@@ -71,8 +71,6 @@ import Foundation
 			return nil
 		}
 		
-		
-		
 		switch qualifier.lowercaseString {
 		case "video", "live", "audio": break
 		default:
@@ -141,9 +139,9 @@ import Foundation
 				guard deliveryType == "hls" || deliveryType == "progressive",
 					let outputs = rule["outputs"] as? [AnyObject]
 						where outputs.count > 0
+							&& (deliveryType != "progressive" || media.deliveryType != "hls")
 							&& (deliveryOutputsCount[deliveryType] == nil
-							|| (deliveryType != "progressive" || media.deliveryType != "hls")
-							&& outputs.count > deliveryOutputsCount[deliveryType]) else {
+							|| outputs.count > deliveryOutputsCount[deliveryType]) else {
 					continue
 				}
 				
@@ -163,7 +161,7 @@ import Foundation
 					
 					mediaOutputs.append(SambaMedia.Output(
 						url: url,
-						label: label,
+						label: label == "abr_hls" ? "Auto" : label,
 						isDefault: label == defaultOutputCurrent
 					))
 				}

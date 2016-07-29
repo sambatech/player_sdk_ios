@@ -43,7 +43,8 @@ public class SambaPlayer : UIViewController {
 	
 	///Current media duration
 	public var duration: Float {
-		if let d = _player?.totalMediaTime() where d > 0 {
+		if _duration == 0,
+			let d = _player?.totalMediaTime() where d > 0 {
 			_duration = Float(d)
 		}
 		
@@ -280,6 +281,8 @@ public class SambaPlayer : UIViewController {
 	// MARK: Internal Methods (may we publish them?)
 	
 	func showMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+		guard _hasStarted else { return }
+		
 		_currentMenu = menu
 		
 		if !mainActionOnly {
@@ -364,7 +367,17 @@ public class SambaPlayer : UIViewController {
 			gmf.backgroundColor = UIColor(0x434343)
 		}
 		
-		gmf.loadStreamWithURL(NSURL(string: url))
+		let nsUrl = NSURL(string: url)
+		
+		// IMA
+		if !media.isAudio, let adUrl = media.adUrl {
+			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
+			gmf.loadStreamWithURL(nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+		}
+		// default
+		else {
+			gmf.loadStreamWithURL(nsUrl)
+		}
 		
 		attachVC(gmf)
 		
@@ -379,20 +392,11 @@ public class SambaPlayer : UIViewController {
 		nc.addObserver(self, selector: #selector(hdTouchHandler),
 		               name: kGMFPlayerDidPressHdNotification, object: gmf)
 		
-		// IMA
-		
-		if !media.isAudio,
-			let adUrl = media.adUrl,
-			ima = GMFIMASDKAdService(GMFVideoPlayer: gmf) {
-			gmf.registerAdService(ima)
-			ima.requestAdsWithRequest(adUrl)
-		}
+		// Tracking
 		
 		if !media.isLive && !media.isAudio {
 			let _ = Tracking(self)
 		}
-		
-		gmf.play()
 	}
 	
 	@objc private func playbackStateHandler() {

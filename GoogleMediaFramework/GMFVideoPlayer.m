@@ -329,7 +329,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:[AVAsset assetWithURL:[NSURL URLWithString:url]]];
 	CMTime t = _player.currentTime;
 	
-	if (t.value > 1.0f) t.value -= 1.0f;
+	//if (t.value > 1.0f) t.value -= 1.0f;
 	
 	[item seekToTime:t];
 	[self setAndObservePlayerItem:item];
