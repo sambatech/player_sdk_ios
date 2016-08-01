@@ -40,12 +40,12 @@ Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para 
 
 Efetue as seguintes configurações em *Target -> Build Settings*:
 
-- Frameworks com código em Swift precisam ser informados:
+- Frameworks com código em Swift precisam ser informados
 <br>*Build Options -> Embedded Content Contains Swift Code -> __Yes__*
-- O processo de assinatura de aplicativos [é "raso" e não abrange as dependências](http://stackoverflow.com/a/17396143/3688598):
+- O processo de assinatura de aplicativos [é "raso" e não abrange as dependências](http://stackoverflow.com/a/17396143/3688598)
 <br>*Code Signing -> Other Code Signing Flags -> __--deep__*
 
-E finalmente, em *Target -> __Build Phases__*:
+E finalmente, em *Target -> Build Phases*:
 - Garanta que o framework será copiado junto ao aplicativo
  1. Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
  1. Escolha o local de destino ou *Destination -> __Shared Frameworks__* (sugestão acima)
