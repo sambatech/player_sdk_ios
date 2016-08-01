@@ -29,37 +29,25 @@ github "sambatech/player_sdk_ios"
 
 Basta executar `carthage update` para gerar o `SambaPlayer.framework` e as demais dependências.
 
-Em seguida execute o script `setup.sh`:
-```shell
-$ Carthage/Checkouts/player_sdk_ios/setup.sh
-```
-
 Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para seu projeto Xcode:
 
 ![readme1](https://cloud.githubusercontent.com/assets/484062/16528649/85e947ce-3f94-11e6-8806-6020775d8d02.gif)
 
 Efetue as seguintes configurações em *Target -> Build Settings*:
 
-- Para funcionar `import`:
-<br>*Packaging -> Defines Module -> __Yes__*
-- Para localizar o framework em *compile time*:
-<br>*Search Paths -> Framework Search Paths -> __${PROJECT_DIR}/Carthage/Build/iOS__*
-- Frameworks com código em Swift precisam ser informados:
+- Frameworks com código em Swift precisam ser informados
 <br>*Build Options -> Embedded Content Contains Swift Code -> __Yes__*
-- O processo de assinatura de aplicativos [é raso e não inclui as dependências](http://stackoverflow.com/a/17396143/3688598):
+- O processo de assinatura de aplicativos [é "raso" e não abrange as dependências](http://stackoverflow.com/a/17396143/3688598)
 <br>*Code Signing -> Other Code Signing Flags -> __--deep__*
-- Sugestão: para localizar o framework em *runtime* pode-se configurar o aplicativo para buscá-lo na pasta de frameworks compartilhados:
-<br>*Linking -> Runpath Search Paths -> __@executable_path/SharedFrameworks__*
 
-Finalmente, garanta que o framework será copiado para o bundle do aplicativo:
-
-- Em *Target -> __Build Phases__*
-- Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
-- Escolha o local de destino ou *Destination -> __Shared Frameworks__* (sugestão acima)
-- Inclua o SambaPlayer.framework à __lista__ (área inferior)
+E finalmente, em *Target -> Build Phases*:
+- Garanta que o framework será copiado junto ao aplicativo
+ 1. Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
+ 1. Escolha o local de destino ou *Destination -> __Frameworks__*
+ 1. Inclua o SambaPlayer.framework à __lista__ (área inferior)
 
 ## Suporte
-Quaisquer perguntas, sugestões ou notificações de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
+Qualquer pergunta, sugestão ou notificação de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
 
 ## Requisitos
 - iOS 8.0+
