@@ -29,11 +29,6 @@ github "sambatech/player_sdk_ios"
 
 Basta executar `carthage update` para gerar o `SambaPlayer.framework` e as demais dependências.
 
-Em seguida execute o script `setup.sh`:
-```shell
-$ Carthage/Checkouts/player_sdk_ios/setup.sh
-```
-
 Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para seu projeto Xcode:
 
 ![readme1](https://cloud.githubusercontent.com/assets/484062/16528649/85e947ce-3f94-11e6-8806-6020775d8d02.gif)
@@ -48,7 +43,7 @@ Efetue as seguintes configurações em *Target -> Build Settings*:
 E finalmente, em *Target -> Build Phases*:
 - Garanta que o framework será copiado junto ao aplicativo
  1. Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
- 1. Escolha o local de destino ou *Destination -> __Shared Frameworks__* (sugestão acima)
+ 1. Escolha o local de destino ou *Destination -> __Frameworks__*
  1. Inclua o SambaPlayer.framework à __lista__ (área inferior)
 
 ## Suporte
