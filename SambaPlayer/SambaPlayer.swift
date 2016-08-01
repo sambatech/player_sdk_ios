@@ -79,8 +79,8 @@ public class SambaPlayer : UIViewController {
 	Convenience initializer
 	- parameter parentViewController:UIViewController The view-controller in which the player view-controller and view should to be embedded
 	**/
-	public convenience init(_ parentViewController: UIViewController) {
-		self.init(parentViewController, parentView: parentViewController.view)
+	public convenience init(parentViewController: UIViewController) {
+		self.init(parentViewController: parentViewController, andParentView: parentViewController.view)
 	}
 	
 	/**
@@ -90,7 +90,7 @@ public class SambaPlayer : UIViewController {
 		- parentViewController:UIViewController The view-controller in which the player view-controller should to be embedded
 		- parentView:UIView The view in which the player view should to be embedded
 	**/
-	public convenience init(_ parentViewController: UIViewController, parentView: UIView) {
+	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
 		
 		dispatch_async(dispatch_get_main_queue()) {
@@ -367,18 +367,6 @@ public class SambaPlayer : UIViewController {
 			gmf.backgroundColor = UIColor(0x434343)
 		}
 		
-		let nsUrl = NSURL(string: url)
-		
-		// IMA
-		if !media.isAudio, let adUrl = media.adUrl {
-			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf.loadStreamWithURL(nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
-		}
-		// default
-		else {
-			gmf.loadStreamWithURL(nsUrl)
-		}
-		
 		attachVC(gmf)
 		
 		let nc = NSNotificationCenter.defaultCenter()
@@ -396,6 +384,19 @@ public class SambaPlayer : UIViewController {
 		
 		if !media.isLive && !media.isAudio {
 			let _ = Tracking(self)
+		}
+		
+		let nsUrl = NSURL(string: url)
+		
+		// IMA
+		if !media.isAudio, let adUrl = media.adUrl {
+			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
+			gmf.loadStreamWithURL(nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+		}
+			// default
+		else {
+			gmf.loadStreamWithURL(nsUrl)
+			gmf.play()
 		}
 	}
 	

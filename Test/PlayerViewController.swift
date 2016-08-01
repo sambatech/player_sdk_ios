@@ -57,7 +57,7 @@ class PlayerViewController: UIViewController, SambaPlayerDelegate {
 			self.playerContainer.frame = frame
 		}
 		
-		self.sambaPlayer = SambaPlayer(self, parentView: self.playerContainer)
+		self.sambaPlayer = SambaPlayer(parentViewController: self, andParentView: self.playerContainer)
 		self.sambaPlayer.delegate = self
 		self.sambaPlayer.media = media
 		self.sambaPlayer.play()
