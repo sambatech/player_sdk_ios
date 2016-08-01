@@ -47,7 +47,7 @@ E finalmente, em *Target -> Build Phases*:
  1. Inclua o SambaPlayer.framework à __lista__ (área inferior)
 
 ## Suporte
-Quaisquer perguntas, sugestões ou notificações de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
+Qualquer pergunta, sugestão ou notificação de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
 
 ## Requisitos
 - iOS 8.0+
