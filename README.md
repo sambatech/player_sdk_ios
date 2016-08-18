@@ -42,10 +42,21 @@ Efetue as seguintes configurações em *Target -> Build Settings*:
 <br>*Code Signing -> Other Code Signing Flags -> __--deep__*
 
 E finalmente, em *Target -> Build Phases*:
+
 - Garanta que o framework será copiado junto ao aplicativo
  1. Clique no botão "+" (na área superior) -> *__New Copy Files Phase__*
  1. Escolha o local de destino ou *Destination -> __Frameworks__*
  1. Inclua o SambaPlayer.framework à __lista__ (área inferior)
+
+É necessário permitir acesso à internet ao aplicativo, o que pode ser feito desabilitando os requerimentos de segurança do iOS para comunicações em HTTP (ATS - App Transport Security). Para isto, basta adicionar o seguinte ao `Info.plist`:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+	<key>NSAllowsArbitraryLoads</key>
+	<true/>
+</dict>
+```
 
 ## Suporte
 Qualquer pergunta, sugestão ou notificação de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
