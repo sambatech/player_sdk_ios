@@ -48,7 +48,7 @@ E finalmente, em *Target -> Build Phases*:
  1. Escolha o local de destino ou *Destination -> __Frameworks__*
  1. Inclua o SambaPlayer.framework à __lista__ (área inferior)
 
-É necessário permitir acesso à internet ao aplicativo, o que pode ser feito desabilitando os requerimentos de segurança do iOS para comunicações em HTTP (ATS - App Transport Security). Para isto, basta adicionar o seguinte ao `Info.plist`:
+Será necessário permitir acesso à internet para o aplicativo, o que pode ser feito desabilitando os requerimentos de segurança do iOS para comunicações em HTTP (ATS - App Transport Security). Para isto, adicione o seguinte ao `Info.plist`:
 
 ```xml
 <key>NSAppTransportSecurity</key>
