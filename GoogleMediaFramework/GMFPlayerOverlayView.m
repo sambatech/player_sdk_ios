@@ -197,21 +197,21 @@
 }
 
 - (void)showSpinner {
-  if (_controlsOnly) return;
+  if (_controlsOnly || !_visible) return;
   [_playPauseReplayButton setHidden:YES];
   [_spinner startAnimating];
   [_spinner setHidden:NO];
 }
 
 - (void)hideSpinner {
-  if (_controlsOnly) return;
+  if (_controlsOnly || !_visible) return;
   [_playPauseReplayButton setHidden:NO];
   [_spinner stopAnimating];
   [_spinner setHidden:YES];
 }
 
 - (void)setPlayerBarVisible:(BOOL)visible {
-  if (_controlsOnly) return;
+  if (_controlsOnly || !_visible) return;
   [_topBarView setAlpha:(_isTopBarEnabled && visible) ? 1 : !_topBarHideEnabled];
   [_playerControlsView setAlpha:visible ? 1 : 0];
   [_playPauseReplayButton setAlpha:visible ? 1 : 0];
@@ -223,7 +223,9 @@
 - (void)setControlsOnly:(BOOL)state {
   _controlsOnly = state;
 
-  [_playerControlsView setHidden:!state];
+  if (state)
+	[_playerControlsView setHidden:NO];
+
   [_playPauseReplayButton setHidden:state];
   [_spinner stopAnimating];
   [_spinner setHidden:state];
@@ -231,6 +233,17 @@
 
   [self setNeedsLayout];
   [self layoutIfNeeded];
+}
+
+- (void)setVisible:(BOOL)state {
+	[_playerControlsView setHidden:!state];
+	[_playPauseReplayButton setHidden:!state];
+	[_spinner stopAnimating];
+	[_spinner setHidden:!state];
+	[_topBarView setHidden:!state];
+	
+	[self setNeedsLayout];
+	[self layoutIfNeeded];
 }
 
 - (void)disableTopBar {
@@ -265,7 +278,7 @@
 - (void)showPlayButton {
   [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
 
-  if (_controlsOnly) return;
+  if (_controlsOnly || !_visible) return;
 
   _currentPlayPauseReplayIcon = PLAY;
   [_playPauseReplayButton setImage:_playImage forState:UIControlStateNormal];
@@ -275,7 +288,7 @@
 - (void)showPauseButton {
   [_playerControlsView setPlayButtonImage:[GMFResources playerBarPauseButtonImage]];
 
-  if (_controlsOnly) return;
+  if (_controlsOnly || !_visible) return;
 
   _currentPlayPauseReplayIcon = PAUSE;
   [_playPauseReplayButton setImage:_pauseImage forState:UIControlStateNormal];
@@ -285,7 +298,7 @@
 - (void)showReplayButton {
   [_playerControlsView setPlayButtonImage:[GMFResources playerBarPlayButtonImage]];
 	
-  if (_controlsOnly) {
+  if (_controlsOnly || !_visible) {
 	  [_playerControlsView setPlayButtonImage:[GMFResources playerBarReplayButtonImage]];
 	  
 	  return;

@@ -35,6 +35,7 @@ typedef enum CurrentPlayPauseReplayIcon {
 @property(nonatomic, strong) UIColor *playPauseResetButtonBackgroundColor;
 @property(nonatomic, weak) id<GMFPlayerControlsViewDelegate> delegate;
 @property(nonatomic) BOOL controlsOnly;
+@property(nonatomic) BOOL visible;
 @property(nonatomic) BOOL topBarHideEnabled;
 
 - (id)initWithControlsPadding:(CGRect)padding;

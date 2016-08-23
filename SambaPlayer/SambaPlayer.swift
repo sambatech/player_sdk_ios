@@ -29,7 +29,7 @@ public class SambaPlayer : UIViewController {
 	
 	///Stores the delegated methods for the player events
 	public var delegate: SambaPlayerDelegate = FakeListener() {
-		didSet {print(delegate)
+		didSet {
 			_delegates.append(delegate)
 		}
 	}
@@ -63,6 +63,15 @@ public class SambaPlayer : UIViewController {
 	///Flag if the media is or not playing
 	public var isPlaying: Bool {
 		return _player?.player.state.rawValue == 3
+	}
+	
+	///Flag whether controls should be visible or not
+	public var controlsVisible: Bool = true {
+		didSet {
+			if let player = _player {
+				(player.playerOverlayView() as! GMFPlayerOverlayView).visible = controlsVisible
+			}
+		}
 	}
 	
 	// MARK: Public Methods
@@ -353,7 +362,10 @@ public class SambaPlayer : UIViewController {
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			}
-
+			
+			if !self.controlsVisible {
+				self.controlsVisible = false
+			}
 		}
 		
 		_player = gmf
