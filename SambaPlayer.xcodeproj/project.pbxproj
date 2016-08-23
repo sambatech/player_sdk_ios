@@ -65,6 +65,7 @@
 		9A91E90A1D14BFA200C30DD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E9001D14BFA200C30DD3 /* Assets.xcassets */; };
 		9A91E90E1D14BFB200C30DD3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90C1D14BFB200C30DD3 /* LaunchScreen.storyboard */; };
 		9A91E90F1D14BFB200C30DD3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9A91E90D1D14BFB200C30DD3 /* Main.storyboard */; };
+		9AD8FDFD1D6CCE7100DF98FF /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
 		9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */; };
 		9AEBF9231D4920A70033FBAC /* SambaPlayer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9AEBF9251D4921EB0033FBAC /* SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */; };
@@ -283,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A52680B1D230A2100C9C015 /* GoogleInteractiveMediaAds.framework in Frameworks */,
+				9AD8FDFD1D6CCE7100DF98FF /* SambaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

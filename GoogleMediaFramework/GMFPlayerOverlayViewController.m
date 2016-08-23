@@ -137,9 +137,9 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 
 - (void)updatePlayerControlsVisibility {
   if (!_playerControlsHidden) {
-    [self showPlayerControlsAnimated:YES];
+    [self showPlayerControlsAnimated:NO];
   } else {
-    [self hidePlayerControlsAnimated:YES];
+    [self hidePlayerControlsAnimated:NO];
   }
 }
 

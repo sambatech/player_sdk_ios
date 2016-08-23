@@ -28,11 +28,9 @@ public class SambaPlayer : UIViewController {
 	// MARK: Properties
 	
 	///Stores the delegated methods for the player events
-	public var delegate: SambaPlayerDelegate? {
-		
-		didSet {
-			guard let value = delegate else { return }
-			_delegates.append(value)
+	public var delegate: SambaPlayerDelegate = FakeListener() {
+		didSet {print(delegate)
+			_delegates.append(delegate)
 		}
 	}
 	
@@ -474,12 +472,22 @@ public class SambaPlayer : UIViewController {
 	private func stopTimer() {
 		_progressTimer.invalidate()
 	}
+	
+	class FakeListener : NSObject, SambaPlayerDelegate {
+		func onLoad() {}
+		func onStart() {}
+		func onResume() {}
+		func onPause() {}
+		func onProgress() {}
+		func onFinish() {}
+		func onDestroy() {}
+	}
 }
 
 /**
-SambaPlayerDelegate functions
+SambaPlayerDelegate protocol
 */
-public protocol SambaPlayerDelegate {
+@objc public protocol SambaPlayerDelegate {
 	///Fired up when player is loaded
 	func onLoad()
 	

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Tracking: SambaPlayerDelegate {
+class Tracking : NSObject, SambaPlayerDelegate {
 	private var _player: SambaPlayer
 	private var _sttm: STTM?
 	
@@ -20,6 +20,8 @@ class Tracking: SambaPlayerDelegate {
 	**/
 	init(_ player: SambaPlayer) {
 		_player = player
+		
+		super.init()
 		
 		// media data cannot be user provided
 		guard let media = player.media as? SambaMediaConfig else { return }
