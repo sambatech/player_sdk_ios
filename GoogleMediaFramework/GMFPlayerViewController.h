@@ -46,6 +46,7 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 @property(nonatomic, strong) GMFAdService *adService;
 
 @property(nonatomic, readonly, getter=isVideoFinished) BOOL videoFinished;
+@property(nonatomic, readonly) BOOL isUserScrubbing;
 
 // Default: No tint color.
 @property(nonatomic, strong) UIColor *controlTintColor;

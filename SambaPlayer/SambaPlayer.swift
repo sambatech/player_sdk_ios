@@ -24,6 +24,7 @@ public class SambaPlayer : UIViewController {
 	private var _currentOutput = -1
 	private var _currentMenu: UIViewController?
 	private var _wasPlayingBeforePause = false
+	private var _state = kGMFPlayerStateEmpty
 	
 	// MARK: Properties
 	
@@ -62,15 +63,13 @@ public class SambaPlayer : UIViewController {
 	
 	///Flag if the media is or not playing
 	public var isPlaying: Bool {
-		return _player?.player.state.rawValue == 3
+		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
 	///Flag whether controls should be visible or not
 	public var controlsVisible: Bool = true {
 		didSet {
-			if let player = _player {
-				(player.playerOverlayView() as! GMFPlayerOverlayView).visible = controlsVisible
-			}
+			(_player?.playerOverlayView() as! GMFPlayerOverlayView).visible = controlsVisible
 		}
 	}
 	
@@ -337,30 +336,32 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		let gmf = GMFPlayerViewController(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0)) {
+			guard let player = self._player else { return }
+			
 			if self._hasMultipleOutputs {
-				self._player?.getControlsView().showHdButton()
+				player.getControlsView().showHdButton()
 			}
 			
 			if self.media.isAudio {
-				self._player?.hideBackground()
-				self._player?.getControlsView().hideFullscreenButton()
-				self._player?.getControlsView().showPlayButton()
-				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
-				self._player?.playerOverlay().autoHideEnabled = false
-				self._player?.playerOverlay().controlsHideEnabled = false
+				player.hideBackground()
+				player.getControlsView().hideFullscreenButton()
+				player.getControlsView().showPlayButton()
+				(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
+				player.playerOverlay().autoHideEnabled = false
+				player.playerOverlay().controlsHideEnabled = false
 				
 				if !self.media.isLive {
-					(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-					(self._player?.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+					(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+					(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
 				}
 			}
 			
 			if self.media.isLive {
-				self._player?.getControlsView().hideScrubber()
-				self._player?.getControlsView().hideTotalTime()
-				self._player?.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:self._player, selector:nil)
-				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-				(self._player?.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+				player.getControlsView().hideScrubber()
+				player.getControlsView().hideTotalTime()
+				player.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
+				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			}
 			
 			if !self.controlsVisible {
@@ -411,26 +412,33 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	@objc private func playbackStateHandler() {
+		guard let player = _player else { return }
 		
-		switch Int((_player?.player.state.rawValue)!) {
-		case 2:
+		let lastState = _state
+		
+		_state = player.player.state
+		
+		switch _state {
+		case kGMFPlayerStateReadyToPlay:
 			for delegate in _delegates { delegate.onLoad() }
-		case 3:
+		case kGMFPlayerStatePlaying:
 			if !_hasStarted {
 				_hasStarted = true
 				for delegate in _delegates { delegate.onStart() }
 			}
 			
-			for delegate in _delegates { delegate.onResume() }
+			if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
+				for delegate in _delegates { delegate.onResume() }
+			}
 			startTimer()
-		case 4:
+		case kGMFPlayerStatePaused:
 			stopTimer()
 			
-			if !_stopping {
+			if !_stopping && !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
 				for delegate in _delegates { delegate.onPause() }
 			}
 			else { _stopping = false }
-		case 7:
+		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
 			

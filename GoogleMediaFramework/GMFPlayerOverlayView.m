@@ -43,6 +43,7 @@
   if (self) {
     _isTopBarEnabled = YES;
 	_topBarHideEnabled = YES;
+	_visible = YES;
     
     // Set the images.
     _playImage = [GMFResources playerBarPlayLargeButtonImage];

@@ -60,7 +60,6 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   GMFPlayerView *_playerView;
   NSURL *_currentMediaURL;
 
-  BOOL _isUserScrubbing;
   BOOL _wasPlayingBeforeSeeking;
   CGRect _controlsPadding;
   void (^_initedBlock)(void);
