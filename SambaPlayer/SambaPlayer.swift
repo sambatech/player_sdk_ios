@@ -418,9 +418,14 @@ public class SambaPlayer : UIViewController {
 		
 		_state = player.player.state
 		
+		#if DEBUG
+		print("state: \(lastState) => \(_state)")
+		#endif
+		
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
 			for delegate in _delegates { delegate.onLoad() }
+			
 		case kGMFPlayerStatePlaying:
 			if !_hasStarted {
 				_hasStarted = true
@@ -430,7 +435,9 @@ public class SambaPlayer : UIViewController {
 			if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
 				for delegate in _delegates { delegate.onResume() }
 			}
+			
 			startTimer()
+			
 		case kGMFPlayerStatePaused:
 			stopTimer()
 			
@@ -438,6 +445,7 @@ public class SambaPlayer : UIViewController {
 				for delegate in _delegates { delegate.onPause() }
 			}
 			else { _stopping = false }
+			
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
