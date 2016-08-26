@@ -237,6 +237,8 @@
 }
 
 - (void)setVisible:(BOOL)state {
+	_visible = state;
+	
 	[_playerControlsView setHidden:!state];
 	[_playPauseReplayButton setHidden:!state];
 	[_spinner stopAnimating];

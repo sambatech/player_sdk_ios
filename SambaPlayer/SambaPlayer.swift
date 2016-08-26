@@ -69,7 +69,7 @@ public class SambaPlayer : UIViewController {
 	///Flag whether controls should be visible or not
 	public var controlsVisible: Bool = true {
 		didSet {
-			(_player?.playerOverlayView() as! GMFPlayerOverlayView).visible = controlsVisible
+			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
 		}
 	}
 	
