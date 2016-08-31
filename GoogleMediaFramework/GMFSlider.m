@@ -12,9 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#import "UISlider+GMFSlider.h"
+#import "GMFSlider.h"
 
-@implementation UISlider (GMFSlider)
+@implementation GMFSlider
 
 // Modify UISlider so that when the bar is tapped, the thumb jumps to the tapped location.
 - (BOOL)beginTrackingWithTouch:(UITouch *)touch withEvent:(UIEvent *)event {

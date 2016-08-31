@@ -441,10 +441,12 @@ public class SambaPlayer : UIViewController {
 		case kGMFPlayerStatePaused:
 			stopTimer()
 			
-			if !_stopping && !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
+			if _stopping {
+				_stopping = false
+			}
+			else if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
 				for delegate in _delegates { delegate.onPause() }
 			}
-			else { _stopping = false }
 			
 		case kGMFPlayerStateFinished:
 			stopTimer()

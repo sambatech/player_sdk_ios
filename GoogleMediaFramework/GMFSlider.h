@@ -14,8 +14,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UISlider (GMFSlider)
-
-- (CGRect)trackRectForBounds:(CGRect)bounds;
+@interface GMFSlider : UISlider
 
 @end

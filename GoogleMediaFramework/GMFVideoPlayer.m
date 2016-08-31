@@ -196,15 +196,16 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   }
   [self setState:kGMFPlayerStateSeeking];
   __weak GMFVideoPlayer *weakSelf = self;
-  [_playerItem seekToTime:CMTimeMake(time, 1)
-        completionHandler:^(BOOL finished) {
+  [_player seekToTime:CMTimeMakeWithSeconds(time, _playerItem.asset.duration.timescale)
+	  toleranceBefore:kCMTimeZero
+	   toleranceAfter:kCMTimeZero
+	completionHandler:^(BOOL finished) {
             GMFVideoPlayer *strongSelf = weakSelf;
             if (!strongSelf) {
               return;
             }
             if (finished) {
               if ([strongSelf pendingPlay]) {
-                [strongSelf setPendingPlay:NO];
                 [[strongSelf player] play];
               } else {
                 [strongSelf setState:kGMFPlayerStatePaused];
@@ -433,7 +434,6 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     // events indicate HLS stream switching. Investigate.
     [self setState:kGMFPlayerStateReadyToPlay];
     if (_pendingPlay) {
-      _pendingPlay = NO;
       // Let's buffer some more data and let the playback poller start playback.
       [self setState:kGMFPlayerStateBuffering];
       [self startPlaybackStatusPoller];

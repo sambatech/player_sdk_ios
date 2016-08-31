@@ -18,6 +18,7 @@
 
 #import "GMFPlayerControlsView.h"
 #import "GMFResources.h"
+#import "GMFSlider.h"
 #import "UILabel+GMFLabels.h"
 #import "UIButton+GMFTintableButton.h"
 
@@ -32,7 +33,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UILabel *_secondsPlayedLabel;
   UILabel *_totalSecondsLabel;
   UILabel *_timeSeparator; // Samba SDK Player
-  UISlider *_scrubber;
+  GMFSlider *_scrubber;
   NSTimeInterval _totalSeconds;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
@@ -73,7 +74,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[self addSubview:_timeSeparator];
 
     // Seekbar
-    _scrubber = [[UISlider alloc] init];
+    _scrubber = [[GMFSlider alloc] init];
     [_scrubber setMinimumValue:0.0];
     [_scrubber setAccessibilityLabel:
         NSLocalizedStringFromTable(@"Seek bar", @"GoogleMediaFramework", nil)];
