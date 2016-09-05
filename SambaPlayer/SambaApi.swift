@@ -174,6 +174,23 @@ import Foundation
 			media.isLive = true
 		}
 		
+		if let thumbs = json["thumbnails"] as? [AnyObject] where thumbs.count > 0 {
+			let wGoal = Int(UIScreen.mainScreen().bounds.size.width)
+			var url: String?
+			var wLast = 0
+			
+			for thumb in thumbs {
+				guard let w = thumb["width"] as? Int
+					where abs(w - wGoal) < abs(wLast - wGoal)
+					else { continue }
+				
+				url = thumb["url"] as? String
+				wLast = w
+			}
+			
+			media.thumb = url
+		}
+		
 		return media
 	}
 }

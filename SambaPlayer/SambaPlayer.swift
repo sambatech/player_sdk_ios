@@ -58,6 +58,8 @@ public class SambaPlayer : UIViewController {
 			if let index = media.outputs?.indexOf({ $0.isDefault }) {
 				_currentOutput = index
 			}
+			
+			createThumb()
 		}
 	}
 	
@@ -164,6 +166,9 @@ public class SambaPlayer : UIViewController {
 	- parameter: pos: Float Time in seconds
 	*/
     public func seek(pos: Float) {
+		// do not seek on live
+		guard !media.isLive else { return }
+		
 		_player?.player.seekToTime(NSTimeInterval(pos))
     }
 	
@@ -411,6 +416,10 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
+	private func createThumb() {
+		//media.thumb
+	}
+	
 	@objc private func playbackStateHandler() {
 		guard let player = _player else { return }
 		
@@ -441,13 +450,14 @@ public class SambaPlayer : UIViewController {
 		case kGMFPlayerStatePaused:
 			stopTimer()
 			
-			if _stopping {
-				_stopping = false
+			if _stopping { _stopping = false }
+			else if lastState != kGMFPlayerStateSeeking {
+				if !player.isUserScrubbing {
+					for delegate in _delegates { delegate.onPause() }
+				}
 			}
-			else if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
-				for delegate in _delegates { delegate.onPause() }
-			}
-			
+			// when paused seek dispatch extra progress event to update external infos
+			else { progressEvent() }
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
