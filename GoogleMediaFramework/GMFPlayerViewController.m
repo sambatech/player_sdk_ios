@@ -120,7 +120,9 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 }
 
 - (void)play {
-  [_player play];
+  if ([self playbackState] != kGMFPlayerStateFinished)
+	  [_player play];
+  else [_player replay];
 }
 
 - (void)pause {
@@ -348,6 +350,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
       break;
     case kGMFPlayerStatePaused:
 	  [self playerStateDidChangeToPaused];
+	  
+	  // Update scrubber and time when paused seek
+	  if (fromState == kGMFPlayerStateSeeking)
+		  [_videoPlayerOverlayViewController setMediaTime:[_player currentMediaTime]];
       break;
     case kGMFPlayerStateFinished:
 	  // Allow any ads provider to play any post rolls before we actually finish

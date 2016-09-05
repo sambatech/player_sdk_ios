@@ -120,21 +120,21 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Play the media<br><br>
+	Plays the media<br><br>
 		
 		player.play()
 	*/
 	public func play() {
-		if _player == nil {
+		guard let player = _player else {
 			dispatch_async(dispatch_get_main_queue()) { self.create() }
 			return
 		}
 		
-		_player?.play()
+		player.play()
 	}
 	
 	/**
-	Pause the media<br><br>
+	Pauses the media<br><br>
 	
 		player.pause()
 	*/
@@ -144,7 +144,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Stop the media returning it to it´s initial time<br><br>
+	Stops the media returning it to its initial time<br><br>
 	
 		player.stop()
 	*/
@@ -157,7 +157,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Seek the media to a given time<br><br>
+	Seeks the media to a given time<br><br>
 			
 		player.seek(20)
 	
@@ -168,7 +168,7 @@ public class SambaPlayer : UIViewController {
     }
 	
 	/**
-	Change the current output<br><br>
+	Changes the current output<br><br>
 	
 		player.switchOutput(1)
 	
@@ -184,7 +184,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Destroy the player instance<br><br>
+	Destroys the player instance<br><br>
 	
 		player.destroy()
 	
@@ -203,7 +203,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Change the orientation of the player<br><br>
+	Changes the orientation of the player<br><br>
 	
 	- Parameters:
 		- size:CGSize
@@ -264,7 +264,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Get all the supported orientation<br><br>
+	Gets all the supported orientation<br><br>
 	- Returns: .AllButUpsideDown
 	*/
 	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
@@ -273,7 +273,7 @@ public class SambaPlayer : UIViewController {
 	
 	/**
 	Fired up when the view disapears<br><br>
-	Destroy the player after it
+	Destroys the player after it
 	
 	*/
 	public override func viewWillDisappear(animated: Bool) {
@@ -416,7 +416,7 @@ public class SambaPlayer : UIViewController {
 		
 		let lastState = _state
 		
-		_state = player.player.state
+		_state = player.playbackState()
 		
 		#if DEBUG
 		print("state: \(lastState) => \(_state)")
