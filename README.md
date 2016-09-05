@@ -24,8 +24,8 @@ $ brew install carthage
 Caso ainda não exista, crie um arquivo na raíz do seu projeto chamado `Cartfile` e inclua:
 
 ```ogdl
-github "sambatech/player_sdk_ios" ~> 0.1.5
-#github "sambatech/player_sdk_ios" // para utilizar a versão mais atualizada
+github "sambatech/player_sdk_ios" ~> 0.1.7
+#github "sambatech/player_sdk_ios" # para utilizar a versão mais atualizada
 ```
 
 Basta executar `carthage update` para gerar o `SambaPlayer.framework` e as demais dependências.
