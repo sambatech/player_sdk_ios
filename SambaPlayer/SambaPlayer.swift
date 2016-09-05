@@ -161,9 +161,9 @@ public class SambaPlayer : UIViewController {
 			
 		player.seek(20)
 	
-	- parameter: pos: Int Time in seconds
+	- parameter: pos: Float Time in seconds
 	*/
-    public func seek(pos: Int) {
+    public func seek(pos: Float) {
 		_player?.player.seekToTime(NSTimeInterval(pos))
     }
 	
