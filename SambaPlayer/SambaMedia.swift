@@ -55,7 +55,7 @@
 	public var deliveryType = "other"
 	
 	///Thumb´s URL
-	public var thumb: String?
+	public var thumb: UIImage?
 	
 	///Indicate if the media is live or not
 	public var isLive = false
@@ -86,7 +86,7 @@
 		- title:String Media´s title
 		- thumb:String URL of the thumb
 	*/
-	public init(_ url:String, title:String?, thumb:String?) {
+	public init(_ url:String, title:String?, thumb:UIImage?) {
 		self.title = title ?? ""
 		self.url = url
 		self.thumb = thumb

@@ -188,7 +188,11 @@ import Foundation
 				wLast = w
 			}
 			
-			media.thumb = url
+			if let url = url,
+				nsurl = NSURL(string: url),
+				data = NSData(contentsOfURL: nsurl) {
+				media.thumb = UIImage(data: data)
+			}
 		}
 		
 		return media

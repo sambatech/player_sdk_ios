@@ -25,6 +25,7 @@ public class SambaPlayer : UIViewController {
 	private var _currentMenu: UIViewController?
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
+	private var _thumb: UIButton?
 	
 	// MARK: Properties
 	
@@ -59,7 +60,14 @@ public class SambaPlayer : UIViewController {
 				_currentOutput = index
 			}
 			
-			createThumb()
+			dispatch_async(dispatch_get_main_queue()) {
+				if self.media.isAudio {
+					//self.create(false) // TODO: sincronizar chamada com o play()
+				}
+				else {
+					self.createThumb()
+				}
+			}
 		}
 	}
 	
@@ -322,7 +330,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	private func create() {
+	private func create(autoPlay: Bool = true) {
 		var urlWrapped = media.url
 		
 		if let outputs = media.outputs where outputs.count > 0 {
@@ -383,6 +391,7 @@ public class SambaPlayer : UIViewController {
 			gmf.backgroundColor = UIColor(0x434343)
 		}
 		
+		destroyThumb()
 		attachVC(gmf)
 		
 		let nc = NSNotificationCenter.defaultCenter()
@@ -412,12 +421,46 @@ public class SambaPlayer : UIViewController {
 			// default
 		else {
 			gmf.loadStreamWithURL(nsUrl)
-			gmf.play()
+			if autoPlay { gmf.play() }
 		}
 	}
 	
 	private func createThumb() {
-		//media.thumb
+		guard let thumbImage = media.thumb else {
+			#if DEBUG
+			print("\(self.dynamicType): no thumb found.")
+			#endif
+			return
+		}
+		
+		let thumb = UIButton(frame: view.frame)
+		let size = CGSize(width: view.frame.width, height: view.frame.height)
+		let play = GMFResources.playerBarPlayLargeButtonImage()
+		
+		UIGraphicsBeginImageContextWithOptions(size, true, 0)
+		thumbImage.drawInRect(CGRectMake(0, 0, size.width, size.height))
+		play.drawInRect(CGRectMake((size.width - play.size.width)/2, (size.height - play.size.height)/2, play.size.width, play.size.height))
+		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), forState: .Normal)
+		UIGraphicsEndImageContext()
+		
+		thumb.addTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		
+		_thumb = thumb
+		
+		view.addSubview(thumb)
+		view.setNeedsLayout()
+	}
+	
+	private func destroyThumb() {
+		guard let thumb = _thumb else { return }
+		
+		thumb.removeTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		thumb.removeFromSuperview()
+		_thumb = nil
+	}
+	
+	@objc private func thumbTouchHandler() {
+		play()
 	}
 	
 	@objc private func playbackStateHandler() {
