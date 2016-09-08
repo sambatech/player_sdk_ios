@@ -202,10 +202,10 @@
   
   // Give the play/pause/reset button a slightly transparent black background so that the contrast
   // makes it easily visible.
-  [overlayView setPlayPauseResetButtonBackgroundColor:[UIColor colorWithRed:0
+  /*[overlayView setPlayPauseResetButtonBackgroundColor:[UIColor colorWithRed:0
                                                                       green:0
                                                                        blue:0
-                                                                      alpha:0.5f]];
+                                                                      alpha:0.5f]];*/
   
   _hasVideoPlayerControl = YES;
   [self.videoPlayerController pause];
