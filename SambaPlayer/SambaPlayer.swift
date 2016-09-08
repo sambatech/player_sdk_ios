@@ -62,7 +62,7 @@ public class SambaPlayer : UIViewController {
 			
 			dispatch_async(dispatch_get_main_queue()) {
 				if self.media.isAudio {
-					//self.create(false) // TODO: sincronizar chamada com o play()
+					self.create(false)
 				}
 				else {
 					self.createThumb()
@@ -331,6 +331,12 @@ public class SambaPlayer : UIViewController {
 	// MARK: Private Methods
 	
 	private func create(autoPlay: Bool = true) {
+		// if already exists, do not recreate player
+		if let player = _player {
+			if autoPlay { player.play() }
+			return
+		}
+		
 		var urlWrapped = media.url
 		
 		if let outputs = media.outputs where outputs.count > 0 {
