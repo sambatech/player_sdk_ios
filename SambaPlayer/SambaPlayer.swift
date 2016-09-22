@@ -11,21 +11,21 @@ import UIKit
 
 public class SambaPlayer : UIViewController {
 	
-	private var _player: GMFPlayerViewController?
-	private var _parentView: UIView?
-	private var _delegates = [SambaPlayerDelegate]()
-	private var _progressTimer = NSTimer()
-	private var _hasStarted = false
-	private var _stopping = false
-	private var _fullscreenAnimating = false
-	private var _isFullscreen = false
-	private var _hasMultipleOutputs = false
-	private var _duration: Float = 0
-	private var _currentOutput = -1
-	private var _currentMenu: UIViewController?
-	private var _wasPlayingBeforePause = false
-	private var _state = kGMFPlayerStateEmpty
-	private var _thumb: UIButton?
+	fileprivate var _player: GMFPlayerViewController?
+	fileprivate var _parentView: UIView?
+	fileprivate var _delegates = [SambaPlayerDelegate]()
+	fileprivate var _progressTimer = Timer()
+	fileprivate var _hasStarted = false
+	fileprivate var _stopping = false
+	fileprivate var _fullscreenAnimating = false
+	fileprivate var _isFullscreen = false
+	fileprivate var _hasMultipleOutputs = false
+	fileprivate var _duration: Float = 0
+	fileprivate var _currentOutput = -1
+	fileprivate var _currentMenu: UIViewController?
+	fileprivate var _wasPlayingBeforePause = false
+	fileprivate var _state = kGMFPlayerStateEmpty
+	fileprivate var _thumb: UIButton?
 	
 	// MARK: Properties
 	
@@ -44,7 +44,7 @@ public class SambaPlayer : UIViewController {
 	///Current media duration
 	public var duration: Float {
 		if _duration == 0,
-			let d = _player?.totalMediaTime() where d > 0 {
+			let d = _player?.totalMediaTime() , d > 0 {
 			_duration = Float(d)
 		}
 		
@@ -56,11 +56,11 @@ public class SambaPlayer : UIViewController {
 		didSet {
 			destroy()
 			
-			if let index = media.outputs?.indexOf({ $0.isDefault }) {
+			if let index = media.outputs?.index(where: { $0.isDefault }) {
 				_currentOutput = index
 			}
 			
-			dispatch_async(dispatch_get_main_queue()) {
+			DispatchQueue.main.async {
 				if self.media.isAudio {
 					self.create(false)
 				}
@@ -72,12 +72,12 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	///Flag if the media is or not playing
-	public var isPlaying: Bool {
+	open var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
 	///Flag whether controls should be visible or not
-	public var controlsVisible: Bool = true {
+	open var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
 		}
@@ -109,9 +109,9 @@ public class SambaPlayer : UIViewController {
 	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
 		
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			parentViewController.addChildViewController(self)
-			self.didMoveToParentViewController(parentViewController)
+			self.didMove(toParentViewController: parentViewController)
 			self.view.frame = parentView.bounds
 			parentView.addSubview(self.view)
 			parentView.setNeedsDisplay()
@@ -134,9 +134,9 @@ public class SambaPlayer : UIViewController {
 		
 		player.play()
 	*/
-	public func play() {
+	open func play() {
 		guard let player = _player else {
-			dispatch_async(dispatch_get_main_queue()) { self.create() }
+			DispatchQueue.main.async { self.create() }
 			return
 		}
 		
@@ -148,7 +148,7 @@ public class SambaPlayer : UIViewController {
 	
 		player.pause()
 	*/
-	public func pause() {
+	open func pause() {
 		_wasPlayingBeforePause = isPlaying
 		_player?.pause()
 	}
@@ -158,7 +158,7 @@ public class SambaPlayer : UIViewController {
 	
 		player.stop()
 	*/
-	public func stop() {
+	open func stop() {
 		// avoid dispatching events
 		_stopping = true
 		
@@ -173,11 +173,11 @@ public class SambaPlayer : UIViewController {
 	
 	- parameter: pos: Float Time in seconds
 	*/
-    public func seek(pos: Float) {
+    open func seek(_ pos: Float) {
 		// do not seek on live
 		guard !media.isLive else { return }
 		
-		_player?.player.seekToTime(NSTimeInterval(pos))
+		_player?.player.seek(toTime: TimeInterval(pos))
     }
 	
 	/**
@@ -187,10 +187,10 @@ public class SambaPlayer : UIViewController {
 	
 	- parameter: value: Int Index of the output
 	*/
-	public func switchOutput(value: Int) {
+	open func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
 			let outputs = media.outputs
-			where value < outputs.count else { return }
+			, value < outputs.count else { return }
 		
 		_currentOutput = value
 		_player?.player.switchUrl(outputs[value].url)
@@ -202,7 +202,7 @@ public class SambaPlayer : UIViewController {
 		player.destroy()
 	
 	*/
-	public func destroy() {
+	open func destroy() {
 		guard let player = _player else { return }
 		
 		for delegate in _delegates { delegate.onDestroy() }
@@ -210,7 +210,7 @@ public class SambaPlayer : UIViewController {
 		stopTimer()
 		player.player.reset()
 		detachVC(player)
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+		NotificationCenter.default.removeObserver(self)
 		
 		_player = nil
 	}
@@ -222,8 +222,8 @@ public class SambaPlayer : UIViewController {
 		- size:CGSize
 		- withTransitionCoordinator coordinator
 	*/
-	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+	open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
 		
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
@@ -250,20 +250,20 @@ public class SambaPlayer : UIViewController {
 			}
 		}
 		
-		if player.parentViewController == self {
-			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
+		if player.parent == self {
+			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
 				_fullscreenAnimating = true
 				_isFullscreen = true
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
-				dispatch_async(dispatch_get_main_queue()) {
-					self.presentViewController(player, animated: true, completion: callback)
+				DispatchQueue.main.async {
+					self.present(player, animated: true, completion: callback)
 				}
 			}
 		}
-		else if UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) {
+		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
 			_fullscreenAnimating = true
 			
 			detachVC(player) {
@@ -280,8 +280,8 @@ public class SambaPlayer : UIViewController {
 	Gets all the supported orientation<br><br>
 	- Returns: .AllButUpsideDown
 	*/
-	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-		return .AllButUpsideDown
+	open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+		return .allButUpsideDown
 	}
 	
 	/**
@@ -289,7 +289,7 @@ public class SambaPlayer : UIViewController {
 	Destroys the player after it
 	
 	*/
-	public override func viewWillDisappear(animated: Bool) {
+	open override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
@@ -299,7 +299,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Internal Methods (may we publish them?)
 	
-	func showMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+	func showMenu(_ menu: UIViewController, _ mainActionOnly: Bool = false) {
 		guard _hasStarted else { return }
 		
 		_currentMenu = menu
@@ -312,13 +312,13 @@ public class SambaPlayer : UIViewController {
 			attachVC(menu, _player)
 		}
 		else {
-			dispatch_async(dispatch_get_main_queue()) {
-				self.presentViewController(menu, animated: false, completion: nil)
+			DispatchQueue.main.async {
+				self.present(menu, animated: false, completion: nil)
 			}
 		}
 	}
 	
-	func hideMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+	func hideMenu(_ menu: UIViewController, _ mainActionOnly: Bool = false) {
 		detachVC(menu, _player, false)
 		
 		_currentMenu = nil
@@ -330,7 +330,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	private func create(autoPlay: Bool = true) {
+	fileprivate func create(_ autoPlay: Bool = true) {
 		// if already exists, do not recreate player
 		if let player = _player {
 			if autoPlay { player.play() }
@@ -339,7 +339,7 @@ public class SambaPlayer : UIViewController {
 		
 		var urlWrapped = media.url
 		
-		if let outputs = media.outputs where outputs.count > 0 {
+		if let outputs = media.outputs , outputs.count > 0 {
 			urlWrapped = outputs[0].url
 			
 			for output in outputs where output.isDefault {
@@ -350,11 +350,11 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		guard let url = urlWrapped else {
-			print("\(self.dynamicType) error: No media URL found!")
+			print("\(type(of: self)) error: No media URL found!")
 			return
 		}
 		
-		let gmf = GMFPlayerViewController(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0)) {
+		let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 			
 			if self._hasMultipleOutputs {
@@ -378,7 +378,7 @@ public class SambaPlayer : UIViewController {
 			if self.media.isLive {
 				player.getControlsView().hideScrubber()
 				player.getControlsView().hideTotalTime()
-				player.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
+				player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
 				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 				(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			}
@@ -390,26 +390,26 @@ public class SambaPlayer : UIViewController {
 		
 		_player = gmf
 		
-		gmf.videoTitle = media.title
-		gmf.controlTintColor = UIColor(media.theme)
+		gmf?.videoTitle = media.title
+		gmf?.controlTintColor = UIColor(media.theme)
 		
 		if media.isAudio {
-			gmf.backgroundColor = UIColor(0x434343)
+			gmf?.backgroundColor = UIColor(0x434343)
 		}
 		
 		destroyThumb()
-		attachVC(gmf)
+		attachVC(gmf!)
 		
-		let nc = NSNotificationCenter.defaultCenter()
+		let nc = NotificationCenter.default
 			
 		nc.addObserver(self, selector: #selector(playbackStateHandler),
-		               name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: gmf)
 		
 		nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
-		               name: kGMFPlayerDidMinimizeNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerDidMinimize, object: gmf)
 		
 		nc.addObserver(self, selector: #selector(hdTouchHandler),
-		               name: kGMFPlayerDidPressHdNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerDidPressHd, object: gmf)
 		
 		// Tracking
 		
@@ -417,24 +417,24 @@ public class SambaPlayer : UIViewController {
 			let _ = Tracking(self)
 		}
 		
-		let nsUrl = NSURL(string: url)
+		let nsUrl = URL(string: url)
 		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf.loadStreamWithURL(nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+			gmf?.loadStream(with: nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
 		}
 			// default
 		else {
-			gmf.loadStreamWithURL(nsUrl)
-			if autoPlay { gmf.play() }
+			gmf?.loadStream(with: nsUrl)
+			if autoPlay { gmf?.play() }
 		}
 	}
 	
-	private func createThumb() {
+	fileprivate func createThumb() {
 		guard let thumbImage = media.thumb else {
 			#if DEBUG
-			print("\(self.dynamicType): no thumb found.")
+			print("\(type(of: self)): no thumb found.")
 			#endif
 			return
 		}
@@ -444,12 +444,12 @@ public class SambaPlayer : UIViewController {
 		let play = GMFResources.playerBarPlayLargeButtonImage()
 		
 		UIGraphicsBeginImageContextWithOptions(size, true, 0)
-		thumbImage.drawInRect(CGRectMake(0, 0, size.width, size.height))
-		play.drawInRect(CGRectMake((size.width - play.size.width)/2, (size.height - play.size.height)/2, play.size.width, play.size.height))
-		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), forState: .Normal)
+		thumbImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+		play?.draw(in: CGRect(x: (size.width - (play?.size.width)!)/2, y: (size.height - (play?.size.height)!)/2, width: (play?.size.width)!, height: (play?.size.height)!))
+		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), for: UIControlState())
 		UIGraphicsEndImageContext()
 		
-		thumb.addTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		thumb.addTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		
 		_thumb = thumb
 		
@@ -457,19 +457,19 @@ public class SambaPlayer : UIViewController {
 		view.setNeedsLayout()
 	}
 	
-	private func destroyThumb() {
+	fileprivate func destroyThumb() {
 		guard let thumb = _thumb else { return }
 		
-		thumb.removeTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		thumb.removeFromSuperview()
 		_thumb = nil
 	}
 	
-	@objc private func thumbTouchHandler() {
+	@objc fileprivate func thumbTouchHandler() {
 		play()
 	}
 	
-	@objc private func playbackStateHandler() {
+	@objc fileprivate func playbackStateHandler() {
 		guard let player = _player else { return }
 		
 		let lastState = _state
@@ -515,35 +515,35 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	@objc private func progressEvent() {
+	@objc fileprivate func progressEvent() {
 		for delegate in _delegates { delegate.onProgress() }
 	}
 	
-	@objc private func fullscreenTouchHandler() {
-		UIDevice.currentDevice().setValue(_isFullscreen ? UIInterfaceOrientation.Portrait.rawValue :
-			UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
+	@objc fileprivate func fullscreenTouchHandler() {
+		UIDevice.current.setValue(_isFullscreen ? UIInterfaceOrientation.portrait.rawValue :
+			UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
 	}
 	
-	@objc private func hdTouchHandler() {
+	@objc fileprivate func hdTouchHandler() {
 		showMenu(OutputMenuViewController(self, _currentOutput))
 	}
 	
-	private func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
+	fileprivate func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {
 		let p: UIViewController = vcParent ?? self
 		
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			p.addChildViewController(vc)
-			vc.didMoveToParentViewController(p)
+			vc.didMove(toParentViewController: p)
 			vc.view.frame = p.view.frame
 			p.view.addSubview(vc.view)
 			p.view.setNeedsDisplay()
 		}
 	}
 	
-	private func detachVC(vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if vc.parentViewController != (vcParent ?? self) {
-				vc.dismissViewControllerAnimated(animated, completion: callback)
+	fileprivate func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
+		DispatchQueue.main.async {
+			if vc.parent != (vcParent ?? self) {
+				vc.dismiss(animated: animated, completion: callback)
 			}
 			else {
 				vc.view.removeFromSuperview()
@@ -553,9 +553,9 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	private func startTimer() {
+	fileprivate func startTimer() {
 		stopTimer()
-		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
+		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
 	}
 	
 	private func stopTimer() {

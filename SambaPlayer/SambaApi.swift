@@ -7,8 +7,30 @@
 //
 
 import Foundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
 
-@objc public class SambaApi : NSObject {
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
+
+
+
+@objc open class SambaApi : NSObject {
 	
 	/**
 	Default constructor
@@ -25,7 +47,7 @@ import Foundation
 		- callback: SambaMedia - Callback when the request is made passing our SambaMedia object
 	
 	*/
-	public func requestMedia(request: SambaMediaRequest, callback: SambaMedia? -> ()) {
+	open func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
 		Helpers.requestURL("\(Helpers.settings["playerapi_endpoint"]!)\(request.projectHash)/" + (request.mediaId ??
 			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
 			guard let responseText = responseText else { return }
@@ -33,13 +55,13 @@ import Foundation
 			var tokenBase64: String = responseText
 			
 			if let mediaId = request.mediaId,
-					m = mediaId.rangeOfString("\\d(?=[a-zA-Z]*$)", options: .RegularExpressionSearch),
-					delimiter = Int(mediaId[m]) {
-				tokenBase64 = responseText.substringWithRange(responseText.startIndex.advancedBy(delimiter)..<responseText.endIndex.advancedBy(-delimiter))
+					let m = mediaId.range(of: "\\d(?=[a-zA-Z]*$)", options: .regularExpression),
+					let delimiter = Int(mediaId[m]) {
+				tokenBase64 = responseText.substring(with: responseText.characters.index(responseText.startIndex, offsetBy: delimiter)..<responseText.characters.index(responseText.endIndex, offsetBy: -delimiter))
 			}
 			
-			tokenBase64 = tokenBase64.stringByReplacingOccurrencesOfString("-", withString: "+")
-				.stringByReplacingOccurrencesOfString("_", withString: "/")
+			tokenBase64 = tokenBase64.replacingOccurrences(of: "-", with: "+")
+				.replacingOccurrences(of: "_", with: "/")
 			
 			switch tokenBase64.characters.count % 4 {
 			case 2:
@@ -49,32 +71,32 @@ import Foundation
 			default: break
 			}
 			
-			guard let jsonText = NSData(base64EncodedString: tokenBase64, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters) else {
-				print("\(self.dynamicType) Error: Base64 token failed to create encoded data.")
+			guard let jsonText = Data(base64Encoded: tokenBase64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) else {
+				print("\(type(of: self)) Error: Base64 token failed to create encoded data.")
 				return
 			}
 			
 			do {
-				callback(self.parseMedia(try NSJSONSerialization.JSONObjectWithData(jsonText, options: .AllowFragments), request: request))
+				callback(self.parseMedia(try JSONSerialization.jsonObject(with: jsonText, options: .allowFragments), request: request))
 			}
 			catch {
-				print("\(self.dynamicType) Error: Failed to parse JSON string.")
+				print("\(type(of: self)) Error: Failed to parse JSON string.")
 			}
 		}
 	}
 	
 	
 	//Colect the important media info and its desired outputs<br><br>
-	private func parseMedia(json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
+	fileprivate func parseMedia(_ json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
-			print("\(self.dynamicType) Error: No media qualifier")
+			print("\(type(of: self)) Error: No media qualifier")
 			return nil
 		}
 		
-		switch qualifier.lowercaseString {
+		switch qualifier.lowercased() {
 		case "video", "live", "audio": break
 		default:
-			print("\(self.dynamicType) Error: Invalid media qualifier")
+			print("\(type(of: self)) Error: Invalid media qualifier")
 			return nil
 		}
 		
@@ -85,7 +107,7 @@ import Foundation
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
-		media.isAudio = request.isLiveAudio ?? (qualifier.lowercaseString == "audio")
+		media.isAudio = request.isLiveAudio ?? (qualifier.lowercased() == "audio")
 		
 		if let title = json["title"] as? String {
 			media.title = title
@@ -99,8 +121,8 @@ import Foundation
 			media.categoryId = categoryId
 		}
 		
-		if let theme = playerConfig["theme"] as? String where theme.lowercaseString != "default" {
-			media.theme = UInt(theme.stringByReplacingOccurrencesOfString("^#*", withString: "", options: .RegularExpressionSearch), radix: 16)!
+		if let theme = playerConfig["theme"] as? String , theme.lowercased() != "default" {
+			media.theme = UInt(theme.replacingOccurrences(of: "^#*", with: "", options: .regularExpression), radix: 16)!
 		}
 		
 		if let sttm = apiConfig["sttm"] as? [String:AnyObject] {
@@ -115,8 +137,8 @@ import Foundation
 		
 		if let ads = json["advertisings"] as? [AnyObject] {
 			if ads.count > 0, let ad = ads[0] as? [String:AnyObject],
-				url = ad["tagVast"] as? String
-				where ad["adServer"]?.lowercaseString == "dfp" {
+				let url = ad["tagVast"] as? String
+				, ad["adServer"]?.lowercased == "dfp" {
 				media.adUrl = url
 			}
 		}
@@ -130,7 +152,7 @@ import Foundation
 			var mediaOutputs: [SambaMedia.Output]
 			
 			for rule in rules {
-				deliveryType = (rule["urlType"] as! String).lowercaseString
+				deliveryType = (rule["urlType"] as! String).lowercased()
 				
 				// restricts media to HLS or PROGRESSIVE
 				// delivery rule must have at least one output
@@ -138,7 +160,7 @@ import Foundation
 				// otherwise see if current rule have more outputs than the registered one
 				guard deliveryType == "hls" || deliveryType == "progressive",
 					let outputs = rule["outputs"] as? [AnyObject]
-						where outputs.count > 0
+						, outputs.count > 0
 							&& (deliveryType != "progressive" || media.deliveryType != "hls")
 							&& (deliveryOutputsCount[deliveryType] == nil
 							|| outputs.count > deliveryOutputsCount[deliveryType]) else {
@@ -151,7 +173,7 @@ import Foundation
 				media.deliveryType = deliveryType
 				
 				for output in outputs {
-					label = (output["outputName"] as! String).lowercaseString
+					label = (output["outputName"] as! String).lowercased()
 					
 					// if audio, raw file can be considered
 					guard media.isAudio || label != "_raw",
@@ -166,7 +188,7 @@ import Foundation
 					))
 				}
 				
-				media.outputs = mediaOutputs.sort({ Int($0.label.match("^\\d+") ?? "0") < Int($1.label.match("^\\d+") ?? "0") })
+				media.outputs = mediaOutputs.sorted(by: { Int($0.label.match("^\\d+") ?? "0") < Int($1.label.match("^\\d+") ?? "0") })
 			}
 		}
 		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
@@ -174,14 +196,14 @@ import Foundation
 			media.isLive = true
 		}
 		
-		if let thumbs = json["thumbnails"] as? [AnyObject] where thumbs.count > 0 {
-			let wGoal = Int(UIScreen.mainScreen().bounds.size.width)
+		if let thumbs = json["thumbnails"] as? [AnyObject] , thumbs.count > 0 {
+			let wGoal = Int(UIScreen.main.bounds.size.width)
 			var url: String?
 			var wLast = 0
 			
 			for thumb in thumbs {
 				guard let w = thumb["width"] as? Int
-					where abs(w - wGoal) < abs(wLast - wGoal)
+					, abs(w - wGoal) < abs(wLast - wGoal)
 					else { continue }
 				
 				url = thumb["url"] as? String
@@ -189,8 +211,8 @@ import Foundation
 			}
 			
 			if let url = url,
-				nsurl = NSURL(string: url),
-				data = NSData(contentsOfURL: nsurl) {
+				let nsurl = URL(string: url),
+				let data = try? Data(contentsOf: nsurl) {
 				media.thumb = UIImage(data: data)
 			}
 		}
