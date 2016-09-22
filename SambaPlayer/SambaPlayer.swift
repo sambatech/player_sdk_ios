@@ -11,21 +11,21 @@ import UIKit
 
 public class SambaPlayer : UIViewController {
 	
-	fileprivate var _player: GMFPlayerViewController?
-	fileprivate var _parentView: UIView?
-	fileprivate var _delegates = [SambaPlayerDelegate]()
-	fileprivate var _progressTimer = Timer()
-	fileprivate var _hasStarted = false
-	fileprivate var _stopping = false
-	fileprivate var _fullscreenAnimating = false
-	fileprivate var _isFullscreen = false
-	fileprivate var _hasMultipleOutputs = false
-	fileprivate var _duration: Float = 0
-	fileprivate var _currentOutput = -1
-	fileprivate var _currentMenu: UIViewController?
-	fileprivate var _wasPlayingBeforePause = false
-	fileprivate var _state = kGMFPlayerStateEmpty
-	fileprivate var _thumb: UIButton?
+	private var _player: GMFPlayerViewController?
+	private var _parentView: UIView?
+	private var _delegates = [SambaPlayerDelegate]()
+	private var _progressTimer = Timer()
+	private var _hasStarted = false
+	private var _stopping = false
+	private var _fullscreenAnimating = false
+	private var _isFullscreen = false
+	private var _hasMultipleOutputs = false
+	private var _duration: Float = 0
+	private var _currentOutput = -1
+	private var _currentMenu: UIViewController?
+	private var _wasPlayingBeforePause = false
+	private var _state = kGMFPlayerStateEmpty
+	private var _thumb: UIButton?
 	
 	// MARK: Properties
 	
@@ -330,7 +330,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	fileprivate func create(_ autoPlay: Bool = true) {
+	private func create(_ autoPlay: Bool = true) {
 		// if already exists, do not recreate player
 		if let player = _player {
 			if autoPlay { player.play() }
@@ -431,7 +431,7 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	fileprivate func createThumb() {
+	private func createThumb() {
 		guard let thumbImage = media.thumb else {
 			#if DEBUG
 			print("\(type(of: self)): no thumb found.")
@@ -457,7 +457,7 @@ public class SambaPlayer : UIViewController {
 		view.setNeedsLayout()
 	}
 	
-	fileprivate func destroyThumb() {
+	private func destroyThumb() {
 		guard let thumb = _thumb else { return }
 		
 		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
@@ -465,11 +465,11 @@ public class SambaPlayer : UIViewController {
 		_thumb = nil
 	}
 	
-	@objc fileprivate func thumbTouchHandler() {
+	@objc private func thumbTouchHandler() {
 		play()
 	}
 	
-	@objc fileprivate func playbackStateHandler() {
+	@objc private func playbackStateHandler() {
 		guard let player = _player else { return }
 		
 		let lastState = _state
@@ -515,20 +515,20 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	@objc fileprivate func progressEvent() {
+	@objc private func progressEvent() {
 		for delegate in _delegates { delegate.onProgress() }
 	}
 	
-	@objc fileprivate func fullscreenTouchHandler() {
+	@objc private func fullscreenTouchHandler() {
 		UIDevice.current.setValue(_isFullscreen ? UIInterfaceOrientation.portrait.rawValue :
 			UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
 	}
 	
-	@objc fileprivate func hdTouchHandler() {
+	@objc private func hdTouchHandler() {
 		showMenu(OutputMenuViewController(self, _currentOutput))
 	}
 	
-	fileprivate func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {
+	private func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {
 		let p: UIViewController = vcParent ?? self
 		
 		DispatchQueue.main.async {
@@ -540,7 +540,7 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	fileprivate func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
+	private func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
 		DispatchQueue.main.async {
 			if vc.parent != (vcParent ?? self) {
 				vc.dismiss(animated: animated, completion: callback)
@@ -553,7 +553,7 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	fileprivate func startTimer() {
+	private func startTimer() {
 		stopTimer()
 		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
 	}
