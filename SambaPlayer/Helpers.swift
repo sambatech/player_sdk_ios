@@ -87,7 +87,7 @@ class Helpers {
 			
 			guard let data = data, let responseText = String(data: data, encoding: String.Encoding.utf8) else {
 				#if DEBUG
-				print("\(type(of: self)) Error: \(error?.description ?? "Unable to get data.")")
+				print("\(type(of: self)) Error: \(error?.localizedDescription ?? "Unable to get data.")")
 				#endif
 				
 				callback?(nil)
@@ -193,7 +193,7 @@ public extension UIImage {
 	
 	- returns: UIImage
 	*/
-	fileprivate func modifiedImage(_ draw: (CGContext, CGRect) -> ()) -> UIImage {
+	private func modifiedImage(_ draw: (CGContext, CGRect) -> ()) -> UIImage {
 		
 		// using scale correctly preserves retina images
 		UIGraphicsBeginImageContextWithOptions(size, false, scale)

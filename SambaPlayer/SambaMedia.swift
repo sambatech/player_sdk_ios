@@ -32,14 +32,14 @@
 		didSet {
 			guard let urlNonNull = url else { return }
 
-			if urlNonNull.rangeOfString("\\.m3u8$", options: .RegularExpressionSearch) != nil {
+			if urlNonNull.range(of: "\\.m3u8$", options: .regularExpression) != nil {
 				deliveryType = "hls"
 			}
-			else if urlNonNull.rangeOfString("\\.(mp4|mov)$", options: .RegularExpressionSearch) != nil {
+			else if urlNonNull.range(of: "\\.(mp4|mov)$", options: .regularExpression) != nil {
 				deliveryType = "progressive"
 			}
 			
-			if urlNonNull.rangeOfString("\\.mp3$", options: .RegularExpressionSearch) != nil {
+			if urlNonNull.range(of: "\\.mp3$", options: .regularExpression) != nil {
 				isAudio = true
 			}
 		}

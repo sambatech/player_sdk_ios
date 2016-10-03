@@ -77,7 +77,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			}
 			
 			do {
-				callback(self.parseMedia(try JSONSerialization.jsonObject(with: jsonText, options: .allowFragments), request: request))
+				callback(self.parseMedia(try JSONSerialization.jsonObject(with: jsonText, options: .allowFragments) as AnyObject, request: request))
 			}
 			catch {
 				print("\(type(of: self)) Error: Failed to parse JSON string.")
@@ -87,7 +87,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	
 	
 	//Colect the important media info and its desired outputs<br><br>
-	fileprivate func parseMedia(_ json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
+	private func parseMedia(_ json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
 			print("\(type(of: self)) Error: No media qualifier")
 			return nil
@@ -101,9 +101,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		
 		let media = SambaMediaConfig()
-		let playerConfig = json["playerConfig"]!!
-		let apiConfig = json["apiConfig"]!!
-		let project = json["project"]!!
+		let playerConfig = json["playerConfig"]!! as AnyObject
+		let apiConfig = json["apiConfig"]!! as AnyObject
+		let project = json["project"]!! as AnyObject
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int

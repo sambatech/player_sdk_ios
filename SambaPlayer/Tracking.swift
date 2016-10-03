@@ -9,8 +9,8 @@
 import Foundation
 
 class Tracking : NSObject, SambaPlayerDelegate {
-	fileprivate var _player: SambaPlayer
-	fileprivate var _sttm: STTM?
+	private var _player: SambaPlayer
+	private var _sttm: STTM?
 	
 	/**
 	Default initializer
@@ -52,11 +52,11 @@ class Tracking : NSObject, SambaPlayerDelegate {
 }
 
 class STTM {
-	fileprivate var _media: SambaMediaConfig
-	fileprivate var _timer: Timer?
-	fileprivate var _targets = [String]()
-	fileprivate var _progresses = NSMutableOrderedSet()
-	fileprivate var _trackedRetentions = Set<Int>()
+	private var _media: SambaMediaConfig
+	private var _timer: Timer?
+	private var _targets = [String]()
+	private var _progresses = NSMutableOrderedSet()
+	private var _trackedRetentions = Set<Int>()
 	
 	init(_ media: SambaMediaConfig) {
 		_media = media
@@ -113,7 +113,7 @@ class STTM {
 		_timer?.invalidate()
 	}
 	
-	fileprivate func collectProgress() {
+	private func collectProgress() {
 		guard _progresses.count > 0 else { return }
 		
 		#if DEBUG
@@ -125,7 +125,7 @@ class STTM {
 		_progresses.removeAllObjects()
 	}
 	
-	@objc fileprivate func timerHandler() {
+	@objc private func timerHandler() {
 		guard !_targets.isEmpty else { return }
 		
 		let url = "\(_media.sttmUrl)?sttmm=\(_targets.joined(separator: ","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)"

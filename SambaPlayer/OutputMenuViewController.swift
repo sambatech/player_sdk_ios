@@ -14,10 +14,10 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var heightConstraint: NSLayoutConstraint!
 	
-	fileprivate let _cellIdentifier: String = "outputCell"
-	fileprivate let _player: SambaPlayer
-	fileprivate let _outputs: [SambaMedia.Output]
-	fileprivate let _selectedIndex: Int
+	private let _cellIdentifier: String = "outputCell"
+	private let _player: SambaPlayer
+	private let _outputs: [SambaMedia.Output]
+	private let _selectedIndex: Int
 	
 	init(_ player: SambaPlayer, _ selectedIndex: Int = -1) {
 		_player = player
