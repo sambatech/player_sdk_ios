@@ -25,6 +25,14 @@ import Foundation
 	//If it´s live and audio
 	public var isLiveAudio: Bool?
 	
+	public var environment: Environment = .prod
+	
+	public enum Environment {
+		case prod
+		case staging
+		case test
+		case local
+	}
 	
 	/**
 	Default initializer

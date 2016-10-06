@@ -48,7 +48,26 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	
 	*/
 	open func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
-		Helpers.requestURL("\(Helpers.settings["playerapi_endpoint"]!)\(request.projectHash)/" + (request.mediaId ??
+		let endpointOpt: String?
+		
+		switch request.environment {
+		case .local:
+			endpointOpt = Helpers.settings["playerapi_endpoint_local"]
+		case .test:
+			endpointOpt = Helpers.settings["playerapi_endpoint_test"]
+		case .staging:
+			endpointOpt = Helpers.settings["playerapi_endpoint_staging"]
+		case .prod: fallthrough
+		default:
+			endpointOpt = Helpers.settings["playerapi_endpoint_prod"]
+		}
+		
+		guard let endpoint = endpointOpt else {
+			fatalError("Error trying to fetch info in Settings.plist")
+			return
+		}
+		
+		Helpers.requestURL("\(endpoint)\(request.projectHash)/" + (request.mediaId ??
 			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
 			guard let responseText = responseText else { return }
 			
@@ -121,7 +140,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			media.categoryId = categoryId
 		}
 		
-		if let theme = playerConfig["theme"] as? String , theme.lowercased() != "default" {
+		if let theme = playerConfig["theme"] as? String, theme.lowercased() != "default" {
 			media.theme = UInt(theme.replacingOccurrences(of: "^#*", with: "", options: .regularExpression), radix: 16)!
 		}
 		
@@ -137,8 +156,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		if let ads = json["advertisings"] as? [AnyObject] {
 			if ads.count > 0, let ad = ads[0] as? [String:AnyObject],
-				let url = ad["tagVast"] as? String
-				, ad["adServer"]?.lowercased == "dfp" {
+				let url = ad["tagVast"] as? String,
+				ad["adServer"]?.lowercased == "dfp" {
 				media.adUrl = url
 			}
 		}
@@ -159,8 +178,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 				// if already registered, make sure PROGRESSIVE won't overwrite HLS
 				// otherwise see if current rule have more outputs than the registered one
 				guard deliveryType == "hls" || deliveryType == "progressive",
-					let outputs = rule["outputs"] as? [AnyObject]
-						, outputs.count > 0
+					let outputs = rule["outputs"] as? [AnyObject],
+						outputs.count > 0
 							&& (deliveryType != "progressive" || media.deliveryType != "hls")
 							&& (deliveryOutputsCount[deliveryType] == nil
 							|| outputs.count > deliveryOutputsCount[deliveryType]) else {
@@ -168,7 +187,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 				}
 				
 				deliveryOutputsCount[deliveryType] = outputs.count
-				defaultOutputCurrent = deliveryType == "hls" ? "abr_hls" : defaultOutput
+				defaultOutputCurrent = deliveryType == "hls" ? "abr" : defaultOutput
 				mediaOutputs = []
 				media.deliveryType = deliveryType
 				
@@ -183,7 +202,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					
 					mediaOutputs.append(SambaMedia.Output(
 						url: url,
-						label: label == "abr_hls" ? "Auto" : label,
+						label: label.contains("abr") ? "Auto" : label,
 						isDefault: label == defaultOutputCurrent
 					))
 				}
@@ -202,8 +221,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			var wLast = 0
 			
 			for thumb in thumbs {
-				guard let w = thumb["width"] as? Int
-					, abs(w - wGoal) < abs(wLast - wGoal)
+				guard let w = thumb["width"] as? Int,
+					abs(w - wGoal) < abs(wLast - wGoal)
 					else { continue }
 				
 				url = thumb["url"] as? String

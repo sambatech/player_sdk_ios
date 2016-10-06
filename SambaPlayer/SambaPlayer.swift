@@ -419,6 +419,8 @@ public class SambaPlayer : UIViewController {
 		
 		let nsUrl = URL(string: url)
 		
+		AssetLoaderDelegate(asset: AVURLAsset(url: nsUrl!), assetName: media.title)
+		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
