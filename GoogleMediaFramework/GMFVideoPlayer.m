@@ -214,9 +214,8 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
         }];
 }
 
-- (void)loadStreamWithURL:(NSURL *)URL {
+- (void)loadStreamWithAsset:(AVAsset*)asset {
   [self setState:kGMFPlayerStateLoadingContent];
-  AVAsset *asset = [AVAsset assetWithURL:URL];
   [self handlePlayableAsset:asset];
 }
 
@@ -324,10 +323,10 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   }
 }
 
-- (void)switchUrl:(NSString*)url {
+- (void)switchAsset:(AVAsset*)asset {
 	if (!_player) return;
 	
-	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:[AVAsset assetWithURL:[NSURL URLWithString:url]]];
+	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:asset];
 	CMTime t = _player.currentTime;
 	
 	//if (t.value > 1.0f) t.value -= 1.0f;

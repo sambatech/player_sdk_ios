@@ -25,7 +25,7 @@ import Foundation
 	//If it´s live and audio
 	public var isLiveAudio: Bool?
 	
-	public var environment: Environment = .prod
+	public var environment: Environment = .staging
 	
 	public enum Environment {
 		case prod

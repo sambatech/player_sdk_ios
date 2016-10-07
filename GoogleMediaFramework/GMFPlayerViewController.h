@@ -64,9 +64,9 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 - (id)initWithControlsPadding:(CGRect)controlsPadding
 	   andInitedBlock:(void (^)(void))initedBlock;
 
-- (void)loadStreamWithURL:(NSURL *)URL;
+- (void)loadStreamWithAsset:(AVAsset*)asset;
 
-- (void)loadStreamWithURL:(NSURL *)URL imaTag:(NSString *)tag;
+- (void)loadStreamWithAsset:(AVAsset*)asset imaTag:(NSString *)tag;
 
 - (void)play;
 

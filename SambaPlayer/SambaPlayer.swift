@@ -189,11 +189,17 @@ public class SambaPlayer : UIViewController {
 	*/
 	open func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
-			let outputs = media.outputs
-			, value < outputs.count else { return }
+			let outputs = media.outputs,
+			value < outputs.count else { return }
 		
 		_currentOutput = value
-		_player?.player.switchUrl(outputs[value].url)
+		
+		guard let url = URL(string: outputs[value].url) else {
+			print("\(type(of:self)) error: wrong URL format!")
+			return
+		}
+		
+		_player?.player.switch(AVURLAsset(url: url))
 	}
 	
 	/**
@@ -349,8 +355,13 @@ public class SambaPlayer : UIViewController {
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
-		guard let url = urlWrapped else {
+		guard let urlString = urlWrapped else {
 			print("\(type(of: self)) error: No media URL found!")
+			return
+		}
+		
+		guard let url = URL(string: urlString) else {
+			print("\(type(of: self)) error: wrong URL format!")
 			return
 		}
 		
@@ -417,21 +428,25 @@ public class SambaPlayer : UIViewController {
 			let _ = Tracking(self)
 		}
 		
-		let nsUrl = URL(string: url)
+		let asset = AVURLAsset(url: url)
 		
-		AssetLoaderDelegate(asset: AVURLAsset(url: nsUrl!), assetName: media.title)
+		/*if let m = media as? SambaMediaConfig {
+			AssetLoaderDelegate(asset: asset, assetName: m.id)
+			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+		}*/
 		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf?.loadStream(with: nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+			gmf?.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
 		}
 			// default
 		else {
-			gmf?.loadStream(with: nsUrl)
+			gmf?.loadStream(with: asset)
 			if autoPlay { gmf?.play() }
 		}
 	}
+	private var observerContext = 0
 	
 	private func createThumb() {
 		guard let thumbImage = media.thumb else {
