@@ -218,6 +218,10 @@ public class SambaPlayer : UIViewController {
 		detachVC(player)
 		NotificationCenter.default.removeObserver(self)
 		
+		/*if let asset = asset {
+			asset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+		}*/
+		
 		_player = nil
 	}
 	
@@ -365,6 +369,16 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
+		asset = AVURLAsset(url: url)
+		
+		asset?.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+		
+		if let m = media as? SambaMediaConfig,
+			let drmRequest = m.drmRequest {
+			AssetLoaderDelegate(asset: asset!, assetName: m.id)
+			return
+		}
+		
 		let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 			
@@ -428,25 +442,24 @@ public class SambaPlayer : UIViewController {
 			let _ = Tracking(self)
 		}
 		
-		let asset = AVURLAsset(url: url)
-		
-		/*if let m = media as? SambaMediaConfig {
-			AssetLoaderDelegate(asset: asset, assetName: m.id)
-			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
-		}*/
-		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
 			gmf?.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
 		}
-			// default
+		// default
 		else {
 			gmf?.loadStream(with: asset)
 			if autoPlay { gmf?.play() }
 		}
 	}
+	
+	private var asset: AVURLAsset?
 	private var observerContext = 0
+	
+	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		print(keyPath)
+	}
 	
 	private func createThumb() {
 		guard let thumbImage = media.thumb else {

@@ -68,15 +68,6 @@
 
 	///Default initializer
 	public override init() {}
-	
-	/**
-	Convenience initializer
-	
-	- parameter url:String URL of the media
-	*/
-	public convenience init(_ url:String) {
-		self.init(url, title: nil, thumb: nil)
-	}
 
 	/**
 	Media initializer
@@ -86,10 +77,36 @@
 		- title:String Media´s title
 		- thumb:String URL of the thumb
 	*/
-	public init(_ url:String, title:String?, thumb:UIImage?) {
+	public init(_ url: String, title: String?, thumb: UIImage?) {
 		self.title = title ?? ""
 		self.url = url
 		self.thumb = thumb
+	}
+	
+	/**
+	Convenience initializer
+	
+	- parameter url:String URL of the media
+	*/
+	public convenience init(_ url: String) {
+		self.init(url, title: nil, thumb: nil)
+	}
+	
+	/**
+	Convenience initializer
+	
+	- parameter media:SambaMedia A SambaMedia object to clone from
+	*/
+	public init(media: SambaMedia) {
+		url = media.url
+		title = media.title
+		outputs = media.outputs
+		adUrl = media.adUrl
+		deliveryType = media.deliveryType
+		thumb = media.thumb
+		isLive = media.isLive
+		isAudio = media.isAudio
+		theme = media.theme
 	}
 	
 	///Description of the media ( if empty returns the media´s title
@@ -99,13 +116,41 @@
 /**
  * Internal extension of the media entity for player/plugins config purposes.
  */
-class SambaMediaConfig : SambaMedia {
+@objc public class SambaMediaConfig : SambaMedia {
 
-	var id = ""
-	var projectHash = ""
-	var projectId = 0
-	var categoryId = 0
-	var sessionId = Helpers.getSessionId()
-	var sttmUrl = "http://sttm.sambatech.com.br/collector/__sttm.gif"
-	var sttmKey = "ae810ebc7f0654c4fadc50935adcf5ec"
+	public var id = ""
+	public var projectHash = ""
+	public var projectId = 0
+	public var categoryId = 0
+	public var sessionId = Helpers.getSessionId()
+	public var sttmUrl = "http://sttm.sambatech.com.br/collector/__sttm.gif"
+	public var sttmKey = "ae810ebc7f0654c4fadc50935adcf5ec"
+	public var drmRequest: DrmRequest?
+	
+	public override init() {
+		super.init()
+	}
+	
+	public override init(media: SambaMedia) {
+		super.init(media: media)
+		
+		if let m = media as? SambaMediaConfig {
+			id = m.id
+			projectHash = m.projectHash
+			projectId = m.projectId
+			categoryId = m.categoryId
+			sessionId = m.sessionId
+			sttmUrl = m.sttmUrl
+			sttmKey = m.sttmKey
+			drmRequest = m.drmRequest
+		}
+	}
+}
+
+@objc public class DrmRequest : NSObject {
+	public let licenseUrl: String
+	
+	public init(_ licenseUrl: String) {
+		self.licenseUrl = licenseUrl
+	}
 }
