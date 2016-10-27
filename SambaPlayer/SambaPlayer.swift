@@ -426,7 +426,7 @@ public class SambaPlayer : UIViewController {
 		attachVC(gmf!)
 		
 		let nc = NotificationCenter.default
-			
+		
 		nc.addObserver(self, selector: #selector(playbackStateHandler),
 		               name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: gmf)
 		

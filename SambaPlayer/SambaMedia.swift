@@ -148,7 +148,9 @@
 }
 
 @objc public class DrmRequest : NSObject {
+	
 	public let licenseUrl: String
+	public var urlParam = [String: String]()
 	
 	public init(_ licenseUrl: String) {
 		self.licenseUrl = licenseUrl
