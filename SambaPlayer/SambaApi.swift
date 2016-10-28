@@ -240,15 +240,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		if let sec = playerSecurity,
 			let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
 			let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
-			//media.url = "http://107.21.208.27/vodd/_definst_/mp4:myMovie.mp4/manifest_mvlist.mpd"
+			
 			let drm = DrmRequest(licenseUrl)
-			drm.urlParam["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-			drm.urlParam["CrmId"] = drmSecurity["subContentType"] as? String
+			//drm.urlParam["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
+			drm.urlParam["CrmId"] = drmSecurity["crmId"] as? String
 			drm.urlParam["AccountId"] = drmSecurity["accountId"] as? String
-			drm.urlParam["ContentId"] = "samba1"
-			//drm.urlParam["ContentId"] = "samba3_tvod"
+			drm.urlParam["ContentId"] = "MrPoppersPenguins" //media.id
 			drm.urlParam["Content-Type"] = "application/octet-stream"
+			
 			media.drmRequest = drm
+			media.url = "http://52.32.88.36/sambatech/stage/MrPoppersPenguins.ism/MrPoppersPenguins.m3u8" // TODO: remove
 		}
 		
 		return media
