@@ -149,10 +149,43 @@
 
 @objc public class DrmRequest : NSObject {
 	
-	public let licenseUrl: String
-	public var urlParam = [String: String]()
+	public var acUrl: String {
+		get { return "\(acUrl)?\(acUrlParamsStr)" }
+		set {}
+	}
 	
-	public init(_ licenseUrl: String) {
+	public var licenseUrl: String {
+		get { return "\(licenseUrl)?\(licenseUrlParamsStr)" }
+		set {}
+	}
+	
+	public var licenseUrlParamsStr: String {
+		var p = [String]()
+		
+		for (k,v) in licenseUrlParams {
+			p.append("\(k)=\(v)")
+		}
+		
+		return p.joined(separator: "&")
+	}
+	
+	public var acUrlParamsStr: String {
+		var p = [String]()
+		
+		for (k,v) in acUrlParams {
+			p.append("\(k)=\(v)")
+		}
+		
+		return p.joined(separator: "&")
+	}
+	
+	public var licenseUrlParams = [String: String]()
+	public var acUrlParams = [String: String]()
+	
+	public init(_ acUrl: String, _ licenseUrl: String) {
+		super.init()
+		
+		self.acUrl = acUrl
 		self.licenseUrl = licenseUrl
 	}
 }

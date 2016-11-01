@@ -30,7 +30,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 
-@objc open class SambaApi : NSObject {
+@objc public class SambaApi : NSObject {
 	
 	/**
 	Default constructor
@@ -47,7 +47,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		- callback: SambaMedia - Callback when the request is made passing our SambaMedia object
 	
 	*/
-	open func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
+	public func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
 		let endpointOpt: String?
 		
 		switch request.environment {
@@ -237,16 +237,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			}
 		}
 		
-		if let sec = playerSecurity,
+		if let sec = playerSecurity as? [String:AnyObject],
 			let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
 			let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
 			
-			let drm = DrmRequest(licenseUrl)
-			//drm.urlParam["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-			drm.urlParam["CrmId"] = drmSecurity["crmId"] as? String
-			drm.urlParam["AccountId"] = drmSecurity["accountId"] as? String
-			drm.urlParam["ContentId"] = "MrPoppersPenguins" //media.id
-			drm.urlParam["Content-Type"] = "application/octet-stream"
+			let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
+			drm.acUrlParams["applicationId"] = "sambatech"
+			drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
+			drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
+			drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id
+			//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
+			//licenseUrlParams["Content-Type"] = "application/octet-stream"
 			
 			media.drmRequest = drm
 			media.url = "http://52.32.88.36/sambatech/stage/MrPoppersPenguins.ism/MrPoppersPenguins.m3u8" // TODO: remove

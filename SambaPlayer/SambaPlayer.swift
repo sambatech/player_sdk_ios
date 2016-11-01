@@ -20,6 +20,7 @@ public class SambaPlayer : UIViewController {
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
 	private var _hasMultipleOutputs = false
+	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
 	private var _currentMenu: UIViewController?
@@ -72,12 +73,12 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	///Flag if the media is or not playing
-	open var isPlaying: Bool {
+	public var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
 	///Flag whether controls should be visible or not
-	open var controlsVisible: Bool = true {
+	public var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
 		}
@@ -134,7 +135,7 @@ public class SambaPlayer : UIViewController {
 		
 		player.play()
 	*/
-	open func play() {
+	public func play() {
 		guard let player = _player else {
 			DispatchQueue.main.async { self.create() }
 			return
@@ -148,7 +149,7 @@ public class SambaPlayer : UIViewController {
 	
 		player.pause()
 	*/
-	open func pause() {
+	public func pause() {
 		_wasPlayingBeforePause = isPlaying
 		_player?.pause()
 	}
@@ -158,7 +159,7 @@ public class SambaPlayer : UIViewController {
 	
 		player.stop()
 	*/
-	open func stop() {
+	public func stop() {
 		// avoid dispatching events
 		_stopping = true
 		
@@ -173,7 +174,7 @@ public class SambaPlayer : UIViewController {
 	
 	- parameter: pos: Float Time in seconds
 	*/
-    open func seek(_ pos: Float) {
+    public func seek(_ pos: Float) {
 		// do not seek on live
 		guard !media.isLive else { return }
 		
@@ -187,7 +188,7 @@ public class SambaPlayer : UIViewController {
 	
 	- parameter: value: Int Index of the output
 	*/
-	open func switchOutput(_ value: Int) {
+	public func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
 			let outputs = media.outputs,
 			value < outputs.count else { return }
@@ -208,7 +209,7 @@ public class SambaPlayer : UIViewController {
 		player.destroy()
 	
 	*/
-	open func destroy() {
+	public func destroy() {
 		guard let player = _player else { return }
 		
 		for delegate in _delegates { delegate.onDestroy() }
@@ -232,7 +233,7 @@ public class SambaPlayer : UIViewController {
 		- size:CGSize
 		- withTransitionCoordinator coordinator
 	*/
-	open override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
 		guard !_fullscreenAnimating,
@@ -290,7 +291,7 @@ public class SambaPlayer : UIViewController {
 	Gets all the supported orientation<br><br>
 	- Returns: .AllButUpsideDown
 	*/
-	open override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
 		return .allButUpsideDown
 	}
 	
@@ -299,7 +300,7 @@ public class SambaPlayer : UIViewController {
 	Destroys the player after it
 	
 	*/
-	open override func viewWillDisappear(_ animated: Bool) {
+	public override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
@@ -341,6 +342,8 @@ public class SambaPlayer : UIViewController {
 	// MARK: Private Methods
 	
 	private func create(_ autoPlay: Bool = true) {
+		_pendingPlay = false
+		
 		// if already exists, do not recreate player
 		if let player = _player {
 			if autoPlay { player.play() }
@@ -369,14 +372,14 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
-		asset = AVURLAsset(url: url)
+		let asset = AVURLAsset(url: url)
 		
-		asset?.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+		//asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
 		
 		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest {
-			AssetLoaderDelegate(asset: asset!, assetName: m.id)
-			return
+			let drmRequest = m.drmRequest,
+			let contentId = drmRequest.licenseUrlParams["ContentId"] {
+			AssetLoaderDelegate(asset: asset, assetName: contentId, drmRequest: drmRequest)
 		}
 		
 		let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
@@ -414,6 +417,7 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		_player = gmf
+		_asset = asset
 		
 		gmf?.videoTitle = media.title
 		gmf?.controlTintColor = UIColor(media.theme)
@@ -449,17 +453,29 @@ public class SambaPlayer : UIViewController {
 		}
 		// default
 		else {
+			_pendingPlay = autoPlay
 			gmf?.loadStream(with: asset)
-			if autoPlay { gmf?.play() }
 		}
 	}
 	
-	private var asset: AVURLAsset?
-	private var observerContext = 0
+	private var _asset: AVURLAsset?
+	//private var observerContext = 0
 	
-	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		print(keyPath)
-	}
+	/*public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+		guard context == &observerContext,
+			let _ = _player,
+			let kp = keyPath else {
+				super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+				return
+		}
+		
+		switch kp {
+		case #keyPath(AVURLAsset.isPlayable):
+			break
+		default:
+			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+		}
+	}*/
 	
 	private func createThumb() {
 		guard let thumbImage = media.thumb else {
@@ -513,6 +529,11 @@ public class SambaPlayer : UIViewController {
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
 			for delegate in _delegates { delegate.onLoad() }
+			
+			if _pendingPlay {
+				play()
+				_pendingPlay = false
+			}
 			
 		case kGMFPlayerStatePlaying:
 			if !_hasStarted {

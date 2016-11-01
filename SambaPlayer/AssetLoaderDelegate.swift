@@ -25,20 +25,24 @@ public class AssetLoaderDelegate: NSObject {
     
     /// The name associated with the asset.
     fileprivate let assetName: String
-    
+	
+	/// The SambaTech/Irdeto DRM request.
+	private let drmRequest: DrmRequest
+	
     /// The DispatchQueue to use for AVAssetResourceLoaderDelegate callbacks.
-    fileprivate let resourceLoadingRequestQueue = DispatchQueue(label: "com.example.apple-samplecode.resourcerequests")
+    fileprivate let resourceLoadingRequestQueue = DispatchQueue(label: "com.sambatech.resourcerequests")
     
     /// The document URL to use for saving persistent content key.
     fileprivate let documentURL: URL
     
-    init(asset: AVURLAsset, assetName: String) {
+	init(asset: AVURLAsset, assetName: String, drmRequest: DrmRequest) {
         // Determine the library URL.
         guard let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { fatalError("Unable to determine library URL") }
         documentURL = URL(fileURLWithPath: documentPath)
         
         self.asset = asset
         self.assetName = assetName
+		self.drmRequest = drmRequest
         
         super.init()
 		
@@ -48,9 +52,8 @@ public class AssetLoaderDelegate: NSObject {
     
     /// Returns the Application Certificate needed to generate the Server Playback Context message.
     public func fetchApplicationCertificate() -> Data? {
-        
-        // MARK: ADAPT: YOU MUST IMPLEMENT THIS METHOD.
-        let applicationCertificate: Data? = nil
+		
+        let applicationCertificate: Data? = try? Data.init(contentsOf: URL(string: drmRequest.acUrl)!)
         
         if applicationCertificate == nil {
             fatalError("No certificate being returned by \(#function)!")
@@ -60,11 +63,40 @@ public class AssetLoaderDelegate: NSObject {
         return applicationCertificate
     }
     
-    public func contentKeyFromKeyServerModuleWithSPCData(spcData: Data, assetIDString: String) -> Data? {
-        
-        // MARK: ADAPT: YOU MUST IMPLEMENT THIS METHOD.
-        let ckcData: Data? = nil
-        
+	public func contentKeyFromKeyServerModuleWithSPCData(spcData: Data, assetIDString: String, requestUrl: String) -> Data? {
+		
+        var ckcData: Data? = nil
+		let url = URL(string: requestUrl + drmRequest.licenseUrlParamsStr)!
+		var req = URLRequest(url: url)
+		
+		req.httpMethod = "POST"
+		req.httpBody = spcData
+		
+		let sem = DispatchSemaphore.init(value: 0)
+		let requestTask = URLSession.shared.dataTask(with: req, completionHandler: { data, response, error in
+			if let error = error {
+				print("\(type(of: self)) Error: \(error.localizedDescription)")
+				return
+			}
+			
+			guard let response = response as? HTTPURLResponse else {
+				print("\(type(of: self)) Error: No response from server.")
+				return
+			}
+			
+			guard case 200..<300 = response.statusCode else {
+				print("\(type(of: self)) Error: Invalid server response (\(response.statusCode)).")
+				return
+			}
+			
+			ckcData = data
+			sem.signal()
+		})
+		
+		requestTask.resume()
+		
+		_ = sem.wait(timeout: DispatchTime.now() + 30.0)
+		
         if ckcData == nil {
             fatalError("No CKC being returned by \(#function)!")
         }
@@ -109,8 +141,8 @@ private extension AssetLoaderDelegate {
     
     func prepareAndSendContentKeyRequest(resourceLoadingRequest: AVAssetResourceLoadingRequest) {
         
-		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString,
-			let url = URL(string: urlStr.replacingOccurrences(of: "https", with: "skd")), let assetIDString = url.host else {
+		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "https:", with: "skd:"),
+			let url = URL(string: urlStr), let assetIDString = url.host else {
 			print("Failed to get url or assetIDString for the request object of the resource.")
 			return
         }
@@ -213,7 +245,7 @@ private extension AssetLoaderDelegate {
          in the CKC message that it returns. If the Apple device finds this type of TLLV in a CKC that delivers an FPS
          content key, it will honor the type of rental or lease specified when the key is used.
          */
-        guard let ckcData = contentKeyFromKeyServerModuleWithSPCData(spcData: spcData, assetIDString: assetIDString) else {
+		guard let ckcData = contentKeyFromKeyServerModuleWithSPCData(spcData: spcData, assetIDString: assetIDString, requestUrl: urlStr) else {
             print("Error retrieving CKC from KSM.")
             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
