@@ -15,10 +15,10 @@ public class AssetLoaderDelegate: NSObject {
     static let customScheme = "skd"
     
     /// Error domain for errors being thrown in the process of getting a CKC.
-    static let errorDomain = "HLSCatalogErrorDomain"
+    static let errorDomain = "SambaPlayerErrorDomain"
     
     /// Notification for when the persistent content key has been saved to disk.
-    static let didPersistContentKeyNotification = NSNotification.Name(rawValue: "handleAssetLoaderDelegateDidPersistContentKeyNotification")
+    //static let didPersistContentKeyNotification = NSNotification.Name(rawValue: "handleAssetLoaderDelegateDidPersistContentKeyNotification")
     
     /// The AVURLAsset associated with the asset.
     fileprivate let asset: AVURLAsset
@@ -141,7 +141,7 @@ private extension AssetLoaderDelegate {
     
     func prepareAndSendContentKeyRequest(resourceLoadingRequest: AVAssetResourceLoadingRequest) {
         
-		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "https:", with: "skd:"),
+		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "^skd", with: "http", options: .regularExpression),
 			let url = URL(string: urlStr), let assetIDString = url.host else {
 			print("Failed to get url or assetIDString for the request object of the resource.")
 			return
@@ -302,7 +302,7 @@ private extension AssetLoaderDelegate {
                     
                     // Since the request has complete, notify the rest of the app that the content key has been persisted for this asset.
                     
-                    NotificationCenter.default.post(name: AssetLoaderDelegate.didPersistContentKeyNotification, object: asset, userInfo: [Asset.Keys.name : assetName])
+                    //NotificationCenter.default.post(name: AssetLoaderDelegate.didPersistContentKeyNotification, object: asset, userInfo: [Asset.Keys.name : assetName])
                     
                 } catch let error as NSError {
                     print("failed writing persisting key to path: \(persistentContentKeyURL) with error: \(error)")
@@ -334,8 +334,9 @@ private extension AssetLoaderDelegate {
         }
         
         // AssetLoaderDelegate only should handle FPS Content Key requests.
-        if url.scheme != AssetLoaderDelegate.customScheme {
-            //return false
+		if url.scheme != AssetLoaderDelegate.customScheme &&
+			url.scheme != AssetLoaderDelegate.customScheme + "s" {
+            return false
         }
         
         resourceLoadingRequestQueue.async {

@@ -200,7 +200,20 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
-		_player?.player.switch(AVURLAsset(url: url))
+		let asset = AVURLAsset(url: url)
+		
+		if let m = media as? SambaMediaConfig,
+			let drmRequest = m.drmRequest,
+			let contentId = drmRequest.licenseUrlParams["ContentId"] {
+		
+			AssetLoaderDelegate(asset: asset, assetName: contentId, drmRequest: drmRequest)
+			_asset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
+			_asset = asset
+			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
+		}
+		else {
+			_player?.player.switch(asset)
+		}
 	}
 	
 	/**
@@ -372,17 +385,25 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
+		//let asset = AVURLAsset(url: URL(string: "http://d1ifmr0g5d6da3.cloudfront.net/vod/_definst_/amlst%3Astg%3B219%2C4421%2Cfb66f2fa9353d055c909ebb1b399143c%3Bhidden32%3BLIKO4G7EQCA7UHXLRU7ODNEXAWYKOC5IVSTDHIVAVXNDFJCKR3LQMSBD734EAYNBY55KUNANAUT32F73RL6FAVDPUB43JDR7526WQCCTQZ23YZQ7QKJ7YNDYUGJR3IR2JMWQAM7TL34CXBCRPCNZHW4B43DIA4FOBICYHMMFFQ7PQBI23QM7YH3OLYZNQDNMX7BCFJ25IPBKTKRBSLSSDZJJFMKSL72RVHLX4NW2LCPZDJPNF32DDCPN66IEXRGGPDDUNBBSX7WXD32GUBJ4QWOHHXTHJ24MRQRZGEMIYAVSUAEZNIKVMIEVAWC2XJUTEMQ5WA3JE5BIF6F3V7KLBVW65EDRKNTBFE56DSY%3D/playlist.m3u8?sts=st=1478193834~exp=1478195514~acl=/*~hmac=9000615ee039fde8e31cedf83ea9b982bdd571de15c850f04bc19959a4e5c283")!)
 		let asset = AVURLAsset(url: url)
-		
-		//asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
 		
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest,
 			let contentId = drmRequest.licenseUrlParams["ContentId"] {
+			
+			p2?.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem))
+			p2 = AVPlayer()
+			p2?.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
+			
 			AssetLoaderDelegate(asset: asset, assetName: contentId, drmRequest: drmRequest)
+			self._asset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &self.observerContext)
+			self._asset = asset
+			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &self.observerContext)
+			return
 		}
 		
-		let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
+		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 			
 			if self._hasMultipleOutputs {
@@ -414,20 +435,22 @@ public class SambaPlayer : UIViewController {
 			if !self.controlsVisible {
 				self.controlsVisible = false
 			}
+		}) else {
+			print("\(type(of: self)) error: Failed creating player!")
+			return
 		}
 		
 		_player = gmf
-		_asset = asset
 		
-		gmf?.videoTitle = media.title
-		gmf?.controlTintColor = UIColor(media.theme)
+		gmf.videoTitle = media.title
+		gmf.controlTintColor = UIColor(media.theme)
 		
 		if media.isAudio {
-			gmf?.backgroundColor = UIColor(0x434343)
+			gmf.backgroundColor = UIColor(0x434343)
 		}
 		
 		destroyThumb()
-		attachVC(gmf!)
+		attachVC(gmf)
 		
 		let nc = NotificationCenter.default
 		
@@ -449,21 +472,25 @@ public class SambaPlayer : UIViewController {
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf?.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+			gmf.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
 		}
 		// default
 		else {
 			_pendingPlay = autoPlay
-			gmf?.loadStream(with: asset)
+			gmf.loadStream(with: asset)
+			
+			if autoPlay { gmf.play() }
 		}
 	}
 	
 	private var _asset: AVURLAsset?
-	//private var observerContext = 0
+	private var observerContext = 0
+	private var p2: AVPlayer?
+	private var playerItem: AVPlayerItem?
 	
-	/*public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
 		guard context == &observerContext,
-			let _ = _player,
+			//let _ = _player,
 			let kp = keyPath else {
 				super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
 				return
@@ -471,11 +498,37 @@ public class SambaPlayer : UIViewController {
 		
 		switch kp {
 		case #keyPath(AVURLAsset.isPlayable):
-			break
+			guard let asset = _asset, asset.isPlayable == true else {
+				print("not playable")
+				return
+			}
+			print("isPlayable")
+			playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
+			playerItem = AVPlayerItem(asset: asset)
+			p2?.replaceCurrentItem(with: playerItem)
+			playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
+			
+		case #keyPath(AVPlayerItem.status):
+			guard let playerItem = playerItem, playerItem.status == .readyToPlay else {
+				print("not ready to play")
+				return
+			}
+			print("play!")
+			p2?.play()
+			
+		case #keyPath(AVPlayer.currentItem):
+			let layer = AVPlayerLayer(player: p2)
+			layer.frame = view.frame
+			view.layer.addSublayer(layer)
+			/*let layer = CAShapeLayer()
+			layer.path = UIBezierPath(roundedRect: view.frame, cornerRadius: 3).cgPath
+			layer.fillColor = UIColor.red.cgColor
+			view.layer.addSublayer(layer)*/
+			
 		default:
 			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
 		}
-	}*/
+	}
 	
 	private func createThumb() {
 		guard let thumbImage = media.thumb else {

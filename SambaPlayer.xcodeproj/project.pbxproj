@@ -53,7 +53,6 @@
 		9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F81D22D5BD00C9C015 /* Settings.plist */; };
 		9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F91D22D5BD00C9C015 /* Tracking.swift */; };
 		9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */; };
-		9AAD7AF61DA431C700952526 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AAD7AF51DA431C700952526 /* Asset.swift */; };
 		9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */; };
 		9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B31D14B5B900B6E450 /* GMFAdService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325B41D14B5B900B6E450 /* GMFAdService.m */; };
@@ -144,7 +143,6 @@
 		9A5267F81D22D5BD00C9C015 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A5267F91D22D5BD00C9C015 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		9A52680C1D230C0500C9C015 /* Exportable.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Exportable.modulemap; sourceTree = "<group>"; };
-		9AAD7AF51DA431C700952526 /* Asset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutputMenu.xib; sourceTree = "<group>"; };
 		9AF325B31D14B5B900B6E450 /* GMFAdService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFAdService.h; path = GoogleMediaFramework/GMFAdService.h; sourceTree = "<group>"; };
 		9AF325B41D14B5B900B6E450 /* GMFAdService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdService.m; path = GoogleMediaFramework/GMFAdService.m; sourceTree = "<group>"; };
@@ -344,7 +342,6 @@
 		9AF57B7F1DA431690062E54A /* Drm */ = {
 			isa = PBXGroup;
 			children = (
-				9AAD7AF51DA431C700952526 /* Asset.swift */,
 				9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */,
 			);
 			name = Drm;
@@ -517,7 +514,6 @@
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,
 				9AF325E91D14B5B900B6E450 /* GMFPlayerViewController.m in Sources */,
-				9AAD7AF61DA431C700952526 /* Asset.swift in Sources */,
 				9AF325F61D14B5B900B6E450 /* UIImage+GMFTintableImage.m in Sources */,
 				9AF325EB1D14B5B900B6E450 /* GMFResources.m in Sources */,
 				9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */,
@@ -594,7 +590,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
@@ -641,7 +637,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				SDKROOT = iphoneos;

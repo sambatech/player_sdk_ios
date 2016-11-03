@@ -262,7 +262,12 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
   // Recreating the AVPlayer instance because of issues when playing HLS then non-HLS back to
   // back, and vice-versa.
-  AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+  AVPlayer *player = _player;
+	
+  if (player)
+	[player replaceCurrentItemWithPlayerItem:playerItem];
+  else player = [AVPlayer playerWithPlayerItem:playerItem];
+
   [self setAndObservePlayer:player playerItem:playerItem];
 }
 

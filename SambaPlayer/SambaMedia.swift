@@ -150,13 +150,13 @@
 @objc public class DrmRequest : NSObject {
 	
 	public var acUrl: String {
-		get { return "\(acUrl)?\(acUrlParamsStr)" }
-		set {}
+		get { return "\(_acUrl)?\(acUrlParamsStr)" }
+		set { _acUrl = newValue }
 	}
 	
 	public var licenseUrl: String {
-		get { return "\(licenseUrl)?\(licenseUrlParamsStr)" }
-		set {}
+		get { return "\(_licenseUrl)?\(licenseUrlParamsStr)" }
+		set { _licenseUrl = newValue }
 	}
 	
 	public var licenseUrlParamsStr: String {
@@ -182,10 +182,13 @@
 	public var licenseUrlParams = [String: String]()
 	public var acUrlParams = [String: String]()
 	
+	private var _acUrl: String
+	private var _licenseUrl: String
+	
 	public init(_ acUrl: String, _ licenseUrl: String) {
-		super.init()
+		self._acUrl = acUrl
+		self._licenseUrl = licenseUrl
 		
-		self.acUrl = acUrl
-		self.licenseUrl = licenseUrl
+		super.init()
 	}
 }
