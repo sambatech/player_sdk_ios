@@ -243,9 +243,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			
 			let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
 			drm.acUrlParams["applicationId"] = "sambatech"
-			drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
+			/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
 			drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
-			drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id
+			drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
 			//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
 			//licenseUrlParams["Content-Type"] = "application/octet-stream"
 			

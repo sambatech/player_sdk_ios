@@ -12,6 +12,7 @@ import UIKit
 public class SambaPlayer : UIViewController {
 	
 	private var _player: GMFPlayerViewController?
+	private var _asset: AVURLAsset?
 	private var _parentView: UIView?
 	private var _delegates = [SambaPlayerDelegate]()
 	private var _progressTimer = Timer()
@@ -27,6 +28,7 @@ public class SambaPlayer : UIViewController {
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
+	private var _decryptDelegate: AssetLoaderDelegate?
 	
 	// MARK: Properties
 	
@@ -203,17 +205,11 @@ public class SambaPlayer : UIViewController {
 		let asset = AVURLAsset(url: url)
 		
 		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest,
-			let contentId = drmRequest.licenseUrlParams["ContentId"] {
+			let drmRequest = m.drmRequest {
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: "MrPoppersPenguins", drmRequest: drmRequest)
+		}
 		
-			AssetLoaderDelegate(asset: asset, assetName: contentId, drmRequest: drmRequest)
-			_asset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
-			_asset = asset
-			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &observerContext)
-		}
-		else {
-			_player?.player.switch(asset)
-		}
+		_player?.player.switch(asset)
 	}
 	
 	/**
@@ -355,13 +351,12 @@ public class SambaPlayer : UIViewController {
 	// MARK: Private Methods
 	
 	private func create(_ autoPlay: Bool = true) {
-		_pendingPlay = false
-		
-		// if already exists, do not recreate player
 		if let player = _player {
 			if autoPlay { player.play() }
 			return
 		}
+		
+		_pendingPlay = false
 		
 		var urlWrapped = media.url
 		
@@ -376,31 +371,23 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		guard let urlString = urlWrapped else {
-			print("\(type(of: self)) error: No media URL found!")
+			print("No media URL found at \(#function)")
 			return
 		}
 		
 		guard let url = URL(string: urlString) else {
-			print("\(type(of: self)) error: wrong URL format!")
+			print("Wrong URL format at \(#function)")
 			return
 		}
 		
-		//let asset = AVURLAsset(url: URL(string: "http://d1ifmr0g5d6da3.cloudfront.net/vod/_definst_/amlst%3Astg%3B219%2C4421%2Cfb66f2fa9353d055c909ebb1b399143c%3Bhidden32%3BLIKO4G7EQCA7UHXLRU7ODNEXAWYKOC5IVSTDHIVAVXNDFJCKR3LQMSBD734EAYNBY55KUNANAUT32F73RL6FAVDPUB43JDR7526WQCCTQZ23YZQ7QKJ7YNDYUGJR3IR2JMWQAM7TL34CXBCRPCNZHW4B43DIA4FOBICYHMMFFQ7PQBI23QM7YH3OLYZNQDNMX7BCFJ25IPBKTKRBSLSSDZJJFMKSL72RVHLX4NW2LCPZDJPNF32DDCPN66IEXRGGPDDUNBBSX7WXD32GUBJ4QWOHHXTHJ24MRQRZGEMIYAVSUAEZNIKVMIEVAWC2XJUTEMQ5WA3JE5BIF6F3V7KLBVW65EDRKNTBFE56DSY%3D/playlist.m3u8?sts=st=1478193834~exp=1478195514~acl=/*~hmac=9000615ee039fde8e31cedf83ea9b982bdd571de15c850f04bc19959a4e5c283")!)
 		let asset = AVURLAsset(url: url)
 		
+		_asset = asset
+		
 		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest,
-			let contentId = drmRequest.licenseUrlParams["ContentId"] {
-			
-			p2?.removeObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem))
-			p2 = AVPlayer()
-			p2?.addObserver(self, forKeyPath: #keyPath(AVPlayer.currentItem), options: [.new], context: &observerContext)
-			
-			AssetLoaderDelegate(asset: asset, assetName: contentId, drmRequest: drmRequest)
-			self._asset?.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &self.observerContext)
-			self._asset = asset
-			asset.addObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), options: [.initial, .new], context: &self.observerContext)
-			return
+			let drmRequest = m.drmRequest {
+			// weak reference delegate, must retain a reference to it
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: "MrPoppersPenguins", drmRequest: drmRequest) //m.id
 		}
 		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
@@ -436,10 +423,10 @@ public class SambaPlayer : UIViewController {
 				self.controlsVisible = false
 			}
 		}) else {
-			print("\(type(of: self)) error: Failed creating player!")
+			print("Failed creating player at \(#function)")
 			return
 		}
-		
+	
 		_player = gmf
 		
 		gmf.videoTitle = media.title
@@ -478,55 +465,6 @@ public class SambaPlayer : UIViewController {
 		else {
 			_pendingPlay = autoPlay
 			gmf.loadStream(with: asset)
-			
-			if autoPlay { gmf.play() }
-		}
-	}
-	
-	private var _asset: AVURLAsset?
-	private var observerContext = 0
-	private var p2: AVPlayer?
-	private var playerItem: AVPlayerItem?
-	
-	public override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		guard context == &observerContext,
-			//let _ = _player,
-			let kp = keyPath else {
-				super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-				return
-		}
-		
-		switch kp {
-		case #keyPath(AVURLAsset.isPlayable):
-			guard let asset = _asset, asset.isPlayable == true else {
-				print("not playable")
-				return
-			}
-			print("isPlayable")
-			playerItem?.removeObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), context: &observerContext)
-			playerItem = AVPlayerItem(asset: asset)
-			p2?.replaceCurrentItem(with: playerItem)
-			playerItem?.addObserver(self, forKeyPath: #keyPath(AVPlayerItem.status), options: [.initial, .new], context: &observerContext)
-			
-		case #keyPath(AVPlayerItem.status):
-			guard let playerItem = playerItem, playerItem.status == .readyToPlay else {
-				print("not ready to play")
-				return
-			}
-			print("play!")
-			p2?.play()
-			
-		case #keyPath(AVPlayer.currentItem):
-			let layer = AVPlayerLayer(player: p2)
-			layer.frame = view.frame
-			view.layer.addSublayer(layer)
-			/*let layer = CAShapeLayer()
-			layer.path = UIBezierPath(roundedRect: view.frame, cornerRadius: 3).cgPath
-			layer.fillColor = UIColor.red.cgColor
-			view.layer.addSublayer(layer)*/
-			
-		default:
-			super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
 		}
 	}
 	

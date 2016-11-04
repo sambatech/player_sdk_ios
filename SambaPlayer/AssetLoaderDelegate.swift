@@ -66,7 +66,11 @@ public class AssetLoaderDelegate: NSObject {
 	public func contentKeyFromKeyServerModuleWithSPCData(spcData: Data, assetIDString: String, requestUrl: String) -> Data? {
 		
         var ckcData: Data? = nil
-		let url = URL(string: requestUrl + drmRequest.licenseUrlParamsStr)!
+		
+		guard let url = URL(string: requestUrl + (requestUrl.contains("&") ? "&" : "?") + drmRequest.licenseUrlParamsStr) else {
+			fatalError("Invalid URL (\(requestUrl)) and query string (\(drmRequest.licenseUrlParamsStr)) at \(#function)!")
+		}
+		
 		var req = URLRequest(url: url)
 		
 		req.httpMethod = "POST"
@@ -76,16 +80,19 @@ public class AssetLoaderDelegate: NSObject {
 		let requestTask = URLSession.shared.dataTask(with: req, completionHandler: { data, response, error in
 			if let error = error {
 				print("\(type(of: self)) Error: \(error.localizedDescription)")
+				sem.signal()
 				return
 			}
 			
 			guard let response = response as? HTTPURLResponse else {
 				print("\(type(of: self)) Error: No response from server.")
+				sem.signal()
 				return
 			}
 			
 			guard case 200..<300 = response.statusCode else {
 				print("\(type(of: self)) Error: Invalid server response (\(response.statusCode)).")
+				sem.signal()
 				return
 			}
 			
@@ -95,7 +102,7 @@ public class AssetLoaderDelegate: NSObject {
 		
 		requestTask.resume()
 		
-		_ = sem.wait(timeout: DispatchTime.now() + 30.0)
+		_ = sem.wait(timeout: .distantFuture)
 		
         if ckcData == nil {
             fatalError("No CKC being returned by \(#function)!")
