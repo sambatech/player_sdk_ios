@@ -63,13 +63,21 @@ class Helpers {
 		return s
 	}
 	
-	static func requestURL(_ url: String, _ callback: ((String?) -> ())? = nil) {
+	static func requestURL<T>(_ url: String, _ callback: ((T?) -> Void)?) {
 		guard let url = URL(string: url) else {
 			print("\(type(of: self)) Error: Invalid URL format.")
 			return
 		}
 		
-		let requestTask = URLSession.shared.dataTask(with: URLRequest(url: url), completionHandler: { data, response, error in
+		requestURL(URLRequest(url: url), callback)
+	}
+	
+	static func requestURL(_ url: String) {
+		requestURL(url, nil as ((Data?) -> Void)?)
+	}
+	
+	static func requestURL<T>(_ urlRequest: URLRequest, _ callback: ((T?) -> Void)?) {
+		let requestTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			if let error = error {
 				print("\(type(of: self)) Error: \(error.localizedDescription)")
 				return
@@ -85,19 +93,52 @@ class Helpers {
 				return
 			}
 			
-			guard let data = data, let responseText = String(data: data, encoding: String.Encoding.utf8) else {
-				#if DEBUG
-				print("\(type(of: self)) Error: \(error?.localizedDescription ?? "Unable to get data.")")
-				#endif
-				
+			guard let data = data else {
+				print("\(type(of: self)) Error: Unable to get data.")
 				callback?(nil)
 				return
 			}
 			
-			callback?(responseText)
-		}) 
+			switch T.self {
+			case is String.Type:
+				if let text = String(data: data, encoding: String.Encoding.utf8) {
+					callback?(text as? T)
+				}
+				else {
+					print("\(type(of: self)) Error: Unable to get text response.")
+				}
+			case is Data.Type:
+				callback?(data as? T)
+			default:
+				callback?(nil)
+			}
+		}
 		
 		requestTask.resume()
+	}
+	
+	static func requestURL(_ urlRequest: URLRequest) {
+		requestURL(urlRequest, nil as ((Data?) -> Void)?)
+	}
+	
+	static func requestURLJson(_ url: String, _ callback: @escaping (AnyObject?) -> Void) {
+		requestURL(url) { (data: Data?) in
+			var jsonOpt: AnyObject?
+			
+			do {
+				if let data = data {
+					jsonOpt = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as AnyObject
+				}
+				else {
+					print("\(type(of: self)) Error getting JSON data.")
+				}
+			}
+			catch {
+				print("\(type(of: self)) Error parsing JSON string.")
+			}
+			
+			callback(jsonOpt)
+		}
 	}
 }
 

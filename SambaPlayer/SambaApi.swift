@@ -68,7 +68,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		
 		Helpers.requestURL("\(endpoint)\(request.projectHash)/" + (request.mediaId ??
-			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { responseText in
+			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { (responseText: String?) in
 			guard let responseText = responseText else { return }
 			
 			var tokenBase64: String = responseText
@@ -250,7 +250,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			//licenseUrlParams["Content-Type"] = "application/octet-stream"
 			
 			media.drmRequest = drm
-			media.url = "http://52.32.88.36/sambatech/stage/MrPoppersPenguins.ism/MrPoppersPenguins.m3u8" // TODO: remove
 		}
 		
 		return media

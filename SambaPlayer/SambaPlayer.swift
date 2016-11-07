@@ -387,7 +387,7 @@ public class SambaPlayer : UIViewController {
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest {
 			// weak reference delegate, must retain a reference to it
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: "MrPoppersPenguins", drmRequest: drmRequest) //m.id
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
 		}
 		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {

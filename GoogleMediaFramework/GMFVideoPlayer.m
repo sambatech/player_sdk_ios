@@ -446,6 +446,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     }
   } else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];
+	NSLog([_playerItem.error description]);
   }
 }
 

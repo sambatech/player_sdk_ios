@@ -12,7 +12,7 @@ import AVFoundation
 public class AssetLoaderDelegate: NSObject {
     
     /// The URL scheme for FPS content.
-    static let customScheme = "skd"
+    static let customScheme = "^skd|^http"
     
     /// Error domain for errors being thrown in the process of getting a CKC.
     static let errorDomain = "SambaPlayerErrorDomain"
@@ -337,12 +337,13 @@ private extension AssetLoaderDelegate {
     func shouldLoadOrRenewRequestedResource(resourceLoadingRequest: AVAssetResourceLoadingRequest) -> Bool {
         
         guard let url = resourceLoadingRequest.request.url else {
+			print("No DRM URL request found!")
             return false
         }
         
         // AssetLoaderDelegate only should handle FPS Content Key requests.
-		if url.scheme != AssetLoaderDelegate.customScheme &&
-			url.scheme != AssetLoaderDelegate.customScheme + "s" {
+		if url.scheme?.compare(AssetLoaderDelegate.customScheme, options: .regularExpression) == nil {
+			print("Wrong DRM URL scheme: \(url.scheme)")
             return false
         }
         
