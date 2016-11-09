@@ -53,7 +53,7 @@ public class AssetLoaderDelegate: NSObject {
     /// Returns the Application Certificate needed to generate the Server Playback Context message.
     public func fetchApplicationCertificate() -> Data? {
 		
-        let applicationCertificate: Data? = try? Data.init(contentsOf: URL(string: drmRequest.acUrl)!)
+        let applicationCertificate: Data? = try? Data(contentsOf: URL(string: drmRequest.acUrl)!)
         
         if applicationCertificate == nil {
             fatalError("No certificate being returned by \(#function)!")
@@ -77,38 +77,18 @@ public class AssetLoaderDelegate: NSObject {
 		req.httpBody = spcData
 		
 		let sem = DispatchSemaphore.init(value: 0)
-		let requestTask = URLSession.shared.dataTask(with: req, completionHandler: { data, response, error in
-			if let error = error {
-				print("\(type(of: self)) Error: \(error.localizedDescription)")
-				sem.signal()
-				return
-			}
-			
-			guard let response = response as? HTTPURLResponse else {
-				print("\(type(of: self)) Error: No response from server.")
-				sem.signal()
-				return
-			}
-			
-			guard case 200..<300 = response.statusCode else {
-				print("\(type(of: self)) Error: Invalid server response (\(response.statusCode)).")
-				sem.signal()
-				return
-			}
-			
+		
+		Helpers.requestURL(req) { (data: Data?) in
 			ckcData = data
 			sem.signal()
-		})
-		
-		requestTask.resume()
+		}
 		
 		_ = sem.wait(timeout: .distantFuture)
 		
         if ckcData == nil {
             fatalError("No CKC being returned by \(#function)!")
         }
-        
-        
+		
         return ckcData
     }
     
