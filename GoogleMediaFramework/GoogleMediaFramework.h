@@ -20,3 +20,4 @@
 #import "GMFPlayerViewController.h"
 #import "GMFVideoPlayer.h"
 #import "GMFResources.h"
+#import "GMFHelpers.h"

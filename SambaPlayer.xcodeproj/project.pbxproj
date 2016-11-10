@@ -53,6 +53,8 @@
 		9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F81D22D5BD00C9C015 /* Settings.plist */; };
 		9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F91D22D5BD00C9C015 /* Tracking.swift */; };
 		9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */; };
+		9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */; };
+		9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */; };
 		9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B31D14B5B900B6E450 /* GMFAdService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325B41D14B5B900B6E450 /* GMFAdService.m */; };
@@ -143,6 +145,8 @@
 		9A5267F81D22D5BD00C9C015 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A5267F91D22D5BD00C9C015 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		9A52680C1D230C0500C9C015 /* Exportable.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Exportable.modulemap; sourceTree = "<group>"; };
+		9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFHelpers.m; path = GoogleMediaFramework/GMFHelpers.m; sourceTree = "<group>"; };
+		9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMFHelpers.h; path = GoogleMediaFramework/GMFHelpers.h; sourceTree = "<group>"; };
 		9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutputMenu.xib; sourceTree = "<group>"; };
 		9AF325B31D14B5B900B6E450 /* GMFAdService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFAdService.h; path = GoogleMediaFramework/GMFAdService.h; sourceTree = "<group>"; };
 		9AF325B41D14B5B900B6E450 /* GMFAdService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdService.m; path = GoogleMediaFramework/GMFAdService.m; sourceTree = "<group>"; };
@@ -327,6 +331,8 @@
 				9AF325D41D14B5B900B6E450 /* UILabel+GMFLabels.m */,
 				9AF325D51D14B5B900B6E450 /* GMFSlider.h */,
 				9AF325D61D14B5B900B6E450 /* GMFSlider.m */,
+				9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */,
+				9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */,
 			);
 			name = GoogleMediaFramework;
 			sourceTree = "<group>";
@@ -374,6 +380,7 @@
 				9AF325DD1D14B5B900B6E450 /* GMFPlayerControlsProtocol.h in Headers */,
 				9AF325D91D14B5B900B6E450 /* GMFContentPlayhead.h in Headers */,
 				9AF325DE1D14B5B900B6E450 /* GMFPlayerControlsView.h in Headers */,
+				9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */,
 				9AF325F71D14B5B900B6E450 /* UILabel+GMFLabels.h in Headers */,
 				9A5268011D22D5BD00C9C015 /* SambaPlayer.h in Headers */,
 			);
@@ -520,6 +527,7 @@
 				9A5268021D22D5BD00C9C015 /* SambaPlayer.swift in Sources */,
 				9AF325E41D14B5B900B6E450 /* GMFPlayerOverlayViewController.m in Sources */,
 				9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */,
+				9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */,
 				9AF325E71D14B5B900B6E450 /* GMFPlayerView.m in Sources */,
 				9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */,
 				9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */,

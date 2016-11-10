@@ -126,6 +126,7 @@
 	public var sttmUrl = "http://sttm.sambatech.com.br/collector/__sttm.gif"
 	public var sttmKey = "ae810ebc7f0654c4fadc50935adcf5ec"
 	public var drmRequest: DrmRequest?
+	public var blockIfRooted = false
 	
 	public override init() {
 		super.init()
@@ -143,6 +144,7 @@
 			sttmUrl = m.sttmUrl
 			sttmKey = m.sttmKey
 			drmRequest = m.drmRequest
+			blockIfRooted = m.blockIfRooted
 		}
 	}
 }

@@ -59,6 +59,13 @@ public class SambaPlayer : UIViewController {
 		didSet {
 			destroy()
 			
+			if let m = media as? SambaMediaConfig,
+				m.blockIfRooted && GMFHelpers.isDeviceJailbroken() {
+				// FIXME: throw exception
+				print("Media not allowed to play at \(#function)")
+				return
+			}
+			
 			if let index = media.outputs?.index(where: { $0.isDefault }) {
 				_currentOutput = index
 			}
