@@ -29,6 +29,7 @@ public class SambaPlayer : UIViewController {
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
 	private var _decryptDelegate: AssetLoaderDelegate?
+	private var _disabled = false
 	
 	// MARK: Properties
 	
@@ -47,7 +48,7 @@ public class SambaPlayer : UIViewController {
 	///Current media duration
 	public var duration: Float {
 		if _duration == 0,
-			let d = _player?.totalMediaTime() , d > 0 {
+			let d = _player?.totalMediaTime(), d > 0 {
 			_duration = Float(d)
 		}
 		
@@ -61,8 +62,8 @@ public class SambaPlayer : UIViewController {
 			
 			if let m = media as? SambaMediaConfig,
 				m.blockIfRooted && GMFHelpers.isDeviceJailbroken() {
-				// FIXME: throw exception
-				print("Media not allowed to play at \(#function)")
+				_disabled = true
+				dispatchError(error: SambaPlayerError.rootedDevice)
 				return
 			}
 			
@@ -145,6 +146,8 @@ public class SambaPlayer : UIViewController {
 		player.play()
 	*/
 	public func play() {
+		if _disabled { return }
+		
 		guard let player = _player else {
 			DispatchQueue.main.async { self.create() }
 			return
@@ -205,7 +208,7 @@ public class SambaPlayer : UIViewController {
 		_currentOutput = value
 		
 		guard let url = URL(string: outputs[value].url) else {
-			print("\(type(of:self)) error: wrong URL format!")
+			dispatchError(error: SambaPlayerError.invalidUrl)
 			return
 		}
 		
@@ -367,7 +370,7 @@ public class SambaPlayer : UIViewController {
 		
 		var urlWrapped = media.url
 		
-		if let outputs = media.outputs , outputs.count > 0 {
+		if let outputs = media.outputs, outputs.count > 0 {
 			urlWrapped = outputs[0].url
 			
 			for output in outputs where output.isDefault {
@@ -378,12 +381,12 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		guard let urlString = urlWrapped else {
-			print("No media URL found at \(#function)")
+			dispatchError(error: SambaPlayerError.emptyUrl)
 			return
 		}
 		
 		guard let url = URL(string: urlString) else {
-			print("Wrong URL format at \(#function)")
+			dispatchError(error: SambaPlayerError.invalidUrl)
 			return
 		}
 		
@@ -430,7 +433,7 @@ public class SambaPlayer : UIViewController {
 				self.controlsVisible = false
 			}
 		}) else {
-			print("Failed creating player at \(#function)")
+			dispatchError(error: SambaPlayerError.creatingPlayer)
 			return
 		}
 	
@@ -509,6 +512,15 @@ public class SambaPlayer : UIViewController {
 		_thumb = nil
 	}
 	
+	private func dispatchError(error: SambaPlayerError) {
+		//print(error.localizedDescription)
+		DispatchQueue.main.async {
+			for delegate in self._delegates { delegate.onError(error: error) }
+		}
+	}
+	
+	// MARK: Handlers
+	
 	@objc private func thumbTouchHandler() {
 		play()
 	}
@@ -555,7 +567,7 @@ public class SambaPlayer : UIViewController {
 				}
 			}
 			// when paused seek dispatch extra progress event to update external infos
-			else { progressEvent() }
+			else { progressEventHandler() }
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
@@ -564,7 +576,7 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	@objc private func progressEvent() {
+	@objc private func progressEventHandler() {
 		for delegate in _delegates { delegate.onProgress() }
 	}
 	
@@ -604,7 +616,7 @@ public class SambaPlayer : UIViewController {
 	
 	private func startTimer() {
 		stopTimer()
-		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
+		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEventHandler), userInfo: nil, repeats: true)
 	}
 	
 	private func stopTimer() {
@@ -619,6 +631,35 @@ public class SambaPlayer : UIViewController {
 		func onProgress() {}
 		func onFinish() {}
 		func onDestroy() {}
+		func onError(error: SambaPlayerError) {}
+	}
+}
+
+/**
+Error list
+*/
+@objc public enum SambaPlayerError : Int, Error {
+	case invalidMedia
+	case invalidUrl
+	case emptyUrl
+	case creatingPlayer
+	case rootedDevice
+	
+	public var localizedDescription: String {
+		switch self {
+		case .invalidMedia:
+			return "Invalid media format."
+		case .invalidUrl:
+			return "Invalid URL format."
+		case .emptyUrl:
+			return "Missing URL for the specified media."
+		case .creatingPlayer:
+			return "Error creating player."
+		case .rootedDevice:
+			return "The specified media is not allowed to play on a rooted device."
+		default:
+			return "Unknown error occurred."
+		}
 	}
 }
 
@@ -646,4 +687,7 @@ SambaPlayerDelegate protocol
 	
 	///Fired up when player is destroyed
 	func onDestroy()
+	
+	///Fired up when some error occurs
+	func onError(error: SambaPlayerError)
 }
