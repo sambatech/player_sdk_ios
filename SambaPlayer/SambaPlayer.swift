@@ -243,6 +243,7 @@ public class SambaPlayer : UIViewController {
 		}*/
 		
 		_player = nil
+		_disabled = false
 	}
 	
 	/**
@@ -639,7 +640,6 @@ public class SambaPlayer : UIViewController {
 Error list
 */
 @objc public enum SambaPlayerError : Int, Error {
-	case invalidMedia
 	case invalidUrl
 	case emptyUrl
 	case creatingPlayer
@@ -647,8 +647,6 @@ Error list
 	
 	public var localizedDescription: String {
 		switch self {
-		case .invalidMedia:
-			return "Invalid media format."
 		case .invalidUrl:
 			return "Invalid URL format."
 		case .emptyUrl:
@@ -656,7 +654,7 @@ Error list
 		case .creatingPlayer:
 			return "Error creating player."
 		case .rootedDevice:
-			return "The specified media is not allowed to play on a rooted device."
+			return "Specified media cannot play on a rooted device."
 		default:
 			return "Unknown error occurred."
 		}
