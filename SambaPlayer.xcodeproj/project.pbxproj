@@ -44,6 +44,7 @@
 		9A1ADBD81D4A3D09008A5BEE /* player_scrubber_thumb@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB31D4A3D09008A5BEE /* player_scrubber_thumb@1x.png */; };
 		9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB41D4A3D09008A5BEE /* player_scrubber_thumb@2x.png */; };
 		9A1ADBDA1D4A3D09008A5BEE /* player_scrubber_thumb@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB51D4A3D09008A5BEE /* player_scrubber_thumb@3x.png */; };
+		9A2B23961DDDED8900D59745 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
 		9A5267FD1D22D5BD00C9C015 /* OutputMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* OutputMenuViewController.swift */; };
 		9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F31D22D5BD00C9C015 /* SambaApi.swift */; };
@@ -90,7 +91,6 @@
 		9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D41D14B5B900B6E450 /* UILabel+GMFLabels.m */; };
 		9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* GMFSlider.m */; };
-		9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -188,7 +188,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */,
+				9A2B23961DDDED8900D59745 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
