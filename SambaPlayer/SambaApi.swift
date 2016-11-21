@@ -64,7 +64,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		guard let endpoint = endpointOpt else {
 			fatalError("Error trying to fetch info in Settings.plist")
-			return
 		}
 		
 		Helpers.requestURL("\(endpoint)\(request.projectHash)/" + (request.mediaId ??
@@ -123,7 +122,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		let playerConfig = json["playerConfig"]!! as AnyObject
 		let apiConfig = json["apiConfig"]!! as AnyObject
 		let project = json["project"]!! as AnyObject
-		let playerSecurity = json["playerSecurity"] as? AnyObject
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
@@ -237,17 +235,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			}
 		}
 		
-		if let sec = playerSecurity as? [String:AnyObject],
+		if let sec = json["playerSecurity"] as? [String:AnyObject],
 			let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
 			let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
 			
 			let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
-			drm.acUrlParams["applicationId"] = "sambatech"
+			drm.addACParam(key: "applicationId", value: "sambatech")
 			/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
 			drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
 			drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
 			//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-			//licenseUrlParams["Content-Type"] = "application/octet-stream"
+			//headerParams["Content-Type"] = "application/octet-stream"
 			
 			media.drmRequest = drm
 		}

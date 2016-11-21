@@ -164,7 +164,7 @@
 	public var licenseUrlParamsStr: String {
 		var p = [String]()
 		
-		for (k,v) in licenseUrlParams {
+		for (k,v) in _licenseUrlParams {
 			p.append("\(k)=\(v)")
 		}
 		
@@ -174,16 +174,15 @@
 	public var acUrlParamsStr: String {
 		var p = [String]()
 		
-		for (k,v) in acUrlParams {
+		for (k,v) in _acUrlParams {
 			p.append("\(k)=\(v)")
 		}
 		
 		return p.joined(separator: "&")
 	}
 	
-	public var licenseUrlParams = [String: String]()
-	public var acUrlParams = [String: String]()
-	
+	private var _licenseUrlParams = [String: String]()
+	private var _acUrlParams = [String: String]()
 	private var _acUrl: String
 	private var _licenseUrl: String
 	
@@ -192,5 +191,21 @@
 		self._licenseUrl = licenseUrl
 		
 		super.init()
+	}
+	
+	public func addLicenseParam(key: String, value: String) {
+		_licenseUrlParams[key] = value
+	}
+	
+	public func addACParam(key: String, value: String) {
+		_acUrlParams[key] = value
+	}
+	
+	public func getLicenseParam(key: String) -> String? {
+		return _licenseUrlParams[key]
+	}
+	
+	public func getACParam(key: String) -> String? {
+		return _acUrlParams[key]
 	}
 }

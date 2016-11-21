@@ -655,8 +655,6 @@ Error list
 			return "Error creating player."
 		case .rootedDevice:
 			return "Specified media cannot play on a rooted device."
-		default:
-			return "Unknown error occurred."
 		}
 	}
 }

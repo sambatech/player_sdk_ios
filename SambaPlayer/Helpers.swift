@@ -78,23 +78,25 @@ class Helpers {
 	
 	static func requestURL<T>(_ urlRequest: URLRequest, _ callback: ((T?) -> Void)?) {
 		let requestTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+			let reqText = "\n\(urlRequest.url?.absoluteString ?? "")\nMethod: \(urlRequest.httpMethod ?? "")\nHeader: \(urlRequest.allHTTPHeaderFields)"
+			
 			if let error = error {
-				print("\(type(of: self)) Error: \(error.localizedDescription)")
+				print("\(type(of: self)) Error: \(error.localizedDescription)\(reqText)")
 				return
 			}
 			
 			guard let response = response as? HTTPURLResponse else {
-				print("\(type(of: self)) Error: No response from server.")
+				print("\(type(of: self)) Error: No response from server.\(reqText)")
 				return
 			}
 			
 			guard case 200..<300 = response.statusCode else {
-				print("\(type(of: self)) Error: Invalid server response (\(response.statusCode)).")
+				print("\(type(of: self)) Error: Invalid server response (\(response)).\(reqText)")
 				return
 			}
 			
 			guard let data = data else {
-				print("\(type(of: self)) Error: Unable to get data.")
+				print("\(type(of: self)) Error: Unable to get data.\(reqText)")
 				callback?(nil)
 				return
 			}
@@ -105,7 +107,7 @@ class Helpers {
 					callback?(text as? T)
 				}
 				else {
-					print("\(type(of: self)) Error: Unable to get text response.")
+					print("\(type(of: self)) Error: Unable to get text response.\(reqText)")
 				}
 			case is Data.Type:
 				callback?(data as? T)
