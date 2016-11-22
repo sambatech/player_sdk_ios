@@ -53,6 +53,11 @@
 		9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9A5267F81D22D5BD00C9C015 /* Settings.plist */; };
 		9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F91D22D5BD00C9C015 /* Tracking.swift */; };
 		9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */; };
+		9A67DD741DE4A2B600F8E172 /* player_error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD711DE4A2B600F8E172 /* player_error@3x.png */; };
+		9A67DD751DE4A2B600F8E172 /* player_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD721DE4A2B600F8E172 /* player_error@2x.png */; };
+		9A67DD761DE4A2B600F8E172 /* player_error@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD731DE4A2B600F8E172 /* player_error@1x.png */; };
+		9A67DD7A1DE4BE2F00F8E172 /* ErrorScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */; };
+		9A67DD7C1DE4BE7600F8E172 /* ErrorScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */; };
 		9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */; };
 		9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */; };
@@ -145,6 +150,11 @@
 		9A5267F81D22D5BD00C9C015 /* Settings.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 		9A5267F91D22D5BD00C9C015 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		9A52680C1D230C0500C9C015 /* Exportable.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Exportable.modulemap; sourceTree = "<group>"; };
+		9A67DD711DE4A2B600F8E172 /* player_error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@3x.png"; sourceTree = "<group>"; };
+		9A67DD721DE4A2B600F8E172 /* player_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@2x.png"; sourceTree = "<group>"; };
+		9A67DD731DE4A2B600F8E172 /* player_error@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@1x.png"; sourceTree = "<group>"; };
+		9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorScreenViewController.swift; sourceTree = "<group>"; };
+		9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorScreen.xib; sourceTree = "<group>"; };
 		9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFHelpers.m; path = GoogleMediaFramework/GMFHelpers.m; sourceTree = "<group>"; };
 		9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMFHelpers.h; path = GoogleMediaFramework/GMFHelpers.h; sourceTree = "<group>"; };
 		9AE08ABB1D3FFEF500C847CC /* OutputMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OutputMenu.xib; sourceTree = "<group>"; };
@@ -216,6 +226,9 @@
 				9A1ADB9A1D4A3D09008A5BEE /* player_control_maximize@2x.png */,
 				9A1ADB9B1D4A3D09008A5BEE /* player_control_maximize@3x.png */,
 				9A1ADB9C1D4A3D09008A5BEE /* player_control_minimize@1x.png */,
+				9A67DD711DE4A2B600F8E172 /* player_error@3x.png */,
+				9A67DD721DE4A2B600F8E172 /* player_error@2x.png */,
+				9A67DD731DE4A2B600F8E172 /* player_error@1x.png */,
 				9A1ADB9D1D4A3D09008A5BEE /* player_control_minimize@2x.png */,
 				9A1ADB9E1D4A3D09008A5BEE /* player_control_minimize@3x.png */,
 				9A1ADB9F1D4A3D09008A5BEE /* player_control_pause@1x.png */,
@@ -269,6 +282,8 @@
 				9A5267F81D22D5BD00C9C015 /* Settings.plist */,
 				9A5267F91D22D5BD00C9C015 /* Tracking.swift */,
 				9A52680C1D230C0500C9C015 /* Exportable.modulemap */,
+				9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */,
+				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 			);
 			path = SambaPlayer;
 			sourceTree = "<group>";
@@ -461,17 +476,21 @@
 				9A1ADBBC1D4A3D09008A5BEE /* player_control_ic_live@2x.png in Resources */,
 				9A1ADBD81D4A3D09008A5BEE /* player_scrubber_thumb@1x.png in Resources */,
 				9A1ADBC41D4A3D09008A5BEE /* player_control_pause@1x.png in Resources */,
+				9A67DD7C1DE4BE7600F8E172 /* ErrorScreen.xib in Resources */,
 				9A1ADBC11D4A3D09008A5BEE /* player_control_minimize@1x.png in Resources */,
 				9A1ADBC51D4A3D09008A5BEE /* player_control_pause@2x.png in Resources */,
 				9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */,
 				9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */,
+				9A67DD741DE4A2B600F8E172 /* player_error@3x.png in Resources */,
 				9A1ADBBA1D4A3D09008A5BEE /* player_control_hd@3x.png in Resources */,
 				9A1ADBCF1D4A3D09008A5BEE /* player_control_play_large@3x.png in Resources */,
 				9A1ADBDA1D4A3D09008A5BEE /* player_scrubber_thumb@3x.png in Resources */,
+				9A67DD761DE4A2B600F8E172 /* player_error@1x.png in Resources */,
 				9A1ADBC81D4A3D09008A5BEE /* player_control_pause_large@2x.png in Resources */,
 				9A1ADBB71D4A3D09008A5BEE /* player_control_close@2x.png in Resources */,
 				9AE08ABC1D3FFEF500C847CC /* OutputMenu.xib in Resources */,
 				9A1ADBCC1D4A3D09008A5BEE /* player_control_play@3x.png in Resources */,
+				9A67DD751DE4A2B600F8E172 /* player_error@2x.png in Resources */,
 				9A1ADBB81D4A3D09008A5BEE /* player_control_hd@1x.png in Resources */,
 				9A1ADBD11D4A3D09008A5BEE /* player_control_replay@2x.png in Resources */,
 				9A1ADBC31D4A3D09008A5BEE /* player_control_minimize@3x.png in Resources */,
@@ -533,6 +552,7 @@
 				9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */,
 				9AF325E21D14B5B900B6E450 /* GMFPlayerOverlayView.m in Sources */,
 				9AF325ED1D14B5B900B6E450 /* GMFTopBarView.m in Sources */,
+				9A67DD7A1DE4BE2F00F8E172 /* ErrorScreenViewController.swift in Sources */,
 				9AF325DC1D14B5B900B6E450 /* GMFIMASDKAdService.m in Sources */,
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,

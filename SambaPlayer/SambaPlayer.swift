@@ -14,6 +14,8 @@ public class SambaPlayer : UIViewController {
 	private var _player: GMFPlayerViewController?
 	private var _asset: AVURLAsset?
 	private var _parentView: UIView?
+	private var _currentMenu: UIViewController?
+	private var _currentScreen: UIViewController?
 	private var _delegates = [SambaPlayerDelegate]()
 	private var _progressTimer = Timer()
 	private var _hasStarted = false
@@ -24,7 +26,6 @@ public class SambaPlayer : UIViewController {
 	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
-	private var _currentMenu: UIViewController?
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
@@ -63,7 +64,7 @@ public class SambaPlayer : UIViewController {
 			if let m = media as? SambaMediaConfig,
 				m.blockIfRooted && GMFHelpers.isDeviceJailbroken() {
 				_disabled = true
-				dispatchError(error: SambaPlayerError.rootedDevice)
+				dispatchError(SambaPlayerError.rootedDevice)
 				return
 			}
 			
@@ -208,7 +209,7 @@ public class SambaPlayer : UIViewController {
 		_currentOutput = value
 		
 		guard let url = URL(string: outputs[value].url) else {
-			dispatchError(error: SambaPlayerError.invalidUrl)
+			dispatchError(SambaPlayerError.invalidUrl)
 			return
 		}
 		
@@ -227,8 +228,12 @@ public class SambaPlayer : UIViewController {
 	
 		player.destroy()
 	
+	- parameter: error: SambaPlayerError Error type to show (optional)
 	*/
-	public func destroy() {
+	public func destroy(with error: SambaPlayerError? = nil) {
+		if let error = error { showError(error) }
+		else { destroyScreen() }
+		
 		guard let player = _player else { return }
 		
 		for delegate in _delegates { delegate.onDestroy() }
@@ -267,16 +272,14 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
-		let menu = _currentMenu
-		
-		if let menu = menu {
+		if let menu = _currentMenu {
 			hideMenu(menu, true)
 		}
 		
 		let callback = {
 			self._fullscreenAnimating = false
 			
-			if let menu = menu {
+			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
 		}
@@ -382,12 +385,12 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		guard let urlString = urlWrapped else {
-			dispatchError(error: SambaPlayerError.emptyUrl)
+			dispatchError(SambaPlayerError.emptyUrl)
 			return
 		}
 		
 		guard let url = URL(string: urlString) else {
-			dispatchError(error: SambaPlayerError.invalidUrl)
+			dispatchError(SambaPlayerError.invalidUrl)
 			return
 		}
 		
@@ -434,7 +437,7 @@ public class SambaPlayer : UIViewController {
 				self.controlsVisible = false
 			}
 		}) else {
-			dispatchError(error: SambaPlayerError.creatingPlayer)
+			dispatchError(SambaPlayerError.creatingPlayer)
 			return
 		}
 	
@@ -513,11 +516,21 @@ public class SambaPlayer : UIViewController {
 		_thumb = nil
 	}
 	
-	private func dispatchError(error: SambaPlayerError) {
+	private func dispatchError(_ error: SambaPlayerError) {
 		//print(error.localizedDescription)
 		DispatchQueue.main.async {
 			for delegate in self._delegates { delegate.onError(error: error) }
 		}
+	}
+	
+	private func showError(_ error: SambaPlayerError) {
+		_currentScreen = ErrorScreenViewController()
+		
+		attachVC(_currentScreen)
+	}
+	
+	private func destroyScreen() {
+		detachVC(_currentScreen)
 	}
 	
 	// MARK: Handlers
