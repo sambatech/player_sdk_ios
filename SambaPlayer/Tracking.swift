@@ -49,7 +49,7 @@ class Tracking : NSObject, SambaPlayerDelegate {
 	func onLoad() {}
 	func onResume() {}
 	func onPause() {}
-	func onError(error: SambaPlayerError) {}
+	func onError(_ error: SambaPlayerError) {}
 }
 
 class STTM {

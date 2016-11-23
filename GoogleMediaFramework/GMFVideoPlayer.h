@@ -56,6 +56,8 @@
 // current playback.
 @property(nonatomic, readonly) UIView *renderingView;
 
+@property(nonatomic, strong) NSError* error;
+
 // Public method to play media via url.
 - (void)loadStreamWithAsset:(AVAsset*)asset;
 

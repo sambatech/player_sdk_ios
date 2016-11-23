@@ -59,11 +59,8 @@ public class SambaPlayer : UIViewController {
 	///Current media
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
-			destroy()
-			
 			if let m = media as? SambaMediaConfig,
 				m.blockIfRooted && GMFHelpers.isDeviceJailbroken() {
-				_disabled = true
 				dispatchError(SambaPlayerError.rootedDevice)
 				return
 			}
@@ -230,7 +227,7 @@ public class SambaPlayer : UIViewController {
 	
 	- parameter: error: SambaPlayerError Error type to show (optional)
 	*/
-	public func destroy(with error: SambaPlayerError? = nil) {
+	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error { showError(error) }
 		else { destroyScreen() }
 		
@@ -243,21 +240,9 @@ public class SambaPlayer : UIViewController {
 		detachVC(player)
 		NotificationCenter.default.removeObserver(self)
 		
-		/*if let asset = asset {
-			asset.removeObserver(self, forKeyPath: #keyPath(AVURLAsset.isPlayable), context: &observerContext)
-		}*/
-		
 		_player = nil
-		_disabled = false
 	}
 	
-	/**
-	Changes the orientation of the player<br><br>
-	
-	- Parameters:
-		- size:CGSize
-		- withTransitionCoordinator coordinator
-	*/
 	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
 		
@@ -310,19 +295,10 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	/**
-	Gets all the supported orientation<br><br>
-	- Returns: .AllButUpsideDown
-	*/
 	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
 		return .allButUpsideDown
 	}
 	
-	/**
-	Fired up when the view disapears<br><br>
-	Destroys the player after it
-	
-	*/
 	public override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
@@ -372,24 +348,20 @@ public class SambaPlayer : UIViewController {
 		
 		_pendingPlay = false
 		
-		var urlWrapped = media.url
+		var urlOpt = media.url
 		
 		if let outputs = media.outputs, outputs.count > 0 {
-			urlWrapped = outputs[0].url
+			urlOpt = outputs[0].url
 			
 			for output in outputs where output.isDefault {
-				urlWrapped = output.url
+				urlOpt = output.url
 			}
 			
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
-		guard let urlString = urlWrapped else {
-			dispatchError(SambaPlayerError.emptyUrl)
-			return
-		}
-		
-		guard let url = URL(string: urlString) else {
+		guard let urlString = urlOpt,
+			let url = URL(string: urlString) else {
 			dispatchError(SambaPlayerError.invalidUrl)
 			return
 		}
@@ -517,20 +489,33 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	private func dispatchError(_ error: SambaPlayerError) {
-		//print(error.localizedDescription)
+		#if DEBUG
+		print(error.localizedDescription)
+		#endif
+		
+		_disabled = true
+		
 		DispatchQueue.main.async {
-			for delegate in self._delegates { delegate.onError(error: error) }
+			for delegate in self._delegates { delegate.onError(error) }
+			self.destroy(withError: error)
 		}
 	}
 	
 	private func showError(_ error: SambaPlayerError) {
-		_currentScreen = ErrorScreenViewController()
+		let screen = ErrorScreenViewController(error)
 		
-		attachVC(_currentScreen)
+		attachVC(screen)
+		
+		_disabled = true
+		_currentScreen = screen
 	}
 	
 	private func destroyScreen() {
-		detachVC(_currentScreen)
+		_disabled = false
+		
+		guard let screen = _currentScreen else { return }
+		
+		detachVC(screen)
 	}
 	
 	// MARK: Handlers
@@ -582,9 +567,15 @@ public class SambaPlayer : UIViewController {
 			}
 			// when paused seek dispatch extra progress event to update external infos
 			else { progressEventHandler() }
+		
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
+		
+		case kGMFPlayerStateError:
+			if player.player != nil && player.player.error != nil {
+				dispatchError(SambaPlayerError.unknown.setMessage(player.player.error.localizedDescription))
+			}
 			
 		default: break
 		}
@@ -645,30 +636,53 @@ public class SambaPlayer : UIViewController {
 		func onProgress() {}
 		func onFinish() {}
 		func onDestroy() {}
-		func onError(error: SambaPlayerError) {}
+		func onError(_ error: SambaPlayerError) {}
 	}
 }
 
 /**
 Error list
 */
-@objc public enum SambaPlayerError : Int, Error {
-	case invalidUrl
-	case emptyUrl
-	case creatingPlayer
-	case rootedDevice
+@objc public class SambaPlayerError : NSObject, Error {
+	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format")
+	public static let creatingPlayer = SambaPlayerError(1, "Error creating player")
+	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device")
+	public static let unknown = SambaPlayerError(3, "Unknown error")
+	
+	public let code: Int
+	
+	private let _message: String
+	private var _messageAlt: String?
+	
+	private init(_ code: Int, _ message: String) {
+		self.code = code
+		_message = message
+	}
+
+	/**
+	Customizes an error message associated to a given error type.
+	
+	- Parameters:
+		- error: SambaPlayerError Instance error type
+		- message: String The message to be replaced
+	*/
+	public static func setMessage(error: SambaPlayerError, message: String) {
+		error.setMessage(message)
+	}
+	
+	/**
+	Customizes the current error message and returns it.
+	
+	- parameter: message: String The message to be replaced
+	- Returns: The current error
+	*/
+	public func setMessage(_ message: String) -> SambaPlayerError {
+		_messageAlt = message
+		return self
+	}
 	
 	public var localizedDescription: String {
-		switch self {
-		case .invalidUrl:
-			return "Invalid URL format."
-		case .emptyUrl:
-			return "Missing URL for the specified media."
-		case .creatingPlayer:
-			return "Error creating player."
-		case .rootedDevice:
-			return "Specified media cannot play on a rooted device."
-		}
+		return _messageAlt ?? _message
 	}
 }
 
@@ -698,5 +712,5 @@ SambaPlayerDelegate protocol
 	func onDestroy()
 	
 	///Fired up when some error occurs
-	func onError(error: SambaPlayerError)
+	func onError(_ error: SambaPlayerError)
 }
