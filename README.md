@@ -8,6 +8,7 @@ O SambaPlayer SDK facilita diversas etapas do desenvolvimento de aplicativos que
 - Vídeo e Áudio em HLS e PROGRESSIVE
 - VOD e Live
 - DFP (https://www.google.com/dfp)
+- DRM ([Irdeto](http://irdeto.com/))
 
 ## Como usar?
 Para utilizar o SambaPlayer SDK é necessário instalar o [Carthage](https://github.com/Carthage/Carthage).
@@ -24,7 +25,7 @@ $ brew install carthage
 Caso ainda não exista, crie um arquivo na raíz do seu projeto chamado `Cartfile` e inclua:
 
 ```ogdl
-github "sambatech/player_sdk_ios" ~> 0.1.7
+github "sambatech/player_sdk_ios" ~> 0.2.0
 #github "sambatech/player_sdk_ios" # para utilizar a versão mais atualizada
 ```
 
@@ -57,9 +58,12 @@ Será necessário permitir acesso à internet para o aplicativo, o que pode ser 
 	<true/>
 </dict>
 ```
+## Requisitos
+iOS 9+
+Xcode 8+
+Swift 3.0 / Objective-C
 
 ## Suporte
 Qualquer pergunta, sugestão ou notificação de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
 
-## Requisitos
-- iOS 8.0+
+Para maiores informações, favor consultar nossa página [Wiki](https://github.com/sambatech/player_sdk_ios/wiki).
