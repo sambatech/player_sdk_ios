@@ -62,4 +62,6 @@ Será necessário permitir acesso à internet para o aplicativo, o que pode ser 
 Qualquer pergunta, sugestão ou notificação de bugs, basta criar uma [nova issue](https://github.com/sambatech/player_sdk_ios/issues/new) que responderemos assim que possível.
 
 ## Requisitos
-- iOS 8.0+
+- iOS 8+
+- Xcode 7.3+
+- Swift 2.3+ / Objective-C
