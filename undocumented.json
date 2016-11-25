@@ -1,1 +1,278 @@
-{"warnings":[{"file":"/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift","line":11,"symbol":"SambaMediaRequest","symbol_kind":"source.lang.swift.decl.class","warning":"undocumented"},{"file":"/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift","line":23,"symbol":"streamUrls","symbol_kind":"source.lang.swift.decl.var.instance","warning":"undocumented"},{"file":"/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaApi.swift","line":11,"symbol":"SambaApi","symbol_kind":"source.lang.swift.decl.class","warning":"undocumented"},{"file":"/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift","line":12,"symbol":"SambaPlayer","symbol_kind":"source.lang.swift.decl.class","warning":"undocumented"},{"file":"/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift","line":414,"symbol":"NoMediaUrlFound","symbol_kind":"source.lang.swift.decl.enumelement","warning":"undocumented"}],"source_directory":"/Users/tmiranda/Development/sambatech/player_sdk_ios"}
+{
+  "warnings": [
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaApi.swift",
+      "line": 33,
+      "symbol": "SambaApi",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 121,
+      "symbol": "SambaMediaConfig.id",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 122,
+      "symbol": "SambaMediaConfig.projectHash",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 123,
+      "symbol": "SambaMediaConfig.projectId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 124,
+      "symbol": "SambaMediaConfig.categoryId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 125,
+      "symbol": "SambaMediaConfig.sessionId",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 126,
+      "symbol": "SambaMediaConfig.sttmUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 127,
+      "symbol": "SambaMediaConfig.sttmKey",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 128,
+      "symbol": "SambaMediaConfig.drmRequest",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 129,
+      "symbol": "SambaMediaConfig.blockIfRooted",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 152,
+      "symbol": "DrmRequest",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 154,
+      "symbol": "DrmRequest.acUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 159,
+      "symbol": "DrmRequest.licenseUrl",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 164,
+      "symbol": "DrmRequest.licenseUrlParamsStr",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 174,
+      "symbol": "DrmRequest.acUrlParamsStr",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 189,
+      "symbol": "DrmRequest.init(_:_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 196,
+      "symbol": "DrmRequest.addLicenseParam(key:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 200,
+      "symbol": "DrmRequest.addACParam(key:value:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 204,
+      "symbol": "DrmRequest.getLicenseParam(key:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift",
+      "line": 208,
+      "symbol": "DrmRequest.getACParam(key:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 11,
+      "symbol": "SambaMediaRequest",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 23,
+      "symbol": "SambaMediaRequest.streamUrls",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 26,
+      "symbol": "SambaMediaRequest.isLiveAudio",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 28,
+      "symbol": "SambaMediaRequest.environment",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 30,
+      "symbol": "SambaMediaRequest.Environment",
+      "symbol_kind": "source.lang.swift.decl.enum",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 31,
+      "symbol": "SambaMediaRequest.Environment.prod",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 32,
+      "symbol": "SambaMediaRequest.Environment.staging",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 33,
+      "symbol": "SambaMediaRequest.Environment.test",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 34,
+      "symbol": "SambaMediaRequest.Environment.local",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 12,
+      "symbol": "SambaPlayer",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 246,
+      "symbol": "SambaPlayer.viewWillTransition(to:with:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 298,
+      "symbol": "SambaPlayer.supportedInterfaceOrientations",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 302,
+      "symbol": "SambaPlayer.viewWillDisappear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 647,
+      "symbol": "SambaPlayerError.invalidUrl",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 648,
+      "symbol": "SambaPlayerError.creatingPlayer",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 649,
+      "symbol": "SambaPlayerError.rootedDevice",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 650,
+      "symbol": "SambaPlayerError.unknown",
+      "symbol_kind": "source.lang.swift.decl.var.static",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 652,
+      "symbol": "SambaPlayerError.code",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift",
+      "line": 684,
+      "symbol": "SambaPlayerError.localizedDescription",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    }
+  ],
+  "source_directory": "/Users/tmiranda/Development/sambatech/player_sdk_ios"
+}

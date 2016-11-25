@@ -1,0 +1,20 @@
+framework module SambaPlayer {
+	umbrella header "SambaPlayer.h"
+	
+	export *
+	module * { export * }
+	
+	//link framework "AVFoundation"
+}
+
+/*framework module GoogleMediaFramework {
+	module GoogleMediaFramework {
+		header "GoogleMediaFramework.h"
+		
+		export *
+		//module * { export * }
+	}
+}*/
+module SambaPlayer.Swift {
+    header "SambaPlayer-Swift.h"
+}

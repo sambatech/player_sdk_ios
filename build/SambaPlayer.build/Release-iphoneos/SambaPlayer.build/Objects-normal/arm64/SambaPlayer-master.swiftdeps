@@ -1,0 +1,13 @@
+version: "Apple Swift version 3.0.1 (swiftlang-800.0.58.6 clang-800.0.42.1)"
+options: "97bda8c58916d36257d37d670db42834"
+build_time: [533336737, 982036000]
+inputs:
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/OutputMenuViewController.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMediaRequest.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaApi.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaPlayer.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/AssetLoaderDelegate.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/Tracking.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/SambaMedia.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/ErrorScreenViewController.swift": [9223372036854775807, 0]
+  "/Users/tmiranda/Development/sambatech/player_sdk_ios/SambaPlayer/Helpers.swift": [9223372036854775807, 0]
