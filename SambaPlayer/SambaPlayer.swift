@@ -81,12 +81,12 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	/// Flag if the media is playing or not
+	/// Whether media is playing or not
 	public var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
-	/// Flag whether controls should be visible or not
+	/// Whether controls should be visible or not
 	public var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
@@ -130,19 +130,12 @@ public class SambaPlayer : UIViewController {
 		self._parentView = parentView
 	}
 	
-	/**
-	Required initializer
-	
-	- parameter aDecoder: (NSCoder)
-	*/
 	public required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
 	/**
 	Plays the media
-		
-		player.play()
 	*/
 	public func play() {
 		if _disabled { return }
@@ -157,8 +150,6 @@ public class SambaPlayer : UIViewController {
 	
 	/**
 	Pauses the media
-	
-		player.pause()
 	*/
 	public func pause() {
 		_wasPlayingBeforePause = isPlaying
@@ -167,8 +158,6 @@ public class SambaPlayer : UIViewController {
 	
 	/**
 	Stops the media returning it to its initial time
-	
-		player.stop()
 	*/
 	public func stop() {
 		// avoid dispatching events
@@ -180,10 +169,10 @@ public class SambaPlayer : UIViewController {
 	
 	/**
 	Moves the media to a given time
-	
-	- parameter pos: Time in seconds
 			
 		player.seek(20)
+	
+	- parameter pos: Time in seconds
 	*/
     public func seek(_ pos: Float) {
 		// do not seek on live
@@ -195,9 +184,9 @@ public class SambaPlayer : UIViewController {
 	/**
 	Changes the current output
 	
-	- parameter value: Index of the output
-	
 		player.switchOutput(1)
+	
+	- parameter value: Index of the output
 	*/
 	public func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
@@ -224,9 +213,9 @@ public class SambaPlayer : UIViewController {
 	/**
 	Destroys the player instance
 	
-	- parameter error: Error type to show (optional)
-	
 		player.destroy()
+	
+	- parameter error: (optional) Error type to show
 	*/
 	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error { showError(error) }
@@ -647,11 +636,16 @@ public class SambaPlayer : UIViewController {
 Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
+	/// URL format is invalid
 	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format")
+	/// Some error occurred when creating internal player
 	public static let creatingPlayer = SambaPlayerError(1, "Error creating player")
+	/// Trying to play a secure media on a rooted device
 	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device")
+	/// Unknown error
 	public static let unknown = SambaPlayerError(3, "Unknown error")
 	
+	/// Error code
 	public let code: Int
 	
 	private let _message: String
@@ -662,8 +656,13 @@ Player error list
 		_message = message
 	}
 
+	/// Retrives the error description
+	public var localizedDescription: String {
+		return _messageAlt ?? _message
+	}
+	
 	/**
-	Customizes an error message associated to a given error type.
+	Customizes an error message related to a given error type
 	
 	- parameter error: Instance error type
 	- parameter message: The message to be replaced
@@ -673,7 +672,7 @@ Player error list
 	}
 	
 	/**
-	Customizes the current error message and returns it.
+	Customizes the message of the current error and returns it
 	
 	- parameter message: The message to be replaced
 	- returns: The current error
@@ -682,15 +681,9 @@ Player error list
 		_messageAlt = message
 		return self
 	}
-	
-	public var localizedDescription: String {
-		return _messageAlt ?? _message
-	}
 }
 
-/**
-Listens to player events
-*/
+/// Listens to player events
 @objc public protocol SambaPlayerDelegate {
 	/// Fired up when player is loaded
 	func onLoad()

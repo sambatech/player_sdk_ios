@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SambaPlayer Docs</a> (91% documented)</p>
+        <p><a href="index.html">SambaPlayer Docs</a> (93% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -30,6 +30,9 @@
             <a href="Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="Classes/DrmRequest.html">DrmRequest</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/SambaApi.html">SambaApi</a>
               </li>
               <li class="nav-group-task">
@@ -39,24 +42,28 @@
                 <a href="Classes/SambaMedia.html#/s:VC11SambaPlayer10SambaMedia6Output">– Output</a>
               </li>
               <li class="nav-group-task">
+                <a href="Classes/SambaMediaConfig.html">SambaMediaConfig</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="Classes/SambaMediaRequest.html">SambaMediaRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMediaRequest/Environment.html">– Environment</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SambaPlayer.html">SambaPlayer</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="Enums.html">Enums</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="Enums/SambaPlayerError.html">SambaPlayerError</a>
+                <a href="Classes/SambaPlayerError.html">SambaPlayerError</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="Extensions/AssetLoaderDelegate.html">AssetLoaderDelegate</a>
+              </li>
               <li class="nav-group-task">
                 <a href="Extensions/UIImage.html">UIImage</a>
               </li>
@@ -95,9 +102,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Data entity that represents a media request to the server</p>
 
                         <a href="Classes/SambaMediaRequest.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaRequest</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -119,9 +134,17 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Manages media data requests</p>
 
                         <a href="Classes/SambaApi.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaApi</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -143,9 +166,45 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Responsible for managing media playback</p>
 
                         <a href="Classes/SambaPlayer.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C11SambaPlayer16SambaPlayerError"></a>
+                    <a name="//apple_ref/swift/Class/SambaPlayerError" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer16SambaPlayerError">SambaPlayerError</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Player error list</p>
+
+                        <a href="Classes/SambaPlayerError.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -167,7 +226,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Data entity representing a media.</p>
+                        <p>Data entity representing a media</p>
 
 <p>If <code>outputs</code> field is nil, use <code>url</code> field.</p>
 
@@ -184,13 +243,69 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C11SambaPlayer16SambaMediaConfig"></a>
+                    <a name="//apple_ref/swift/Class/SambaMediaConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer16SambaMediaConfig">SambaMediaConfig</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Internal extension of the media entity for player/plugins config purposes.</p>
+
+                        <a href="Classes/SambaMediaConfig.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaConfig</span> <span class="p">:</span> <span class="kt"><a href="Classes/SambaMedia.html">SambaMedia</a></span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C11SambaPlayer10DrmRequest"></a>
+                    <a name="//apple_ref/swift/Class/DrmRequest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer10DrmRequest">DrmRequest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents a DRM validation request</p>
+
+                        <a href="Classes/DrmRequest.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">DrmRequest</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-07-13)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-29)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

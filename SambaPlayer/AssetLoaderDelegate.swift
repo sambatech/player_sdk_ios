@@ -9,7 +9,7 @@
 import Foundation
 import AVFoundation
 
-public class AssetLoaderDelegate: NSObject {
+class AssetLoaderDelegate: NSObject {
     
     /// The URL scheme for FPS content.
     static let customScheme = "^skd|^http"

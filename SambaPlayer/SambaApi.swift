@@ -29,23 +29,19 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
 
 
-
+/// Manages media data requests
 @objc public class SambaApi : NSObject {
 	
 	/**
 	Default constructor
-	
 	*/
 	public override init() {}
 	
 	/**
-	Request media from SambaPlayer API<br><br>
-	The SambaPlayer API returns a base64 string with the encoded media info and its decoded before intiate
+	Requests and decodes a Base64 media data from the Samba Player API
 	
-	- Parameters:
-		- request: SambaMediaRequest - Request to our api
-		- callback: SambaMedia - Callback when the request is made passing our SambaMedia object
-	
+	- parameter request: The request to the API
+	- parameter callback: The callback when the request completes that brings the media object to use with the player
 	*/
 	public func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
 		let endpointOpt: String?
@@ -104,7 +100,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	}
 	
 	
-	//Colect the important media info and its desired outputs<br><br>
+	/// Colects the important media info and its desired outputs<br><br>
 	private func parseMedia(_ json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
 			print("\(type(of: self)) Error: No media qualifier")
