@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+/// Responsible for managing media playback
 public class SambaPlayer : UIViewController {
 	
 	private var _player: GMFPlayerViewController?
@@ -34,19 +35,19 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Properties
 	
-	///Stores the delegated methods for the player events
+	/// Stores the delegated methods for the player events
 	public var delegate: SambaPlayerDelegate = FakeListener() {
 		didSet {
 			_delegates.append(delegate)
 		}
 	}
 	
-	///Current media time
+	/// Current media time
 	public var currentTime: Float {
 		return Float(_player?.currentMediaTime() ?? 0)
 	}
 	
-	///Current media duration
+	/// Current media duration
 	public var duration: Float {
 		if _duration == 0,
 			let d = _player?.totalMediaTime(), d > 0 {
@@ -56,7 +57,7 @@ public class SambaPlayer : UIViewController {
 		return _duration
 	}
 	
-	///Current media
+	/// Current media
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
 			if let m = media as? SambaMediaConfig,
@@ -80,12 +81,12 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	///Flag if the media is or not playing
+	/// Flag if the media is playing or not
 	public var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
-	///Flag whether controls should be visible or not
+	/// Flag whether controls should be visible or not
 	public var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
@@ -95,15 +96,16 @@ public class SambaPlayer : UIViewController {
 	// MARK: Public Methods
 	/**
 	Default initializer
-	**/
+	*/
 	public init() {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
 	/**
 	Convenience initializer
-	- parameter parentViewController:UIViewController The view-controller in which the player view-controller and view should to be embedded
-	**/
+	
+	- parameter parentViewController: The view-controller in which the player view-controller and view should be embedded
+	*/
 	public convenience init(parentViewController: UIViewController) {
 		self.init(parentViewController: parentViewController, andParentView: parentViewController.view)
 	}
@@ -111,10 +113,9 @@ public class SambaPlayer : UIViewController {
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- parentViewController:UIViewController The view-controller in which the player view-controller should to be embedded
-		- parentView:UIView The view in which the player view should to be embedded
-	**/
+	- parameter parentViewController: The view-controller in which the player view-controller should be embedded
+	- parameter parentView: The view in which the player view should be embedded
+	*/
 	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
 		
@@ -132,14 +133,14 @@ public class SambaPlayer : UIViewController {
 	/**
 	Required initializer
 	
-	- parameter aDecoder:NSCoder
-	**/
+	- parameter aDecoder: (NSCoder)
+	*/
 	public required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
 	/**
-	Plays the media<br><br>
+	Plays the media
 		
 		player.play()
 	*/
@@ -155,7 +156,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Pauses the media<br><br>
+	Pauses the media
 	
 		player.pause()
 	*/
@@ -165,7 +166,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Stops the media returning it to its initial time<br><br>
+	Stops the media returning it to its initial time
 	
 		player.stop()
 	*/
@@ -178,11 +179,11 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Seeks the media to a given time<br><br>
+	Moves the media to a given time
+	
+	- parameter pos: Time in seconds
 			
 		player.seek(20)
-	
-	- parameter: pos: Float Time in seconds
 	*/
     public func seek(_ pos: Float) {
 		// do not seek on live
@@ -192,11 +193,11 @@ public class SambaPlayer : UIViewController {
     }
 	
 	/**
-	Changes the current output<br><br>
+	Changes the current output
+	
+	- parameter value: Index of the output
 	
 		player.switchOutput(1)
-	
-	- parameter: value: Int Index of the output
 	*/
 	public func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
@@ -221,11 +222,11 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Destroys the player instance<br><br>
+	Destroys the player instance
+	
+	- parameter error: Error type to show (optional)
 	
 		player.destroy()
-	
-	- parameter: error: SambaPlayerError Error type to show (optional)
 	*/
 	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error { showError(error) }
@@ -241,6 +242,12 @@ public class SambaPlayer : UIViewController {
 		NotificationCenter.default.removeObserver(self)
 		
 		_player = nil
+	}
+	
+	// MARK: Overrides
+	
+	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+		return .allButUpsideDown
 	}
 	
 	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -293,10 +300,6 @@ public class SambaPlayer : UIViewController {
 				callback()
 			}
 		}
-	}
-	
-	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
-		return .allButUpsideDown
 	}
 	
 	public override func viewWillDisappear(_ animated: Bool) {
@@ -628,7 +631,7 @@ public class SambaPlayer : UIViewController {
 		_progressTimer.invalidate()
 	}
 	
-	class FakeListener : NSObject, SambaPlayerDelegate {
+	private class FakeListener : NSObject, SambaPlayerDelegate {
 		func onLoad() {}
 		func onStart() {}
 		func onResume() {}
@@ -636,12 +639,12 @@ public class SambaPlayer : UIViewController {
 		func onProgress() {}
 		func onFinish() {}
 		func onDestroy() {}
-		func onError(_ error: SambaPlayerError) {}
+		func onError(_ error: SambaPlayerError) {error.setMessage("")}
 	}
 }
 
 /**
-Error list
+Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
 	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format")
@@ -662,9 +665,8 @@ Error list
 	/**
 	Customizes an error message associated to a given error type.
 	
-	- Parameters:
-		- error: SambaPlayerError Instance error type
-		- message: String The message to be replaced
+	- parameter error: Instance error type
+	- parameter message: The message to be replaced
 	*/
 	public static func setMessage(error: SambaPlayerError, message: String) {
 		error.setMessage(message)
@@ -673,8 +675,8 @@ Error list
 	/**
 	Customizes the current error message and returns it.
 	
-	- parameter: message: String The message to be replaced
-	- Returns: The current error
+	- parameter message: The message to be replaced
+	- returns: The current error
 	*/
 	public func setMessage(_ message: String) -> SambaPlayerError {
 		_messageAlt = message
@@ -687,30 +689,30 @@ Error list
 }
 
 /**
-SambaPlayerDelegate protocol
+Listens to player events
 */
 @objc public protocol SambaPlayerDelegate {
-	///Fired up when player is loaded
+	/// Fired up when player is loaded
 	func onLoad()
 	
-	///Fired up when player is started
+	/// Fired up when player is started
 	func onStart()
 	
-	///Fired up when player is resumed ( from paused to play )
+	/// Fired up when player is resumed ( from paused to play )
 	func onResume()
 	
-	///Fired up when player is paused
+	/// Fired up when player is paused
 	func onPause()
 	
-	///Fired up when player is playing ( fired each second of playing )
+	/// Fired up when player is playing ( fired each second of playing )
 	func onProgress()
 	
-	///Fired up when player is finished
+	/// Fired up when player is finished
 	func onFinish()
 	
-	///Fired up when player is destroyed
+	/// Fired up when player is destroyed
 	func onDestroy()
 	
-	///Fired up when some error occurs
+	/// Fired up when some error occurs
 	func onError(_ error: SambaPlayerError)
 }
