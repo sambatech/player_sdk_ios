@@ -14,7 +14,7 @@
     <a title="SambaPlayerError Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SambaPlayer Docs</a> (60% documented)</p>
+        <p><a href="../index.html">SambaPlayer Docs</a> (93% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -63,6 +63,9 @@
             <a href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Extensions/AssetLoaderDelegate.html">AssetLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/UIImage.html">UIImage</a>
               </li>
             </ul>
@@ -87,7 +90,7 @@
 
                 </div>
               </div>
-            <p>Error list</p>
+            <p>Player error list</p>
 
           </section>
           <section class="section task-group-section">
@@ -106,14 +109,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>URL format is invalid</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">invalidUrl</span> <span class="o">=</span> <span class="kt">SambaPlayerError</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s">"Invalid URL format"</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -133,14 +136,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Some error occurred when creating internal player</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">creatingPlayer</span> <span class="o">=</span> <span class="kt">SambaPlayerError</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"Error creating player"</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -160,14 +163,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Trying to play a secure media on a rooted device</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">rootedDevice</span> <span class="o">=</span> <span class="kt">SambaPlayerError</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s">"Specified media cannot play on a rooted device"</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -187,14 +190,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Unknown error</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">let</span> <span class="nv">unknown</span> <span class="o">=</span> <span class="kt">SambaPlayerError</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s">"Unknown error"</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -214,14 +217,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Error code</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">code</span><span class="p">:</span> <span class="kt">Int</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11SambaPlayer16SambaPlayerError20localizedDescriptionSS"></a>
+                    <a name="//apple_ref/swift/Property/localizedDescription" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer16SambaPlayerError20localizedDescriptionSS">localizedDescription</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrives the error description</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">localizedDescription</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -241,16 +271,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Customizes an error message associated to a given error type.</p>
-
-<ul>
-<li>Parameters:
-
-<ul>
-<li>error: SambaPlayerError Instance error type</li>
-<li>message: String The message to be replaced</li>
-</ul></li>
-</ul>
+                        <p>Customizes an error message related to a given error type</p>
 
                       </div>
                       <div class="declaration">
@@ -273,7 +294,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>SambaPlayerError Instance error type</p>
+                                  <p>Instance error type</p>
 
                                 </div>
                               </td>
@@ -286,7 +307,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>String The message to be replaced</p>
+                                  <p>The message to be replaced</p>
 
                                 </div>
                               </td>
@@ -310,13 +331,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Customizes the current error message and returns it.</p>
-
-<div class="aside aside-returns">
-    <p class="aside-title">Returns</p>
-    The current error
-
-</div>
+                        <p>Customizes the message of the current error and returns it</p>
 
                       </div>
                       <div class="declaration">
@@ -328,36 +343,29 @@
                         </div>
                       </div>
                       <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>message</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The message to be replaced</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <div>
                         <h4>Return Value</h4>
                         <p>The current error</p>
 
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:vC11SambaPlayer16SambaPlayerError20localizedDescriptionSS"></a>
-                    <a name="//apple_ref/swift/Property/localizedDescription" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC11SambaPlayer16SambaPlayerError20localizedDescriptionSS">localizedDescription</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Undocumented</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayerError</span> <span class="p">:</span> <span class="kt">NSObject</span><span class="p">,</span> <span class="kt">Error</span></code></pre>
-
-                        </div>
                       </div>
                     </section>
                   </div>
@@ -367,7 +375,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-24)</p>
+          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

@@ -14,7 +14,7 @@
     <a title="SambaMedia Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SambaPlayer Docs</a> (60% documented)</p>
+        <p><a href="../index.html">SambaPlayer Docs</a> (93% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -63,6 +63,9 @@
             <a href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Extensions/AssetLoaderDelegate.html">AssetLoaderDelegate</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Extensions/UIImage.html">UIImage</a>
               </li>
             </ul>
@@ -87,7 +90,7 @@
 
                 </div>
               </div>
-            <p>Data entity representing a media.</p>
+            <p>Data entity representing a media</p>
 
 <p>If <code>outputs</code> field is nil, use <code>url</code> field.</p>
 
@@ -95,39 +98,6 @@
           <section class="section task-group-section">
             <div class="task-group">
               <ul>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:VC11SambaPlayer10SambaMedia6Output"></a>
-                    <a name="//apple_ref/swift/Struct/Output" class="dashAnchor"></a>
-                    <a class="token" href="#/s:VC11SambaPlayer10SambaMedia6Output">Output</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Output structure</p>
-
-<ul>
-<li>url:String Media URL</li>
-<li>label:String Output label</li>
-<li>isDefault:Bool Is the default output of the project</li>
-</ul>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Output</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
                 <li class="item">
                   <div>
                     <code>
@@ -141,7 +111,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Media´s title</p>
+                        <p>Media&rsquo;s title</p>
 
                       </div>
                       <div class="declaration">
@@ -276,7 +246,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Thumb´s URL</p>
+                        <p>Thumb&rsquo;s URL</p>
 
                       </div>
                       <div class="declaration">
@@ -303,7 +273,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicate if the media is live or not</p>
+                        <p>Indicates if the media is live or not</p>
 
                       </div>
                       <div class="declaration">
@@ -330,7 +300,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicate if the media is audio or not</p>
+                        <p>Indicates if the media is audio or not</p>
 
                       </div>
                       <div class="declaration">
@@ -411,17 +381,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Media initializer</p>
-
-<ul>
-<li>Parameters:
-
-<ul>
-<li>url:String URL of the media</li>
-<li>title:String Media´s title</li>
-<li>thumb:String URL of the thumb</li>
-</ul></li>
-</ul>
+                        <p>Basic initializer</p>
 
                       </div>
                       <div class="declaration">
@@ -444,7 +404,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>String URL of the media</p>
+                                  <p>URL of the media</p>
 
                                 </div>
                               </td>
@@ -457,7 +417,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>String Media´s title</p>
+                                  <p>Media’s title</p>
 
                                 </div>
                               </td>
@@ -470,7 +430,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>String URL of the thumb</p>
+                                  <p>URL of the thumb</p>
 
                                 </div>
                               </td>
@@ -541,7 +501,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Convenience initializer</p>
+                        <p>Clone initializer</p>
 
                       </div>
                       <div class="declaration">
@@ -564,7 +524,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>SambaMedia A SambaMedia object to clone from</p>
+                                  <p>Another media object to create a clone</p>
 
                                 </div>
                               </td>
@@ -588,7 +548,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Description of the media ( if empty returns the media´s title</p>
+                        <p>Description of the media ( if empty returns the media&rsquo;s title</p>
 
                       </div>
                       <div class="declaration">
@@ -602,12 +562,45 @@
                     </section>
                   </div>
                 </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:VC11SambaPlayer10SambaMedia6Output"></a>
+                    <a name="//apple_ref/swift/Struct/Output" class="dashAnchor"></a>
+                    <a class="token" href="#/s:VC11SambaPlayer10SambaMedia6Output">Output</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Output structure</p>
+
+<ul>
+<li>url: Media URL</li>
+<li>label: Output label</li>
+<li>isDefault: Is it the default output?</li>
+</ul>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Output</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
               </ul>
             </div>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-24)</p>
+          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-29)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
