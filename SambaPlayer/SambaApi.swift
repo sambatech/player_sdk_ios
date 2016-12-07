@@ -41,9 +41,20 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	Requests and decodes a Base64 media data from the Samba Player API
 	
 	- parameter request: The request to the API
-	- parameter callback: The callback when the request completes that brings the media object to use with the player
+	- parameter onComplete: The callback when the request completes that brings the media object to use with the player
 	*/
-	public func requestMedia(_ request: SambaMediaRequest, callback: @escaping (SambaMedia?) -> ()) {
+	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void) {
+		requestMedia(request, onComplete: onComplete, onError: nil)
+	}
+	
+	/**
+	Requests and decodes a Base64 media data from the Samba Player API
+	
+	- parameter request: The request to the API
+	- parameter onComplete: The callback when the request completes that brings the media object to use with the player
+	- parameter onError: The callback for any error during the API request
+	*/
+	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void, onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		let endpointOpt: String?
 		
 		switch request.environment {
@@ -63,7 +74,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		
 		Helpers.requestURL("\(endpoint)\(request.projectHash)/" + (request.mediaId ??
-			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")")) { (responseText: String?) in
+			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")"), { (responseText: String?) in
 			guard let responseText = responseText else { return }
 			
 			var tokenBase64: String = responseText
@@ -91,12 +102,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			}
 			
 			do {
-				callback(self.parseMedia(try JSONSerialization.jsonObject(with: jsonText, options: .allowFragments) as AnyObject, request: request))
+				onComplete(self.parseMedia(try JSONSerialization.jsonObject(with: jsonText, options: .allowFragments) as AnyObject, request: request))
 			}
 			catch {
 				print("\(type(of: self)) Error: Failed to parse JSON string.")
 			}
-		}
+		}, onError)
 	}
 	
 	
@@ -163,7 +174,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			var deliveryType: String
 			var defaultOutputCurrent: String
 			var label: String
-			var mediaOutputs: [SambaMedia.Output]
+			var mediaOutputs: [SambaMediaOutput]
 			
 			for rule in rules {
 				deliveryType = (rule["urlType"] as! String).lowercased()
@@ -195,7 +206,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 						continue
 					}
 					
-					mediaOutputs.append(SambaMedia.Output(
+					mediaOutputs.append(SambaMediaOutput(
 						url: url,
 						label: label.contains("abr") ? "Auto" : label,
 						isDefault: label == defaultOutputCurrent

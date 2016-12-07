@@ -16,7 +16,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	
 	private let _cellIdentifier: String = "outputCell"
 	private let _player: SambaPlayer
-	private let _outputs: [SambaMedia.Output]
+	private let _outputs: [SambaMediaOutput]
 	private let _selectedIndex: Int
 	
 	init(_ player: SambaPlayer, _ selectedIndex: Int = -1) {

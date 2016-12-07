@@ -63,56 +63,67 @@ class Helpers {
 		return s
 	}
 	
-	static func requestURL<T>(_ url: String, _ callback: ((T?) -> Void)?) {
+	static func requestURL<T>(_ url: String, _ onComplete: ((T?) -> Void)?) {
+		requestURL(url, onComplete, nil)
+	}
+	
+	static func requestURL<T>(_ url: String, _ onComplete: ((T?) -> Void)?, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		guard let url = URL(string: url) else {
 			print("\(type(of: self)) Error: Invalid URL format.")
 			return
 		}
 		
-		requestURL(URLRequest(url: url), callback)
+		requestURL(URLRequest(url: url), onComplete, onError)
 	}
 	
 	static func requestURL(_ url: String) {
 		requestURL(url, nil as ((Data?) -> Void)?)
 	}
 	
-	static func requestURL<T>(_ urlRequest: URLRequest, _ callback: ((T?) -> Void)?) {
+	static func requestURL<T>(_ urlRequest: URLRequest, _ onComplete: ((T?) -> Void)?) {
+		requestURL(urlRequest, onComplete, nil)
+	}
+	
+	static func requestURL<T>(_ urlRequest: URLRequest, _ onComplete: ((T?) -> Void)?, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		let requestTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
 			let reqText = "\n\(urlRequest.url?.absoluteString ?? "")\nMethod: \(urlRequest.httpMethod ?? "")\nHeader: \(urlRequest.allHTTPHeaderFields)"
 			
 			if let error = error {
 				print("\(type(of: self)) Error: \(error.localizedDescription)\(reqText)")
+				onError?(error, response)
 				return
 			}
 			
-			guard let response = response as? HTTPURLResponse else {
+			guard let res = response as? HTTPURLResponse else {
 				print("\(type(of: self)) Error: No response from server.\(reqText)")
+				onError?(error, response)
 				return
 			}
 			
-			guard case 200..<300 = response.statusCode else {
-				print("\(type(of: self)) Error: Invalid server response (\(response)).\(reqText)")
+			guard case 200..<300 = res.statusCode else {
+				print("\(type(of: self)) Error: Invalid server response (\(res)).\(reqText)")
+				onError?(error, response)
 				return
 			}
 			
 			guard let data = data else {
 				print("\(type(of: self)) Error: Unable to get data.\(reqText)")
-				callback?(nil)
+				onError?(error, response)
 				return
 			}
 			
 			switch T.self {
 			case is String.Type:
 				if let text = String(data: data, encoding: String.Encoding.utf8) {
-					callback?(text as? T)
+					onComplete?(text as? T)
 				}
 				else {
 					print("\(type(of: self)) Error: Unable to get text response.\(reqText)")
 				}
 			case is Data.Type:
-				callback?(data as? T)
+				onComplete?(data as? T)
 			default:
-				callback?(nil)
+				onError?(nil, response)
 			}
 		}
 		
@@ -123,9 +134,10 @@ class Helpers {
 		requestURL(urlRequest, nil as ((Data?) -> Void)?)
 	}
 	
-	static func requestURLJson(_ url: String, _ callback: @escaping (AnyObject?) -> Void) {
-		requestURL(url) { (data: Data?) in
+	static func requestURLJson(_ url: String, _ onComplete: @escaping (AnyObject?) -> Void, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
+		requestURL(url, { (data: Data?) in
 			var jsonOpt: AnyObject?
+			let onError = onError ?? { (error, response) in }
 			
 			do {
 				if let data = data {
@@ -133,14 +145,16 @@ class Helpers {
 				}
 				else {
 					print("\(type(of: self)) Error getting JSON data.")
+					onError(nil, nil)
 				}
 			}
 			catch {
 				print("\(type(of: self)) Error parsing JSON string.")
+				onError(nil, nil)
 			}
 			
-			callback(jsonOpt)
-		}
+			onComplete(jsonOpt)
+		}, onError)
 	}
 }
 

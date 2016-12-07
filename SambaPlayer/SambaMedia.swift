@@ -38,7 +38,7 @@ If `outputs` field is nil, use `url` field.
 	public var adUrl: String?
 	
 	/// List of the outputs
-	public var outputs: [SambaMedia.Output]?
+	public var outputs: [SambaMediaOutput]?
 	
 	/// Delivery type ( HLS, PROGRESSIVE, OTHER )
 	public var deliveryType = "other"
@@ -99,21 +99,29 @@ If `outputs` field is nil, use `url` field.
 	
 	/// Description of the media (returns media's title when empty)
 	public override var description: String { return title }
+}
+
+/**
+Output structure
+
+- url: Media URL
+- label: Output label
+- isDefault: Is it the default output?
+*/
+@objc public class SambaMediaOutput : NSObject {
+	public let url: String
+	public let label: String
+	public let isDefault: Bool
 	
-	/**
-	Output structure
-	
-	- url: Media URL
-	- label: Output label
-	- isDefault: Is it the default output?
-	*/
-	public struct Output {
-		let url: String, label: String, isDefault: Bool
+	public init(url: String, label: String, isDefault: Bool) {
+		self.url = url
+		self.label = label
+		self.isDefault = isDefault
 	}
 }
 
 /**
- * Internal extension of the media entity for player/plugins config purposes.
+* Internal extension of the media entity for player/plugins config purposes.
  */
 @objc public class SambaMediaConfig : SambaMedia {
 
