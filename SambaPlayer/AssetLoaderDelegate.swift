@@ -71,6 +71,8 @@ class AssetLoaderDelegate: NSObject {
 			fatalError("Invalid URL (\(requestUrl)) and query string (\(drmRequest.licenseUrlParamsStr)) at \(#function)!")
 		}
 		
+		print(url)
+		
 		var req = URLRequest(url: url)
 		
 		req.httpMethod = "POST"
