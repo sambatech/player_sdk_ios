@@ -242,19 +242,23 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			}
 		}
 		
-		if let sec = json["playerSecurity"] as? [String:AnyObject],
-			let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
-			let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
+		if let sec = json["playerSecurity"] as? [String:AnyObject] {
+			if let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
+				let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
+				let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
+				drm.addACParam(key: "applicationId", value: "sambatech")
+				/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
+				drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
+				drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
+				//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
+				//headerParams["Content-Type"] = "application/octet-stream"
+
+				media.drmRequest = drm
+			}
 			
-			let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
-			drm.addACParam(key: "applicationId", value: "sambatech")
-			/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
-			drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
-			drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
-			//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-			//headerParams["Content-Type"] = "application/octet-stream"
-			
-			media.drmRequest = drm
+			if let rootedDevices = sec["rootedDevices"] as? String {
+				media.blockIfRooted = rootedDevices.lowercased() == "true"
+			}
 		}
 		
 		return media
