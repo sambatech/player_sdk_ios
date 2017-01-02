@@ -37,7 +37,8 @@ Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para 
 Efetue as seguintes configurações em *Target -> Build Settings*:
 
 - Frameworks com código em Swift precisam ser informados
-<br>*Build Options -> Embedded Content Contains Swift Code -> __Yes__*
+<br>*Build Options -> Embedded Content Contains Swift Code -> __Yes__* (Xcode 7+)
+<br>*Build Options -> Always Embed Swift Standard Libraries -> __Yes__* (Xcode 8+)
 - O processo de assinatura de aplicativos [é "raso" e não abrange as dependências](http://stackoverflow.com/a/17396143/3688598)
 <br>*Code Signing -> Other Code Signing Flags -> __--deep__*
 
