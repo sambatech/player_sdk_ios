@@ -49,18 +49,19 @@ class Tracking : NSObject, SambaPlayerDelegate {
 	func onLoad() {}
 	func onResume() {}
 	func onPause() {}
+	func onError(_ error: SambaPlayerError) {}
 }
 
 class STTM {
 	private var _media: SambaMediaConfig
-	private var _timer: NSTimer?
+	private var _timer: Timer?
 	private var _targets = [String]()
 	private var _progresses = NSMutableOrderedSet()
 	private var _trackedRetentions = Set<Int>()
 	
 	init(_ media: SambaMediaConfig) {
 		_media = media
-		_timer = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(timerHandler), userInfo: nil, repeats: true)
+		_timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(timerHandler), userInfo: nil, repeats: true)
 	}
 	
 	func trackStart() {
@@ -71,7 +72,7 @@ class STTM {
 		_targets.append("play")
 	}
 	
-	func trackProgress(time: Float, _ duration: Float) {
+	func trackProgress(_ time: Float, _ duration: Float) {
 		guard duration > 0 else { return }
 		
 		var p = Int(100*time/duration)
@@ -84,10 +85,10 @@ class STTM {
 		print("progress", p)
 		#endif
 		
-		_progresses.addObject(String(format: "p%02d", p))
+		_progresses.add(String(format: "p%02d", p))
 		
 		if !_trackedRetentions.contains(p) {
-			_progresses.addObject(String(format: "r%02d", p))
+			_progresses.add(String(format: "r%02d", p))
 		}
 		
 		_trackedRetentions.insert(p)
@@ -120,15 +121,15 @@ class STTM {
 		print("collect", _progresses.count)
 		#endif
 		
-		_progresses.sortUsingComparator { $0.localizedCaseInsensitiveCompare($1 as! String) }
-		_targets.append((_progresses.array as! [String]).joinWithSeparator(","))
+		_progresses.sort (comparator: { ($0 as AnyObject).localizedCaseInsensitiveCompare($1 as! String) })
+		_targets.append((_progresses.array as! [String]).joined(separator: ","))
 		_progresses.removeAllObjects()
 	}
 	
 	@objc private func timerHandler() {
 		guard !_targets.isEmpty else { return }
 		
-		let url = "\(_media.sttmUrl)?sttmm=\(_targets.joinWithSeparator(","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)"
+		let url = "\(_media.sttmUrl)?sttmm=\(_targets.joined(separator: ","))&sttmk=\(_media.sttmKey)&sttms=\(_media.sessionId)&sttmu=123&sttmw=pid:\(_media.projectId)/cat:\(_media.categoryId)/mid:\(_media.id)"
 		
 		#if DEBUG
 		print("send", url)

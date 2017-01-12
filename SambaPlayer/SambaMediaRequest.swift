@@ -8,32 +8,46 @@
 
 import Foundation
 
+/// Data entity that represents a media request to the Samba Player API
 @objc public class SambaMediaRequest : NSObject {
 	
-	///Project Hash of the media
+	/// The project hash the media belongs to
 	public var projectHash: String
 	
-	///ID of the media
+	/// ID of the media
 	public var mediaId: String?
 	
-	///If it´s live, streamName of the media
+	/// Name of the media stream for live content
 	public var streamName: String?
 	
-	//If it´s live you can put a list of StreamURL
+	/// URL list of streams when live content being the first the main URL and the rest for backup purpose
 	public var streamUrls: [String]?
 	
-	//If it´s live and audio
+	/// Whether the media is both live and audio
 	public var isLiveAudio: Bool?
 	
+	/// The environment of the Samba Player API to request for
+	public var environment: Environment = .staging
+	
+	/// Samba Player API environment list
+	public enum Environment {
+		/// Production environment
+		case prod
+		/// Staging environment
+		case staging
+		/// Development/Testing environment
+		case test
+		/// Local environment
+		case local
+	}
 	
 	/**
 	Default initializer
 	
-	- Parameters:
-		- projectHash:String Project Hash of the media
-		- mediaId:String ID of the media
-		- streamName:String streamName of the media live
-		- streamUrls:[String] List of streamURLs
+	- parameter projectHash: The project hash the media belongs to
+	- parameter mediaId: ID of the media
+	- parameter streamName: Name of the media stream for live content
+	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
 	*/
 	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?) {
 		self.projectHash = projectHash
@@ -45,12 +59,11 @@ import Foundation
 	/**
 	Second initializer
 	
-	- Parameters:
-	- projectHash:String Project Hash of the media
-	- mediaId:String ID of the media
-	- streamName:String streamName of the media live
-	- streamUrls:[String] List of streamURLs
-	- isAudio: Bool Is Audio
+	- parameter projectHash: The project hash the media belongs to
+	- parameter mediaId: ID of the media
+	- parameter streamName: Name of the media stream for live content
+	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
+	- parameter isAudio: Whether the media is both live and audio
 	*/
 	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?, isLiveAudio: Bool?) {
 		self.projectHash = projectHash
@@ -63,9 +76,8 @@ import Foundation
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- projectHash:String Project Hash of the media
-		- streamUrls:[String] List of streamURLs
+	- parameter projectHash: The project hash the media belongs to
+	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
 	*/
 	public convenience init(projectHash: String, streamUrls: [String]) {
 		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: streamUrls)
@@ -74,9 +86,9 @@ import Foundation
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- projectHash:String Project Hash of the media
-		- streamName:String streamName of the media live
+	- parameter projectHash: The project hash the media belongs to
+	- parameter streamUrl: URL of stream when live content
+	- parameter isLiveAudio: Whether the media is both live and audio
 	*/
 	public convenience init(projectHash: String, streamUrl: String, isLiveAudio: Bool?) {
 		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: [streamUrl], isLiveAudio: isLiveAudio)
@@ -85,9 +97,8 @@ import Foundation
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- projectHash:String Project Hash of the media
-		- streamName:String streamName of the media live
+	- parameter projectHash: The project hash the media belongs to
+	- parameter streamName: Name of the media stream for live content
 	*/
 	public convenience init(projectHash: String, streamName: String) {
 		self.init(projectHash: projectHash, mediaId: nil, streamName: streamName, streamUrls: nil)
@@ -96,9 +107,8 @@ import Foundation
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- projectHash:String Project Hash of the media
-		- mediaId:String ID of the media
+	- parameter projectHash: The project hash the media belongs to
+	- parameter mediaId: ID of the media
 	*/
 	public convenience init(projectHash: String, mediaId: String) {
 		self.init(projectHash: projectHash, mediaId: mediaId, streamName: nil, streamUrls: nil)

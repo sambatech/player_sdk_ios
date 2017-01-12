@@ -14,7 +14,7 @@
     <a title="SambaPlayer Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SambaPlayer Docs</a> (91% documented)</p>
+        <p><a href="../index.html">SambaPlayer Docs</a> (93% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -31,6 +31,9 @@
             <a href="../Classes.html">Classes</a>
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
+                <a href="../Classes/DrmRequest.html">DrmRequest</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/SambaApi.html">SambaApi</a>
               </li>
               <li class="nav-group-task">
@@ -40,24 +43,28 @@
                 <a href="../Classes/SambaMedia.html#/s:VC11SambaPlayer10SambaMedia6Output">– Output</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/SambaMediaConfig.html">SambaMediaConfig</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/SambaMediaRequest.html">SambaMediaRequest</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Classes/SambaMediaRequest/Environment.html">– Environment</a>
               </li>
               <li class="nav-group-task">
                 <a href="../Classes/SambaPlayer.html">SambaPlayer</a>
               </li>
-            </ul>
-          </li>
-          <li class="nav-group-name">
-            <a href="../Enums.html">Enums</a>
-            <ul class="nav-group-tasks">
               <li class="nav-group-task">
-                <a href="../Enums/SambaPlayerError.html">SambaPlayerError</a>
+                <a href="../Classes/SambaPlayerError.html">SambaPlayerError</a>
               </li>
             </ul>
           </li>
           <li class="nav-group-name">
             <a href="../Extensions.html">Extensions</a>
             <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a href="../Extensions/AssetLoaderDelegate.html">AssetLoaderDelegate</a>
+              </li>
               <li class="nav-group-task">
                 <a href="../Extensions/UIImage.html">UIImage</a>
               </li>
@@ -77,7 +84,13 @@
         <section>
           <section class="section">
             <h1>SambaPlayer</h1>
-            <p>Undocumented</p>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                </div>
+              </div>
+            <p>Responsible for managing media playback</p>
 
           </section>
           <section class="section task-group-section">
@@ -93,9 +106,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:vC11SambaPlayer11SambaPlayer8delegateGSqPS_19SambaPlayerDelegate__"></a>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer8delegatePS_19SambaPlayerDelegate_"></a>
                     <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer8delegateGSqPS_19SambaPlayerDelegate__">delegate</a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer8delegatePS_19SambaPlayerDelegate_">delegate</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -110,7 +123,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/SambaPlayerDelegate.html">SambaPlayerDelegate</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/SambaPlayerDelegate.html">SambaPlayerDelegate</a></span> <span class="o">=</span> <span class="kt">FakeListener</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -211,7 +224,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Flag if the media is or not playing</p>
+                        <p>Whether media is playing or not</p>
 
                       </div>
                       <div class="declaration">
@@ -219,6 +232,33 @@
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">isPlaying</span><span class="p">:</span> <span class="kt">Bool</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer15controlsVisibleSb"></a>
+                    <a name="//apple_ref/swift/Property/controlsVisible" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer15controlsVisibleSb">controlsVisible</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether controls should be visible or not</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">controlsVisible</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span></code></pre>
 
                         </div>
                       </div>
@@ -249,8 +289,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Default initializer
-*</p>
+                        <p>Default initializer</p>
 
                       </div>
                       <div class="declaration">
@@ -267,9 +306,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayercFCSo16UIViewControllerS0_"></a>
-                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayercFCSo16UIViewControllerS0_">init(_:)</a>
+                    <a name="/s:FC11SambaPlayer11SambaPlayercFT20parentViewControllerCSo16UIViewController_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(parentViewController:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayercFT20parentViewControllerCSo16UIViewController_S0_">init(parentViewController:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -277,16 +316,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Convenience initializer
-- parameter parentViewController:UIViewController The UIViewController in which the player is embed
-*</p>
+                        <p>Convenience initializer</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">parentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">parentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -302,7 +339,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>UIViewController The UIViewController in which the player is embed</p>
+                                  <p>The view-controller in which the player view-controller and view should be embedded</p>
 
                                 </div>
                               </td>
@@ -316,9 +353,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayercFTCSo16UIViewController10parentViewCSo6UIView_S0_"></a>
-                    <a name="//apple_ref/swift/Method/init(_:parentView:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayercFTCSo16UIViewController10parentViewCSo6UIView_S0_">init(_:parentView:)</a>
+                    <a name="/s:FC11SambaPlayer11SambaPlayercFT20parentViewControllerCSo16UIViewController13andParentViewCSo6UIView_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(parentViewController:andParentView:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayercFT20parentViewControllerCSo16UIViewController13andParentViewCSo6UIView_S0_">init(parentViewController:andParentView:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -328,22 +365,12 @@
                       <div class="abstract">
                         <p>Convenience initializer</p>
 
-<ul>
-<li>Parameters:
-
-<ul>
-<li>parentViewController:UIViewController The UIViewController which the player is embed</li>
-<li>parentView:UIView The UIView which the player is embed
-*</li>
-</ul></li>
-</ul>
-
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">parentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="nv">parentView</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="n">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="nv">parentViewController</span><span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="n">andParentView</span> <span class="nv">parentView</span><span class="p">:</span> <span class="kt">UIView</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -359,7 +386,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>UIViewController The UIViewController which the player is embed</p>
+                                  <p>The view-controller in which the player view-controller should be embedded</p>
 
                                 </div>
                               </td>
@@ -372,7 +399,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>UIView The UIView which the player is embed</p>
+                                  <p>The view in which the player view should be embedded</p>
 
                                 </div>
                               </td>
@@ -396,36 +423,16 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Required initializer</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">required</span> <span class="nf">init</span><span class="p">?(</span><span class="n">coder</span> <span class="nv">aDecoder</span><span class="p">:</span> <span class="kt">NSCoder</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>aDecoder</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>NSCoder</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
                       </div>
                     </section>
                   </div>
@@ -443,10 +450,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Play the media<br><br></p>
-
-<pre class="highlight plaintext"><code>player.play()
-</code></pre>
+                        <p>Plays the media</p>
 
                       </div>
                       <div class="declaration">
@@ -473,10 +477,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Pause the media<br><br></p>
-
-<pre class="highlight plaintext"><code>player.pause()
-</code></pre>
+                        <p>Pauses the media</p>
 
                       </div>
                       <div class="declaration">
@@ -503,10 +504,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Stop the media returning it to it´s initial time<br><br></p>
-
-<pre class="highlight plaintext"><code>player.stop()
-</code></pre>
+                        <p>Stops the media returning it to its initial time</p>
 
                       </div>
                       <div class="declaration">
@@ -523,9 +521,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayer4seekFSiT_"></a>
+                    <a name="/s:FC11SambaPlayer11SambaPlayer4seekFSfT_"></a>
                     <a name="//apple_ref/swift/Method/seek(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer4seekFSiT_">seek(_:)</a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer4seekFSfT_">seek(_:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -533,7 +531,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Seek the media to a given time<br><br></p>
+                        <p>Moves the media to a given time</p>
 
 <pre class="highlight plaintext"><code>player.seek(20)
 </code></pre>
@@ -543,9 +541,29 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">seek</span><span class="p">(</span><span class="nv">pos</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">seek</span><span class="p">(</span><span class="n">_</span> <span class="nv">pos</span><span class="p">:</span> <span class="kt">Float</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>pos</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>Time in seconds</p>
+
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -563,7 +581,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Change the current output<br><br></p>
+                        <p>Changes the current output</p>
 
 <pre class="highlight plaintext"><code>player.switchOutput(1)
 </code></pre>
@@ -573,73 +591,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">switchOutput</span><span class="p">(</span><span class="nv">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayer7destroyFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/destroy()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer7destroyFT_T_">destroy()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Destroy the player instance<br><br></p>
-
-<pre class="highlight plaintext"><code>player.destroy()
-</code></pre>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">destroy</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayer24viewWillTransitionToSizeFTVSC6CGSize25withTransitionCoordinatorPSo37UIViewControllerTransitionCoordinator__T_"></a>
-                    <a name="//apple_ref/swift/Method/viewWillTransitionToSize(_:withTransitionCoordinator:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer24viewWillTransitionToSizeFTVSC6CGSize25withTransitionCoordinatorPSo37UIViewControllerTransitionCoordinator__T_">viewWillTransitionToSize(_:withTransitionCoordinator:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Change the orientation of the player<br><br></p>
-
-<ul>
-<li>Parameters:
-
-<ul>
-<li>size:CGSize</li>
-<li>withTransitionCoordinator coordinator</li>
-</ul></li>
-</ul>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewWillTransitionToSize</span><span class="p">(</span><span class="nv">size</span><span class="p">:</span> <span class="kt">CGSize</span><span class="p">,</span> <span class="n">withTransitionCoordinator</span> <span class="nv">coordinator</span><span class="p">:</span> <span class="kt">UIViewControllerTransitionCoordinator</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">switchOutput</span><span class="p">(</span><span class="n">_</span> <span class="nv">value</span><span class="p">:</span> <span class="kt">Int</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -650,25 +602,13 @@
                             <tr>
                               <td>
                                 <code>
-                                <em>size</em>
+                                <em>value</em>
                                 </code>
                               </td>
                               <td>
                                 <div>
-                                  <p>CGSize</p>
+                                  <p>Index of the output</p>
 
-                                </div>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>withTransitionCoordinator coordinator</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  
                                 </div>
                               </td>
                             </tr>
@@ -681,9 +621,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayer30supportedInterfaceOrientationsFT_VSC26UIInterfaceOrientationMask"></a>
-                    <a name="//apple_ref/swift/Method/supportedInterfaceOrientations()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer30supportedInterfaceOrientationsFT_VSC26UIInterfaceOrientationMask">supportedInterfaceOrientations()</a>
+                    <a name="/s:FC11SambaPlayer11SambaPlayer7destroyFT9withErrorGSqCS_16SambaPlayerError__T_"></a>
+                    <a name="//apple_ref/swift/Method/destroy(withError:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer7destroyFT9withErrorGSqCS_16SambaPlayerError__T_">destroy(withError:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -691,22 +631,77 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Get all the supported orientation<br><br>
-- Returns: .AllButUpsideDown</p>
+                        <p>Destroys the player instance</p>
+
+<pre class="highlight plaintext"><code>player.destroy()
+</code></pre>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">supportedInterfaceOrientations</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kt">UIInterfaceOrientationMask</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">destroy</span><span class="p">(</span><span class="n">withError</span> <span class="nv">error</span><span class="p">:</span> <span class="kt"><a href="../Classes/SambaPlayerError.html">SambaPlayerError</a></span><span class="p">?</span> <span class="o">=</span> <span class="kc">nil</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
                       <div>
-                        <h4>Return Value</h4>
-                        <p>.AllButUpsideDown</p>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>error</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>(optional) Error type to show</p>
 
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Overrides"></a>
+                <a name="//apple_ref/swift/Section/Overrides" class="dashAnchor"></a>
+                <a href="#/Overrides">
+                  <h3 class="section-name">Overrides</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer30supportedInterfaceOrientationsVSC26UIInterfaceOrientationMask"></a>
+                    <a name="//apple_ref/swift/Property/supportedInterfaceOrientations" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer30supportedInterfaceOrientationsVSC26UIInterfaceOrientationMask">supportedInterfaceOrientations</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
                       </div>
                     </section>
                   </div>
@@ -714,9 +709,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FC11SambaPlayer11SambaPlayer16viewDidDisappearFSbT_"></a>
-                    <a name="//apple_ref/swift/Method/viewDidDisappear(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer16viewDidDisappearFSbT_">viewDidDisappear(_:)</a>
+                    <a name="/s:FC11SambaPlayer11SambaPlayer18viewWillTransitionFT2toVSC6CGSize4withPSo37UIViewControllerTransitionCoordinator__T_"></a>
+                    <a name="//apple_ref/swift/Method/viewWillTransition(to:with:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer18viewWillTransitionFT2toVSC6CGSize4withPSo37UIViewControllerTransitionCoordinator__T_">viewWillTransition(to:with:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -724,15 +719,41 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when the view disapears<br><br>
-Destroy the player after it</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">override</span> <span class="kd">func</span> <span class="nf">viewDidDisappear</span><span class="p">(</span><span class="nv">animated</span><span class="p">:</span> <span class="kt">Bool</span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11SambaPlayer11SambaPlayer17viewWillDisappearFSbT_"></a>
+                    <a name="//apple_ref/swift/Method/viewWillDisappear(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer17viewWillDisappearFSbT_">viewWillDisappear(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
 
                         </div>
                       </div>
@@ -744,8 +765,8 @@ Destroy the player after it</p>
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-07-13)</p>
-          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.0</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-29)</p>
+          <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
     </div>

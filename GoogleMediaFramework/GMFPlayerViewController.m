@@ -103,14 +103,14 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 	[[self getControlsView] hideBackground];
 }
 
-- (void)loadStreamWithURL:(NSURL *)URL {
-  [_player loadStreamWithURL:URL];
+- (void)loadStreamWithAsset:(AVAsset*)asset {
+  [_player loadStreamWithAsset:asset];
 }
 
 // Loads a video stream with the provided URL and requests ads via the IMA SDK with the provided
 // ad tag.
-- (void)loadStreamWithURL:(NSURL *)URL imaTag:(NSString *)tag {
-  [_player loadStreamWithURL:URL];
+- (void)loadStreamWithAsset:(AVAsset*)asset imaTag:(NSString *)tag {
+  [_player loadStreamWithAsset:asset];
   if (_adService && [_adService class] == [GMFIMASDKAdService class]) {
     [(GMFIMASDKAdService *)_adService reset];
   } else {

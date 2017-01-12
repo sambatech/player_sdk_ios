@@ -9,58 +9,68 @@
 import Foundation
 import UIKit
 
+/// Responsible for managing media playback
 public class SambaPlayer : UIViewController {
 	
 	private var _player: GMFPlayerViewController?
+	private var _asset: AVURLAsset?
 	private var _parentView: UIView?
+	private var _currentMenu: UIViewController?
+	private var _currentScreen: UIViewController?
 	private var _delegates = [SambaPlayerDelegate]()
-	private var _progressTimer = NSTimer()
+	private var _progressTimer = Timer()
 	private var _hasStarted = false
 	private var _stopping = false
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
 	private var _hasMultipleOutputs = false
+	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
-	private var _currentMenu: UIViewController?
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
+	private var _decryptDelegate: AssetLoaderDelegate?
+	private var _disabled = false
 	
 	// MARK: Properties
 	
-	///Stores the delegated methods for the player events
+	/// Stores the delegated methods for the player events
 	public var delegate: SambaPlayerDelegate = FakeListener() {
 		didSet {
 			_delegates.append(delegate)
 		}
 	}
 	
-	///Current media time
+	/// Current media time
 	public var currentTime: Float {
 		return Float(_player?.currentMediaTime() ?? 0)
 	}
 	
-	///Current media duration
+	/// Current media duration
 	public var duration: Float {
 		if _duration == 0,
-			let d = _player?.totalMediaTime() where d > 0 {
+			let d = _player?.totalMediaTime(), d > 0 {
 			_duration = Float(d)
 		}
 		
 		return _duration
 	}
 	
-	///Current media
+	/// Current media
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
-			destroy()
+			if let m = media as? SambaMediaConfig,
+				m.blockIfRooted && GMFHelpers.isDeviceJailbroken() {
+				dispatchError(SambaPlayerError.rootedDevice)
+				return
+			}
 			
-			if let index = media.outputs?.indexOf({ $0.isDefault }) {
+			if let index = media.outputs?.index(where: { $0.isDefault }) {
 				_currentOutput = index
 			}
 			
-			dispatch_async(dispatch_get_main_queue()) {
+			DispatchQueue.main.async {
 				if self.media.isAudio {
 					self.create(false)
 				}
@@ -71,12 +81,12 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	///Flag if the media is or not playing
+	/// Whether media is playing or not
 	public var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
-	///Flag whether controls should be visible or not
+	/// Whether controls should be visible or not
 	public var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
@@ -86,15 +96,16 @@ public class SambaPlayer : UIViewController {
 	// MARK: Public Methods
 	/**
 	Default initializer
-	**/
+	*/
 	public init() {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
 	/**
 	Convenience initializer
-	- parameter parentViewController:UIViewController The view-controller in which the player view-controller and view should to be embedded
-	**/
+	
+	- parameter parentViewController: The view-controller in which the player view-controller and view should be embedded
+	*/
 	public convenience init(parentViewController: UIViewController) {
 		self.init(parentViewController: parentViewController, andParentView: parentViewController.view)
 	}
@@ -102,16 +113,15 @@ public class SambaPlayer : UIViewController {
 	/**
 	Convenience initializer
 	
-	- Parameters:
-		- parentViewController:UIViewController The view-controller in which the player view-controller should to be embedded
-		- parentView:UIView The view in which the player view should to be embedded
-	**/
+	- parameter parentViewController: The view-controller in which the player view-controller should be embedded
+	- parameter parentView: The view in which the player view should be embedded
+	*/
 	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
 		
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			parentViewController.addChildViewController(self)
-			self.didMoveToParentViewController(parentViewController)
+			self.didMove(toParentViewController: parentViewController)
 			self.view.frame = parentView.bounds
 			parentView.addSubview(self.view)
 			parentView.setNeedsDisplay()
@@ -120,23 +130,18 @@ public class SambaPlayer : UIViewController {
 		self._parentView = parentView
 	}
 	
-	/**
-	Required initializer
-	
-	- parameter aDecoder:NSCoder
-	**/
 	public required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
 	/**
-	Plays the media<br><br>
-		
-		player.play()
+	Plays the media
 	*/
 	public func play() {
+		if _disabled { return }
+		
 		guard let player = _player else {
-			dispatch_async(dispatch_get_main_queue()) { self.create() }
+			DispatchQueue.main.async { self.create() }
 			return
 		}
 		
@@ -144,9 +149,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Pauses the media<br><br>
-	
-		player.pause()
+	Pauses the media
 	*/
 	public func pause() {
 		_wasPlayingBeforePause = isPlaying
@@ -154,9 +157,7 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Stops the media returning it to its initial time<br><br>
-	
-		player.stop()
+	Stops the media returning it to its initial time
 	*/
 	public func stop() {
 		// avoid dispatching events
@@ -167,42 +168,59 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	/**
-	Seeks the media to a given time<br><br>
+	Moves the media to a given time
 			
 		player.seek(20)
 	
-	- parameter: pos: Float Time in seconds
+	- parameter pos: Time in seconds
 	*/
-    public func seek(pos: Float) {
+    public func seek(_ pos: Float) {
 		// do not seek on live
 		guard !media.isLive else { return }
 		
-		_player?.player.seekToTime(NSTimeInterval(pos))
+		_player?.player.seek(toTime: TimeInterval(pos))
     }
 	
 	/**
-	Changes the current output<br><br>
+	Changes the current output
 	
 		player.switchOutput(1)
 	
-	- parameter: value: Int Index of the output
+	- parameter value: Index of the output
 	*/
-	public func switchOutput(value: Int) {
+	public func switchOutput(_ value: Int) {
 		guard value != _currentOutput,
-			let outputs = media.outputs
-			where value < outputs.count else { return }
+			let outputs = media.outputs,
+			value < outputs.count else { return }
 		
 		_currentOutput = value
-		_player?.player.switchUrl(outputs[value].url)
+		
+		guard let url = URL(string: outputs[value].url) else {
+			dispatchError(SambaPlayerError.invalidUrl)
+			return
+		}
+		
+		let asset = AVURLAsset(url: url)
+		
+		if let m = media as? SambaMediaConfig,
+			let drmRequest = m.drmRequest {
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: "MrPoppersPenguins", drmRequest: drmRequest)
+		}
+		
+		_player?.player.switch(asset)
 	}
 	
 	/**
-	Destroys the player instance<br><br>
+	Destroys the player instance
 	
 		player.destroy()
 	
+	- parameter error: (optional) Error type to show
 	*/
-	public func destroy() {
+	public func destroy(withError error: SambaPlayerError? = nil) {
+		if let error = error { showError(error) }
+		else { destroyScreen() }
+		
 		guard let player = _player else { return }
 		
 		for delegate in _delegates { delegate.onDestroy() }
@@ -210,20 +228,19 @@ public class SambaPlayer : UIViewController {
 		stopTimer()
 		player.player.reset()
 		detachVC(player)
-		NSNotificationCenter.defaultCenter().removeObserver(self)
+		NotificationCenter.default.removeObserver(self)
 		
 		_player = nil
 	}
 	
-	/**
-	Changes the orientation of the player<br><br>
+	// MARK: Overrides
 	
-	- Parameters:
-		- size:CGSize
-		- withTransitionCoordinator coordinator
-	*/
-	public override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-		super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+		return .allButUpsideDown
+	}
+	
+	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
 		
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
@@ -236,34 +253,32 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
-		let menu = _currentMenu
-		
-		if let menu = menu {
+		if let menu = _currentMenu {
 			hideMenu(menu, true)
 		}
 		
 		let callback = {
 			self._fullscreenAnimating = false
 			
-			if let menu = menu {
+			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
 		}
 		
-		if player.parentViewController == self {
-			if UIDeviceOrientationIsLandscape(UIDevice.currentDevice().orientation) {
+		if player.parent == self {
+			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
 				_fullscreenAnimating = true
 				_isFullscreen = true
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
 				detachVC(player)
 				
-				dispatch_async(dispatch_get_main_queue()) {
-					self.presentViewController(player, animated: true, completion: callback)
+				DispatchQueue.main.async {
+					self.present(player, animated: true, completion: callback)
 				}
 			}
 		}
-		else if UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) {
+		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
 			_fullscreenAnimating = true
 			
 			detachVC(player) {
@@ -276,20 +291,7 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	/**
-	Gets all the supported orientation<br><br>
-	- Returns: .AllButUpsideDown
-	*/
-	public override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-		return .AllButUpsideDown
-	}
-	
-	/**
-	Fired up when the view disapears<br><br>
-	Destroys the player after it
-	
-	*/
-	public override func viewWillDisappear(animated: Bool) {
+	public override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
@@ -299,7 +301,7 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Internal Methods (may we publish them?)
 	
-	func showMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+	func showMenu(_ menu: UIViewController, _ mainActionOnly: Bool = false) {
 		guard _hasStarted else { return }
 		
 		_currentMenu = menu
@@ -312,13 +314,13 @@ public class SambaPlayer : UIViewController {
 			attachVC(menu, _player)
 		}
 		else {
-			dispatch_async(dispatch_get_main_queue()) {
-				self.presentViewController(menu, animated: false, completion: nil)
+			DispatchQueue.main.async {
+				self.present(menu, animated: false, completion: nil)
 			}
 		}
 	}
 	
-	func hideMenu(menu: UIViewController, _ mainActionOnly: Bool = false) {
+	func hideMenu(_ menu: UIViewController, _ mainActionOnly: Bool = false) {
 		detachVC(menu, _player, false)
 		
 		_currentMenu = nil
@@ -330,31 +332,43 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	private func create(autoPlay: Bool = true) {
-		// if already exists, do not recreate player
+	private func create(_ autoPlay: Bool = true) {
 		if let player = _player {
 			if autoPlay { player.play() }
 			return
 		}
 		
-		var urlWrapped = media.url
+		_pendingPlay = false
 		
-		if let outputs = media.outputs where outputs.count > 0 {
-			urlWrapped = outputs[0].url
+		var urlOpt = media.url
+		
+		if let outputs = media.outputs, outputs.count > 0 {
+			urlOpt = outputs[0].url
 			
 			for output in outputs where output.isDefault {
-				urlWrapped = output.url
+				urlOpt = output.url
 			}
 			
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
-		guard let url = urlWrapped else {
-			print("\(self.dynamicType) error: No media URL found!")
+		guard let urlString = urlOpt,
+			let url = URL(string: urlString) else {
+			dispatchError(SambaPlayerError.invalidUrl)
 			return
 		}
 		
-		let gmf = GMFPlayerViewController(controlsPadding: CGRectMake(0, 0, 0, media.isAudio ? 10 : 0)) {
+		let asset = AVURLAsset(url: url)
+		
+		_asset = asset
+		
+		if let m = media as? SambaMediaConfig,
+			let drmRequest = m.drmRequest {
+			// weak reference delegate, must retain a reference to it
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
+		}
+		
+		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 			
 			if self._hasMultipleOutputs {
@@ -378,7 +392,7 @@ public class SambaPlayer : UIViewController {
 			if self.media.isLive {
 				player.getControlsView().hideScrubber()
 				player.getControlsView().hideTotalTime()
-				player.addActionButtonWithImage(GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
+				player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
 				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 				(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			}
@@ -386,8 +400,11 @@ public class SambaPlayer : UIViewController {
 			if !self.controlsVisible {
 				self.controlsVisible = false
 			}
+		}) else {
+			dispatchError(SambaPlayerError.creatingPlayer)
+			return
 		}
-		
+	
 		_player = gmf
 		
 		gmf.videoTitle = media.title
@@ -400,16 +417,16 @@ public class SambaPlayer : UIViewController {
 		destroyThumb()
 		attachVC(gmf)
 		
-		let nc = NSNotificationCenter.defaultCenter()
-			
+		let nc = NotificationCenter.default
+		
 		nc.addObserver(self, selector: #selector(playbackStateHandler),
-		               name: kGMFPlayerPlaybackStateDidChangeNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: gmf)
 		
 		nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
-		               name: kGMFPlayerDidMinimizeNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerDidMinimize, object: gmf)
 		
 		nc.addObserver(self, selector: #selector(hdTouchHandler),
-		               name: kGMFPlayerDidPressHdNotification, object: gmf)
+		               name: NSNotification.Name.gmfPlayerDidPressHd, object: gmf)
 		
 		// Tracking
 		
@@ -417,24 +434,22 @@ public class SambaPlayer : UIViewController {
 			let _ = Tracking(self)
 		}
 		
-		let nsUrl = NSURL(string: url)
-		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf.loadStreamWithURL(nsUrl, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+			gmf.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
 		}
-			// default
+		// default
 		else {
-			gmf.loadStreamWithURL(nsUrl)
-			if autoPlay { gmf.play() }
+			_pendingPlay = autoPlay
+			gmf.loadStream(with: asset)
 		}
 	}
 	
 	private func createThumb() {
 		guard let thumbImage = media.thumb else {
 			#if DEBUG
-			print("\(self.dynamicType): no thumb found.")
+			print("\(type(of: self)): no thumb found.")
 			#endif
 			return
 		}
@@ -444,12 +459,12 @@ public class SambaPlayer : UIViewController {
 		let play = GMFResources.playerBarPlayLargeButtonImage()
 		
 		UIGraphicsBeginImageContextWithOptions(size, true, 0)
-		thumbImage.drawInRect(CGRectMake(0, 0, size.width, size.height))
-		play.drawInRect(CGRectMake((size.width - play.size.width)/2, (size.height - play.size.height)/2, play.size.width, play.size.height))
-		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), forState: .Normal)
+		thumbImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+		play?.draw(in: CGRect(x: (size.width - (play?.size.width)!)/2, y: (size.height - (play?.size.height)!)/2, width: (play?.size.width)!, height: (play?.size.height)!))
+		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), for: UIControlState())
 		UIGraphicsEndImageContext()
 		
-		thumb.addTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		thumb.addTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		
 		_thumb = thumb
 		
@@ -460,10 +475,42 @@ public class SambaPlayer : UIViewController {
 	private func destroyThumb() {
 		guard let thumb = _thumb else { return }
 		
-		thumb.removeTarget(self, action: #selector(thumbTouchHandler), forControlEvents: .TouchUpInside)
+		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		thumb.removeFromSuperview()
 		_thumb = nil
 	}
+	
+	private func dispatchError(_ error: SambaPlayerError) {
+		#if DEBUG
+		print(error.localizedDescription)
+		#endif
+		
+		_disabled = true
+		
+		DispatchQueue.main.async {
+			for delegate in self._delegates { delegate.onError(error) }
+			self.destroy(withError: error)
+		}
+	}
+	
+	private func showError(_ error: SambaPlayerError) {
+		let screen = ErrorScreenViewController(error)
+		
+		attachVC(screen)
+		
+		_disabled = true
+		_currentScreen = screen
+	}
+	
+	private func destroyScreen() {
+		_disabled = false
+		
+		guard let screen = _currentScreen else { return }
+		
+		detachVC(screen)
+	}
+	
+	// MARK: Handlers
 	
 	@objc private func thumbTouchHandler() {
 		play()
@@ -483,6 +530,11 @@ public class SambaPlayer : UIViewController {
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
 			for delegate in _delegates { delegate.onLoad() }
+			
+			if _pendingPlay {
+				play()
+				_pendingPlay = false
+			}
 			
 		case kGMFPlayerStatePlaying:
 			if !_hasStarted {
@@ -506,44 +558,50 @@ public class SambaPlayer : UIViewController {
 				}
 			}
 			// when paused seek dispatch extra progress event to update external infos
-			else { progressEvent() }
+			else { progressEventHandler() }
+		
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish() }
+		
+		case kGMFPlayerStateError:
+			if player.player != nil && player.player.error != nil {
+				dispatchError(SambaPlayerError.unknown.setMessage(player.player.error.localizedDescription))
+			}
 			
 		default: break
 		}
 	}
 	
-	@objc private func progressEvent() {
+	@objc private func progressEventHandler() {
 		for delegate in _delegates { delegate.onProgress() }
 	}
 	
 	@objc private func fullscreenTouchHandler() {
-		UIDevice.currentDevice().setValue(_isFullscreen ? UIInterfaceOrientation.Portrait.rawValue :
-			UIInterfaceOrientation.LandscapeLeft.rawValue, forKey: "orientation")
+		UIDevice.current.setValue(_isFullscreen ? UIInterfaceOrientation.portrait.rawValue :
+			UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
 	}
 	
 	@objc private func hdTouchHandler() {
 		showMenu(OutputMenuViewController(self, _currentOutput))
 	}
 	
-	private func attachVC(vc: UIViewController, _ vcParent: UIViewController? = nil) {
+	private func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {
 		let p: UIViewController = vcParent ?? self
 		
-		dispatch_async(dispatch_get_main_queue()) {
+		DispatchQueue.main.async {
 			p.addChildViewController(vc)
-			vc.didMoveToParentViewController(p)
+			vc.didMove(toParentViewController: p)
 			vc.view.frame = p.view.frame
 			p.view.addSubview(vc.view)
 			p.view.setNeedsDisplay()
 		}
 	}
 	
-	private func detachVC(vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
-		dispatch_async(dispatch_get_main_queue()) {
-			if vc.parentViewController != (vcParent ?? self) {
-				vc.dismissViewControllerAnimated(animated, completion: callback)
+	private func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
+		DispatchQueue.main.async {
+			if vc.parent != (vcParent ?? self) {
+				vc.dismiss(animated: animated, completion: callback)
 			}
 			else {
 				vc.view.removeFromSuperview()
@@ -555,14 +613,14 @@ public class SambaPlayer : UIViewController {
 	
 	private func startTimer() {
 		stopTimer()
-		_progressTimer = NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: #selector(progressEvent), userInfo: nil, repeats: true)
+		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEventHandler), userInfo: nil, repeats: true)
 	}
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
 	}
 	
-	class FakeListener : NSObject, SambaPlayerDelegate {
+	private class FakeListener : NSObject, SambaPlayerDelegate {
 		func onLoad() {}
 		func onStart() {}
 		func onResume() {}
@@ -570,31 +628,84 @@ public class SambaPlayer : UIViewController {
 		func onProgress() {}
 		func onFinish() {}
 		func onDestroy() {}
+		func onError(_ error: SambaPlayerError) {error.setMessage("")}
 	}
 }
 
 /**
-SambaPlayerDelegate protocol
+Player error list
 */
+@objc public class SambaPlayerError : NSObject, Error {
+	/// URL format is invalid
+	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format")
+	/// Some error occurred when creating internal player
+	public static let creatingPlayer = SambaPlayerError(1, "Error creating player")
+	/// Trying to play a secure media on a rooted device
+	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device")
+	/// Unknown error
+	public static let unknown = SambaPlayerError(3, "Unknown error")
+	
+	/// Error code
+	public let code: Int
+	
+	private let _message: String
+	private var _messageAlt: String?
+	
+	private init(_ code: Int, _ message: String) {
+		self.code = code
+		_message = message
+	}
+
+	/// Retrives the error description
+	public var localizedDescription: String {
+		return _messageAlt ?? _message
+	}
+	
+	/**
+	Customizes an error message related to a given error type
+	
+	- parameter error: Instance error type
+	- parameter message: The message to be replaced
+	*/
+	public static func setMessage(error: SambaPlayerError, message: String) {
+		error.setMessage(message)
+	}
+	
+	/**
+	Customizes the message of the current error and returns it
+	
+	- parameter message: The message to be replaced
+	- returns: The current error
+	*/
+	public func setMessage(_ message: String) -> SambaPlayerError {
+		_messageAlt = message
+		return self
+	}
+}
+
+/// Listens to player events
 @objc public protocol SambaPlayerDelegate {
-	///Fired up when player is loaded
+	/// Fired up when player is loaded
 	func onLoad()
 	
-	///Fired up when player is started
+	/// Fired up when player is started
 	func onStart()
 	
-	///Fired up when player is resumed ( from paused to play )
+	/// Fired up when player is resumed ( from paused to play )
 	func onResume()
 	
-	///Fired up when player is paused
+	/// Fired up when player is paused
 	func onPause()
 	
-	///Fired up when player is playing ( fired each second of playing )
+	/// Fired up when player is playing ( fired each second of playing )
 	func onProgress()
 	
-	///Fired up when player is finished
+	/// Fired up when player is finished
 	func onFinish()
 	
-	///Fired up when player is destroyed
+	/// Fired up when player is destroyed
 	func onDestroy()
+	
+	/// Fired up when some error occurs
+	func onError(_ error: SambaPlayerError)
 }

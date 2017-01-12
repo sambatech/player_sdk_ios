@@ -16,7 +16,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	
 	private let _cellIdentifier: String = "outputCell"
 	private let _player: SambaPlayer
-	private let _outputs: [SambaMedia.Output]
+	private let _outputs: [SambaMediaOutput]
 	private let _selectedIndex: Int
 	
 	init(_ player: SambaPlayer, _ selectedIndex: Int = -1) {
@@ -27,13 +27,13 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		super.init(nibName: nil, bundle: nil)
 		
 		transitioningDelegate = self
-		modalPresentationStyle = UIModalPresentationStyle.OverCurrentContext
+		modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
 		
-		if let nib = NSBundle(forClass: self.dynamicType).loadNibNamed("OutputMenu", owner: self, options: nil).first as? UIView {
+		if let nib = Bundle(for: type(of: self)).loadNibNamed("OutputMenu", owner: self, options: nil)?.first as? UIView {
 			view = nib
 		}
 		else {
-			print("\(self.dynamicType) error: Couldn't load output menu.")
+			print("\(type(of: self)) error: Couldn't load output menu.")
 		}
 	}
 
@@ -51,26 +51,26 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	
 	// MARK: UITableViewDataSource implementation
 	
-	func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		return _outputs.count
 	}
 	
-	func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-		let cell = tableView.dequeueReusableCellWithIdentifier(_cellIdentifier) ??
-			UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: _cellIdentifier)
+	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: _cellIdentifier) ??
+			UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: _cellIdentifier)
 
-		cell.textLabel?.text = _outputs[indexPath.row].label
+		cell.textLabel?.text = _outputs[(indexPath as NSIndexPath).row].label
 		
-		if indexPath.row == _selectedIndex {
+		if (indexPath as NSIndexPath).row == _selectedIndex {
 			//cell.contentView.backgroundColor = UIColor(_player.media.theme)
-			cell.textLabel?.shadowColor = UIColor.blackColor()
+			cell.textLabel?.shadowColor = UIColor.black
 		}
 		
 		return cell
 	}
 	
-	func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-		_player.switchOutput(indexPath.row)
+	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+		_player.switchOutput((indexPath as NSIndexPath).row)
 		close()
 	}
 	
@@ -78,7 +78,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		_player.hideMenu(self)
 	}
 	
-	@IBAction func closeHandler(sender: AnyObject) {
+	@IBAction func closeHandler(_ sender: AnyObject) {
 		close()
 	}
 }

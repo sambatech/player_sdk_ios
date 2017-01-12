@@ -214,9 +214,8 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
         }];
 }
 
-- (void)loadStreamWithURL:(NSURL *)URL {
+- (void)loadStreamWithAsset:(AVAsset*)asset {
   [self setState:kGMFPlayerStateLoadingContent];
-  AVAsset *asset = [AVAsset assetWithURL:URL];
   [self handlePlayableAsset:asset];
 }
 
@@ -263,7 +262,12 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   AVPlayerItem *playerItem = [AVPlayerItem playerItemWithAsset:asset];
   // Recreating the AVPlayer instance because of issues when playing HLS then non-HLS back to
   // back, and vice-versa.
-  AVPlayer *player = [AVPlayer playerWithPlayerItem:playerItem];
+  AVPlayer *player = _player;
+	
+  if (player)
+	[player replaceCurrentItemWithPlayerItem:playerItem];
+  else player = [AVPlayer playerWithPlayerItem:playerItem];
+
   [self setAndObservePlayer:player playerItem:playerItem];
 }
 
@@ -324,10 +328,10 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   }
 }
 
-- (void)switchUrl:(NSString*)url {
+- (void)switchAsset:(AVAsset*)asset {
 	if (!_player) return;
 	
-	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:[AVAsset assetWithURL:[NSURL URLWithString:url]]];
+	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:asset];
 	CMTime t = _player.currentTime;
 	
 	//if (t.value > 1.0f) t.value -= 1.0f;
@@ -442,6 +446,8 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     }
   } else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];
+	self.error = _playerItem.error;
+	[self setState:kGMFPlayerStateError];
   }
 }
 

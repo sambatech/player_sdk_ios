@@ -56,8 +56,10 @@
 // current playback.
 @property(nonatomic, readonly) UIView *renderingView;
 
+@property(nonatomic, strong) NSError* error;
+
 // Public method to play media via url.
-- (void)loadStreamWithURL:(NSURL* )url;
+- (void)loadStreamWithAsset:(AVAsset*)asset;
 
 // Reset the playback state to enable playing a new video in an existing player instance.
 - (void)reset;
@@ -67,7 +69,7 @@
 - (void)pause;
 - (void)replay;
 - (void)seekToTime:(NSTimeInterval)time;
-- (void)switchUrl:(NSString*)url;
+- (void)switchAsset:(AVAsset*)asset;
 
 // Querying the player.
 - (NSTimeInterval)currentMediaTime;
