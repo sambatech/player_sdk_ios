@@ -37,8 +37,11 @@ If `outputs` field is nil, use `url` field.
 	/// DFP tag URL
 	public var adUrl: String?
 	
-	/// List of the outputs
+	/// List of outputs
 	public var outputs: [SambaMediaOutput]?
+	
+	/// List of captions
+	public var captions: [SambaMediaCaption]?
 	
 	/// Delivery type ( HLS, PROGRESSIVE, OTHER )
 	public var deliveryType = "other"
@@ -89,6 +92,7 @@ If `outputs` field is nil, use `url` field.
 		url = media.url
 		title = media.title
 		outputs = media.outputs
+		captions = media.captions
 		adUrl = media.adUrl
 		deliveryType = media.deliveryType
 		thumb = media.thumb
@@ -102,7 +106,7 @@ If `outputs` field is nil, use `url` field.
 }
 
 /**
-Output structure
+Output entity
 
 - url: Media URL
 - label: Output label
@@ -116,6 +120,31 @@ Output structure
 	public init(url: String, label: String, isDefault: Bool) {
 		self.url = url
 		self.label = label
+		self.isDefault = isDefault
+	}
+}
+
+/**
+Caption entity
+
+- url: Caption URL
+- label: Caption label
+- language: Caption language identifier
+- cc: Is it CC (Closed Caption)?
+- isDefault: Is it the default caption?
+*/
+@objc public class SambaMediaCaption : NSObject {
+	public let url: String
+	public let label: String
+	public let language: String
+	public let cc: Bool
+	public let isDefault: Bool
+	
+	public init(url: String, label: String, language: String, cc: Bool, isDefault: Bool) {
+		self.url = url
+		self.label = label
+		self.language = language
+		self.cc = cc
 		self.isDefault = isDefault
 	}
 }
