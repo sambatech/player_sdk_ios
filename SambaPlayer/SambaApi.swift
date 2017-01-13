@@ -244,25 +244,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		if let captions = json["captions"] as? [AnyObject], captions.count > 0 {
 			var mediaCaptions = [SambaMediaCaption]()
-			let langLookup = [
-				"pt-br": "Português",
-				"en-us": "Inglês",
-				"es-es": "Espanhol",
-				"it-it": "Italiano",
-				"fr-fr": "Francês"
-			]
 			
 			for caption in captions {
 				guard let url = caption["url"] as? String,
 					let info = caption["info"] as? [String:AnyObject],
-					let lang = info["captionLanguage"] as? String,
-					// TODO: localization
-					let label = langLookup[lang.lowercased().replacingOccurrences(of: "_", with: "-")]
+					let lang = info["captionLanguage"] as? String
 					else { continue }
 				
 				mediaCaptions.append(SambaMediaCaption(
 					url: url,
-					label: label,
+					label: NSLocalizedString(lang.lowercased().replacingOccurrences(of: "_", with: "-"), tableName: default, bundle: Bundle.init(for: this), value: default, comment: ""),
 					language: lang,
 					cc: info["closedCaption"] as? Bool ?? false,
 					// TODO: change later

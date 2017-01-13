@@ -24,7 +24,7 @@ if [[ ! -f "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" || ! -f "${BUILD_D
 fi
 
 archsCount=$(lipo -info "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" | rev | sed 's/[ ]\:.*//' | rev | sed -E -e 's/i386|arm64|x86_64|armv7/1/g' | grep -o '1' | wc -l 2>> setup.log)
-
+echo ">>> ${archsCount} <<<" >> setup.log
 # if binary supported archs are equal or greater than 4, consider already merged
 if [[ "${archsCount}" -ge 4 ]]; then
 	echo "Already merged, end task." | tee -a setup.log
@@ -46,7 +46,7 @@ cp -r "${BUILD_DIR}/Release-iphonesimulator/${WRAPPER_NAME}/Modules/" "${BUILD_D
 
 # merges libs to reach all archs
 echo "merging archs: ${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH} + ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH} => ${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" | tee -a setup.log
-lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2>> setup.log
+lipo -create "${BUILD_DIR}/Release-iphonesimulator/${EXECUTABLE_PATH}" "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" -output "${BUILD_DIR}/Release-iphoneos/${EXECUTABLE_PATH}" 2>&1 | tee -a setup.log
 
 # copies IMA framework to Carthage's build dir
 echo "copying IMA: ${SRCROOT}/Frameworks/GoogleInteractiveMediaAds.framework => ${SRCROOT}/../../Build/iOS/GoogleInteractiveMediaAds.framework/" | tee -a setup.log
