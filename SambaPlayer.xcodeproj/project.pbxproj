@@ -98,7 +98,6 @@
 		9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D41D14B5B900B6E450 /* UILabel+GMFLabels.m */; };
 		9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* GMFSlider.m */; };
-		9AF325FD1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 		9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -412,7 +411,6 @@
 				9AF324D41D14356E00B6E450 /* Sources */,
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
-				9AF1A20C1D391CE60079F9FE /* ShellScript */,
 				9AF324D71D14356E00B6E450 /* Resources */,
 			);
 			buildRules = (
@@ -513,22 +511,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		9AF1A20C1D391CE60079F9FE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = ./setup.sh;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9AF324D41D14356E00B6E450 /* Sources */ = {
