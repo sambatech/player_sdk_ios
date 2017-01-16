@@ -28,6 +28,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UIImageView *_backgroundView;
   UIButton *_minimizeButton;
   UIButton *_hdButton;
+  UIButton *_captionsButton;
   UIButton *_playButton;
   UIButton *_playerReplayButton;
   UILabel *_secondsPlayedLabel;
@@ -38,6 +39,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
   NSLayoutConstraint* _hdHideConstraint;
+  NSLayoutConstraint* _captionsHideConstraint;
   NSLayoutConstraint* _playHideConstraint;
   NSLayoutConstraint* _minimizeHideConstraint;
   NSLayoutConstraint* _scrubberRightConstraint;
@@ -95,6 +97,7 @@ static const CGFloat kGMFBarPaddingX = 8;
         forControlEvents:UIControlEventTouchUpOutside];
     [self addSubview:_scrubber];
 	  
+	  // Play button
 	  _playButton = [self playerButtonWithImage:[GMFResources playerBarPlayButtonImage]
 									   action:@selector(didPressPlay:)
 						   accessibilityLabel:
@@ -111,6 +114,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 													  multiplier:1.0f
 														constant:0];
 	
+	  // HD button
 	  _hdButton = [self playerButtonWithImage:[GMFResources playerBarHdButtonImage]
 									   action:@selector(didPressHd:)
 						   accessibilityLabel:
@@ -126,6 +130,23 @@ static const CGFloat kGMFBarPaddingX = 8;
 													  multiplier:1.0f
 														constant:0];
 	  
+	  // Caption button
+	  _captionsButton = [self playerButtonWithImage:[GMFResources playerBarCaptionsButtonImage]
+									   action:@selector(didPressCaptions:)
+						   accessibilityLabel:
+				   NSLocalizedStringFromTable(@"Captions",
+											  @"GoogleMediaFramework",
+											  nil)];
+	  
+	  _captionsHideConstraint = [NSLayoutConstraint constraintWithItem:_captionsButton
+													   attribute:NSLayoutAttributeWidth
+													   relatedBy:NSLayoutRelationEqual
+														  toItem:nil
+													   attribute:NSLayoutAttributeNotAnAttribute
+													  multiplier:1.0f
+														constant:0];
+	  
+	// Minimize button
 	_minimizeButton = [self playerButtonWithImage:[GMFResources playerBarMinimizeButtonImage]
 										 action:@selector(didPressMinimize:)
 							 accessibilityLabel:
@@ -143,12 +164,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
 	[self addSubview:_playButton];
 	[self addSubview:_hdButton];
+	[self addSubview:_captionsButton];
 	[self addSubview:_minimizeButton];
 
     [self setupLayoutConstraints];
 	  
 	[self hidePlayButton];
 	[self hideHdButton];
+	[self hideCaptionsButton];
   }
   return self;
 }
@@ -180,6 +203,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)showHdButton {
 	[self removeConstraint:_hdHideConstraint];
+}
+
+- (void)hideCaptionsButton {
+	[self addConstraint:_captionsHideConstraint];
+}
+
+- (void)showCaptionsButton {
+	[self removeConstraint:_captionsHideConstraint];
 }
 
 - (void)hideFullscreenButton {
@@ -225,6 +256,9 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[_hdButton removeTarget:self
 				     action:NULL
 		   forControlEvents:UIControlEventTouchUpInside];
+	[_captionsButton removeTarget:self
+					 action:NULL
+		   forControlEvents:UIControlEventTouchUpInside];
 	[_minimizeButton removeTarget:self
                       action:NULL
             forControlEvents:UIControlEventTouchUpInside];
@@ -238,6 +272,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   [_totalSecondsLabel setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_scrubber setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_hdButton setTranslatesAutoresizingMaskIntoConstraints:NO];
+  [_captionsButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_minimizeButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_timeSeparator setTranslatesAutoresizingMaskIntoConstraints:NO];
 
@@ -248,6 +283,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 																 _totalSecondsLabel,
                                                                  _scrubber,
 																 _hdButton,
+																 _captionsButton,
                                                                  _minimizeButton);
   
   NSArray *constraints = [[NSArray alloc] init];
@@ -300,6 +336,23 @@ static const CGFloat kGMFBarPaddingX = 8;
 										   multiplier:1.0f
 											 constant:-kGMFBarPaddingX]];
 	
+	// Make the caption button occupy the full height of the view.
+	constraints = [constraints arrayByAddingObjectsFromArray:
+				   [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_captionsButton]-%.0f-|", _padding.origin.y, _padding.size.height]
+														   options:NSLayoutFormatAlignAllBaseline
+														   metrics:nil
+															 views:viewsDictionary]];
+	
+	// Position the hd button kGMFBarPaddingX from the right of the minimize button.
+	constraints = [constraints arrayByAddingObject:
+				   [NSLayoutConstraint constraintWithItem:_captionsButton
+												attribute:NSLayoutAttributeRight
+												relatedBy:NSLayoutRelationEqual
+												   toItem:_hdButton
+												attribute:NSLayoutAttributeLeft
+											   multiplier:1.0f
+												 constant:-kGMFBarPaddingX]];
+	
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
                  [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", _padding.origin.y, _padding.size.height]
@@ -312,7 +365,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                  _scrubberRightConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeRight
                                               relatedBy:NSLayoutRelationEqual
-                                                 toItem:_hdButton
+                                                 toItem:_captionsButton
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
                                                constant:-kGMFBarPaddingX]];
@@ -484,6 +537,10 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 -(void)didPressHd:(id)sender {
   [_delegate didPressHd];
+}
+
+-(void)didPressCaptions:(id)sender {
+  [_delegate didPressCaptions];
 }
 
 - (void)didScrubbingStart:(id)sender {

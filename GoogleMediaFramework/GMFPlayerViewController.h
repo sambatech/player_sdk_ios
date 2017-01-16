@@ -23,6 +23,7 @@ extern NSString * const kGMFPlayerCurrentMediaTimeDidChangeNotification;
 extern NSString * const kGMFPlayerCurrentTotalTimeDidChangeNotification;
 extern NSString * const kGMFPlayerDidMinimizeNotification;
 extern NSString * const kGMFPlayerDidPressHdNotification;
+extern NSString * const kGMFPlayerDidPressCaptionsNotification;
 extern NSString * const kGMFPlayerPlaybackStateDidChangeNotification;
 extern NSString * const kGMFPlayerStateDidChangeToFinishedNotification;
 extern NSString * const kGMFPlayerStateWillChangeToFinishedNotification;

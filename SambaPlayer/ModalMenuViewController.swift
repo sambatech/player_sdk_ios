@@ -9,19 +9,22 @@
 import Foundation
 import UIKit
 
-class OutputMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
+class ModalMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 	
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var heightConstraint: NSLayoutConstraint!
+	@IBOutlet var menuTitle: UILabel!
 	
-	private let _cellIdentifier: String = "outputCell"
+	private let _cellIdentifier: String = "menu_cell"
 	private let _player: SambaPlayer
-	private let _outputs: [SambaMediaOutput]
+	private let _options: [String]
+	private let _title: String
 	private let _selectedIndex: Int
 	
-	init(_ player: SambaPlayer, _ selectedIndex: Int = -1) {
+	init(_ player: SambaPlayer, _ options: [String], _ title: String, _ selectedIndex: Int = -1) {
 		_player = player
-		_outputs = player.media.outputs!
+		_options = options
+		_title = title
 		_selectedIndex = selectedIndex
 		
 		super.init(nibName: nil, bundle: nil)
@@ -29,7 +32,7 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 		transitioningDelegate = self
 		modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
 		
-		if let nib = Bundle(for: type(of: self)).loadNibNamed("OutputMenu", owner: self, options: nil)?.first as? UIView {
+		if let nib = Bundle(for: type(of: self)).loadNibNamed("ModalMenu", owner: self, options: nil)?.first as? UIView {
 			view = nib
 		}
 		else {
@@ -39,6 +42,10 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 
 	required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
+	}
+	
+	override func viewWillAppear(_ animated: Bool) {
+		menuTitle.text = _title
 	}
 	
 	override func viewDidLayoutSubviews() {
@@ -52,14 +59,14 @@ class OutputMenuViewController: UIViewController, UITableViewDataSource, UITable
 	// MARK: UITableViewDataSource implementation
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return _outputs.count
+		return _options.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: _cellIdentifier) ??
 			UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: _cellIdentifier)
 
-		cell.textLabel?.text = _outputs[(indexPath as NSIndexPath).row].label
+		cell.textLabel?.text = _options[(indexPath as NSIndexPath).row]
 		
 		if (indexPath as NSIndexPath).row == _selectedIndex {
 			//cell.contentView.backgroundColor = UIColor(_player.media.theme)

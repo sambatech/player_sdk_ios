@@ -29,6 +29,8 @@ NSString * const kGMFPlayerDidMinimizeNotification =
 	@"kGMFPlayerDidMinimizeNotification";
 NSString * const kGMFPlayerDidPressHdNotification =
 	@"kGMFPlayerDidPressHdNotification";
+NSString * const kGMFPlayerDidPressCaptionsNotification =
+	@"kGMFPlayerDidPressCaptionsNotification";
 NSString * const kGMFPlayerPlaybackStateDidChangeNotification =
     @"kGMFPlayerPlaybackStateDidChangeNotification";
 NSString * const kGMFPlayerStateDidChangeToFinishedNotification =
@@ -448,6 +450,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 	[self notifyUserDidHd];
 }
 
+- (void)didPressCaptions {
+	[self notifyUserDidCaptions];
+}
+
 // Notifies a listener that the user minimized the video player by tapping the minimize button.
 - (void)notifyUserDidMinimize {
   [[NSNotificationCenter defaultCenter]
@@ -459,6 +465,13 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 - (void)notifyUserDidHd {
 	[[NSNotificationCenter defaultCenter]
 	 postNotificationName:kGMFPlayerDidPressHdNotification
+	 object:self
+	 userInfo:nil];
+}
+
+- (void)notifyUserDidCaptions {
+	[[NSNotificationCenter defaultCenter]
+	 postNotificationName:kGMFPlayerDidPressCaptionsNotification
 	 object:self
 	 userInfo:nil];
 }

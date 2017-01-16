@@ -22,7 +22,7 @@
 - (void)didPressReplay;
 - (void)didPressMinimize;
 - (void)didPressHd;
-
+- (void)didPressCaptions;
 // User seeked to a given time relative to the start of the video.
 - (void)didSeekToTime:(NSTimeInterval)time;
 - (void)didStartScrubbing;
@@ -66,6 +66,8 @@
 - (void)showPlayButton;
 - (void)hideHdButton;
 - (void)showHdButton;
+- (void)hideCaptionsButton;
+- (void)showCaptionsButton;
 - (void)hideFullscreenButton;
 - (void)showFullscreenButton;
 - (void)hideBackground;

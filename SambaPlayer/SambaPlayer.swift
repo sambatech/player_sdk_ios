@@ -375,6 +375,10 @@ public class SambaPlayer : UIViewController {
 				player.getControlsView().showHdButton()
 			}
 			
+			if let captions = self.media.captions, captions.count > 0 {
+				player.getControlsView().showCaptionsButton()
+			}
+			
 			if self.media.isAudio {
 				player.hideBackground()
 				player.getControlsView().hideFullscreenButton()
@@ -428,8 +432,10 @@ public class SambaPlayer : UIViewController {
 		nc.addObserver(self, selector: #selector(hdTouchHandler),
 		               name: NSNotification.Name.gmfPlayerDidPressHd, object: gmf)
 		
-		// Tracking
+		nc.addObserver(self, selector: #selector(captionsTouchHandler),
+		               name: NSNotification.Name.gmfPlayerDidPressCaptions, object: gmf)
 		
+		// Tracking
 		if !media.isLive && !media.isAudio {
 			let _ = Tracking(self)
 		}
@@ -583,7 +589,13 @@ public class SambaPlayer : UIViewController {
 	}
 	
 	@objc private func hdTouchHandler() {
-		showMenu(OutputMenuViewController(self, _currentOutput))
+		guard let outputs = media.outputs else { return }
+		showMenu(ModalMenuViewController(self, outputs.map {$0.label}, "Qualidade", _currentOutput))
+	}
+	
+	@objc private func captionsTouchHandler() {
+		guard let captions = media.captions else { return }
+		showMenu(ModalMenuViewController(self, captions.map {$0.label}, "Legendas", _currentOutput))
 	}
 	
 	private func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {

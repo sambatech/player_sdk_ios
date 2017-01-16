@@ -67,6 +67,10 @@
   return [self imageNamed:@"player_control_hd"];
 }
 
++ (UIImage *)playerBarCaptionsButtonImage {
+  return [self imageNamed:@"player_control_captions"];
+}
+
 + (UIImage *)playerBarScrubberThumbImage {
   return [self imageNamed:@"player_scrubber_thumb"];
 }
