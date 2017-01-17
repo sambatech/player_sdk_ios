@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class ModalMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
+class ModalMenu: UIViewController, UITableViewDataSource, UITableViewDelegate, UIViewControllerTransitioningDelegate {
 	
 	@IBOutlet var tableView: UITableView!
 	@IBOutlet var heightConstraint: NSLayoutConstraint!
@@ -20,24 +20,24 @@ class ModalMenuViewController: UIViewController, UITableViewDataSource, UITableV
 	private let _options: [String]
 	private let _title: String
 	private let _selectedIndex: Int
+	private let _onSelect: (Int) -> ()
 	
-	init(_ player: SambaPlayer, _ options: [String], _ title: String, _ selectedIndex: Int = -1) {
+	init(sambaPlayer player: SambaPlayer, options: [String], title: String, onSelect: @escaping (Int) -> (), selectedIndex: Int = -1) {
 		_player = player
 		_options = options
 		_title = title
+		_onSelect = onSelect
 		_selectedIndex = selectedIndex
 		
 		super.init(nibName: nil, bundle: nil)
 		
+		guard let view = Bundle(for: type(of: self)).loadNibNamed("ModalMenu", owner: self, options: nil)?.first as? UIView else {
+			fatalError("\(type(of: self)) error: Couldn't load view.")
+		}
+		
+		self.view = view
 		transitioningDelegate = self
 		modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-		
-		if let nib = Bundle(for: type(of: self)).loadNibNamed("ModalMenu", owner: self, options: nil)?.first as? UIView {
-			view = nib
-		}
-		else {
-			print("\(type(of: self)) error: Couldn't load output menu.")
-		}
 	}
 
 	required init?(coder aDecoder: NSCoder) {
@@ -77,7 +77,7 @@ class ModalMenuViewController: UIViewController, UITableViewDataSource, UITableV
 	}
 	
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		_player.switchOutput((indexPath as NSIndexPath).row)
+		_onSelect((indexPath as NSIndexPath).row)
 		close()
 	}
 	

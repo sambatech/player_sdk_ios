@@ -1,0 +1,13 @@
+/* 
+  Localizable.strings
+  SambaPlayer
+
+  Created by Leandro Zanol on 1/13/17.
+  Copyright © 2017 Samba Tech. All rights reserved.
+*/
+
+"pt-br" = "Português";
+"en-us" = "Inglês";
+"es-es" = "Espanhol";
+"it-it" = "Italiano";
+"fr-fr" = "Francês";

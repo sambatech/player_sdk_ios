@@ -45,8 +45,11 @@
 		9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB41D4A3D09008A5BEE /* player_scrubber_thumb@2x.png */; };
 		9A1ADBDA1D4A3D09008A5BEE /* player_scrubber_thumb@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB51D4A3D09008A5BEE /* player_scrubber_thumb@3x.png */; };
 		9A2B23961DDDED8900D59745 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
+		9A385CBB1E2EAF4B00518BDD /* CaptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */; };
+		9A4C4DF21E2E659B001A75DD /* OverlayScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4C4DF11E2E659B001A75DD /* OverlayScreen.xib */; };
+		9A4C4DF41E2E66CE001A75DD /* OverlayScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A4C4DF31E2E66CE001A75DD /* OverlayScreen.swift */; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
-		9A5267FD1D22D5BD00C9C015 /* ModalMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* ModalMenuViewController.swift */; };
+		9A5267FD1D22D5BD00C9C015 /* ModalMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */; };
 		9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F31D22D5BD00C9C015 /* SambaApi.swift */; };
 		9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F51D22D5BD00C9C015 /* SambaMediaRequest.swift */; };
 		9A5268011D22D5BD00C9C015 /* SambaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A5267F61D22D5BD00C9C015 /* SambaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -58,7 +61,7 @@
 		9A67DD741DE4A2B600F8E172 /* player_error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD711DE4A2B600F8E172 /* player_error@3x.png */; };
 		9A67DD751DE4A2B600F8E172 /* player_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD721DE4A2B600F8E172 /* player_error@2x.png */; };
 		9A67DD761DE4A2B600F8E172 /* player_error@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD731DE4A2B600F8E172 /* player_error@1x.png */; };
-		9A67DD7A1DE4BE2F00F8E172 /* ErrorScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */; };
+		9A67DD7A1DE4BE2F00F8E172 /* ErrorScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A67DD791DE4BE2F00F8E172 /* ErrorScreen.swift */; };
 		9A67DD7C1DE4BE7600F8E172 /* ErrorScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */; };
 		9A762B531E2D538C004FD2D0 /* player_control_captions@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A762B501E2D538C004FD2D0 /* player_control_captions@3x.png */; };
 		9A762B541E2D538C004FD2D0 /* player_control_captions@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A762B511E2D538C004FD2D0 /* player_control_captions@2x.png */; };
@@ -143,9 +146,12 @@
 		9A1ADBB31D4A3D09008A5BEE /* player_scrubber_thumb@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_scrubber_thumb@1x.png"; sourceTree = "<group>"; };
 		9A1ADBB41D4A3D09008A5BEE /* player_scrubber_thumb@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_scrubber_thumb@2x.png"; sourceTree = "<group>"; };
 		9A1ADBB51D4A3D09008A5BEE /* player_scrubber_thumb@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_scrubber_thumb@3x.png"; sourceTree = "<group>"; };
+		9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CaptionsScreen.swift; sourceTree = "<group>"; };
+		9A4C4DF11E2E659B001A75DD /* OverlayScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OverlayScreen.xib; sourceTree = "<group>"; };
+		9A4C4DF31E2E66CE001A75DD /* OverlayScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OverlayScreen.swift; sourceTree = "<group>"; };
 		9A5267EF1D22D5BD00C9C015 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		9A5267F01D22D5BD00C9C015 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A5267F21D22D5BD00C9C015 /* ModalMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMenuViewController.swift; sourceTree = "<group>"; };
+		9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMenu.swift; sourceTree = "<group>"; };
 		9A5267F31D22D5BD00C9C015 /* SambaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaApi.swift; sourceTree = "<group>"; };
 		9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9A5267F51D22D5BD00C9C015 /* SambaMediaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMediaRequest.swift; sourceTree = "<group>"; };
@@ -158,7 +164,7 @@
 		9A67DD711DE4A2B600F8E172 /* player_error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@3x.png"; sourceTree = "<group>"; };
 		9A67DD721DE4A2B600F8E172 /* player_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@2x.png"; sourceTree = "<group>"; };
 		9A67DD731DE4A2B600F8E172 /* player_error@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@1x.png"; sourceTree = "<group>"; };
-		9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorScreenViewController.swift; sourceTree = "<group>"; };
+		9A67DD791DE4BE2F00F8E172 /* ErrorScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorScreen.swift; sourceTree = "<group>"; };
 		9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ErrorScreen.xib; sourceTree = "<group>"; };
 		9A762B501E2D538C004FD2D0 /* player_control_captions@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_captions@3x.png"; sourceTree = "<group>"; };
 		9A762B511E2D538C004FD2D0 /* player_control_captions@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_captions@2x.png"; sourceTree = "<group>"; };
@@ -279,14 +285,27 @@
 			path = GMFLocalizations;
 			sourceTree = "<group>";
 		};
+		9A4C4DF51E2E6983001A75DD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */,
+				9A67DD791DE4BE2F00F8E172 /* ErrorScreen.swift */,
+				9A4C4DF31E2E66CE001A75DD /* OverlayScreen.swift */,
+				9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */,
+				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
+				9A4C4DF11E2E659B001A75DD /* OverlayScreen.xib */,
+				9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
 		9A5267EE1D22D5BD00C9C015 /* SambaPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				9AF57B7F1DA431690062E54A /* Drm */,
-				9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */,
+				9A4C4DF51E2E6983001A75DD /* Views */,
 				9A5267EF1D22D5BD00C9C015 /* Helpers.swift */,
 				9A5267F01D22D5BD00C9C015 /* Info.plist */,
-				9A5267F21D22D5BD00C9C015 /* ModalMenuViewController.swift */,
 				9A5267F31D22D5BD00C9C015 /* SambaApi.swift */,
 				9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */,
 				9A5267F51D22D5BD00C9C015 /* SambaMediaRequest.swift */,
@@ -295,8 +314,6 @@
 				9A5267F81D22D5BD00C9C015 /* Settings.plist */,
 				9A5267F91D22D5BD00C9C015 /* Tracking.swift */,
 				9A52680C1D230C0500C9C015 /* Exportable.modulemap */,
-				9A67DD791DE4BE2F00F8E172 /* ErrorScreenViewController.swift */,
-				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 			);
 			path = SambaPlayer;
 			sourceTree = "<group>";
@@ -481,6 +498,7 @@
 				9A762B551E2D538C004FD2D0 /* player_control_captions@1x.png in Resources */,
 				9A1ADBD21D4A3D09008A5BEE /* player_control_replay@3x.png in Resources */,
 				9A1ADBCE1D4A3D09008A5BEE /* player_control_play_large@2x.png in Resources */,
+				9A4C4DF21E2E659B001A75DD /* OverlayScreen.xib in Resources */,
 				9A1ADBBB1D4A3D09008A5BEE /* player_control_ic_live@1x.png in Resources */,
 				9A1ADBBE1D4A3D09008A5BEE /* player_control_maximize@1x.png in Resources */,
 				9A1ADBB61D4A3D09008A5BEE /* GoogleMediaFramework.strings in Resources */,
@@ -535,10 +553,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */,
-				9A5267FD1D22D5BD00C9C015 /* ModalMenuViewController.swift in Sources */,
+				9A5267FD1D22D5BD00C9C015 /* ModalMenu.swift in Sources */,
 				9AF325DF1D14B5B900B6E450 /* GMFPlayerControlsView.m in Sources */,
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,
+				9A385CBB1E2EAF4B00518BDD /* CaptionsScreen.swift in Sources */,
 				9AF325E91D14B5B900B6E450 /* GMFPlayerViewController.m in Sources */,
 				9AF325F61D14B5B900B6E450 /* UIImage+GMFTintableImage.m in Sources */,
 				9AF325EB1D14B5B900B6E450 /* GMFResources.m in Sources */,
@@ -552,7 +571,8 @@
 				9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */,
 				9AF325E21D14B5B900B6E450 /* GMFPlayerOverlayView.m in Sources */,
 				9AF325ED1D14B5B900B6E450 /* GMFTopBarView.m in Sources */,
-				9A67DD7A1DE4BE2F00F8E172 /* ErrorScreenViewController.swift in Sources */,
+				9A4C4DF41E2E66CE001A75DD /* OverlayScreen.swift in Sources */,
+				9A67DD7A1DE4BE2F00F8E172 /* ErrorScreen.swift in Sources */,
 				9AF325DC1D14B5B900B6E450 /* GMFIMASDKAdService.m in Sources */,
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,

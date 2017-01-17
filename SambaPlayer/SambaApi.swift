@@ -249,7 +249,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 				"en-us": "Inglês",
 				"es-es": "Espanhol",
 				"it-it": "Italiano",
-				"fr-fr": "Francês"
+				"fr-fr": "Francês",
+				"disable": "Desativar"
 			]
 			
 			for caption in captions {
@@ -266,8 +267,18 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					label: label,
 					language: lang,
 					cc: info["closedCaption"] as? Bool ?? false,
-					// TODO: change later
 					isDefault: false
+				))
+			}
+			
+			// set disable option (as default)
+			if let label = langLookup["disable"] {
+				mediaCaptions.append(SambaMediaCaption(
+					url: "",
+					label: label,
+					language: "",
+					cc: false,
+					isDefault: true
 				))
 			}
 			
