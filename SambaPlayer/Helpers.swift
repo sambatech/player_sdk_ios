@@ -114,7 +114,10 @@ class Helpers {
 			
 			switch T.self {
 			case is String.Type:
-				if let text = String(data: data, encoding: String.Encoding.utf8) {
+				if let text = String(data: data, encoding: .utf8) {
+					onComplete?(text as? T)
+				}
+				else if let text = String(data: data, encoding: .ascii) {
 					onComplete?(text as? T)
 				}
 				else {

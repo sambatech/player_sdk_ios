@@ -8,15 +8,17 @@
 
 import Foundation
 
-class ErrorScreen : OverlayScreen {
+class ErrorScreen : UIViewController {
+	
+	@IBOutlet var textField: UILabel!
 	
 	init(_ error: SambaPlayerError) {
-		super.init(name: "ErrorScreen")
+		super.init(nibName: "ErrorScreen", bundle: Bundle(for: type(of: self)))
 		
 		textField.text = error.localizedDescription
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
-		super.init(coder: aDecoder)
+		fatalError("init(coder:) has not been implemented")
 	}
 }

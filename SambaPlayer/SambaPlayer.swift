@@ -17,8 +17,7 @@ public class SambaPlayer : UIViewController {
 	private var _parentView: UIView?
 	private var _currentMenu: UIViewController?
 	private var _errorScreen: UIViewController?
-	private var _captionScreen: UIViewController?
-	private var _screens = [UIViewController]()
+	private var _captionsScreen: UIViewController?
 	private var _delegates = [SambaPlayerDelegate]()
 	private var _progressTimer = Timer()
 	private var _hasStarted = false
@@ -29,7 +28,6 @@ public class SambaPlayer : UIViewController {
 	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
-	private var _currentCaption = -1
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
@@ -70,20 +68,8 @@ public class SambaPlayer : UIViewController {
 				return
 			}
 			
-			// re-enable player
-			_disabled = false
-			
-			// set current output
-			if let index = media.outputs?.index(where: { $0.isDefault }) {
-				_currentOutput = index
-			}
-			
-			// set current caption
-			if let index = media.captions?.index(where: { $0.isDefault }),
-				let m = media as? SambaMediaConfig {
-				_currentCaption = index
-				//CaptionsScreen.instance(media: m)
-			}
+			// reset player
+			destroy()
 			
 			DispatchQueue.main.async {
 				if self.media.isAudio {
@@ -233,28 +219,8 @@ public class SambaPlayer : UIViewController {
 	- parameter value: Index of the caption
 	*/
 	public func changeCaption(_ value: Int) {
-		guard value != _currentCaption,
-			let captions = media.captions,
-			value < captions.count else { return }
-		
-		_currentCaption = value
-		
-		if let caption = _captionScreen {
-			
-		}
-		
-		// disable
-		if captions[value].url == "" {
-			
-			return
-		}
-		
-		guard let url = URL(string: captions[value].url) else {
-			dispatchError(SambaPlayerError.invalidUrl.setMessage("Invalid caption URL"))
-			return
-		}
-		
-		
+		guard let screen = _captionsScreen as? CaptionsScreen else { return }
+		screen.changeCaption(value)
 	}
 		
 	/**
@@ -265,8 +231,14 @@ public class SambaPlayer : UIViewController {
 	- parameter error: (optional) Error type to show
 	*/
 	public func destroy(withError error: SambaPlayerError? = nil) {
-		if let error = error { showError(error) }
-		else { destroyScreen(&_errorScreen, &_captionScreen) }
+		if let error = error {
+			_disabled = true
+			showScreen(ErrorScreen(error), &_errorScreen)
+		}
+		else {
+			destroyScreen(&_errorScreen)
+			destroyScreen(&_captionsScreen)
+		}
 		
 		guard let player = _player else { return }
 		
@@ -370,10 +342,12 @@ public class SambaPlayer : UIViewController {
 	func hideMenu(_ menu: UIViewController, _ mainActionOnly: Bool = false) {
 		detachVC(menu, _player, false)
 		
-		_currentMenu = nil
-		
-		if !mainActionOnly && _wasPlayingBeforePause {
-			play()
+		if !mainActionOnly {
+			if _wasPlayingBeforePause {
+				play()
+			}
+			
+			_currentMenu = nil
 		}
 	}
 	
@@ -385,11 +359,17 @@ public class SambaPlayer : UIViewController {
 			return
 		}
 		
+		// re-enable player
 		_pendingPlay = false
+		_disabled = false
 		
 		var urlOpt = media.url
 		
+		// outputs
 		if let outputs = media.outputs, outputs.count > 0 {
+			// set default output
+			_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
+			
 			urlOpt = outputs[0].url
 			
 			for output in outputs where output.isDefault {
@@ -399,6 +379,12 @@ public class SambaPlayer : UIViewController {
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
+		// captions
+		if let captions = media.captions {
+			showScreen(CaptionsScreen(player: self, captions: captions), &_captionsScreen)
+		}
+		
+		// URL
 		guard let urlString = urlOpt,
 			let url = URL(string: urlString) else {
 			dispatchError(SambaPlayerError.invalidUrl)
@@ -509,11 +495,19 @@ public class SambaPlayer : UIViewController {
 		
 		let thumb = UIButton(frame: view.frame)
 		let size = CGSize(width: view.frame.width, height: view.frame.height)
-		let play = GMFResources.playerBarPlayLargeButtonImage()
 		
 		UIGraphicsBeginImageContextWithOptions(size, true, 0)
 		thumbImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-		play?.draw(in: CGRect(x: (size.width - (play?.size.width)!)/2, y: (size.height - (play?.size.height)!)/2, width: (play?.size.width)!, height: (play?.size.height)!))
+		
+		// if play icon exists
+		if let play = GMFResources.playerBarPlayLargeButtonImage() {
+			let playSize = play.size
+			play.draw(in: CGRect(x: (size.width - play.size.width)/2,
+			                     y: (size.height - play.size.height)/2,
+			                     width: play.size.width,
+			                     height: playSize.height))
+		}
+		
 		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), for: UIControlState())
 		UIGraphicsEndImageContext()
 		
@@ -546,22 +540,16 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	private func showError(_ error: SambaPlayerError) {
-		_disabled = true
-		_errorScreen = showScreen(ErrorScreen(error))
-	}
-	
-	private func showScreen(_ screen: UIViewController) -> UIViewController {
-		destroyScreen()
+	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?) {
+		guard ref == nil else { return }
 		attachVC(screen)
-		
-		return screen
+		ref = screen
 	}
 	
-	private func destroyScreen(_ screenExt: inout UIViewController?) {
-		guard let screen = screenExt else { return }
+	private func destroyScreen(_ ref: inout UIViewController?) {
+		guard let screen = ref else { return }
 		detachVC(screen)
-		screenExt = nil
+		ref = nil
 	}
 	
 	// MARK: Handlers
@@ -638,20 +626,23 @@ public class SambaPlayer : UIViewController {
 	
 	@objc private func hdTouchHandler() {
 		guard let outputs = media.outputs else { return }
+		
 		showMenu(ModalMenu(sambaPlayer: self,
-		                                 options: outputs.map { $0.label },
-		                                 title: "Qualidade",
-		                                 onSelect: { self.switchOutput($0) },
-		                                 selectedIndex: _currentOutput))
+		                   options: outputs.map { $0.label },
+		                   title: "Qualidade",
+		                   onSelect: { self.switchOutput($0) },
+		                   selectedIndex: _currentOutput))
 	}
 	
 	@objc private func captionsTouchHandler() {
-		guard let captions = media.captions else { return }
+		guard let captions = media.captions,
+			let screen = _captionsScreen as? CaptionsScreen else { return }
+		
 		showMenu(ModalMenu(sambaPlayer: self,
-		                                 options: captions.map { $0.label },
-		                                 title: "Legendas",
-		                                 onSelect: { self.changeCaption($0) },
-		                                 selectedIndex: _currentCaption))
+		                   options: captions.map { $0.label },
+		                   title: "Legendas",
+		                   onSelect: { self.changeCaption($0) },
+		                   selectedIndex: screen.currentIndex))
 	}
 	
 	private func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {

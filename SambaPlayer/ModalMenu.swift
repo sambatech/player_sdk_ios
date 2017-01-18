@@ -29,13 +29,8 @@ class ModalMenu: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 		_onSelect = onSelect
 		_selectedIndex = selectedIndex
 		
-		super.init(nibName: nil, bundle: nil)
+		super.init(nibName: "ModalMenu", bundle: Bundle(for: type(of: self)))
 		
-		guard let view = Bundle(for: type(of: self)).loadNibNamed("ModalMenu", owner: self, options: nil)?.first as? UIView else {
-			fatalError("\(type(of: self)) error: Couldn't load view.")
-		}
-		
-		self.view = view
 		transitioningDelegate = self
 		modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
 	}
