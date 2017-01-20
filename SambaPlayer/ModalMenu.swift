@@ -30,6 +30,7 @@ class ModalMenu: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 		_selectedIndex = selectedIndex
 		
 		super.init(nibName: "ModalMenu", bundle: Bundle(for: type(of: self)))
+		loadViewIfNeeded()
 		
 		transitioningDelegate = self
 		modalPresentationStyle = UIModalPresentationStyle.overCurrentContext

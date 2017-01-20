@@ -14,6 +14,7 @@ class ErrorScreen : UIViewController {
 	
 	init(_ error: SambaPlayerError) {
 		super.init(nibName: "ErrorScreen", bundle: Bundle(for: type(of: self)))
+		loadViewIfNeeded()
 		
 		textField.text = error.localizedDescription
 	}

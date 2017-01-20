@@ -11,7 +11,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CaptionsScreen" customModule="SambaPlayer" customModuleProvider="target">
             <connections>
-                <outlet property="textField" destination="v7s-eY-Vlp" id="iG4-BS-nw9"/>
+                <outlet property="label" destination="v7s-eY-Vlp" id="589-km-WHb"/>
                 <outlet property="view" destination="iN0-l3-epB" id="0o6-aQ-NH2"/>
             </connections>
         </placeholder>

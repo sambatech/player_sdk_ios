@@ -12,13 +12,14 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	
 	public private(set) var currentIndex: Int = -1
 
-	@IBOutlet var textField: UILabel!
+	@IBOutlet var label: UILabel!
 	
 	private let _player: SambaPlayer
 	private let _captionConfigs: [SambaMediaCaption]
 	private var _captions = [Caption]()
 	private var _captionsMap = [Int:[Caption]]()
 	private var _parsed = false
+	private var _currentCaption: Caption?
 	
 	private struct Caption {
 		let index: Int, startTime: Float, endTime: Float, text: String
@@ -29,6 +30,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		_captionConfigs = captions
 		
 		super.init(nibName: "CaptionsScreen", bundle: Bundle(for: type(of: self)))
+		loadViewIfNeeded()
 		
 		_player.delegate = self
 		view.isHidden = true
@@ -49,10 +51,11 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			value < _captionConfigs.count else { return }
 		
 		currentIndex = value
+		_currentCaption = nil
 		
 		// disable
 		if _captionConfigs[value].url == "" {
-			textField.text = ""
+			label.text = ""
 			view.isHidden = true
 			return
 		}
@@ -80,12 +83,24 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		
 		let time = _player.currentTime
 		
-		if _captionsMap.index(forKey: Int(time/60)) {
+		guard let captions = _captionsMap[Int(time/60)] else { return }
+		
+		var captionNotFound = true
+		
+		// search for caption interval within time and consider only first match (in case of more than one)
+		for caption in captions where caption.startTime >= time && caption.endTime <= time {
+			captionNotFound = false
 			
+			if let current = _currentCaption, current.index != caption.index {
+				label.text = caption.text
+				_currentCaption = caption
+			}
+			break
 		}
 		
-		for caption in captions where caption.startTime >= time && caption.endTime <= time {
-			
+		if captionNotFound {
+			label.text = ""
+			_currentCaption = nil
 		}
 	}
 	
@@ -102,29 +117,36 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		var text = ""
 		var count = 0
 		var time = [String]()
+		var textLine = ""
 		var offset = 0
 		var m = 0
-		var mLast = -1
+		var mLast = 0
 		
-		_captions = [Caption]()
+		func appendCaption(mapAnyway: Bool = false) {
+			// ignore first time or wrong index
+			guard index != -1 else { return }
+			
+			m = Int(startTime/60)
+			
+			if mapAnyway {
+				_captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
+				_captionsMap[mLast] = _captions
+				return
+			}
+			
+			if m != mLast {
+				_captionsMap[mLast] = _captions
+				_captions = [Caption]()
+				mLast = m
+			}
+			
+			_captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
+		}
 		
 		for match in Helpers.matchesForRegexInText(".+(!?[\\r\\n])", text: captionsText) {
 			// caption index occurence
 			if let r = match.range(of: "^\\d+(?=[\\r\\n]$)", options: .regularExpression) {
-				// ignore first time
-				if index != -1 {
-					_captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
-					m = Int(startTime/60)
-					
-					if mLast == -1 {
-						mLast = m
-					}
-					else if m != mLast {
-						mLast = m
-						_captionsMap[m] = _captions
-						_captions = [Caption]()
-					}
-				}
+				appendCaption()
 				
 				index = Int(match[r]) ?? -1
 				startTime = 0.0
@@ -142,12 +164,15 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 				endTime = extractTime(time, offset: 4)
 				print(startTime, endTime)
 			default:
-				text += match.replacingOccurrences(of: "[\\r\\n]", with: " ", options: .regularExpression)
+				textLine = match.replacingOccurrences(of: "[\\r\\n]", with: " ", options: .regularExpression)
+				text += textLine == " " ? "" : textLine
 				print(text)
 			}
 			
 			count += 1
 		}
+		
+		appendCaption(mapAnyway: true)
 		
 		_parsed = true
 	}
@@ -161,9 +186,5 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		let ms = (Int(time[offset + 3]) ?? 0)
 		
 		return Float(h + m + s) + Float(ms)/1000.0
-	}
-	
-	private func retriveCaption(time: Int) {
-		return _captions[0]
 	}
 }
