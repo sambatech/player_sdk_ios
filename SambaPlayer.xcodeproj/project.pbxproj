@@ -283,7 +283,7 @@
 			path = GMFLocalizations;
 			sourceTree = "<group>";
 		};
-		9A4C4DF51E2E6983001A75DD /* Views */ = {
+		9A4C4DF51E2E6983001A75DD /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */,
@@ -293,14 +293,14 @@
 				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 				9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */,
 			);
-			name = Views;
+			name = Screens;
 			sourceTree = "<group>";
 		};
 		9A5267EE1D22D5BD00C9C015 /* SambaPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				9AF57B7F1DA431690062E54A /* Drm */,
-				9A4C4DF51E2E6983001A75DD /* Views */,
+				9A4C4DF51E2E6983001A75DD /* Screens */,
 				9A5267EF1D22D5BD00C9C015 /* Helpers.swift */,
 				9A5267F01D22D5BD00C9C015 /* Info.plist */,
 				9A5267F31D22D5BD00C9C015 /* SambaApi.swift */,

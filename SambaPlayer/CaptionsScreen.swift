@@ -33,14 +33,13 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		loadViewIfNeeded()
 		
 		_player.delegate = self
-		view.isHidden = true
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	override func viewWillAppear(_ animated: Bool) {
+	override func viewDidLoad() {
 		if let index = _captionConfigs.index(where: { $0.isDefault }) {
 			changeCaption(index)
 		}
@@ -64,7 +63,9 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		
 		Helpers.requestURL(_captionConfigs[value].url, { (response: String?) in
 			guard let response = response else { return }
-			print("parsing...")
+			#if DEBUG
+				print("parsing captions...")
+			#endif
 			self.parse(response)
 		}) { (error, response) in
 			print(error, response)
@@ -88,10 +89,10 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		var captionNotFound = true
 		
 		// search for caption interval within time and consider only first match (in case of more than one)
-		for caption in captions where caption.startTime >= time && caption.endTime <= time {
+		for caption in captions where time >= caption.startTime && time <= caption.endTime {
 			captionNotFound = false
 			
-			if let current = _currentCaption, current.index != caption.index {
+			if _currentCaption == nil || _currentCaption?.index != caption.index {
 				label.text = caption.text
 				_currentCaption = caption
 			}
@@ -110,6 +111,8 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	
 	private func parse(_ captionsText: String) {
 		_parsed = false
+		_captions = [Caption]()
+		_captionsMap = [Int:[Caption]]()
 		
 		var index = -1
 		var startTime: Float = 0.0
@@ -153,7 +156,9 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 				endTime = 0.0
 				text = ""
 				count = 1
-				print(index)
+				#if DEBUG
+					print(index)
+				#endif
 				continue
 			}
 			
@@ -162,11 +167,15 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 				time = Helpers.matchesForRegexInText("\\d+", text: match)
 				startTime = extractTime(time)
 				endTime = extractTime(time, offset: 4)
-				print(startTime, endTime)
+				#if DEBUG
+					print(startTime, endTime)
+				#endif
 			default:
 				textLine = match.replacingOccurrences(of: "[\\r\\n]", with: " ", options: .regularExpression)
-				text += textLine == " " ? "" : textLine
-				print(text)
+				text += textLine.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
+				#if DEBUG
+					print(text)
+				#endif
 			}
 			
 			count += 1

@@ -282,6 +282,11 @@ public class SambaPlayer : UIViewController {
 			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
+			
+			/*if let captionsScreen = self._captionsScreen {
+				self.detachVC(captionsScreen)
+				self.attachVC(captionsScreen)
+			}*/
 		}
 		
 		if player.parent == self {
@@ -379,11 +384,6 @@ public class SambaPlayer : UIViewController {
 			_hasMultipleOutputs = outputs.count > 1
 		}
 		
-		// captions
-		if let captions = media.captions {
-			showScreen(CaptionsScreen(player: self, captions: captions), &_captionsScreen)
-		}
-		
 		// URL
 		guard let urlString = urlOpt,
 			let url = URL(string: urlString) else {
@@ -408,7 +408,9 @@ public class SambaPlayer : UIViewController {
 				player.getControlsView().showHdButton()
 			}
 			
+			// captions
 			if let captions = self.media.captions, captions.count > 0 {
+				self.showScreen(CaptionsScreen(player: self, captions: captions), &self._captionsScreen, player.playerOverlay())
 				player.getControlsView().showCaptionsButton()
 			}
 			
@@ -540,9 +542,9 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?) {
+	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
 		guard ref == nil else { return }
-		attachVC(screen)
+		attachVC(screen, parent)
 		ref = screen
 	}
 	

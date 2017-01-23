@@ -19,7 +19,7 @@
 #import "GMFPlayerOverlayView.h"
 #import "GMFPlayerOverlayViewController.h"
 
-static const NSInteger kPaddingTop = 60;
+static const NSInteger kPaddingTop = 0;
 static const NSTimeInterval kAutoHideUserForcedAnimationDuration = 0.2;
 static const NSTimeInterval kAutoHideFadeAnimationDuration = 0.4;
 static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
