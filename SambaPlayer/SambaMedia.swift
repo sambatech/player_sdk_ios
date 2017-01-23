@@ -43,6 +43,9 @@ If `outputs` field is nil, use `url` field.
 	/// List of captions
 	public var captions: [SambaMediaCaption]?
 	
+	/// Captions configuration
+	public var captionsConfig = SambaMediaCaptionsConfig()
+	
 	/// Delivery type ( HLS, PROGRESSIVE, OTHER )
 	public var deliveryType = "other"
 	
@@ -129,7 +132,7 @@ Caption entity
 
 - url: Caption URL
 - label: Caption label
-- language: Caption language identifier
+- language: Caption language identifier (e.g. pt-br)
 - cc: Is it CC (Closed Caption)?
 - isDefault: Is it the default caption?
 */
@@ -146,6 +149,25 @@ Caption entity
 		self.language = language
 		self.cc = cc
 		self.isDefault = isDefault
+	}
+}
+
+/**
+General captions configuration
+
+- color: Captions color
+- size: Captions size
+- language: Initial caption by identifier (e.g. pt-br)
+*/
+@objc public class SambaMediaCaptionsConfig : NSObject {
+	public let color: UInt
+	public let size: Int
+	public let language: String?
+	
+	public init(color: UInt = 0xFFCC00, size: Int = 24, language: String? = nil) {
+		self.color = color
+		self.size = size
+		self.language = language
 	}
 }
 

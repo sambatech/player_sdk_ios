@@ -15,7 +15,8 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	@IBOutlet var label: UILabel!
 	
 	private let _player: SambaPlayer
-	private let _captionConfigs: [SambaMediaCaption]
+	private let _captionsRequest: [SambaMediaCaption]
+	private let _config: SambaMediaCaptionsConfig
 	private var _captions = [Caption]()
 	private var _captionsMap = [Int:[Caption]]()
 	private var _parsed = false
@@ -25,9 +26,10 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		let index: Int, startTime: Float, endTime: Float, text: String
 	}
 	
-	init(player: SambaPlayer, captions: [SambaMediaCaption]) {
+	init(player: SambaPlayer, captions: [SambaMediaCaption], config: SambaMediaCaptionsConfig) {
 		_player = player
-		_captionConfigs = captions
+		_captionsRequest = captions
+		_config = config
 		
 		super.init(nibName: "CaptionsScreen", bundle: Bundle(for: type(of: self)))
 		loadViewIfNeeded()
@@ -40,28 +42,42 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	}
 	
 	override func viewDidLoad() {
-		if let index = _captionConfigs.index(where: { $0.isDefault }) {
-			changeCaption(index)
+		let index: Int
+		
+		if let lang = _config.language?.lowercased().replacingOccurrences(of: "_", with: "-"),
+			let indexConfig = _captionsRequest.index(where: { $0.language.lowercased().replacingOccurrences(of: "_", with: "-") == lang }) {
+			index = indexConfig
 		}
+		else if let indexApi = _captionsRequest.index(where: { $0.isDefault }) {
+			index = indexApi
+		}
+		else {
+			index = 0
+		}
+		
+		changeCaption(index)
+		
+		label.textColor = UIColor(_config.color)
+		label.font = label.font.withSize(CGFloat(_config.size))
 	}
 	
 	func changeCaption(_ value: Int) {
 		guard value != currentIndex,
-			value < _captionConfigs.count else { return }
+			value < _captionsRequest.count else { return }
 		
 		currentIndex = value
 		_currentCaption = nil
+		label.text = ""
 		
 		// disable
-		if _captionConfigs[value].url == "" {
-			label.text = ""
+		if _captionsRequest[value].url == "" {
 			view.isHidden = true
 			return
 		}
 		
 		view.isHidden = false
 		
-		Helpers.requestURL(_captionConfigs[value].url, { (response: String?) in
+		Helpers.requestURL(_captionsRequest[value].url, { (response: String?) in
 			guard let response = response else { return }
 			#if DEBUG
 				print("parsing captions...")

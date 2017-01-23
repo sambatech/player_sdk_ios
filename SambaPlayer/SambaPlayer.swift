@@ -282,11 +282,6 @@ public class SambaPlayer : UIViewController {
 			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
-			
-			/*if let captionsScreen = self._captionsScreen {
-				self.detachVC(captionsScreen)
-				self.attachVC(captionsScreen)
-			}*/
 		}
 		
 		if player.parent == self {
@@ -410,7 +405,8 @@ public class SambaPlayer : UIViewController {
 			
 			// captions
 			if let captions = self.media.captions, captions.count > 0 {
-				self.showScreen(CaptionsScreen(player: self, captions: captions), &self._captionsScreen, player.playerOverlay())
+				self.showScreen(CaptionsScreen(player: self, captions: captions, config: self.media.captionsConfig),
+				                &self._captionsScreen, player.playerOverlay())
 				player.getControlsView().showCaptionsButton()
 			}
 			
