@@ -205,7 +205,8 @@ public class SambaPlayer : UIViewController {
 		
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest {
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: "MrPoppersPenguins", drmRequest: drmRequest)
+			// weak reference delegate, must retain a reference to it
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
 		}
 		
 		_player?.player.switch(asset)

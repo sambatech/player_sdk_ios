@@ -137,7 +137,6 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		var count = 0
 		var time = [String]()
 		var textLine = ""
-		var offset = 0
 		var m = 0
 		var mLast = 0
 		
@@ -205,7 +204,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	private func extractTime(_ time: [String], offset: Int = 0) -> Float {
 		guard time.count > 0 && (time.count + offset)%4 == 0 else { return 0.0 }
 		
-		let h = (Int(time[offset + 0]) ?? 0)*3600
+		let h = (Int(time[offset]) ?? 0)*3600
 		let m = (Int(time[offset + 1]) ?? 0)*60
 		let s = (Int(time[offset + 2]) ?? 0)
 		let ms = (Int(time[offset + 3]) ?? 0)
