@@ -54,10 +54,10 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			index = 0
 		}
 		
-		changeCaption(index)
-		
 		label.textColor = UIColor(_config.color)
 		label.font = label.font.withSize(CGFloat(_config.size))
+		
+		changeCaption(index)
 	}
 	
 	func changeCaption(_ value: Int) {
