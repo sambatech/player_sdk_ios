@@ -17,7 +17,6 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	private let _player: SambaPlayer
 	private let _captionsRequest: [SambaMediaCaption]
 	private let _config: SambaMediaCaptionsConfig
-	private var _captions = [Caption]()
 	private var _captionsMap = [Int:[Caption]]()
 	private var _parsed = false
 	private var _currentCaption: Caption?
@@ -66,6 +65,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			value < _captionsRequest.count else { return }
 		
 		currentIndex = value
+		_parsed = false
 		_currentCaption = nil
 		label.text = ""
 		
@@ -127,9 +127,9 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	
 	private func parse(_ captionsText: String) {
 		_parsed = false
-		_captions = [Caption]()
 		_captionsMap = [Int:[Caption]]()
 		
+		var captions = [Caption]()
 		var index = -1
 		var startTime: Float = 0.0
 		var endTime: Float = 0.0
@@ -147,18 +147,18 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			m = Int(startTime/60)
 			
 			if mapAnyway {
-				_captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
-				_captionsMap[mLast] = _captions
+				captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
+				_captionsMap[mLast] = captions
 				return
 			}
 			
 			if m != mLast {
-				_captionsMap[mLast] = _captions
-				_captions = [Caption]()
+				_captionsMap[mLast] = captions
+				captions = [Caption]()
 				mLast = m
 			}
 			
-			_captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
+			captions.append(Caption(index: index, startTime: startTime, endTime: endTime, text: text))
 		}
 		
 		for match in Helpers.matchesForRegexInText(".+(!?[\\r\\n])", text: captionsText) {
