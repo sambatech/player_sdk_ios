@@ -9,7 +9,7 @@
 /**
 Data entity representing a media
 
-If `outputs` field is nil, use `url` field.
+If `outputs` field is nil, `url` field will be used instead.
 */
 @objc public class SambaMedia : NSObject {
 	
@@ -110,14 +110,13 @@ If `outputs` field is nil, use `url` field.
 
 /**
 Output entity
-
-- url: Media URL
-- label: Output label
-- isDefault: Is it the default output?
 */
 @objc public class SambaMediaOutput : NSObject {
+	/// Media URL
 	public let url: String
+	/// Output label
 	public let label: String
+	/// Is it the default output?
 	public let isDefault: Bool
 	
 	public init(url: String, label: String, isDefault: Bool) {
@@ -129,18 +128,17 @@ Output entity
 
 /**
 Caption entity
-
-- url: Caption URL
-- label: Caption label
-- language: Caption language identifier (e.g. pt-br)
-- cc: Is it CC (Closed Caption)?
-- isDefault: Is it the default caption?
 */
 @objc public class SambaMediaCaption : NSObject {
+	/// Caption URL
 	public let url: String
+	/// Caption label
 	public let label: String
+	/// Caption language identifier (e.g. pt-br)
 	public let language: String
+	/// Is it CC (Closed Caption)?
 	public let cc: Bool
+	/// Is it the default caption?
 	public let isDefault: Bool
 	
 	public init(url: String, label: String, language: String, cc: Bool, isDefault: Bool) {
@@ -153,15 +151,14 @@ Caption entity
 }
 
 /**
-General captions configuration
-
-- color: Captions color
-- size: Captions size
-- language: Initial caption by identifier (e.g. pt-br)
+Configuration for captions
 */
 @objc public class SambaMediaCaptionsConfig : NSObject {
+	/// Captions color
 	public let color: UInt
+	/// Captions size
 	public let size: Int
+	/// Initial caption by identifier (e.g. pt-br)
 	public let language: String?
 	
 	public init(color: UInt = 0xFFCC00, size: Int = 24, language: String? = nil) {
