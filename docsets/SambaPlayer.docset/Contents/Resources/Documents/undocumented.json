@@ -23,98 +23,21 @@
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 119,
-      "symbol": "SambaMediaOutput.url",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 120,
-      "symbol": "SambaMediaOutput.label",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 121,
-      "symbol": "SambaMediaOutput.isDefault",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 123,
+      "line": 122,
       "symbol": "SambaMediaOutput.init(url:label:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 140,
-      "symbol": "SambaMediaCaption.url",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 141,
-      "symbol": "SambaMediaCaption.label",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 142,
-      "symbol": "SambaMediaCaption.language",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 143,
-      "symbol": "SambaMediaCaption.cc",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
       "line": 144,
-      "symbol": "SambaMediaCaption.isDefault",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 146,
       "symbol": "SambaMediaCaption.init(url:label:language:cc:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 163,
-      "symbol": "SambaMediaCaptionsConfig.color",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
       "line": 164,
-      "symbol": "SambaMediaCaptionsConfig.size",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 165,
-      "symbol": "SambaMediaCaptionsConfig.language",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 167,
       "symbol": "SambaMediaCaptionsConfig.init(color:size:language:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
