@@ -27,7 +27,7 @@ Caso ainda não exista, crie um arquivo na raíz do seu projeto chamado `Cartfil
 ```ogdl
 github "sambatech/player_sdk_ios"
 ```
-Caso deseje utilizar uma versão específica, use o seguinte (substitua o "x.x.x" pelo número da [versão desejada](https://github.com/sambatech/player_sdk_ios/releases)):
+Caso deseje utilizar uma versão específica, use o seguinte (substitua o `x.x.x` pelo número da [versão desejada](https://github.com/sambatech/player_sdk_ios/releases)):
 ```ogdl
 github "sambatech/player_sdk_ios" ~> x.x.x
 ```
