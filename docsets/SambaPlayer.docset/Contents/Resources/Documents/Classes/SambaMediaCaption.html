@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>SambaPlayerDelegate Protocol Reference</title>
+    <title>SambaMediaCaption Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Protocol/SambaPlayerDelegate" class="dashAnchor"></a>
-    <a title="SambaPlayerDelegate Protocol Reference"></a>
+    <a name="//apple_ref/swift/Class/SambaMediaCaption" class="dashAnchor"></a>
+    <a title="SambaMediaCaption Class Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SambaPlayer Docs</a> (82% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SambaPlayer Reference</a>
         <img id="carat" src="../img/carat.png" />
-        SambaPlayerDelegate Protocol Reference
+        SambaMediaCaption Class Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -89,14 +89,22 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>SambaPlayerDelegate</h1>
+            <h1>SambaMediaCaption</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">SambaPlayerDelegate</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                 </div>
               </div>
-            <p>Listens to player events</p>
+            <p>Caption entity</p>
+
+<ul>
+<li>url: Caption URL</li>
+<li>label: Caption label</li>
+<li>language: Caption language identifier (e.g. pt-br)</li>
+<li>cc: Is it CC (Closed Caption)?</li>
+<li>isDefault: Is it the default caption?</li>
+</ul>
 
           </section>
           <section class="section task-group-section">
@@ -105,9 +113,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate6onLoadFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onLoad()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate6onLoadFT_T_">onLoad()</a>
+                    <a name="/s:vC11SambaPlayer17SambaMediaCaption3urlSS"></a>
+                    <a name="//apple_ref/swift/Property/url" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer17SambaMediaCaption3urlSS">url</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -115,14 +123,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is loaded</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onLoad</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -132,9 +140,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate7onStartFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onStart()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate7onStartFT_T_">onStart()</a>
+                    <a name="/s:vC11SambaPlayer17SambaMediaCaption5labelSS"></a>
+                    <a name="//apple_ref/swift/Property/label" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer17SambaMediaCaption5labelSS">label</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -142,14 +150,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is started</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onStart</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -159,9 +167,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate8onResumeFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onResume()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate8onResumeFT_T_">onResume()</a>
+                    <a name="/s:vC11SambaPlayer17SambaMediaCaption8languageSS"></a>
+                    <a name="//apple_ref/swift/Property/language" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer17SambaMediaCaption8languageSS">language</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -169,14 +177,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is resumed ( from paused to play )</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onResume</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -186,9 +194,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate7onPauseFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onPause()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate7onPauseFT_T_">onPause()</a>
+                    <a name="/s:vC11SambaPlayer17SambaMediaCaption2ccSb"></a>
+                    <a name="//apple_ref/swift/Property/cc" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer17SambaMediaCaption2ccSb">cc</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -196,14 +204,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is paused</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onPause</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -213,9 +221,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate10onProgressFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onProgress()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate10onProgressFT_T_">onProgress()</a>
+                    <a name="/s:vC11SambaPlayer17SambaMediaCaption9isDefaultSb"></a>
+                    <a name="//apple_ref/swift/Property/isDefault" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer17SambaMediaCaption9isDefaultSb">isDefault</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -223,14 +231,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is playing ( fired each second of playing )</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onProgress</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>
@@ -240,9 +248,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate8onFinishFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onFinish()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate8onFinishFT_T_">onFinish()</a>
+                    <a name="/s:FC11SambaPlayer17SambaMediaCaptioncFT3urlSS5labelSS8languageSS2ccSb9isDefaultSb_S0_"></a>
+                    <a name="//apple_ref/swift/Method/init(url:label:language:cc:isDefault:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer17SambaMediaCaptioncFT3urlSS5labelSS8languageSS2ccSb9isDefaultSb_S0_">init(url:label:language:cc:isDefault:)</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -250,68 +258,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Fired up when player is finished</p>
+                        <p>Undocumented</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onFinish</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate9onDestroyFT_T_"></a>
-                    <a name="//apple_ref/swift/Method/onDestroy()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate9onDestroyFT_T_">onDestroy()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Fired up when player is destroyed</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onDestroy</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:FP11SambaPlayer19SambaPlayerDelegate7onErrorFCS_16SambaPlayerErrorT_"></a>
-                    <a name="//apple_ref/swift/Method/onError(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FP11SambaPlayer19SambaPlayerDelegate7onErrorFCS_16SambaPlayerErrorT_">onError(_:)</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Fired up when some error occurs</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">onError</span><span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt"><a href="../Classes/SambaPlayerError.html">SambaPlayerError</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
 
                         </div>
                       </div>

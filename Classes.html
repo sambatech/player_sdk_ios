@@ -13,7 +13,7 @@
     <a title="Classes  Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="index.html">SambaPlayer Docs</a> (93% documented)</p>
+        <p><a href="index.html">SambaPlayer Docs</a> (82% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -39,10 +39,16 @@
                 <a href="Classes/SambaMedia.html">SambaMedia</a>
               </li>
               <li class="nav-group-task">
-                <a href="Classes/SambaMedia.html#/s:VC11SambaPlayer10SambaMedia6Output">– Output</a>
+                <a href="Classes/SambaMediaCaption.html">SambaMediaCaption</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMediaCaptionsConfig.html">SambaMediaCaptionsConfig</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SambaMediaConfig.html">SambaMediaConfig</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="Classes/SambaMediaOutput.html">SambaMediaOutput</a>
               </li>
               <li class="nav-group-task">
                 <a href="Classes/SambaMediaRequest.html">SambaMediaRequest</a>
@@ -102,7 +108,7 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Data entity that represents a media request to the server</p>
+                        <p>Data entity that represents a media request to the Samba Player API</p>
 
                         <a href="Classes/SambaMediaRequest.html" class="slightly-smaller">See more</a>
                       </div>
@@ -246,6 +252,110 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:C11SambaPlayer16SambaMediaOutput"></a>
+                    <a name="//apple_ref/swift/Class/SambaMediaOutput" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer16SambaMediaOutput">SambaMediaOutput</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Output entity</p>
+
+<ul>
+<li>url: Media URL</li>
+<li>label: Output label</li>
+<li>isDefault: Is it the default output?</li>
+</ul>
+
+                        <a href="Classes/SambaMediaOutput.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaOutput</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C11SambaPlayer17SambaMediaCaption"></a>
+                    <a name="//apple_ref/swift/Class/SambaMediaCaption" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer17SambaMediaCaption">SambaMediaCaption</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Caption entity</p>
+
+<ul>
+<li>url: Caption URL</li>
+<li>label: Caption label</li>
+<li>language: Caption language identifier (e.g. pt-br)</li>
+<li>cc: Is it CC (Closed Caption)?</li>
+<li>isDefault: Is it the default caption?</li>
+</ul>
+
+                        <a href="Classes/SambaMediaCaption.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaption</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:C11SambaPlayer24SambaMediaCaptionsConfig"></a>
+                    <a name="//apple_ref/swift/Class/SambaMediaCaptionsConfig" class="dashAnchor"></a>
+                    <a class="token" href="#/s:C11SambaPlayer24SambaMediaCaptionsConfig">SambaMediaCaptionsConfig</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>General captions configuration</p>
+
+<ul>
+<li>color: Captions color</li>
+<li>size: Captions size</li>
+<li>language: Initial caption by identifier (e.g. pt-br)</li>
+</ul>
+
+                        <a href="Classes/SambaMediaCaptionsConfig.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">@objc</span> <span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaMediaCaptionsConfig</span> <span class="p">:</span> <span class="kt">NSObject</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:C11SambaPlayer16SambaMediaConfig"></a>
                     <a name="//apple_ref/swift/Class/SambaMediaConfig" class="dashAnchor"></a>
                     <a class="token" href="#/s:C11SambaPlayer16SambaMediaConfig">SambaMediaConfig</a>
@@ -304,7 +414,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2016 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2016-11-29)</p>
+          <p>&copy; 2017 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2017-01-27)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>
