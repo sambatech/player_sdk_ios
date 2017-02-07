@@ -24,22 +24,10 @@ import Foundation
 	public var streamUrls: [String]?
 	
 	/// Whether the media is both live and audio
-	public var isLiveAudio: Bool?
+	public var isLiveAudio = false
 	
 	/// The environment of the Samba Player API to request for
-	public var environment: Environment = .staging
-	
-	/// Samba Player API environment list
-	public enum Environment {
-		/// Production environment
-		case prod
-		/// Staging environment
-		case staging
-		/// Development/Testing environment
-		case test
-		/// Local environment
-		case local
-	}
+	public var environment: SambaEnvironment = .prod
 	
 	/**
 	Default initializer
@@ -48,24 +36,9 @@ import Foundation
 	- parameter mediaId: ID of the media
 	- parameter streamName: Name of the media stream for live content
 	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
-	*/
-	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?) {
-		self.projectHash = projectHash
-		self.mediaId = mediaId
-		self.streamName = streamName
-		self.streamUrls = streamUrls
-	}
-	
-	/**
-	Second initializer
-	
-	- parameter projectHash: The project hash the media belongs to
-	- parameter mediaId: ID of the media
-	- parameter streamName: Name of the media stream for live content
-	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
 	- parameter isAudio: Whether the media is both live and audio
 	*/
-	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?, isLiveAudio: Bool?) {
+	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?, isLiveAudio: Bool = false) {
 		self.projectHash = projectHash
 		self.mediaId = mediaId
 		self.streamName = streamName
@@ -90,7 +63,7 @@ import Foundation
 	- parameter streamUrl: URL of stream when live content
 	- parameter isLiveAudio: Whether the media is both live and audio
 	*/
-	public convenience init(projectHash: String, streamUrl: String, isLiveAudio: Bool?) {
+	public convenience init(projectHash: String, streamUrl: String, isLiveAudio: Bool = false) {
 		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: [streamUrl], isLiveAudio: isLiveAudio)
 	}
 	
@@ -113,4 +86,16 @@ import Foundation
 	public convenience init(projectHash: String, mediaId: String) {
 		self.init(projectHash: projectHash, mediaId: mediaId, streamName: nil, streamUrls: nil)
 	}
+}
+
+/// Samba Player API environment list
+@objc public enum SambaEnvironment: Int {
+	/// Production environment
+	case prod
+	/// Staging environment
+	case staging
+	/// Development/Testing environment
+	case test
+	/// Local environment
+	case local
 }
