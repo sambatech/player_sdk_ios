@@ -34,6 +34,9 @@ If `outputs` field is nil, `url` field will be used instead.
 		}
 	}
 	
+	/// URL list for backup/fallback purposes
+	public var backupUrls = [String]()
+	
 	/// DFP tag URL
 	public var adUrl: String?
 	
@@ -93,6 +96,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	*/
 	public init(media: SambaMedia) {
 		url = media.url
+		backupUrls = media.backupUrls
 		title = media.title
 		outputs = media.outputs
 		captions = media.captions

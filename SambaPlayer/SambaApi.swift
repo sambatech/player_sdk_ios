@@ -73,8 +73,18 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			fatalError("Error trying to fetch info in Settings.plist")
 		}
 		
-		Helpers.requestURL("\(endpoint)\(request.projectHash)/" + (request.mediaId ??
-			"?\((request.streamUrls ?? []).count > 0 ? "alternateLive=\(request.streamUrls![0])" : "streamName=\(request.streamName!)")"), { (responseText: String?) in
+		var url = "\(endpoint)\(request.projectHash)/\(request.mediaId ?? "?")"
+		
+		if let streamUrl = request.streamUrl {
+			url += "alternateLive=\(streamUrl)"
+		}
+		else if let streamName = request.streamName {
+			url += "streamName=\(streamName)"
+		}
+		
+		print("\(type(of: self)) Requesting URL: \(url)")
+		
+		Helpers.requestURL(url, { (responseText: String?) in
 			guard let responseText = responseText else { return }
 			
 			var tokenBase64: String = responseText
@@ -111,7 +121,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	}
 	
 	
-	/// Colects the important media info and its desired outputs<br><br>
+	// Collects media info and its outputs.
 	private func parseMedia(_ json: AnyObject, request: SambaMediaRequest) -> SambaMedia? {
 		guard let qualifier = json["qualifier"] as? String else {
 			print("\(type(of: self)) Error: No media qualifier")
@@ -218,6 +228,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
 			media.url = liveOutput["baseUrl"] as? String
+			//media.backupUrls =
 			media.isLive = true
 		}
 		

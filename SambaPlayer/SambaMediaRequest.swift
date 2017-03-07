@@ -20,8 +20,11 @@ import Foundation
 	/// Name of the media stream for live content
 	public var streamName: String?
 	
-	/// URL list of streams when live content being the first the main URL and the rest for backup purpose
-	public var streamUrls: [String]?
+	/// URL for live content
+	public var streamUrl: String?
+	
+	/// URL list for backup/fallback purposes
+	public var backupUrls = [String]()
 	
 	/// Whether the media is both live and audio
 	public var isLiveAudio = false
@@ -30,61 +33,67 @@ import Foundation
 	public var environment: SambaEnvironment = .prod
 	
 	/**
-	Default initializer
+	Live initializer (by URL)
 	
 	- parameter projectHash: The project hash the media belongs to
-	- parameter mediaId: ID of the media
-	- parameter streamName: Name of the media stream for live content
-	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
-	- parameter isAudio: Whether the media is both live and audio
+	- parameter streamUrl: URL for live content
+	- parameter backupUrls: Optional URL list for backup/fallback purposes
 	*/
-	public init(projectHash: String, mediaId: String?, streamName: String?, streamUrls: [String]?, isLiveAudio: Bool = false) {
+	public init(projectHash: String, streamUrl: String, _ backupUrls: [String]) {
+		self.projectHash = projectHash
+		self.streamUrl = streamUrl
+		self.backupUrls = backupUrls
+	}
+	
+	/**
+	Convenience constructor, please refer to its original version.
+	*/
+	public convenience init(projectHash: String, streamUrl: String, _ backupUrls: String...) {
+		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls)
+	}
+	
+	/**
+	Live initializer (by URL + audio option)
+	
+	- parameter projectHash: The project hash the media belongs to
+	- parameter isLiveAudio: Whether the media is both live and audio
+	- parameter streamUrl: URL for live content
+	- parameter backupUrls: Optional URL list for backup/fallback purposes
+	*/
+	public init(projectHash: String, isLiveAudio: Bool, streamUrl: String, _ backupUrls: [String]) {
+		self.projectHash = projectHash
+		self.isLiveAudio = isLiveAudio
+		self.streamUrl = streamUrl
+		self.backupUrls = backupUrls
+	}
+	
+	/**
+	Convenience constructor, please refer to its original version.
+	*/
+	public convenience init(projectHash: String, isLiveAudio: Bool, streamUrl: String, _ backupUrls: String...) {
+		self.init(projectHash: projectHash, isLiveAudio: isLiveAudio, streamUrl: streamUrl, backupUrls)
+	}
+	
+	/**
+	Live initializer (by stream name)
+	
+	- parameter projectHash: The project hash the media belongs to
+	- parameter streamName: Name of the media stream for live content
+	*/
+	public init(projectHash: String, streamName: String) {
+		self.projectHash = projectHash
+		self.streamName = streamName
+	}
+	
+	/**
+	VoD initializer
+	
+	- parameter projectHash: The project hash the media belongs to
+	- parameter mediaId: The ID of the media
+	*/
+	public init(projectHash: String, mediaId: String) {
 		self.projectHash = projectHash
 		self.mediaId = mediaId
-		self.streamName = streamName
-		self.streamUrls = streamUrls
-		self.isLiveAudio = isLiveAudio
-	}
-	
-	/**
-	Convenience initializer
-	
-	- parameter projectHash: The project hash the media belongs to
-	- parameter streamUrls: URL list of streams when live content being the first the main URL and the rest for backup purpose
-	*/
-	public convenience init(projectHash: String, streamUrls: [String]) {
-		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: streamUrls)
-	}
-	
-	/**
-	Convenience initializer
-	
-	- parameter projectHash: The project hash the media belongs to
-	- parameter streamUrl: URL of stream when live content
-	- parameter isLiveAudio: Whether the media is both live and audio
-	*/
-	public convenience init(projectHash: String, streamUrl: String, isLiveAudio: Bool = false) {
-		self.init(projectHash: projectHash, mediaId: nil, streamName: nil, streamUrls: [streamUrl], isLiveAudio: isLiveAudio)
-	}
-	
-	/**
-	Convenience initializer
-	
-	- parameter projectHash: The project hash the media belongs to
-	- parameter streamName: Name of the media stream for live content
-	*/
-	public convenience init(projectHash: String, streamName: String) {
-		self.init(projectHash: projectHash, mediaId: nil, streamName: streamName, streamUrls: nil)
-	}
-	
-	/**
-	Convenience initializer
-	
-	- parameter projectHash: The project hash the media belongs to
-	- parameter mediaId: ID of the media
-	*/
-	public convenience init(projectHash: String, mediaId: String) {
-		self.init(projectHash: projectHash, mediaId: mediaId, streamName: nil, streamUrls: nil)
 	}
 }
 

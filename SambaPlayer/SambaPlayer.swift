@@ -28,6 +28,7 @@ public class SambaPlayer : UIViewController {
 	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
+	private var _currentBackupIndex = -1
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
@@ -364,27 +365,43 @@ public class SambaPlayer : UIViewController {
 		_pendingPlay = false
 		_disabled = false
 		
-		var urlOpt = media.url
+		let url: URL
 		
-		// outputs
-		if let outputs = media.outputs, outputs.count > 0 {
-			// set default output
-			_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
+		// first time (no errors before or retrying)
+		if _currentBackupIndex == -1 {
+			var urlOpt = media.url
 			
-			urlOpt = outputs[0].url
-			
-			for output in outputs where output.isDefault {
-				urlOpt = output.url
+			// outputs
+			if let outputs = media.outputs, outputs.count > 0 {
+				// set default output
+				_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
+				
+				urlOpt = outputs[0].url
+				
+				for output in outputs where output.isDefault {
+					urlOpt = output.url
+				}
+				
+				_hasMultipleOutputs = outputs.count > 1
 			}
 			
-			_hasMultipleOutputs = outputs.count > 1
+			// final URL
+			guard let urlString = urlOpt,
+				let urlObj = URL(string: urlString) else {
+				dispatchError(SambaPlayerError.invalidUrl)
+				return
+			}
+			
+			url = urlObj
 		}
-		
-		// URL
-		guard let urlString = urlOpt,
-			let url = URL(string: urlString) else {
-			dispatchError(SambaPlayerError.invalidUrl)
-			return
+		else {
+			guard _currentBackupIndex < media.backupUrls.count,
+				let urlObj = URL(string: media.backupUrls[_currentBackupIndex]) else {
+				dispatchError(SambaPlayerError.invalidUrl)
+				return
+			}
+			
+			url = urlObj
 		}
 		
 		let asset = AVURLAsset(url: url)
@@ -607,6 +624,17 @@ public class SambaPlayer : UIViewController {
 		
 		case kGMFPlayerStateError:
 			if player.player != nil && player.player.error != nil {
+				if _currentBackupIndex < media.backupUrls.count {
+					_currentBackupIndex += 1
+					stopTimer()
+					
+					DispatchQueue.main.async {
+						player.player.reset()
+						self.create()
+					}
+					break
+				}
+				
 				dispatchError(SambaPlayerError.unknown.setMessage(player.player.error.localizedDescription))
 			}
 			
