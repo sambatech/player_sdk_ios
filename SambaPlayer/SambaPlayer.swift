@@ -746,40 +746,40 @@ Player error list
 	/// Unknown error
 	public static let unknown = SambaPlayerError(3, "Unknown error")
 	
-	/// Error code
+	/// The error code
 	public let code: Int
 	/// Whether error is critical (destroys player) or not
-	public private(set) var critical: Bool
-	
-	private var _message: String
+	public var critical: Bool
+	/// The error message
+	public var message: String
 	
 	/**
 	Creates a new error entity
 	
 	- parameter code: The error code
-	- parameter message: The message to be replaced
+	- parameter message: The error message
 	- parameter critical: Whether error is critical (destroys player) or not
 	*/
 	public init(_ code: Int, _ message: String, _ critical: Bool = false) {
 		self.code = code
-		_message = message
+		self.message = message
 		self.critical = critical
 	}
 
 	/// Retrieves the error description
 	public var localizedDescription: String {
-		return _message
+		return message
 	}
 	
 	/**
-	Customizes data of the current error and returns it
+	Convenience method that customizes data of the current error and returns it
 	
 	- parameter message: The message to be replaced
 	- parameter critical: Whether error is critical (destroys player) or not
 	- returns: The current error
 	*/
 	public func setValues(_ message: String, _ critical: Bool? = nil) -> SambaPlayerError {
-		_message = message
+		self.message = message
 		self.critical = critical ?? self.critical
 		return self
 	}
