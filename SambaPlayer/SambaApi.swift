@@ -228,7 +228,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
 			media.url = liveOutput["baseUrl"] as? String
-			//media.backupUrls =
+			media.backupUrls = request.backupUrls
 			media.isLive = true
 		}
 		

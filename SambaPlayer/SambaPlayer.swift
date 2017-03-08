@@ -28,7 +28,7 @@ public class SambaPlayer : UIViewController {
 	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
-	private var _currentBackupIndex = -1
+	private var _currentBackupIndex = 0
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
@@ -198,7 +198,7 @@ public class SambaPlayer : UIViewController {
 		_currentOutput = value
 		
 		guard let url = URL(string: outputs[value].url) else {
-			dispatchError(SambaPlayerError.invalidUrl.setMessage("Invalid output URL"))
+			dispatchError(SambaPlayerError.invalidUrl.setValues("Invalid output URL"))
 			return
 		}
 		
@@ -235,6 +235,7 @@ public class SambaPlayer : UIViewController {
 	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error {
 			_disabled = true
+			for delegate in self._delegates { delegate.onError(error) }
 			showScreen(ErrorScreen(error), &_errorScreen)
 		}
 		else {
@@ -251,6 +252,7 @@ public class SambaPlayer : UIViewController {
 		detachVC(player)
 		NotificationCenter.default.removeObserver(self)
 		
+		_currentBackupIndex = 0
 		_player = nil
 	}
 	
@@ -355,8 +357,8 @@ public class SambaPlayer : UIViewController {
 	
 	// MARK: Private Methods
 	
-	private func create(_ autoPlay: Bool = true) {
-		if let player = _player {
+	private func create(_ autoPlay: Bool = true, _ force: Bool = false) {
+		if !force, let player = _player {
 			if autoPlay { player.play() }
 			return
 		}
@@ -365,52 +367,11 @@ public class SambaPlayer : UIViewController {
 		_pendingPlay = false
 		_disabled = false
 		
-		let url: URL
-		
-		// first time (no errors before or retrying)
-		if _currentBackupIndex == -1 {
-			var urlOpt = media.url
-			
-			// outputs
-			if let outputs = media.outputs, outputs.count > 0 {
-				// set default output
-				_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
-				
-				urlOpt = outputs[0].url
-				
-				for output in outputs where output.isDefault {
-					urlOpt = output.url
-				}
-				
-				_hasMultipleOutputs = outputs.count > 1
-			}
-			
-			// final URL
-			guard let urlString = urlOpt,
-				let urlObj = URL(string: urlString) else {
-				dispatchError(SambaPlayerError.invalidUrl)
-				return
-			}
-			
-			url = urlObj
-		}
-		else {
-			guard _currentBackupIndex < media.backupUrls.count,
-				let urlObj = URL(string: media.backupUrls[_currentBackupIndex]) else {
-				dispatchError(SambaPlayerError.invalidUrl)
-				return
-			}
-			
-			url = urlObj
-		}
-		
-		let asset = AVURLAsset(url: url)
-		
-		_asset = asset
+		guard let asset = createAsset(decideUrl()) else { return }
 		
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest {
-			// weak reference delegate, must retain a reference to it
+			// weak reference init, must retain a strong reference to it
 			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
 		}
 		
@@ -489,16 +450,7 @@ public class SambaPlayer : UIViewController {
 			let _ = Tracking(self)
 		}
 		
-		// IMA
-		if !media.isAudio, let adUrl = media.adUrl {
-			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			gmf.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
-		}
-		// default
-		else {
-			_pendingPlay = autoPlay
-			gmf.loadStream(with: asset)
-		}
+		loadAsset(asset, autoPlay)
 	}
 	
 	private func createThumb() {
@@ -535,6 +487,60 @@ public class SambaPlayer : UIViewController {
 		view.setNeedsLayout()
 	}
 	
+	private func decideUrl() -> URL? {
+		var urlOpt = media.url
+		
+		// outputs
+		if let outputs = media.outputs, outputs.count > 0 {
+			// set default output
+			_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
+			
+			urlOpt = outputs[0].url
+			
+			for output in outputs where output.isDefault {
+				urlOpt = output.url
+			}
+			
+			_hasMultipleOutputs = outputs.count > 1
+		}
+		
+		// final URL
+		guard let urlString = urlOpt else { return nil }
+		
+		return URL(string: urlString)
+	}
+	
+	private func createAsset(_ url: URL?) -> AVURLAsset? {
+		guard let url = url else {
+			dispatchError(SambaPlayerError.invalidUrl)
+			return nil
+		}
+		
+		return AVURLAsset(url: url)
+	}
+	
+	private func loadAsset(_ asset: AVURLAsset?, _ autoPlay: Bool = false) {
+		guard let asset = asset,
+			let player = _player else { return }
+		
+		// IMA
+		if !media.isAudio, let adUrl = media.adUrl {
+			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
+			player.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+		}
+		// default
+		else {
+			_pendingPlay = autoPlay
+			player.loadStream(with: asset)
+		}
+	}
+	
+	private func retry(_ urlString: String) {
+		stopTimer()
+		_player?.player.reset()
+		loadAsset(createAsset(URL(string: urlString)), true)
+	}
+	
 	private func destroyThumb() {
 		guard let thumb = _thumb else { return }
 		
@@ -548,11 +554,15 @@ public class SambaPlayer : UIViewController {
 		print(error.localizedDescription)
 		#endif
 		
-		_disabled = true
+		_disabled = error.critical
 		
 		DispatchQueue.main.async {
-			for delegate in self._delegates { delegate.onError(error) }
-			self.destroy(withError: error)
+			if error.critical {
+				self.destroy(withError: error)
+			}
+			else {
+				for delegate in self._delegates { delegate.onError(error) }
+			}
 		}
 	}
 	
@@ -624,18 +634,23 @@ public class SambaPlayer : UIViewController {
 		
 		case kGMFPlayerStateError:
 			if player.player != nil && player.player.error != nil {
-				if _currentBackupIndex < media.backupUrls.count {
-					_currentBackupIndex += 1
-					stopTimer()
+				let code = (player.player.error as? NSError)?.code ?? SambaPlayerError.unknown.code
+				var msg = player.player.error.localizedDescription
+				let canFallback = media.backupUrls.count > 0 && _currentBackupIndex < media.backupUrls.count
+				
+				// check whether it can fallback or fail (changes error criticity) otherwise
+				if canFallback {
+					let url = self.media.backupUrls[self._currentBackupIndex]
+					
+					msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
 					
 					DispatchQueue.main.async {
-						player.player.reset()
-						self.create()
+						self.retry(url)
+						self._currentBackupIndex += 1
 					}
-					break
 				}
 				
-				dispatchError(SambaPlayerError.unknown.setMessage(player.player.error.localizedDescription))
+				dispatchError(SambaPlayerError(code, msg, !canFallback))
 			}
 			
 		default: break
@@ -723,48 +738,49 @@ Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
 	/// URL format is invalid
-	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format")
+	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format", true)
 	/// Some error occurred when creating internal player
-	public static let creatingPlayer = SambaPlayerError(1, "Error creating player")
+	public static let creatingPlayer = SambaPlayerError(1, "Error creating player", true)
 	/// Trying to play a secure media on a rooted device
-	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device")
+	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device", true)
 	/// Unknown error
 	public static let unknown = SambaPlayerError(3, "Unknown error")
 	
 	/// Error code
 	public let code: Int
+	/// Whether error is critical (destroys player) or not
+	public private(set) var critical: Bool
 	
-	private let _message: String
-	private var _messageAlt: String?
+	private var _message: String
 	
-	private init(_ code: Int, _ message: String) {
+	/**
+	Creates a new error entity
+	
+	- parameter code: The error code
+	- parameter message: The message to be replaced
+	- parameter critical: Whether error is critical (destroys player) or not
+	*/
+	public init(_ code: Int, _ message: String, _ critical: Bool = false) {
 		self.code = code
 		_message = message
+		self.critical = critical
 	}
 
-	/// Retrives the error description
+	/// Retrieves the error description
 	public var localizedDescription: String {
-		return _messageAlt ?? _message
+		return _message
 	}
 	
 	/**
-	Customizes an error message related to a given error type
-	
-	- parameter error: Instance error type
-	- parameter message: The message to be replaced
-	*/
-	public static func setMessage(error: SambaPlayerError, message: String) {
-		error.setMessage(message)
-	}
-	
-	/**
-	Customizes the message of the current error and returns it
+	Customizes data of the current error and returns it
 	
 	- parameter message: The message to be replaced
+	- parameter critical: Whether error is critical (destroys player) or not
 	- returns: The current error
 	*/
-	public func setMessage(_ message: String) -> SambaPlayerError {
-		_messageAlt = message
+	public func setValues(_ message: String, _ critical: Bool? = nil) -> SambaPlayerError {
+		_message = message
+		self.critical = critical ?? self.critical
 		return self
 	}
 }
