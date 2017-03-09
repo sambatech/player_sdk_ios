@@ -23,49 +23,49 @@
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 122,
+      "line": 126,
       "symbol": "SambaMediaOutput.init(url:label:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 144,
+      "line": 148,
       "symbol": "SambaMediaCaption.init(url:label:language:cc:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 164,
+      "line": 168,
       "symbol": "SambaMediaCaptionsConfig.init(color:size:language:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 134,
+      "line": 135,
       "symbol": "SambaPlayer.init(coder:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 258,
+      "line": 261,
       "symbol": "SambaPlayer.supportedInterfaceOrientations",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 262,
+      "line": 265,
       "symbol": "SambaPlayer.viewWillTransition(to:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 314,
+      "line": 317,
       "symbol": "SambaPlayer.viewWillDisappear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
