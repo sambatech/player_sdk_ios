@@ -39,17 +39,18 @@ import Foundation
 	- parameter streamUrl: URL for live content
 	- parameter backupUrls: Optional URL list for backup/fallback purposes
 	*/
-	public init(projectHash: String, streamUrl: String, _ backupUrls: [String]) {
+	public init(projectHash: String, streamUrl: String, backupUrls: [String]? = nil) {
 		self.projectHash = projectHash
 		self.streamUrl = streamUrl
-		self.backupUrls = backupUrls
+		
+		if let backupUrls = backupUrls { self.backupUrls = backupUrls }
 	}
 	
 	/**
 	Convenience constructor, please refer to its original version.
 	*/
-	public convenience init(projectHash: String, streamUrl: String, _ backupUrls: String...) {
-		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls)
+	public convenience init(projectHash: String, streamUrl: String, backupUrls: String...) {
+		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls: backupUrls)
 	}
 	
 	/**
@@ -60,18 +61,19 @@ import Foundation
 	- parameter streamUrl: URL for live content
 	- parameter backupUrls: Optional URL list for backup/fallback purposes
 	*/
-	public init(projectHash: String, isLiveAudio: Bool, streamUrl: String, _ backupUrls: [String]) {
+	public init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: [String]? = nil) {
 		self.projectHash = projectHash
 		self.isLiveAudio = isLiveAudio
 		self.streamUrl = streamUrl
-		self.backupUrls = backupUrls
+		
+		if let backupUrls = backupUrls { self.backupUrls = backupUrls }
 	}
 	
 	/**
 	Convenience constructor, please refer to its original version.
 	*/
-	public convenience init(projectHash: String, isLiveAudio: Bool, streamUrl: String, _ backupUrls: String...) {
-		self.init(projectHash: projectHash, isLiveAudio: isLiveAudio, streamUrl: streamUrl, backupUrls)
+	public convenience init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: String...) {
+		self.init(projectHash: projectHash, isLiveAudio: isLiveAudio, streamUrl: streamUrl, backupUrls: backupUrls)
 	}
 	
 	/**
