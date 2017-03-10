@@ -19,8 +19,12 @@ If `outputs` field is nil, `url` field will be used instead.
 	/// Current media URL
 	public var url: String? {
 		didSet {
-			guard let urlNonNull = url else { return }
+			guard var urlNonNull = url else { return }
 
+			// tries to fallback from HDS
+			urlNonNull = urlNonNull.replacingOccurrences(of: "[\\w]+\\.f4m$", with: "playlist.m3u8", options: .regularExpression)
+			url = urlNonNull
+			
 			if urlNonNull.range(of: "\\.m3u8$", options: .regularExpression) != nil {
 				deliveryType = "hls"
 			}

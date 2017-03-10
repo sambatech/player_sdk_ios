@@ -235,7 +235,6 @@ public class SambaPlayer : UIViewController {
 	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error {
 			_disabled = true
-			for delegate in self._delegates { delegate.onError(error) }
 			showScreen(ErrorScreen(error), &_errorScreen)
 		}
 		else {
@@ -557,11 +556,10 @@ public class SambaPlayer : UIViewController {
 		_disabled = error.critical
 		
 		DispatchQueue.main.async {
+			for delegate in self._delegates { delegate.onError(error) }
+			
 			if error.critical {
 				self.destroy(withError: error)
-			}
-			else {
-				for delegate in self._delegates { delegate.onError(error) }
 			}
 		}
 	}
