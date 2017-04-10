@@ -11,6 +11,8 @@ import Foundation
 /// Data entity that represents a media request to the Samba Player API
 @objc public class SambaMediaRequest : NSObject {
 	
+	public var apiProtocol: String = "https"
+	
 	/// The project hash the media belongs to
 	public var projectHash: String
 	
