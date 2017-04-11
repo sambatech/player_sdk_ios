@@ -63,10 +63,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		case .test:
 			endpointOpt = Helpers.settings["playerapi_endpoint_test"]
 		case .staging:
-			endpointOpt = normalizeURL(url: Helpers.settings["playerapi_endpoint_staging"]!, apiProtocol: request.apiProtocol)
+			endpointOpt = normalizeProtocol(url: Helpers.settings["playerapi_endpoint_staging"]!, apiProtocol: request.apiProtocol)
 		case .prod: fallthrough
 		default:
-			endpointOpt = normalizeURL(url: Helpers.settings["playerapi_endpoint_prod"]!, apiProtocol: request.apiProtocol)
+			endpointOpt = normalizeProtocol(url: Helpers.settings["playerapi_endpoint_prod"]!, apiProtocol: request.apiProtocol)
 		}
 		
 		guard let endpoint = endpointOpt else {
@@ -162,7 +162,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		if let sttm = apiConfig["sttm"] as? [String:AnyObject] {
 			if let url = sttm["url"] as? String {
-				media.sttmUrl = normalizeURL(url: url, apiProtocol: request.apiProtocol)
+				media.sttmUrl = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
 			}
 			
 			if let key = sttm["key"] as? String {
@@ -174,7 +174,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			if ads.count > 0, let ad = ads[0] as? [String:AnyObject],
 				let url = ad["tagVast"] as? String,
 				ad["adServer"]?.lowercased == "dfp" {
-				media.adUrl = normalizeURL(url: url, apiProtocol: request.apiProtocol)
+				media.adUrl = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
 			}
 		}
 		
@@ -216,7 +216,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 						continue
 					}
 					
-					let urlNormalized = normalizeURL(url: url, apiProtocol: request.apiProtocol)
+					let urlNormalized = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
 					
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,
@@ -230,7 +230,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		}
 		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
 			media.url = liveOutput["baseUrl"] as? String
-			media.url = normalizeURL(url: media.url!, apiProtocol: request.apiProtocol)
+			media.url = normalizeProtocol(url: media.url!, apiProtocol: request.apiProtocol)
 			media.backupUrls = request.backupUrls
 			media.isLive = true
 		}
@@ -246,7 +246,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					else { continue }
 				
 				url = thumb["url"] as? String
-				url = normalizeURL(url: url!, apiProtocol: request.apiProtocol)
+				url = normalizeProtocol(url: url!, apiProtocol: request.apiProtocol)
 				wLast = w
 			}
 			
@@ -276,7 +276,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					let label = langLookup[lang.lowercased().replacingOccurrences(of: "_", with: "-")]
 					else { continue }
 				
-				let normalizedURL = normalizeURL(url: url, apiProtocol: request.apiProtocol)
+				let normalizedURL = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
 				
 				mediaCaptions.append(SambaMediaCaption(
 					url: normalizedURL,
@@ -325,8 +325,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	}
 	
 	//Normaliza URLS
-	private func normalizeURL(url: String, apiProtocol: String) -> String {
-		let normalized = url.replacingOccurrences(of: "https?", with: apiProtocol, options: .regularExpression)
+	private func normalizeProtocol(url: String, apiProtocol: SambaProtocol) -> String {
+		let normalized = url.replacingOccurrences(of: "https?", with: apiProtocol.rawValue, options: .regularExpression)
 		return normalized
 	}
 }

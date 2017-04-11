@@ -11,7 +11,7 @@ import Foundation
 /// Data entity that represents a media request to the Samba Player API
 @objc public class SambaMediaRequest : NSObject {
 	
-	public var apiProtocol: String = "https"
+	public var apiProtocol: SambaProtocol = .https
 	
 	/// The project hash the media belongs to
 	public var projectHash: String
@@ -111,4 +111,13 @@ import Foundation
 	case test
 	/// Local environment
 	case local
+}
+
+/// Samba Player API protocol list
+public enum SambaProtocol: String {
+	/// Insecure
+	case http
+	
+	///Secure
+	case https
 }
