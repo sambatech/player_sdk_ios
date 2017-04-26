@@ -357,6 +357,10 @@
   // Tint the play/pause/replay button and the controls view.
   //[_playPauseReplayButton GMF_applyTintColor:color];
   _currentColor = color;
+  
+  //Change spinner color
+  [_spinner setColor:_currentColor];
+    
   [_playerControlsView applyControlTintColor:color];
 }
 
