@@ -11,6 +11,7 @@ import UIKit
 
 class Helpers {
 	static let settings = NSDictionary.init(contentsOfFile: Bundle(for:Helpers.self).path(forResource: "Settings", ofType: "plist")!)! as! [String:String]
+	static let requestTimeout = TimeInterval(30)
 	
 	static func matchesForRegexInText(_ regex: String!, text: String!) -> [String] {
 		do {
@@ -63,6 +64,10 @@ class Helpers {
 		return s
 	}
 	
+	static func requestURL(_ url: String) {
+		requestURL(url, nil as ((Data?) -> Void)?)
+	}
+	
 	static func requestURL<T>(_ url: String, _ onComplete: ((T?) -> Void)?) {
 		requestURL(url, onComplete, nil)
 	}
@@ -73,15 +78,16 @@ class Helpers {
 			return
 		}
 		
-		requestURL(URLRequest(url: url), onComplete, onError)
-	}
-	
-	static func requestURL(_ url: String) {
-		requestURL(url, nil as ((Data?) -> Void)?)
+		requestURL(URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: requestTimeout),
+		           onComplete, onError)
 	}
 	
 	static func requestURL<T>(_ urlRequest: URLRequest, _ onComplete: ((T?) -> Void)?) {
 		requestURL(urlRequest, onComplete, nil)
+	}
+	
+	static func requestURL(_ urlRequest: URLRequest) {
+		requestURL(urlRequest, nil as ((Data?) -> Void)?)
 	}
 	
 	static func requestURL<T>(_ urlRequest: URLRequest, _ onComplete: ((T?) -> Void)?, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
@@ -131,10 +137,6 @@ class Helpers {
 		}
 		
 		requestTask.resume()
-	}
-	
-	static func requestURL(_ urlRequest: URLRequest) {
-		requestURL(urlRequest, nil as ((Data?) -> Void)?)
 	}
 	
 	static func requestURLJson(_ url: String, _ onComplete: @escaping (AnyObject?) -> Void, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {

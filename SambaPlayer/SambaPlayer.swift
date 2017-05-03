@@ -631,25 +631,27 @@ public class SambaPlayer : UIViewController {
 			for delegate in _delegates { delegate.onFinish() }
 		
 		case kGMFPlayerStateError:
-			if player.player != nil && player.player.error != nil {
-				let code = (player.player.error as? NSError)?.code ?? SambaPlayerError.unknown.code
-				var msg = player.player.error.localizedDescription
-				let canFallback = media.backupUrls.count > 0 && _currentBackupIndex < media.backupUrls.count
-				
-				// check whether it can fallback or fail (changes error criticity) otherwise
-				if canFallback {
-					let url = self.media.backupUrls[self._currentBackupIndex]
-					
-					msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
-					
-					DispatchQueue.main.async {
-						self.retry(url)
-						self._currentBackupIndex += 1
-					}
-				}
-				
-				dispatchError(SambaPlayerError(code, msg, !canFallback))
+			if player.player == nil || player.player.error == nil {
+				dispatchError(SambaPlayerError.unknown)
+				break
 			}
+			
+			let code = (player.player.error as NSError).code
+			var msg = player.player.error.localizedDescription
+			
+			// URL not found (or server unreachable)
+			if _currentBackupIndex < media.backupUrls.count {
+				let url = self.media.backupUrls[self._currentBackupIndex]
+				
+				msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
+				
+				DispatchQueue.main.async {
+					self.retry(url)
+					self._currentBackupIndex += 1
+				}
+			}
+			
+			dispatchError(SambaPlayerError(code, msg, true))
 			
 		default: break
 		}

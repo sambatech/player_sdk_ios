@@ -285,6 +285,25 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 						 options:0
 						 context:kGMFPlayerItemStatusContext];
 		
+		[_playerItem addObserver:self
+					  forKeyPath:AVPlayerItemPlaybackStalledNotification
+						 options:0
+						 context:kGMFPlayerItemStatusContext];
+		
+		[_playerItem addObserver:self
+					  forKeyPath:AVPlayerItemFailedToPlayToEndTimeNotification
+						 options:0
+						 context:kGMFPlayerItemStatusContext];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(playerStallHandler:)
+													 name:AVPlayerItemPlaybackStalledNotification
+												   object:_playerItem];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self
+												 selector:@selector(playerStallHandler:)
+													 name:AVPlayerItemFailedToPlayToEndTimeNotification
+												   object:_playerItem];
 		__weak GMFVideoPlayer *weakSelf = self;
 		[[NSNotificationCenter defaultCenter]
 		 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification
@@ -299,7 +318,9 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 		 }];
 	}
 }
-
+- (void)playerStallHandler:(NSNotification *)notification {
+  [self setState:kGMFPlayerStateError];
+}
 - (void)setAndObservePlayer:(AVPlayer *)player playerItem:(AVPlayerItem *)playerItem {
   [self setAndObservePlayerItem:playerItem];
 	
@@ -457,6 +478,10 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   if ([_player rate]) {
     [self startPlaybackStatusPoller];
     [self setState:kGMFPlayerStatePlaying];
+  }
+  // rate notification with rate = 0
+  else if (CMTimeGetSeconds(_playerItem.currentTime) < CMTimeGetSeconds(_playerItem.duration)) {
+	  [self setState:kGMFPlayerStateError];
   }
 }
 

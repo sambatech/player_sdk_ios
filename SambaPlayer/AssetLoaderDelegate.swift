@@ -73,7 +73,7 @@ class AssetLoaderDelegate: NSObject {
 		
 		print(url)
 		
-		var req = URLRequest(url: url)
+		var req = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: Helpers.requestTimeout)
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
