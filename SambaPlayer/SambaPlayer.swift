@@ -553,12 +553,12 @@ public class SambaPlayer : UIViewController {
 		print(error.localizedDescription)
 		#endif
 		
-		_disabled = error.critical
+		_disabled = error.criticality != SambaPlayerErrorCriticality.minor
 		
 		DispatchQueue.main.async {
 			for delegate in self._delegates { delegate.onError(error) }
 			
-			if error.critical {
+			if self._disabled {
 				self.destroy(withError: error)
 			}
 		}
@@ -631,16 +631,22 @@ public class SambaPlayer : UIViewController {
 			for delegate in _delegates { delegate.onFinish() }
 		
 		case kGMFPlayerStateError:
-			if player.player == nil || player.player.error == nil {
+			guard player.player != nil else {
 				dispatchError(SambaPlayerError.unknown)
 				break
 			}
 			
-			let code = (player.player.error as NSError).code
-			var msg = player.player.error.localizedDescription
+			let error: NSError? = player.player.error != nil ? player.player.error as NSError : nil
+			let code = error?.code ?? SambaPlayerError.unknown.code
+			var msg = error?.localizedDescription ?? SambaPlayerError.unknown.message
 			
+			// no network/internet connection
+			if code == NSURLErrorNotConnectedToInternet {
+				dispatchError(SambaPlayerError(code, msg))
+				break
+			}
 			// URL not found (or server unreachable)
-			if _currentBackupIndex < media.backupUrls.count {
+			else if _currentBackupIndex < media.backupUrls.count {
 				let url = self.media.backupUrls[self._currentBackupIndex]
 				
 				msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
@@ -651,7 +657,7 @@ public class SambaPlayer : UIViewController {
 				}
 			}
 			
-			dispatchError(SambaPlayerError(code, msg, true))
+			dispatchError(SambaPlayerError(code, msg, SambaPlayerErrorCriticality.critical))
 			
 		default: break
 		}
@@ -738,18 +744,18 @@ Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
 	/// URL format is invalid
-	public static let invalidUrl = SambaPlayerError(0, "Invalid URL format", true)
+	public static let invalidUrl = SambaPlayerError(1, "Invalid URL format", SambaPlayerErrorCriticality.critical)
 	/// Some error occurred when creating internal player
-	public static let creatingPlayer = SambaPlayerError(1, "Error creating player", true)
+	public static let creatingPlayer = SambaPlayerError(2, "Error creating player", SambaPlayerErrorCriticality.critical)
 	/// Trying to play a secure media on a rooted device
-	public static let rootedDevice = SambaPlayerError(2, "Specified media cannot play on a rooted device", true)
+	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", SambaPlayerErrorCriticality.critical)
 	/// Unknown error
-	public static let unknown = SambaPlayerError(3, "Unknown error")
+	public static let unknown = SambaPlayerError(-1, "Unknown error", SambaPlayerErrorCriticality.critical)
 	
 	/// The error code
 	public let code: Int
-	/// Whether error is critical (destroys player) or not
-	public var critical: Bool
+	/// Whether error should destroy player or not
+	public var criticality: SambaPlayerErrorCriticality
 	/// The error message
 	public var message: String
 	
@@ -760,10 +766,10 @@ Player error list
 	- parameter message: The error message
 	- parameter critical: Whether error is critical (destroys player) or not
 	*/
-	public init(_ code: Int, _ message: String, _ critical: Bool = false) {
+	public init(_ code: Int, _ message: String, _ criticality: SambaPlayerErrorCriticality = SambaPlayerErrorCriticality.minor) {
 		self.code = code
 		self.message = message
-		self.critical = critical
+		self.criticality = criticality
 	}
 
 	/// Retrieves the error description
@@ -778,11 +784,16 @@ Player error list
 	- parameter critical: Whether error is critical (destroys player) or not
 	- returns: The current error
 	*/
-	public func setValues(_ message: String, _ critical: Bool? = nil) -> SambaPlayerError {
+	public func setValues(_ message: String, _ criticality: SambaPlayerErrorCriticality? = nil) -> SambaPlayerError {
 		self.message = message
-		self.critical = critical ?? self.critical
+		self.criticality = criticality ?? self.criticality
 		return self
 	}
+}
+
+/// Defines the criticality of an error, whether to destroy the player or not.
+@objc public enum SambaPlayerErrorCriticality : Int {
+	case minor, recoverable, critical
 }
 
 /// Listens to player events

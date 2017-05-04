@@ -274,24 +274,23 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 - (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem {
 	// Player item observers.
 	[_playerItem removeObserver:self forKeyPath:kStatusKey];
+	
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:AVPlayerItemDidPlayToEndTimeNotification
 												  object:_playerItem];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:AVPlayerItemPlaybackStalledNotification
+											   object:_playerItem];
+	
+	[[NSNotificationCenter defaultCenter] removeObserver:self
+												 name:AVPlayerItemFailedToPlayToEndTimeNotification
+											   object:_playerItem];
 	
 	_playerItem = playerItem;
 	if (_playerItem) {
 		[_playerItem addObserver:self
 					  forKeyPath:kStatusKey
-						 options:0
-						 context:kGMFPlayerItemStatusContext];
-		
-		[_playerItem addObserver:self
-					  forKeyPath:AVPlayerItemPlaybackStalledNotification
-						 options:0
-						 context:kGMFPlayerItemStatusContext];
-		
-		[_playerItem addObserver:self
-					  forKeyPath:AVPlayerItemFailedToPlayToEndTimeNotification
 						 options:0
 						 context:kGMFPlayerItemStatusContext];
 		
@@ -319,6 +318,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 	}
 }
 - (void)playerStallHandler:(NSNotification *)notification {
+  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
   [self setState:kGMFPlayerStateError];
 }
 - (void)setAndObservePlayer:(AVPlayer *)player playerItem:(AVPlayerItem *)playerItem {
