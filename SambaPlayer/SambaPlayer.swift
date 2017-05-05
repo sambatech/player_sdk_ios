@@ -28,12 +28,12 @@ public class SambaPlayer : UIViewController {
 	private var _pendingPlay = false
 	private var _duration: Float = 0
 	private var _currentOutput = -1
-	private var _currentBackupIndex = 0
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
 	private var _decryptDelegate: AssetLoaderDelegate?
 	private var _disabled = false
+	private var _errorManager: ErrorManager?
 	
 	// MARK: Properties
 	
@@ -101,6 +101,7 @@ public class SambaPlayer : UIViewController {
 	*/
 	public init() {
 		super.init(nibName: nil, bundle: nil)
+		_errorManager = ErrorManager(self)
 	}
 	
 	/**
@@ -244,14 +245,13 @@ public class SambaPlayer : UIViewController {
 		
 		guard let player = _player else { return }
 		
-		for delegate in _delegates { delegate.onDestroy() }
+		for delegate in _delegates { delegate.onDestroy?() }
 		
 		stopTimer()
 		player.player.reset()
 		detachVC(player)
 		NotificationCenter.default.removeObserver(self)
 		
-		_currentBackupIndex = 0
 		_player = nil
 	}
 	
@@ -556,10 +556,14 @@ public class SambaPlayer : UIViewController {
 		_disabled = error.criticality != SambaPlayerErrorCriticality.minor
 		
 		DispatchQueue.main.async {
-			for delegate in self._delegates { delegate.onError(error) }
+			for delegate in self._delegates { delegate.onError?(error) }
 			
-			if self._disabled {
+			switch error.criticality {
+			case .critical:
 				self.destroy(withError: error)
+			case .recoverable:
+				self.showScreen(ErrorScreen(error), &self._errorScreen)
+			default: break
 			}
 		}
 	}
@@ -595,7 +599,7 @@ public class SambaPlayer : UIViewController {
 		
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
-			for delegate in _delegates { delegate.onLoad() }
+			for delegate in _delegates { delegate.onLoad?() }
 			
 			if _pendingPlay {
 				play()
@@ -605,11 +609,11 @@ public class SambaPlayer : UIViewController {
 		case kGMFPlayerStatePlaying:
 			if !_hasStarted {
 				_hasStarted = true
-				for delegate in _delegates { delegate.onStart() }
+				for delegate in _delegates { delegate.onStart?() }
 			}
 			
 			if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
-				for delegate in _delegates { delegate.onResume() }
+				for delegate in _delegates { delegate.onResume?() }
 			}
 			
 			startTimer()
@@ -620,7 +624,7 @@ public class SambaPlayer : UIViewController {
 			if _stopping { _stopping = false }
 			else if lastState != kGMFPlayerStateSeeking {
 				if !player.isUserScrubbing {
-					for delegate in _delegates { delegate.onPause() }
+					for delegate in _delegates { delegate.onPause?() }
 				}
 			}
 			// when paused seek dispatch extra progress event to update external infos
@@ -628,43 +632,81 @@ public class SambaPlayer : UIViewController {
 		
 		case kGMFPlayerStateFinished:
 			stopTimer()
-			for delegate in _delegates { delegate.onFinish() }
+			for delegate in _delegates { delegate.onFinish?() }
 		
 		case kGMFPlayerStateError:
-			guard player.player != nil else {
-				dispatchError(SambaPlayerError.unknown)
-				break
-			}
-			
-			let error: NSError? = player.player.error != nil ? player.player.error as NSError : nil
-			let code = error?.code ?? SambaPlayerError.unknown.code
-			var msg = error?.localizedDescription ?? SambaPlayerError.unknown.message
-			
-			// no network/internet connection
-			if code == NSURLErrorNotConnectedToInternet {
-				dispatchError(SambaPlayerError(code, msg))
-				break
-			}
-			// URL not found (or server unreachable)
-			else if _currentBackupIndex < media.backupUrls.count {
-				let url = self.media.backupUrls[self._currentBackupIndex]
-				
-				msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
-				
-				DispatchQueue.main.async {
-					self.retry(url)
-					self._currentBackupIndex += 1
-				}
-			}
-			
-			dispatchError(SambaPlayerError(code, msg, SambaPlayerErrorCriticality.critical))
+			_errorManager?.handle()
 			
 		default: break
 		}
 	}
 	
+	private class ErrorManager : SambaPlayerDelegate {
+		
+		private let player: SambaPlayer
+		private var timer: Timer?
+		private var currentBackupIndex = 0
+		private var currentRetryIndex = 0
+		private var secs = 0
+		
+		init(_ player: SambaPlayer) {
+			self.player = player
+			player.delegate = self
+		}
+		
+		func handle() {
+			guard let playerInternal = player._player,
+				playerInternal.player != nil else {
+				player.dispatchError(SambaPlayerError.playerNotLoaded)
+				return
+			}
+			
+			let media = player.media
+			let error: NSError? = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
+			let code = error?.code ?? SambaPlayerError.unknown.code
+			var msg = "Oops! Please try again later.."
+			
+			// no network/internet connection
+			if code == NSURLErrorNotConnectedToInternet {
+				player.dispatchError(SambaPlayerError(code, msg))
+				
+				secs = 0
+				timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
+				return
+			}
+			// URL not found (or server unreachable)
+			else if currentBackupIndex < media.backupUrls.count {
+				let url = player.media.backupUrls[currentBackupIndex]
+				
+				msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
+				
+				DispatchQueue.main.async {
+					self.player.retry(url)
+					self.currentBackupIndex += 1
+				}
+			}
+			
+			player.dispatchError(SambaPlayerError(code, msg, SambaPlayerErrorCriticality.critical))
+		}
+		
+		func onStart() {
+			currentRetryIndex = 0;
+		}
+		
+		@objc private func retryHandler() {
+			if (secs == 0) {
+				timer?.invalidate()
+				return
+			}
+			
+			(player._errorScreen as? ErrorScreen)?.text = secs > 0 ? "Reconnecting in \(secs)s" : "Connecting..."
+			
+			secs -= 1
+		}
+	}
+	
 	@objc private func progressEventHandler() {
-		for delegate in _delegates { delegate.onProgress() }
+		for delegate in _delegates { delegate.onProgress?() }
 	}
 	
 	@objc private func fullscreenTouchHandler() {
@@ -749,6 +791,8 @@ Player error list
 	public static let creatingPlayer = SambaPlayerError(2, "Error creating player", SambaPlayerErrorCriticality.critical)
 	/// Trying to play a secure media on a rooted device
 	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", SambaPlayerErrorCriticality.critical)
+	/// Trying to access an internal player instance that's not loaded yet
+	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", SambaPlayerErrorCriticality.critical)
 	/// Unknown error
 	public static let unknown = SambaPlayerError(-1, "Unknown error", SambaPlayerErrorCriticality.critical)
 	
@@ -758,18 +802,23 @@ Player error list
 	public var criticality: SambaPlayerErrorCriticality
 	/// The error message
 	public var message: String
+	/// The error cause
+	public var cause: Error?
 	
 	/**
 	Creates a new error entity
 	
 	- parameter code: The error code
 	- parameter message: The error message
-	- parameter critical: Whether error is critical (destroys player) or not
+	- parameter critical: Whether error should destroy player or not
+	- parameter cause: The error cause
 	*/
-	public init(_ code: Int, _ message: String, _ criticality: SambaPlayerErrorCriticality = SambaPlayerErrorCriticality.minor) {
+	public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = SambaPlayerErrorCriticality.minor,
+	            _ cause: Error? = nil) {
 		self.code = code
 		self.message = message
 		self.criticality = criticality
+		self.cause = cause
 	}
 
 	/// Retrieves the error description
@@ -781,12 +830,14 @@ Player error list
 	Convenience method that customizes data of the current error and returns it
 	
 	- parameter message: The message to be replaced
-	- parameter critical: Whether error is critical (destroys player) or not
+	- parameter critical: Whether error should destroy player or not
+	- parameter cause: The error cause
 	- returns: The current error
 	*/
-	public func setValues(_ message: String, _ criticality: SambaPlayerErrorCriticality? = nil) -> SambaPlayerError {
+	public func setValues(_ message: String = "", _ criticality: SambaPlayerErrorCriticality? = nil, _ cause: Error? = nil) -> SambaPlayerError {
 		self.message = message
 		self.criticality = criticality ?? self.criticality
+		self.cause = cause
 		return self
 	}
 }
@@ -799,26 +850,26 @@ Player error list
 /// Listens to player events
 @objc public protocol SambaPlayerDelegate {
 	/// Fired up when player is loaded
-	func onLoad()
+	@objc optional func onLoad()
 	
 	/// Fired up when player is started
-	func onStart()
+	@objc optional func onStart()
 	
 	/// Fired up when player is resumed ( from paused to play )
-	func onResume()
+	@objc optional func onResume()
 	
 	/// Fired up when player is paused
-	func onPause()
+	@objc optional func onPause()
 	
 	/// Fired up when player is playing ( fired each second of playing )
-	func onProgress()
+	@objc optional func onProgress()
 	
 	/// Fired up when player is finished
-	func onFinish()
+	@objc optional func onFinish()
 	
 	/// Fired up when player is destroyed
-	func onDestroy()
+	@objc optional func onDestroy()
 	
 	/// Fired up when some error occurs
-	func onError(_ error: SambaPlayerError)
+	@objc optional func onError(_ error: SambaPlayerError)
 }

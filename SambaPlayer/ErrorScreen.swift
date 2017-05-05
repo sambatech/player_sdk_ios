@@ -12,11 +12,16 @@ class ErrorScreen : UIViewController {
 	
 	@IBOutlet var textField: UILabel!
 	
+	var text: String? {
+		get { return textField.text }
+		set(value) { textField.text = value }
+	}
+	
 	init(_ error: SambaPlayerError) {
 		super.init(nibName: "ErrorScreen", bundle: Bundle(for: type(of: self)))
 		loadViewIfNeeded()
 		
-		textField.text = error.localizedDescription
+		text = error.localizedDescription
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
