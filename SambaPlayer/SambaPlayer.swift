@@ -553,7 +553,7 @@ public class SambaPlayer : UIViewController {
 		print(error.localizedDescription)
 		#endif
 		
-		_disabled = error.criticality != SambaPlayerErrorCriticality.minor
+		_disabled = error.criticality != .minor
 		
 		DispatchQueue.main.async {
 			for delegate in self._delegates { delegate.onError?(error) }
@@ -656,29 +656,31 @@ public class SambaPlayer : UIViewController {
 		
 		func handle() {
 			guard let playerInternal = player._player,
+				let media = player.media as? SambaMediaConfig,
 				playerInternal.player != nil else {
 				player.dispatchError(SambaPlayerError.playerNotLoaded)
 				return
 			}
 			
-			let media = player.media
 			let error: NSError? = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
 			let code = error?.code ?? SambaPlayerError.unknown.code
-			var msg = "Oops! Please try again later.."
+			var msg = "Oops! Please try again later..."
 			
 			// no network/internet connection
 			if code == NSURLErrorNotConnectedToInternet {
-				player.dispatchError(SambaPlayerError(code, msg))
-				
-				secs = 0
-				timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
-				return
+				if currentRetryIndex < media.retriesTotal {
+					currentRetryIndex += 1
+					secs = 8
+					retryHandler()
+					timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
+					return
+				}
 			}
 			// URL not found (or server unreachable)
 			else if currentBackupIndex < media.backupUrls.count {
 				let url = player.media.backupUrls[currentBackupIndex]
 				
-				msg = "Failed to load \(media.url ?? "unknown"), falling back to \(url)"
+				msg = "Connecting..."
 				
 				DispatchQueue.main.async {
 					self.player.retry(url)
@@ -686,7 +688,7 @@ public class SambaPlayer : UIViewController {
 				}
 			}
 			
-			player.dispatchError(SambaPlayerError(code, msg, SambaPlayerErrorCriticality.critical))
+			player.dispatchError(SambaPlayerError(code, msg, .critical))
 		}
 		
 		func onStart() {
@@ -694,13 +696,16 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		@objc private func retryHandler() {
-			if (secs == 0) {
+			guard let errorScreen = player._errorScreen as? ErrorScreen else {
 				timer?.invalidate()
 				return
 			}
 			
-			(player._errorScreen as? ErrorScreen)?.text = secs > 0 ? "Reconnecting in \(secs)s" : "Connecting..."
+			if secs == 0 {
+				timer?.invalidate()
+			}
 			
+			errorScreen.text = secs > 0 ? "Reconnecting in \(secs)s" : "Connecting..."
 			secs -= 1
 		}
 	}
@@ -786,15 +791,15 @@ Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
 	/// URL format is invalid
-	public static let invalidUrl = SambaPlayerError(1, "Invalid URL format", SambaPlayerErrorCriticality.critical)
+	public static let invalidUrl = SambaPlayerError(1, "Invalid URL format", .critical)
 	/// Some error occurred when creating internal player
-	public static let creatingPlayer = SambaPlayerError(2, "Error creating player", SambaPlayerErrorCriticality.critical)
+	public static let creatingPlayer = SambaPlayerError(2, "Error creating player", .critical)
 	/// Trying to play a secure media on a rooted device
-	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", SambaPlayerErrorCriticality.critical)
+	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", .critical)
 	/// Trying to access an internal player instance that's not loaded yet
-	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", SambaPlayerErrorCriticality.critical)
+	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", .critical)
 	/// Unknown error
-	public static let unknown = SambaPlayerError(-1, "Unknown error", SambaPlayerErrorCriticality.critical)
+	public static let unknown = SambaPlayerError(-1, "Unknown error", .critical)
 	
 	/// The error code
 	public let code: Int
@@ -813,7 +818,7 @@ Player error list
 	- parameter critical: Whether error should destroy player or not
 	- parameter cause: The error cause
 	*/
-	public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = SambaPlayerErrorCriticality.minor,
+	public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = .minor,
 	            _ cause: Error? = nil) {
 		self.code = code
 		self.message = message

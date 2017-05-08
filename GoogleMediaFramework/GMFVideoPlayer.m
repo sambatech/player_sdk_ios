@@ -479,9 +479,10 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     [self startPlaybackStatusPoller];
     [self setState:kGMFPlayerStatePlaying];
   }
-  // rate notification with rate = 0
+  // rate notification when rate=0 means media isn't playing
   else if (CMTimeGetSeconds(_playerItem.currentTime) < CMTimeGetSeconds(_playerItem.duration)) {
-	  [self setState:kGMFPlayerStateError];
+	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
+	[self setState:kGMFPlayerStateError];
   }
 }
 

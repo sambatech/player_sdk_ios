@@ -199,6 +199,8 @@ Configuration for captions
 	public var drmRequest: DrmRequest?
 	/// Whether to check or not if the device has been jailbroken to block media playback
 	public var blockIfRooted = false
+	/// Number of times the player can try to resume the media on failure
+	public var retriesTotal = 3
 	
 	/**
 	Default initializer
