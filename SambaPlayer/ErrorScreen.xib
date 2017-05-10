@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1212" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1421" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -11,6 +11,8 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ErrorScreen" customModule="SambaPlayer" customModuleProvider="target">
             <connections>
+                <outlet property="iconView" destination="d70-AG-PZk" id="C1a-ro-4eO"/>
+                <outlet property="retryButton" destination="snr-JS-NFZ" id="hlP-Zy-E02"/>
                 <outlet property="textField" destination="a5T-on-sfd" id="yWi-G2-AeS"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Gah-uV-4Px"/>
             </connections>
@@ -24,14 +26,19 @@
                     <rect key="frame" x="151.5" y="295" width="72" height="37"/>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message..." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="a5T-on-sfd">
-                    <rect key="frame" x="125" y="343.5" width="125" height="20.5"/>
+                    <rect key="frame" x="125" y="343" width="125" height="21"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="retry.png" translatesAutoresizingMaskIntoConstraints="NO" id="snr-JS-NFZ">
+                    <rect key="frame" x="115" y="384" width="145" height="31"/>
+                </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="snr-JS-NFZ" firstAttribute="top" secondItem="a5T-on-sfd" secondAttribute="bottom" constant="20" id="7bQ-Ck-a0P"/>
+                <constraint firstItem="snr-JS-NFZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="R6e-Q7-7q2"/>
                 <constraint firstItem="a5T-on-sfd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="20" id="YKn-Lh-P4E"/>
                 <constraint firstItem="d70-AG-PZk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cWg-0o-rio"/>
                 <constraint firstItem="d70-AG-PZk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="iGg-mp-FMN"/>
@@ -42,5 +49,6 @@
     </objects>
     <resources>
         <image name="player_error.png" width="72" height="37"/>
+        <image name="retry.png" width="145" height="31"/>
     </resources>
 </document>

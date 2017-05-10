@@ -13,7 +13,6 @@ import UIKit
 public class SambaPlayer : UIViewController {
 	
 	private var _player: GMFPlayerViewController?
-	private var _asset: AVURLAsset?
 	private var _parentView: UIView?
 	private var _currentMenu: UIViewController?
 	private var _errorScreen: UIViewController?
@@ -236,23 +235,16 @@ public class SambaPlayer : UIViewController {
 	public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error {
 			_disabled = true
-			showScreen(ErrorScreen(error), &_errorScreen)
+			showError(error)
 		}
 		else {
 			destroyScreen(&_errorScreen)
 			destroyScreen(&_captionsScreen)
 		}
 		
-		guard let player = _player else { return }
-		
 		for delegate in _delegates { delegate.onDestroy?() }
 		
-		stopTimer()
-		player.player.reset()
-		detachVC(player)
-		NotificationCenter.default.removeObserver(self)
-		
-		_player = nil
+		destroyInternal()
 	}
 	
 	// MARK: Overrides
@@ -491,13 +483,13 @@ public class SambaPlayer : UIViewController {
 		
 		// outputs
 		if let outputs = media.outputs, outputs.count > 0 {
-			// set default output
-			_currentOutput = outputs.index(where: { $0.isDefault }) ?? -1
+			// assume 0 in case of no default output
+			_currentOutput = 0
+			urlOpt = outputs[_currentOutput].url
 			
-			urlOpt = outputs[0].url
-			
-			for output in outputs where output.isDefault {
-				urlOpt = output.url
+			for (k,v) in outputs.enumerated() where v.isDefault {
+				_currentOutput = k
+				urlOpt = v.url
 			}
 			
 			_hasMultipleOutputs = outputs.count > 1
@@ -534,10 +526,9 @@ public class SambaPlayer : UIViewController {
 		}
 	}
 	
-	private func retry(_ urlString: String) {
+	private func reset() {
 		stopTimer()
 		_player?.player.reset()
-		loadAsset(createAsset(URL(string: urlString)), true)
 	}
 	
 	private func destroyThumb() {
@@ -546,6 +537,17 @@ public class SambaPlayer : UIViewController {
 		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		thumb.removeFromSuperview()
 		_thumb = nil
+	}
+	
+	private func destroyInternal() {
+		guard let player = _player else { return }
+		
+		stopTimer()
+		player.player.reset()
+		detachVC(player)
+		NotificationCenter.default.removeObserver(self)
+		
+		_player = nil
 	}
 	
 	private func dispatchError(_ error: SambaPlayerError) {
@@ -559,13 +561,23 @@ public class SambaPlayer : UIViewController {
 			for delegate in self._delegates { delegate.onError?(error) }
 			
 			switch error.criticality {
+			case .recoverable:
+				self.showError(error)
 			case .critical:
 				self.destroy(withError: error)
-			case .recoverable:
-				self.showScreen(ErrorScreen(error), &self._errorScreen)
 			default: break
 			}
 		}
+	}
+	
+	private func showError(_ error: SambaPlayerError) {
+		// try to use existing error screen
+		if let errorScreen = _errorScreen as? ErrorScreen {
+			errorScreen.error = error
+			return
+		}
+		
+		showScreen(ErrorScreen(error), &_errorScreen)
 	}
 	
 	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
@@ -662,16 +674,18 @@ public class SambaPlayer : UIViewController {
 				return
 			}
 			
-			let error: NSError? = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
+			let error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
 			let code = error?.code ?? SambaPlayerError.unknown.code
-			var msg = "Oops! Please try again later..."
+			var msg = "Ocorreu um erro! Por favor, tente novamente."
 			
 			// no network/internet connection
 			if code == NSURLErrorNotConnectedToInternet {
 				if currentRetryIndex < media.retriesTotal {
 					currentRetryIndex += 1
 					secs = 8
-					retryHandler()
+					player.reset()
+					player.dispatchError(SambaPlayerError(code, "", .recoverable, error))
+					DispatchQueue.main.async { self.retryHandler() }
 					timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
 					return
 				}
@@ -680,32 +694,48 @@ public class SambaPlayer : UIViewController {
 			else if currentBackupIndex < media.backupUrls.count {
 				let url = player.media.backupUrls[currentBackupIndex]
 				
-				msg = "Connecting..."
+				msg = "Conectando..."
 				
 				DispatchQueue.main.async {
-					self.player.retry(url)
+					self.player.reset()
+					self.player.loadAsset(self.player.createAsset(URL(string: url)), true)
 					self.currentBackupIndex += 1
 				}
 			}
 			
-			player.dispatchError(SambaPlayerError(code, msg, .critical))
+			player.dispatchError(SambaPlayerError(code, msg, .recoverable))
 		}
 		
 		func onStart() {
+			reset()
+		}
+		
+		func onResume() {
+			reset()
+		}
+		
+		private func reset() {
 			currentRetryIndex = 0;
+			player.destroyScreen(&player._errorScreen)
 		}
 		
 		@objc private func retryHandler() {
-			guard let errorScreen = player._errorScreen as? ErrorScreen else {
-				timer?.invalidate()
-				return
-			}
-			
+			// count got to the end
 			if secs == 0 {
 				timer?.invalidate()
+				
+				if let url = player._currentOutput != -1 && player._currentOutput < player.media.outputs?.count ?? 0 ?
+						player.media.outputs?[player._currentOutput].url : player.media.url {
+					// try to connect again
+					player.loadAsset(player.createAsset(URL(string: url)), true)
+				}
+				else {
+					player.dispatchError(SambaPlayerError.invalidUrl)
+				}
 			}
 			
-			errorScreen.text = secs > 0 ? "Reconnecting in \(secs)s" : "Connecting..."
+			player.dispatchError(SambaPlayerError.unknown.setValues(secs > 0 ? "Reconectando em \(secs)s" : "Conectando...", .recoverable))
+			
 			secs -= 1
 		}
 	}

@@ -76,10 +76,6 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   GMFPlayerLayerView *_renderingView;
 }
 
-@property (nonatomic, strong) AVPlayerItem *playerItem;
-
-@property (nonatomic, strong) AVPlayer *player;
-
 // Polling timer for content time updates.
 @property (nonatomic, strong) NSTimer *playbackStatusPoller;
 

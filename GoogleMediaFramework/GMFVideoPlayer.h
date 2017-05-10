@@ -44,6 +44,10 @@
 // to control playback of media content.
 @interface GMFVideoPlayer : NSObject
 
+@property (nonatomic, strong) AVPlayerItem *playerItem;
+
+@property (nonatomic, strong) AVPlayer *player;
+
 @property(nonatomic, weak) id<GMFVideoPlayerDelegate> delegate;
 
 @property(nonatomic, readonly) GMFPlayerState state;

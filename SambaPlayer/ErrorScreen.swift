@@ -11,17 +11,22 @@ import Foundation
 class ErrorScreen : UIViewController {
 	
 	@IBOutlet var textField: UILabel!
+	@IBOutlet var iconView: UIImageView!
+	@IBOutlet var retryButton: UIImageView!
 	
-	var text: String? {
-		get { return textField.text }
-		set(value) { textField.text = value }
+	var error: SambaPlayerError {
+		didSet {
+			retryButton.isHidden = error.criticality != .recoverable
+			textField.text = error.localizedDescription
+			//iconView.image = error.icon
+		}
 	}
 	
 	init(_ error: SambaPlayerError) {
+		self.error = error
+		
 		super.init(nibName: "ErrorScreen", bundle: Bundle(for: type(of: self)))
 		loadViewIfNeeded()
-		
-		text = error.localizedDescription
 	}
 	
 	required init?(coder aDecoder: NSCoder) {

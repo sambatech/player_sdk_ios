@@ -68,6 +68,9 @@
 		9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */; };
 		9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AE08ABC1D3FFEF500C847CC /* ModalMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */; };
+		9AEE0BF21EC382500007E60B /* retry@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BEF1EC382500007E60B /* retry@3x.png */; };
+		9AEE0BF31EC382500007E60B /* retry@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BF01EC382500007E60B /* retry@1x.png */; };
+		9AEE0BF41EC382500007E60B /* retry@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BF11EC382500007E60B /* retry@2x.png */; };
 		9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B31D14B5B900B6E450 /* GMFAdService.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325B41D14B5B900B6E450 /* GMFAdService.m */; };
 		9AF325D91D14B5B900B6E450 /* GMFContentPlayhead.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325B51D14B5B900B6E450 /* GMFContentPlayhead.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -170,6 +173,9 @@
 		9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFHelpers.m; path = GoogleMediaFramework/GMFHelpers.m; sourceTree = "<group>"; };
 		9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMFHelpers.h; path = GoogleMediaFramework/GMFHelpers.h; sourceTree = "<group>"; };
 		9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalMenu.xib; sourceTree = "<group>"; };
+		9AEE0BEF1EC382500007E60B /* retry@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@3x.png"; sourceTree = "<group>"; };
+		9AEE0BF01EC382500007E60B /* retry@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@1x.png"; sourceTree = "<group>"; };
+		9AEE0BF11EC382500007E60B /* retry@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@2x.png"; sourceTree = "<group>"; };
 		9AF325B31D14B5B900B6E450 /* GMFAdService.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFAdService.h; path = GoogleMediaFramework/GMFAdService.h; sourceTree = "<group>"; };
 		9AF325B41D14B5B900B6E450 /* GMFAdService.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdService.m; path = GoogleMediaFramework/GMFAdService.m; sourceTree = "<group>"; };
 		9AF325B51D14B5B900B6E450 /* GMFContentPlayhead.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFContentPlayhead.h; path = GoogleMediaFramework/GMFContentPlayhead.h; sourceTree = "<group>"; };
@@ -227,6 +233,9 @@
 			isa = PBXGroup;
 			children = (
 				9A1ADB8F1D4A3D09008A5BEE /* Localizations */,
+				9AEE0BEF1EC382500007E60B /* retry@3x.png */,
+				9AEE0BF01EC382500007E60B /* retry@1x.png */,
+				9AEE0BF11EC382500007E60B /* retry@2x.png */,
 				9A1ADB921D4A3D09008A5BEE /* player_control_close@2x.png */,
 				9A762B501E2D538C004FD2D0 /* player_control_captions@3x.png */,
 				9A762B511E2D538C004FD2D0 /* player_control_captions@2x.png */,
@@ -491,6 +500,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9AEE0BF21EC382500007E60B /* retry@3x.png in Resources */,
 				9A762B541E2D538C004FD2D0 /* player_control_captions@2x.png in Resources */,
 				9A762B551E2D538C004FD2D0 /* player_control_captions@1x.png in Resources */,
 				9A1ADBD21D4A3D09008A5BEE /* player_control_replay@3x.png in Resources */,
@@ -512,6 +522,7 @@
 				9A1ADBC51D4A3D09008A5BEE /* player_control_pause@2x.png in Resources */,
 				9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */,
 				9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */,
+				9AEE0BF31EC382500007E60B /* retry@1x.png in Resources */,
 				9A67DD741DE4A2B600F8E172 /* player_error@3x.png in Resources */,
 				9A1ADBBA1D4A3D09008A5BEE /* player_control_hd@3x.png in Resources */,
 				9A1ADBCF1D4A3D09008A5BEE /* player_control_play_large@3x.png in Resources */,
@@ -531,6 +542,7 @@
 				9A1ADBCA1D4A3D09008A5BEE /* player_control_play@1x.png in Resources */,
 				9A1ADBD61D4A3D09008A5BEE /* player_controls_background@2x.png in Resources */,
 				9A1ADBCB1D4A3D09008A5BEE /* player_control_play@2x.png in Resources */,
+				9AEE0BF41EC382500007E60B /* retry@2x.png in Resources */,
 				9A1ADBD01D4A3D09008A5BEE /* player_control_replay@1x.png in Resources */,
 				9A1ADBB91D4A3D09008A5BEE /* player_control_hd@2x.png in Resources */,
 				9A1ADBD41D4A3D09008A5BEE /* player_control_replay_large@2x.png in Resources */,

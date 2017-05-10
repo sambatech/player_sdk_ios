@@ -221,7 +221,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,
 						label: label.contains("abr") ? "Auto" : label,
-						isDefault: label == defaultOutputCurrent
+						isDefault: label.contains(defaultOutputCurrent)
 					))
 				}
 				

@@ -90,11 +90,6 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	
 	// PLAYER DELEGATE
 	
-	func onLoad() {}
-	func onStart() {}
-	func onResume() {}
-	func onPause() {}
-	
 	func onProgress() {
 		guard _parsed else { return }
 		
@@ -120,10 +115,6 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			_currentCaption = nil
 		}
 	}
-	
-	func onFinish() {}
-	func onDestroy() {}
-	func onError(_ error: SambaPlayerError) {}
 	
 	private func parse(_ captionsText: String) {
 		_parsed = false
