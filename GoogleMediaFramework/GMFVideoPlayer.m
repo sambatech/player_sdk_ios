@@ -28,6 +28,8 @@ static void *kGMFPlayerDurationContext = &kGMFPlayerDurationContext;
 static NSString * const kStatusKey = @"status";
 static NSString * const kRateKey = @"rate";
 static NSString * const kDurationKey = @"currentItem.duration";
+static NSString * const kBufferEmptyKey = @"playbackBufferEmpty";
+static NSString * const kLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
 
 // Pause the video if user unplugs their headphones.
 void GMFAudioRouteChangeListenerCallback(void *inClientData,
@@ -270,6 +272,8 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 - (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem {
 	// Player item observers.
 	[_playerItem removeObserver:self forKeyPath:kStatusKey];
+	[_playerItem removeObserver:self forKeyPath:kBufferEmptyKey];
+	[_playerItem removeObserver:self forKeyPath:kLikelyToKeepUpKey];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:AVPlayerItemDidPlayToEndTimeNotification
@@ -290,13 +294,23 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 						 options:0
 						 context:kGMFPlayerItemStatusContext];
 		
+		[_playerItem addObserver:self
+					  forKeyPath:kBufferEmptyKey
+						 options:NSKeyValueObservingOptionNew
+						 context:kGMFPlayerItemStatusContext];
+		
+		[_playerItem addObserver:self
+					  forKeyPath:kLikelyToKeepUpKey
+						 options:NSKeyValueObservingOptionNew
+						 context:kGMFPlayerItemStatusContext];
+		
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(playerStallHandler:)
+												 selector:@selector(playbackStallHandler:)
 													 name:AVPlayerItemPlaybackStalledNotification
 												   object:_playerItem];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
-												 selector:@selector(playerStallHandler:)
+												 selector:@selector(playbackStallHandler:)
 													 name:AVPlayerItemFailedToPlayToEndTimeNotification
 												   object:_playerItem];
 		__weak GMFVideoPlayer *weakSelf = self;
@@ -313,7 +327,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 		 }];
 	}
 }
-- (void)playerStallHandler:(NSNotification *)notification {
+- (void)playbackStallHandler:(NSNotification *)notification {
   self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
   [self setState:kGMFPlayerStateError];
 }
@@ -461,9 +475,16 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     } else {
       [self setState:kGMFPlayerStatePaused];
     }
-  } else if ([_playerItem status] == AVPlayerItemStatusFailed) {
+  }
+  // fail state
+  else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];
 	self.error = _playerItem.error;
+	[self setState:kGMFPlayerStateError];
+  }
+  // playback got stalled
+  else if (!_playerItem.isPlaybackLikelyToKeepUp && _playerItem.playbackBufferEmpty) {
+	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
 	[self setState:kGMFPlayerStateError];
   }
 }
@@ -476,10 +497,10 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     [self setState:kGMFPlayerStatePlaying];
   }
   // rate notification when rate=0 means media isn't playing
-  else if (CMTimeGetSeconds(_playerItem.currentTime) < CMTimeGetSeconds(_playerItem.duration)) {
+  /*else if (CMTimeGetSeconds(_playerItem.currentTime) < CMTimeGetSeconds(_playerItem.duration)) {
 	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
 	[self setState:kGMFPlayerStateError];
-  }
+  }*/
 }
 
 - (void)playbackDidReachEnd {

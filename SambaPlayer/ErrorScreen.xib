@@ -11,9 +11,9 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ErrorScreen" customModule="SambaPlayer" customModuleProvider="target">
             <connections>
-                <outlet property="iconView" destination="d70-AG-PZk" id="C1a-ro-4eO"/>
-                <outlet property="retryButton" destination="snr-JS-NFZ" id="hlP-Zy-E02"/>
-                <outlet property="textField" destination="a5T-on-sfd" id="yWi-G2-AeS"/>
+                <outlet property="iconView" destination="d70-AG-PZk" id="QuS-1D-XQ6"/>
+                <outlet property="retryButton" destination="snr-JS-NFZ" id="FwB-tD-M3l"/>
+                <outlet property="textField" destination="a5T-on-sfd" id="hVc-Hb-HZs"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Gah-uV-4Px"/>
             </connections>
         </placeholder>
@@ -32,17 +32,17 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="retry.png" translatesAutoresizingMaskIntoConstraints="NO" id="snr-JS-NFZ">
-                    <rect key="frame" x="115" y="384" width="145" height="31"/>
+                    <rect key="frame" x="115" y="394" width="145" height="31"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="snr-JS-NFZ" firstAttribute="top" secondItem="a5T-on-sfd" secondAttribute="bottom" constant="20" id="7bQ-Ck-a0P"/>
-                <constraint firstItem="snr-JS-NFZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="R6e-Q7-7q2"/>
-                <constraint firstItem="a5T-on-sfd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="20" id="YKn-Lh-P4E"/>
-                <constraint firstItem="d70-AG-PZk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="cWg-0o-rio"/>
-                <constraint firstItem="d70-AG-PZk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="iGg-mp-FMN"/>
-                <constraint firstItem="a5T-on-sfd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="t53-kV-izc"/>
+                <constraint firstItem="a5T-on-sfd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2im-dr-D7r"/>
+                <constraint firstItem="snr-JS-NFZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TDd-ib-IB8"/>
+                <constraint firstItem="d70-AG-PZk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jDV-ht-BjL"/>
+                <constraint firstItem="d70-AG-PZk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="qNC-Ap-Lyc"/>
+                <constraint firstItem="snr-JS-NFZ" firstAttribute="top" secondItem="a5T-on-sfd" secondAttribute="bottom" constant="30" id="vP5-Nf-Fdj"/>
+                <constraint firstItem="a5T-on-sfd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="20" id="zj4-c0-FCQ"/>
             </constraints>
             <point key="canvasLocation" x="26.5" y="51.5"/>
         </view>

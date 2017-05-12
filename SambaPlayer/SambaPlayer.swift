@@ -561,6 +561,7 @@ public class SambaPlayer : UIViewController {
 			for delegate in self._delegates { delegate.onError?(error) }
 			
 			switch error.criticality {
+			case .info: fallthrough
 			case .recoverable:
 				self.showError(error)
 			case .critical:
@@ -660,6 +661,8 @@ public class SambaPlayer : UIViewController {
 		private var currentBackupIndex = 0
 		private var currentRetryIndex = 0
 		private var secs = 0
+		private var hasError = false
+		private var currentPosition: Float = 0
 		
 		init(_ player: SambaPlayer) {
 			self.player = player
@@ -667,6 +670,8 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		func handle() {
+			hasError = true
+			
 			guard let playerInternal = player._player,
 				let media = player.media as? SambaMediaConfig,
 				playerInternal.player != nil else {
@@ -677,14 +682,17 @@ public class SambaPlayer : UIViewController {
 			let error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
 			let code = error?.code ?? SambaPlayerError.unknown.code
 			var msg = "Ocorreu um erro! Por favor, tente novamente."
+			var type = SambaPlayerErrorCriticality.recoverable
 			
 			// no network/internet connection
 			if code == NSURLErrorNotConnectedToInternet {
 				if currentRetryIndex < media.retriesTotal {
 					currentRetryIndex += 1
 					secs = 8
+					msg = ""
+					type = .info
+					
 					player.reset()
-					player.dispatchError(SambaPlayerError(code, "", .recoverable, error))
 					DispatchQueue.main.async { self.retryHandler() }
 					timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
 					return
@@ -702,8 +710,15 @@ public class SambaPlayer : UIViewController {
 					self.currentBackupIndex += 1
 				}
 			}
+			// all atempts have failed
+			else { type = .critical }
 			
-			player.dispatchError(SambaPlayerError(code, msg, .recoverable))
+			player.dispatchError(SambaPlayerError(code, msg, type, error))
+		}
+		
+		func onProgress() {
+			guard !hasError && player.currentTime > 0 else { return }
+			currentPosition = player.currentTime
 		}
 		
 		func onStart() {
@@ -715,7 +730,16 @@ public class SambaPlayer : UIViewController {
 		}
 		
 		private func reset() {
+			guard hasError else { return }
+			
+			hasError = false
 			currentRetryIndex = 0;
+			
+			if !player.media.isLive && currentPosition > 0 {
+				//player.seek(currentPosition)
+				currentPosition = 0
+			}
+			
 			player.destroyScreen(&player._errorScreen)
 		}
 		
@@ -734,7 +758,7 @@ public class SambaPlayer : UIViewController {
 				}
 			}
 			
-			player.dispatchError(SambaPlayerError.unknown.setValues(secs > 0 ? "Reconectando em \(secs)s" : "Conectando...", .recoverable))
+			player.dispatchError(SambaPlayerError.unknown.setValues(secs > 0 ? "Reconectando em \(secs)s" : "Conectando...", .info))
 			
 			secs -= 1
 		}
@@ -879,7 +903,7 @@ Player error list
 
 /// Defines the criticality of an error, whether to destroy the player or not.
 @objc public enum SambaPlayerErrorCriticality : Int {
-	case minor, recoverable, critical
+	case minor, info, recoverable, critical
 }
 
 /// Listens to player events

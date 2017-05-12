@@ -15,18 +15,23 @@ class ErrorScreen : UIViewController {
 	@IBOutlet var retryButton: UIImageView!
 	
 	var error: SambaPlayerError {
-		didSet {
-			retryButton.isHidden = error.criticality != .recoverable
-			textField.text = error.localizedDescription
-			//iconView.image = error.icon
+		get { return _error }
+		set {
+			retryButton.isHidden = newValue.criticality != .recoverable
+			textField.text = newValue.localizedDescription
+			//iconView.image = newValue.icon
+			
+			_error = newValue
 		}
 	}
 	
+	private var _error = SambaPlayerError.unknown
+	
 	init(_ error: SambaPlayerError) {
-		self.error = error
-		
 		super.init(nibName: "ErrorScreen", bundle: Bundle(for: type(of: self)))
 		loadViewIfNeeded()
+		
+		self.error = error
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
