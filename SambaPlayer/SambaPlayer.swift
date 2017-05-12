@@ -736,7 +736,7 @@ public class SambaPlayer : UIViewController {
 			currentRetryIndex = 0;
 			
 			if !player.media.isLive && currentPosition > 0 {
-				//player.seek(currentPosition)
+				player.seek(30)
 				currentPosition = 0
 			}
 			

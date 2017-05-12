@@ -451,7 +451,13 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     NSTimeInterval currentTotalTime = [GMFVideoPlayer secondsWithCMTime:_playerItem.duration];
     [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
   } else if (context == kGMFPlayerItemStatusContext) {
-    [self playerItemStatusDidChange];
+	if ((keyPath == kBufferEmptyKey || keyPath == kLikelyToKeepUpKey) &&
+		_playerItem.isPlaybackBufferEmpty &&
+		!_playerItem.isPlaybackLikelyToKeepUp) {
+	  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
+	  [self setState:kGMFPlayerStateError];
+	// playback got stalled
+	} else [self playerItemStatusDidChange];
   } else if (context == kGMFPlayerRateContext) {
     [self playerRateDidChange];
   } else {
@@ -480,11 +486,6 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];
 	self.error = _playerItem.error;
-	[self setState:kGMFPlayerStateError];
-  }
-  // playback got stalled
-  else if (!_playerItem.isPlaybackLikelyToKeepUp && _playerItem.playbackBufferEmpty) {
-	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
 	[self setState:kGMFPlayerStateError];
   }
 }
