@@ -23,6 +23,7 @@ static const NSTimeInterval kGMFPollingInterval = 0.2;
 static void *kGMFPlayerItemStatusContext = &kGMFPlayerItemStatusContext;
 static void *kGMFPlayerRateContext = &kGMFPlayerRateContext;
 static void *kGMFPlayerDurationContext = &kGMFPlayerDurationContext;
+static void *kGMFPlayerErrorContext = &kGMFPlayerErrorContext;
 
 
 static NSString * const kStatusKey = @"status";
@@ -30,6 +31,7 @@ static NSString * const kRateKey = @"rate";
 static NSString * const kDurationKey = @"currentItem.duration";
 static NSString * const kBufferEmptyKey = @"playbackBufferEmpty";
 static NSString * const kLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
+static NSString * const kErrorKey = @"error";
 
 // Pause the video if user unplugs their headphones.
 void GMFAudioRouteChangeListenerCallback(void *inClientData,
@@ -117,7 +119,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 - (void)onAudioSessionInterruption:(NSNotification *)notification;
 
 // Handler for |playerItem| state changes.
-- (void)playerItemStatusDidChange;
+- (void)playerItemStatusDidChange:(NSString*)keyPath;
 
 // Reset the player state. Readies the player to play a new content URL.
 - (void)clearPlayer;
@@ -262,11 +264,15 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   // back, and vice-versa.
   AVPlayer *player = _player;
 	
-  if (player)
+  if (player) {
+	[self setAndObservePlayerItem:playerItem];
 	[player replaceCurrentItemWithPlayerItem:playerItem];
-  else player = [AVPlayer playerWithPlayerItem:playerItem];
-
-  [self setAndObservePlayer:player playerItem:playerItem];
+	[self play];
+  }
+  else {
+	player = [AVPlayer playerWithPlayerItem:playerItem];
+	[self setAndObservePlayer:player playerItem:playerItem];
+  }
 }
 
 - (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem {
@@ -274,6 +280,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 	[_playerItem removeObserver:self forKeyPath:kStatusKey];
 	[_playerItem removeObserver:self forKeyPath:kBufferEmptyKey];
 	[_playerItem removeObserver:self forKeyPath:kLikelyToKeepUpKey];
+	[_playerItem removeObserver:self forKeyPath:kErrorKey];
 	
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:AVPlayerItemDidPlayToEndTimeNotification
@@ -303,6 +310,11 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 					  forKeyPath:kLikelyToKeepUpKey
 						 options:NSKeyValueObservingOptionNew
 						 context:kGMFPlayerItemStatusContext];
+		
+		[_playerItem addObserver:self
+					  forKeyPath:kErrorKey
+						 options:NSKeyValueObservingOptionNew
+						 context:kGMFPlayerErrorContext];
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self
 												 selector:@selector(playbackStallHandler:)
@@ -368,8 +380,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 	//if (t.value > 1.0f) t.value -= 1.0f;
 	
 	[item seekToTime:t];
-	[self setAndObservePlayerItem:item];
-	[_player replaceCurrentItemWithPlayerItem:item];
+	[self loadStreamWithAsset:asset];
 }
 
 - (void)setState:(GMFPlayerState)state {
@@ -451,15 +462,11 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     NSTimeInterval currentTotalTime = [GMFVideoPlayer secondsWithCMTime:_playerItem.duration];
     [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
   } else if (context == kGMFPlayerItemStatusContext) {
-	if ((keyPath == kBufferEmptyKey || keyPath == kLikelyToKeepUpKey) &&
-		_playerItem.isPlaybackBufferEmpty &&
-		!_playerItem.isPlaybackLikelyToKeepUp) {
-	  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
-	  [self setState:kGMFPlayerStateError];
-	// playback got stalled
-	} else [self playerItemStatusDidChange];
+	[self playerItemStatusDidChange:keyPath];
   } else if (context == kGMFPlayerRateContext) {
     [self playerRateDidChange];
+  } else if (context == kGMFPlayerErrorContext) {
+	[self setState:kGMFPlayerStateError];
   } else {
     [super observeValueForKeyPath:keyPath
                          ofObject:object
@@ -468,7 +475,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   }
 }
 
-- (void)playerItemStatusDidChange {
+- (void)playerItemStatusDidChange:(NSString*)keyPath {
   if ([_playerItem status] == AVPlayerItemStatusReadyToPlay &&
       _state == kGMFPlayerStateLoadingContent) {
     // TODO(tensafefrogs): It seems like additional AVPlayerItemStatusReadyToPlay
@@ -482,6 +489,13 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
       [self setState:kGMFPlayerStatePaused];
     }
   }
+  // playback got stalled
+  /*else if ((keyPath == kBufferEmptyKey || keyPath == kLikelyToKeepUpKey) &&
+	  _playerItem.isPlaybackBufferEmpty &&
+	  !_playerItem.isPlaybackLikelyToKeepUp) {
+	  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
+	  [self setState:kGMFPlayerStateError];
+  }*/
   // fail state
   else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];

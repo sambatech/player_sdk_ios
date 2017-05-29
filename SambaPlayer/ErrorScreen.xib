@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ErrorScreen" customModule="SambaPlayer" customModuleProvider="target">
             <connections>
                 <outlet property="iconView" destination="d70-AG-PZk" id="QuS-1D-XQ6"/>
-                <outlet property="retryButton" destination="snr-JS-NFZ" id="FwB-tD-M3l"/>
+                <outlet property="retryButton" destination="WG1-g5-nTn" id="eCo-6I-ayO"/>
                 <outlet property="textField" destination="a5T-on-sfd" id="hVc-Hb-HZs"/>
                 <outlet property="view" destination="iN0-l3-epB" id="Gah-uV-4Px"/>
             </connections>
@@ -31,17 +31,21 @@
                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="retry.png" translatesAutoresizingMaskIntoConstraints="NO" id="snr-JS-NFZ">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WG1-g5-nTn">
                     <rect key="frame" x="115" y="394" width="145" height="31"/>
-                </imageView>
+                    <state key="normal" image="retry.png"/>
+                    <connections>
+                        <action selector="retryHandler" destination="-1" eventType="touchUpInside" id="bDQ-Ll-oSP"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="a5T-on-sfd" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="2im-dr-D7r"/>
-                <constraint firstItem="snr-JS-NFZ" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="TDd-ib-IB8"/>
+                <constraint firstItem="WG1-g5-nTn" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="4MK-B1-rbo"/>
+                <constraint firstItem="WG1-g5-nTn" firstAttribute="top" secondItem="a5T-on-sfd" secondAttribute="bottom" constant="30" id="iGs-lD-Oej"/>
                 <constraint firstItem="d70-AG-PZk" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="jDV-ht-BjL"/>
                 <constraint firstItem="d70-AG-PZk" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="-20" id="qNC-Ap-Lyc"/>
-                <constraint firstItem="snr-JS-NFZ" firstAttribute="top" secondItem="a5T-on-sfd" secondAttribute="bottom" constant="30" id="vP5-Nf-Fdj"/>
                 <constraint firstItem="a5T-on-sfd" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" constant="20" id="zj4-c0-FCQ"/>
             </constraints>
             <point key="canvasLocation" x="26.5" y="51.5"/>
