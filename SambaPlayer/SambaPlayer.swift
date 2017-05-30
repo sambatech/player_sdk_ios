@@ -563,6 +563,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			switch error.criticality {
 			case .info: fallthrough
 			case .recoverable:
+				self.stopTimer()
 				self.showError(error)
 			case .critical:
 				self.destroy(withError: error)
@@ -614,6 +615,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	// MARK: Handlers
 	
 	func onRetryTouch() {
+		dispatchError(SambaPlayerError.unknown.setValues("Conectando...", .info))
 		retry()
 	}
 	
@@ -685,6 +687,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		private var secs = 0
 		private var hasError = false
 		private var currentPosition: Float = 0
+		private var type = SambaPlayerErrorCriticality.recoverable
 		
 		init(_ player: SambaPlayer) {
 			self.player = player
@@ -704,10 +707,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			let error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
 			let code = error?.code ?? SambaPlayerError.unknown.code
 			var msg = "Ocorreu um erro! Por favor, tente novamente."
-			var type = SambaPlayerErrorCriticality.recoverable
+			
+			type = .recoverable
 			
 			// no network/internet connection
-			if code == NSURLErrorNotConnectedToInternet || code == -11853 {
+			if code == NSURLErrorNotConnectedToInternet || media.isLive && code == -11853 {
 				if currentRetryIndex < media.retriesTotal {
 					currentRetryIndex += 1
 					secs = 8

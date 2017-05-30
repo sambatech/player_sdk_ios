@@ -489,13 +489,14 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
       [self setState:kGMFPlayerStatePaused];
     }
   }
-  // playback got stalled
-  /*else if ((keyPath == kBufferEmptyKey || keyPath == kLikelyToKeepUpKey) &&
+  // playback got stalled (probably misaligned chunks)
+  else if (keyPath == kBufferEmptyKey &&
 	  _playerItem.isPlaybackBufferEmpty &&
-	  !_playerItem.isPlaybackLikelyToKeepUp) {
+	  !_playerItem.isPlaybackLikelyToKeepUp &&
+	  _player.rate == 0) {
 	  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
 	  [self setState:kGMFPlayerStateError];
-  }*/
+  }
   // fail state
   else if ([_playerItem status] == AVPlayerItemStatusFailed) {
     // TODO(tensafefrogs): Better error handling: [self failWithError:[_playerItem error]];
