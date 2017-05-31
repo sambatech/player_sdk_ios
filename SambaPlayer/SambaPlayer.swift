@@ -602,6 +602,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	- parameter url: The URL to retry if provided
 	*/
 	private func retry(_ url: String? = nil) {
+		// disable ad
+		media.adUrl = nil
+		
 		if let url = url ?? (_currentOutput != -1 && _currentOutput < media.outputs?.count ?? 0 ?
 			media.outputs?[_currentOutput].url : media.url) {
 			// try to connect again
@@ -710,37 +713,48 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			
 			type = .recoverable
 			
+			switch code {
+			// unauthorized DRM content
+			case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
+				type = .critical
+				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
+			
 			// no network/internet connection
-			if code == NSURLErrorNotConnectedToInternet || media.isLive && code == -11853 {
-				if currentRetryIndex < media.retriesTotal {
-					currentRetryIndex += 1
-					secs = 8
-					msg = ""
-					type = .info
-					
-					DispatchQueue.main.async {
-						self.player.stop()
-						self.retryHandler()
-					}
-					
-					timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
-					return
-				}
-			}
-			// URL not found (or server unreachable)
-			else if currentBackupIndex < media.backupUrls.count {
-				let url = player.media.backupUrls[currentBackupIndex]
-				
-				msg = "Conectando..."
+			case -11853: if media.isLive { fallthrough }
+			case -11800: fallthrough
+			case NSURLErrorNotConnectedToInternet:
+				guard currentRetryIndex < media.retriesTotal else { break }
+			
+				currentRetryIndex += 1
+				secs = 8
+				type = .info
+				msg = ""
 				
 				DispatchQueue.main.async {
-					self.player.reset()
-					self.player.retry(url)
-					self.currentBackupIndex += 1
+					self.player.stop()
+					self.retryHandler()
 				}
+				
+				timer?.invalidate()
+				timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
+				return
+			
+			// URL not found (or server unreachable)
+			default:
+				if currentBackupIndex < media.backupUrls.count {
+					let url = player.media.backupUrls[currentBackupIndex]
+					
+					msg = "Conectando..."
+					
+					DispatchQueue.main.async {
+						self.player.reset()
+						self.player.retry(url)
+						self.currentBackupIndex += 1
+					}
+				}
+				// all atempts have failed
+				else { type = .critical }
 			}
-			// all atempts have failed
-			else { type = .critical }
 			
 			player.dispatchError(SambaPlayerError(code, msg, type, error))
 			
@@ -768,6 +782,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			
 			hasError = false
 			currentRetryIndex = 0;
+			player._disabled = false
 			
 			if !player.media.isLive && currentPosition > 0 {
 				player.seek(currentPosition)
@@ -779,7 +794,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		@objc private func retryHandler() {
 			// count got to the end
-			if secs == 0 {
+			if secs <= 0 {
 				timer?.invalidate()
 				player.retry()
 			}

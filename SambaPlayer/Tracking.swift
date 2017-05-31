@@ -46,10 +46,13 @@ class Tracking : NSObject, SambaPlayerDelegate {
 		_sttm?.destroy()
 	}
 	
-	func onLoad() {}
-	func onResume() {}
-	func onPause() {}
-	func onError(_ error: SambaPlayerError) {}
+	func onPause() {
+		print("pause")
+	}
+	
+	func onResume() {
+		print("resume")
+	}
 }
 
 class STTM {
@@ -121,7 +124,7 @@ class STTM {
 		print("collect", _progresses.count)
 		#endif
 		
-		_progresses.sort (comparator: { ($0 as AnyObject).localizedCaseInsensitiveCompare($1 as! String) })
+		_progresses.sort(comparator: { ($0 as AnyObject).localizedCaseInsensitiveCompare($1 as! String) })
 		_targets.append((_progresses.array as! [String]).joined(separator: ","))
 		_progresses.removeAllObjects()
 	}

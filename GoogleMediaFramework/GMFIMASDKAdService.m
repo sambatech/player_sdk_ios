@@ -26,14 +26,21 @@
   BOOL _hasVideoPlayerControl;
 }
 
+static BOOL _hasAd = NO;
+
 // Designated initializer
 - (instancetype)initWithGMFVideoPlayer:(GMFPlayerViewController *)videoPlayerController {
   self = [super initWithGMFVideoPlayer:videoPlayerController];
   if (self) {
     self.adsLoader = [[IMAAdsLoader alloc] initWithSettings:[self createIMASettings]];
     self.adsLoader.delegate = self;
+	_hasAd = YES;
   }
   return self;
+}
+
++ (BOOL)hasAd {
+  return _hasAd;
 }
 
 - (void)requestAdsWithRequest:(NSString *)request {

@@ -17,6 +17,7 @@
 #endif
 
 #import "GMFVideoPlayer.h"
+#import "GMFIMASDKAdService.h"
 
 static const NSTimeInterval kGMFPollingInterval = 0.2;
 
@@ -133,6 +134,8 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 
 // AVPlayerLayer class for video rendering.
 @synthesize renderingView = _renderingView;
+
+BOOL _assetReplaced = NO;
 
 - (instancetype)init {
   self = [super init];
@@ -267,7 +270,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
   if (player) {
 	[self setAndObservePlayerItem:playerItem];
 	[player replaceCurrentItemWithPlayerItem:playerItem];
-	[self play];
+	_assetReplaced = YES;
   }
   else {
 	player = [AVPlayer playerWithPlayerItem:playerItem];
@@ -457,6 +460,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
                       ofObject:(id)object
                         change:(NSDictionary *)change
                        context:(void *)context {
+  //[NSString stringWithFormat:@"%@: rate=%d likelyToKeepUp=%f bufferEmpty=%d error=%@; %@", keyPath, [_player rate], [_playerItem isPlaybackLikelyToKeepUp], [_playerItem isPlaybackBufferEmpty], [_playerItem error], [_playerItem errorLog]]
   if (context == kGMFPlayerDurationContext) {
     // Update total duration of player
     NSTimeInterval currentTotalTime = [GMFVideoPlayer secondsWithCMTime:_playerItem.duration];
@@ -489,13 +493,19 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
       [self setState:kGMFPlayerStatePaused];
     }
   }
-  // playback got stalled (probably misaligned chunks)
-  else if (keyPath == kBufferEmptyKey &&
-	  _playerItem.isPlaybackBufferEmpty &&
-	  !_playerItem.isPlaybackLikelyToKeepUp &&
-	  _player.rate == 0) {
-	  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
-	  [self setState:kGMFPlayerStateError];
+  // playback got stalled
+  else if (![GMFIMASDKAdService hasAd] &&
+		   keyPath == kBufferEmptyKey &&
+		   _playerItem.isPlaybackBufferEmpty &&
+		   !_playerItem.isPlaybackLikelyToKeepUp &&
+		   _player.rate == 0) {
+	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
+	[self setState:kGMFPlayerStateError];
+  }
+  // able to play new asset
+  else if (keyPath == kLikelyToKeepUpKey && _assetReplaced) {
+	_assetReplaced = NO;
+	[_player play];
   }
   // fail state
   else if ([_playerItem status] == AVPlayerItemStatusFailed) {
