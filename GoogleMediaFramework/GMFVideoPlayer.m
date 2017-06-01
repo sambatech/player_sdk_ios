@@ -130,7 +130,9 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
 
 @end
 
-@implementation GMFVideoPlayer
+@implementation GMFVideoPlayer {
+	CMTime _initialTime;
+}
 
 // AVPlayerLayer class for video rendering.
 @synthesize renderingView = _renderingView;
@@ -151,6 +153,7 @@ BOOL _assetReplaced = NO;
                                                  name:AVAudioSessionInterruptionNotification
                                                object:[AVAudioSession sharedInstance]];
 	_backgroundColor = [UIColor blackColor];
+	_initialTime = kCMTimeZero;
   }
   return self;
 }
@@ -378,11 +381,9 @@ BOOL _assetReplaced = NO;
 	if (!_player) return;
 	
 	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:asset];
-	CMTime t = _player.currentTime;
 	
-	//if (t.value > 1.0f) t.value -= 1.0f;
+	_initialTime = _player.currentTime;
 	
-	[item seekToTime:t];
 	[self loadStreamWithAsset:asset];
 }
 
@@ -494,18 +495,35 @@ BOOL _assetReplaced = NO;
     }
   }
   // playback got stalled
-  else if (![GMFIMASDKAdService hasAd] &&
-		   keyPath == kBufferEmptyKey &&
+  else if (keyPath == kBufferEmptyKey &&
+		   ((int)[self currentMediaTime]) > 0 &&
 		   _playerItem.isPlaybackBufferEmpty &&
 		   !_playerItem.isPlaybackLikelyToKeepUp &&
 		   _player.rate == 0) {
-	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
-	[self setState:kGMFPlayerStateError];
+	  // test network/internet connection
+	  NSURLSessionDataTask* dataTask = [[NSURLSession sharedSession] dataTaskWithURL:((AVURLAsset*)[_playerItem asset]).URL
+								  completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+		  if (error == nil || self.error != nil) return;
+		  
+		  self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
+		  [self setState:kGMFPlayerStateError];
+	  }];
+	  [dataTask resume];
   }
   // able to play new asset
-  else if (keyPath == kLikelyToKeepUpKey && _assetReplaced) {
-	_assetReplaced = NO;
-	[_player play];
+  else if (keyPath == kLikelyToKeepUpKey) {
+	  if (_playerItem.isPlaybackLikelyToKeepUp)
+		  self.error = nil;
+	  
+	  if (_assetReplaced) {
+		_assetReplaced = NO;
+		
+		float secs = CMTimeGetSeconds(_initialTime);
+		  
+		if (secs > 0)
+		  [self seekToTime:secs];
+		else [_player play];
+	  }
   }
   // fail state
   else if ([_playerItem status] == AVPlayerItemStatusFailed) {

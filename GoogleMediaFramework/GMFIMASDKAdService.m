@@ -24,9 +24,8 @@
 
 @implementation GMFIMASDKAdService {
   BOOL _hasVideoPlayerControl;
+  BOOL _contentComplete;
 }
-
-static BOOL _hasAd = NO;
 
 // Designated initializer
 - (instancetype)initWithGMFVideoPlayer:(GMFPlayerViewController *)videoPlayerController {
@@ -34,13 +33,8 @@ static BOOL _hasAd = NO;
   if (self) {
     self.adsLoader = [[IMAAdsLoader alloc] initWithSettings:[self createIMASettings]];
     self.adsLoader.delegate = self;
-	_hasAd = YES;
   }
   return self;
-}
-
-+ (BOOL)hasAd {
-  return _hasAd;
 }
 
 - (void)requestAdsWithRequest:(NSString *)request {
@@ -62,6 +56,8 @@ static BOOL _hasAd = NO;
                                                    adDisplayContainer:self.adDisplayContainer
                                                       contentPlayhead:self.contentPlayhead
                                                           userContext:nil];
+
+  _contentComplete = NO;
 
   [self.adsLoader requestAdsWithRequest:adsRequest];
 }
@@ -88,6 +84,7 @@ static BOOL _hasAd = NO;
 // Listen to playbackWill finish in order to play postrolls if needed before the player ends.
 // The GMFVideoPlayerSDK subscribes to this notification automatically.
 - (void)playbackWillFinish:(NSNotification *)notification {
+  _contentComplete = YES;
   [self.adsLoader contentComplete];
 }
 
@@ -134,7 +131,10 @@ static BOOL _hasAd = NO;
   // Resume or start (if not started yet) the content.
   [self.videoPlayerController setControlsVisibility:YES animated:YES];
   [self relinquishControlToVideoPlayer];
-  [self.videoPlayerController play];
+
+  if (_contentComplete)
+	[[self.videoPlayerController player] seekToTime:[self.videoPlayerController totalMediaTime]];
+  else [self.videoPlayerController play];
 }
 
 // Process ad events.

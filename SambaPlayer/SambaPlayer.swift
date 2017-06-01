@@ -700,6 +700,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		func handle() {
 			hasError = true
 			
+			guard !(timer?.isValid ?? false) else { return }
+			
 			guard let playerInternal = player._player,
 				let media = player.media as? SambaMediaConfig,
 				playerInternal.player != nil else {
@@ -733,10 +735,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				DispatchQueue.main.async {
 					self.player.stop()
 					self.retryHandler()
+					self.timer?.invalidate()
+					self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.retryHandler), userInfo: nil, repeats: true)
 				}
-				
-				timer?.invalidate()
-				timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(retryHandler), userInfo: nil, repeats: true)
 				return
 			
 			// URL not found (or server unreachable)

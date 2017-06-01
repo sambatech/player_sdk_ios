@@ -45,14 +45,6 @@ class Tracking : NSObject, SambaPlayerDelegate {
 	func onDestroy() {
 		_sttm?.destroy()
 	}
-	
-	func onPause() {
-		print("pause")
-	}
-	
-	func onResume() {
-		print("resume")
-	}
 }
 
 class STTM {
