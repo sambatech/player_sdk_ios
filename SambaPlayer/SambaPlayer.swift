@@ -120,16 +120,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	*/
 	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
-		
-		DispatchQueue.main.async {
-			parentViewController.addChildViewController(self)
-			self.didMove(toParentViewController: parentViewController)
-			self.view.frame = parentView.bounds
-			parentView.addSubview(self.view)
-			parentView.setNeedsDisplay()
-		}
-		
-		self._parentView = parentView
+		_parentView = parentView
+		attachVC(self, parentViewController, parentView)
 	}
 	
 	public required init?(coder aDecoder: NSCoder) {
@@ -836,15 +828,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		                   selectedIndex: screen.currentIndex))
 	}
 	
-	private func attachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil) {
-		let p: UIViewController = vcParent ?? self
+	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil) {
+		let parent: UIViewController = parent ?? self
+		
+		guard let parentView = parentView ?? parent.view else {
+			fatalError("No view found (null) when attaching \(target) to parent \(parent)!")
+		}
 		
 		DispatchQueue.main.async {
-			p.addChildViewController(vc)
-			vc.didMove(toParentViewController: p)
-			vc.view.frame = p.view.frame
-			p.view.addSubview(vc.view)
-			p.view.setNeedsDisplay()
+			parent.addChildViewController(target)
+			target.didMove(toParentViewController: parent)
+			target.view.frame = parentView.bounds
+			parentView.addSubview(target.view)
+			parentView.setNeedsDisplay()
 		}
 	}
 	
