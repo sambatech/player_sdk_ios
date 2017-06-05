@@ -13,6 +13,7 @@ import UIKit
 public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private var _player: GMFPlayerViewController?
+	private var _parent: UIViewController!
 	private var _parentView: UIView?
 	private var _currentMenu: UIViewController?
 	private var _errorScreen: UIViewController?
@@ -91,6 +92,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	public var controlsVisible: Bool = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
+		}
+	}
+	
+	/// Whether player shoud be fullscreen or not
+	public var fullscreen: Bool = false {
+		didSet {
+			UIDevice.current.setValue(fullscreen ? UIInterfaceOrientation.landscapeLeft.rawValue :
+				UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
 		}
 	}
 	
@@ -295,6 +304,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				callback()
 			}
 		}
+	}
+	
+	public override func viewDidAppear(_ animated: Bool) {
+		guard let parent = parent else {
+			fatalError("No parent VC found (null) when adding player to hierarchy (viewDidAppear)")
+		}
+		
+		_parent = parent
+		_parentView = _parentView ?? parent.view
 	}
 	
 	public override func viewWillDisappear(_ animated: Bool) {
@@ -573,7 +591,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		let errorScreen = ErrorScreen(error)
 		errorScreen.delegate = self
-		showScreen(errorScreen, &_errorScreen) 
+		showScreen(errorScreen, &_errorScreen)
+		fullscreen = false
 	}
 	
 	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
@@ -803,8 +822,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	@objc private func fullscreenTouchHandler() {
-		UIDevice.current.setValue(_isFullscreen ? UIInterfaceOrientation.portrait.rawValue :
-			UIInterfaceOrientation.landscapeLeft.rawValue, forKey: "orientation")
+		fullscreen = !_isFullscreen
 	}
 	
 	@objc private func hdTouchHandler() {
