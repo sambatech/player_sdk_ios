@@ -89,16 +89,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	/// Whether controls should be visible or not
-	public var controlsVisible: Bool = true {
+	public var controlsVisible = true {
 		didSet {
-			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.visible = controlsVisible
+			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.isHidden = !controlsVisible
 		}
 	}
 	
 	/// Whether player shoud be fullscreen or not
-	public var fullscreen: Bool = false {
+	public var fullscreen = false {
 		didSet {
-			UIDevice.current.setValue(fullscreen ? UIInterfaceOrientation.landscapeLeft.rawValue :
+			UIDevice.current.setValue(self.fullscreen ? UIInterfaceOrientation.landscapeLeft.rawValue :
 				UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
 		}
 	}
@@ -256,13 +256,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		
+		updateFullscreen()
+	}
+	
+	private func updateFullscreen(_ animated: Bool = true) {
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
 		
 		guard !media.isAudio else {
+			guard let parentView = _parentView ?? parent?.view else { return }
 			var f = player.view.frame
-			f.size.width = size.width
+			f.size.width = parentView.bounds.width
 			player.view.frame = f
 			player.view.setNeedsDisplay()
 			return
@@ -289,14 +293,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				detachVC(player)
 				
 				DispatchQueue.main.async {
-					self.present(player, animated: true, completion: callback)
+					self.present(player, animated: animated, completion: callback)
 				}
 			}
 		}
 		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
 			_fullscreenAnimating = true
 			
-			detachVC(player) {
+			detachVC(player, nil, animated) {
 				self._isFullscreen = false
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
@@ -307,6 +311,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	public override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
+		
 		guard let parent = parent else {
 			fatalError("No parent VC found (null) when adding player to hierarchy (viewDidAppear)")
 		}
@@ -322,6 +328,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		destroy()
 	}
+	
+	/*public override func viewDidLayoutSubviews() {
+		super.viewDidLayoutSubviews()
+		
+		guard let parentView = _parentView else { return }
+		
+		view.frame = parentView.bounds
+		view.setNeedsDisplay()
+	}*/
 	
 	// MARK: Internal Methods (may we publish them?)
 	
@@ -430,7 +445,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		destroyThumb()
-		attachVC(gmf)
+		attachVC(gmf, nil, nil) { self.updateFullscreen(false) }
 		
 		let nc = NotificationCenter.default
 		
@@ -650,6 +665,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
+			//updateFullscreen(false)
+			
 			for delegate in _delegates { delegate.onLoad?() }
 			
 			if _pendingPlay {
@@ -846,7 +863,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		                   selectedIndex: screen.currentIndex))
 	}
 	
-	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil) {
+	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil, callback: (() -> Void)? = nil) {
 		let parent: UIViewController = parent ?? self
 		
 		guard let parentView = parentView ?? parent.view else {
@@ -859,6 +876,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			target.view.frame = parentView.bounds
 			parentView.addSubview(target.view)
 			parentView.setNeedsDisplay()
+			callback?()
 		}
 	}
 	
