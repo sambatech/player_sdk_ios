@@ -256,17 +256,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	public override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
 		super.viewWillTransition(to: size, with: coordinator)
-		updateFullscreen()
+		updateFullscreen(size)
 	}
 	
-	private func updateFullscreen(_ animated: Bool = true) {
+	private func updateFullscreen(_ size: CGSize? = nil, _ animated: Bool = true) {
 		guard !_fullscreenAnimating,
 			let player = _player else { return }
 		
 		guard !media.isAudio else {
 			guard let parentView = _parentView ?? parent?.view else { return }
 			var f = player.view.frame
-			f.size.width = parentView.bounds.width
+			f.size.width = size?.width ?? parentView.frame.width
 			player.view.frame = f
 			player.view.setNeedsDisplay()
 			return
@@ -385,12 +385,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		guard let asset = createAsset(decideUrl()) else { return }
 		
-		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest {
-			// weak reference init, must retain a strong reference to it
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
-		}
-		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 			
@@ -445,7 +439,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		destroyThumb()
-		attachVC(gmf, nil, nil) { self.updateFullscreen(false) }
+		attachVC(gmf, nil, nil) { self.updateFullscreen(nil, false) }
 		
 		let nc = NotificationCenter.default
 		
@@ -532,12 +526,22 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return nil
 		}
 		
-		return AVURLAsset(url: url)
+		let asset = AVURLAsset(url: url)
+		
+		if let m = media as? SambaMediaConfig,
+			let drmRequest = m.drmRequest {
+			// must retain a strong reference to it (weak reference init)
+			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
+		}
+		
+		return asset
 	}
 	
 	private func loadAsset(_ asset: AVURLAsset?, _ autoPlay: Bool = false) {
 		guard let asset = asset,
-			let player = _player else { return }
+			let player = _player else {
+			fatalError("Asset not found (null) when loading stream!")
+		}
 		
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
@@ -569,7 +573,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		stopTimer()
 		player.player.reset()
-		detachVC(player)
+		detachVC(player, nil, false)
 		NotificationCenter.default.removeObserver(self)
 		
 		_player = nil
@@ -665,8 +669,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
-			//updateFullscreen(false)
-			
 			for delegate in _delegates { delegate.onLoad?() }
 			
 			if _pendingPlay {
@@ -745,6 +747,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			
 			switch code {
 			// unauthorized DRM content
+			//case -11800 where media.drmRequest != nil: fallthrough
 			case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
 				type = .critical
 				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
@@ -754,7 +757,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			case -11800: fallthrough
 			case NSURLErrorNotConnectedToInternet:
 				guard currentRetryIndex < media.retriesTotal else { break }
-			
+				
 				currentRetryIndex += 1
 				secs = 8
 				type = .info
@@ -875,6 +878,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			target.didMove(toParentViewController: parent)
 			target.view.frame = parentView.bounds
 			parentView.addSubview(target.view)
+			
+			// always try to keep error screen above all views
+			if let errorView = self._errorScreen?.view,
+				let errorParentView = errorView.superview {
+				errorParentView.bringSubview(toFront: errorView)
+			}
+			
 			parentView.setNeedsDisplay()
 			callback?()
 		}
@@ -936,7 +946,7 @@ Player error list
 	/// The error message
 	public var message: String
 	/// The error cause
-	public var cause: Error?
+	public var cause: NSError?
 	
 	/**
 	Creates a new error entity
@@ -947,7 +957,7 @@ Player error list
 	- parameter cause: The error cause
 	*/
 	public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = .minor,
-	            _ cause: Error? = nil) {
+	            _ cause: NSError? = nil) {
 		self.code = code
 		self.message = message
 		self.criticality = criticality
@@ -967,7 +977,7 @@ Player error list
 	- parameter cause: The error cause
 	- returns: The current error
 	*/
-	public func setValues(_ message: String = "", _ criticality: SambaPlayerErrorCriticality? = nil, _ cause: Error? = nil) -> SambaPlayerError {
+	public func setValues(_ message: String = "", _ criticality: SambaPlayerErrorCriticality? = nil, _ cause: NSError? = nil) -> SambaPlayerError {
 		self.message = message
 		self.criticality = criticality ?? self.criticality
 		self.cause = cause

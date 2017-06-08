@@ -471,6 +471,7 @@ BOOL _assetReplaced = NO;
   } else if (context == kGMFPlayerRateContext) {
     [self playerRateDidChange];
   } else if (context == kGMFPlayerErrorContext) {
+	self.error = _playerItem.error;
 	[self setState:kGMFPlayerStateError];
   } else {
     [super observeValueForKeyPath:keyPath
