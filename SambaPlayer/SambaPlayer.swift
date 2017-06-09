@@ -259,8 +259,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		updateFullscreen(size)
 	}
 	
-	private func updateFullscreen(_ size: CGSize? = nil, _ animated: Bool = true) {
-		guard !_fullscreenAnimating,
+	private func updateFullscreen(_ size: CGSize? = nil, _ animated: Bool = true, _ forcePortrait: Bool = false) {
+		guard _errorScreen == nil, !_fullscreenAnimating,
 			let player = _player else { return }
 		
 		guard !media.isAudio else {
@@ -272,16 +272,33 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return
 		}
 		
-		if let menu = _currentMenu {
-			hideMenu(menu, true)
-		}
-		
 		let callback = {
 			self._fullscreenAnimating = false
 			
 			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
+		}
+		
+		let exitFullscreen = {
+			self._fullscreenAnimating = true
+			
+			self.detachVC(player, nil, animated) {
+				self._isFullscreen = false
+				
+				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
+				self.attachVC(player)
+				callback()
+			}
+		}
+		
+		if let menu = _currentMenu {
+			hideMenu(menu, true)
+		}
+		
+		if forcePortrait {
+			exitFullscreen()
+			return
 		}
 		
 		if player.parent == self {
@@ -298,15 +315,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			}
 		}
 		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-			_fullscreenAnimating = true
-			
-			detachVC(player, nil, animated) {
-				self._isFullscreen = false
-				
-				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
-				self.attachVC(player)
-				callback()
-			}
+			exitFullscreen()
 		}
 	}
 	
@@ -328,15 +337,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		destroy()
 	}
-	
-	/*public override func viewDidLayoutSubviews() {
-		super.viewDidLayoutSubviews()
-		
-		guard let parentView = _parentView else { return }
-		
-		view.frame = parentView.bounds
-		view.setNeedsDisplay()
-	}*/
 	
 	// MARK: Internal Methods (may we publish them?)
 	
@@ -608,10 +608,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return
 		}
 		
+		if let menu = _currentMenu {
+			hideMenu(menu, true)
+		}
+
+		updateFullscreen(nil, false, true)
+		
 		let errorScreen = ErrorScreen(error)
 		errorScreen.delegate = self
 		showScreen(errorScreen, &_errorScreen)
-		fullscreen = false
 	}
 	
 	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
@@ -620,9 +625,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		ref = screen
 	}
 	
-	private func destroyScreen(_ ref: inout UIViewController?) {
+	private func destroyScreen(_ ref: inout UIViewController?, callback: (() -> Void)? = nil) {
 		guard let screen = ref else { return }
-		detachVC(screen)
+		detachVC(screen, nil, true, callback: callback)
 		ref = nil
 	}
 	
@@ -821,7 +826,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				currentPosition = 0
 			}
 			
-			player.destroyScreen(&player._errorScreen)
+			player.destroyScreen(&player._errorScreen) {
+				self.player.updateFullscreen(nil, false)
+			}
 		}
 		
 		@objc private func retryHandler() {
