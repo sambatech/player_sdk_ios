@@ -720,8 +720,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private class ErrorManager : SambaPlayerDelegate {
 		
+		var timer: Timer?
+		
 		private let player: SambaPlayer
-		private var timer: Timer?
 		private var currentBackupIndex = 0
 		private var currentRetryIndex = 0
 		private var secs = 0
@@ -814,6 +815,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		func onProgress() {
 			guard !hasError && player.currentTime > 0 else { return }
 			currentPosition = player.currentTime
+		}
+		
+		func onDestroy() {
+			timer?.invalidate()
 		}
 		
 		private func reset() {
