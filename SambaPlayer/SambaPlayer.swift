@@ -24,16 +24,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private var _stopping = false
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
-	private var _hasMultipleOutputs = false
 	private var _pendingPlay = false
 	private var _duration: Float = 0
-	private var _currentOutput = -1
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
 	private var _decryptDelegate: AssetLoaderDelegate?
 	private var _disabled = false
 	private var _errorManager: ErrorManager?
+	private var _outputManager: OutputManager?
 	
 	// MARK: Properties
 	
@@ -192,26 +191,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	- parameter value: Index of the output
 	*/
 	public func switchOutput(_ value: Int) {
-		guard value != _currentOutput,
-			let outputs = media.outputs,
-			value < outputs.count else { return }
-		
-		_currentOutput = value
-		
-		guard let url = URL(string: outputs[value].url) else {
-			dispatchError(SambaPlayerError.invalidUrl.setValues("Invalid output URL"))
-			return
-		}
-		
-		let asset = AVURLAsset(url: url)
-		
-		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest {
-			// weak reference delegate, must retain a reference to it
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
-		}
-		
-		_player?.player.switch(asset)
+		_outputManager?.currentIndex = value
 	}
 	
 	/**
@@ -389,10 +369,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
-			
-			if self._hasMultipleOutputs {
-				player.getControlsView().showHdButton()
-			}
+		
+			self._outputManager = OutputManager(self)
 			
 			// captions
 			if let captions = self.media.captions, captions.count > 0 {
@@ -504,16 +482,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		// outputs
 		if let outputs = media.outputs, outputs.count > 0 {
-			// assume 0 in case of no default output
-			_currentOutput = 0
-			urlOpt = outputs[_currentOutput].url
+			// assume first output in case of no default
+			urlOpt = outputs[0].url
 			
 			for (k,v) in outputs.enumerated() where v.isDefault {
-				_currentOutput = k
 				urlOpt = v.url
 			}
-			
-			_hasMultipleOutputs = outputs.count > 1
 		}
 		
 		// final URL
@@ -642,8 +616,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// disable ad
 		media.adUrl = nil
 		
-		if let url = url ?? (_currentOutput != -1 && _currentOutput < media.outputs?.count ?? 0 ?
-			media.outputs?[_currentOutput].url : media.url) {
+		if let url = url ?? (_outputManager.currentOutput != -1 &&
+			_outputManager.currentOutput < media.outputs?.count ?? 0 ?
+			media.outputs?[_outputManager._currentOutput].url : media.url) {
 			// try to connect again
 			loadAsset(createAsset(URL(string: url)), true)
 		}
@@ -718,11 +693,143 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 	}
 	
-	private class ErrorManager : SambaPlayerDelegate {
+	@objc private func progressEventHandler() {
+		for delegate in _delegates { delegate.onProgress?() }
+	}
+	
+	@objc private func fullscreenTouchHandler() {
+		fullscreen = !_isFullscreen
+	}
+	
+	@objc private func hdTouchHandler() {
+		guard let manager = _outputManager else { return }
 		
-		var timer: Timer?
+		showMenu(ModalMenu(sambaPlayer: self,
+		                          items: manager.menuItems,
+		                          title: "Qualidade",
+		                          onSelect: { self.switchOutput($0) },
+		                          selectedIndex: manager.currentIndex))
+	}
+	
+	@objc private func captionsTouchHandler() {
+		guard let captions = media.captions,
+			let screen = _captionsScreen as? CaptionsScreen else { return }
+		
+		showMenu(ModalMenu(sambaPlayer: self,
+		                   items: captions.map { $0.label },
+		                   title: "Legendas",
+		                   onSelect: { self.changeCaption($0) },
+		                   selectedIndex: screen.currentIndex))
+	}
+	
+	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil, callback: (() -> Void)? = nil) {
+		let parent: UIViewController = parent ?? self
+		
+		guard let parentView = parentView ?? parent.view else {
+			fatalError("No view found (null) when attaching \(target) to parent \(parent)!")
+		}
+		
+		DispatchQueue.main.async {
+			parent.addChildViewController(target)
+			target.didMove(toParentViewController: parent)
+			target.view.frame = parentView.bounds
+			parentView.addSubview(target.view)
+			
+			// always try to keep error screen above all views
+			if let errorView = self._errorScreen?.view,
+				let errorParentView = errorView.superview {
+				errorParentView.bringSubview(toFront: errorView)
+			}
+			
+			parentView.setNeedsDisplay()
+			callback?()
+		}
+	}
+	
+	private func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
+		DispatchQueue.main.async {
+			if vc.parent != (vcParent ?? self) {
+				vc.dismiss(animated: animated, completion: callback)
+			}
+			else {
+				vc.view.removeFromSuperview()
+				vc.removeFromParentViewController()
+				callback?()
+			}
+		}
+	}
+	
+	private func startTimer() {
+		stopTimer()
+		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEventHandler), userInfo: nil, repeats: true)
+	}
+	
+	private func stopTimer() {
+		_progressTimer.invalidate()
+	}
+	
+	// MARK: Managers
+	
+	private class OutputManager : SambaPlayerDelegate {
 		
 		private let player: SambaPlayer
+		private var item: AVPlayerItem?
+		
+		init(_ player: SambaPlayer) {
+			self.player = player
+			player.delegate = self
+		}
+		
+		var menuItems: [String] {
+			var items = [String]()
+			
+			guard let events = item?.accessLog()?.events else {
+				return items
+			}
+			
+			let resSorted = [String]()
+			let fillWithRes = false
+			
+			for (i, event) in events.enumerated() where event.uri != nil {
+				items.append(fillWithRes ? "\(resSorted[i])p" : "\(Int(event.indicatedBitrate/1000.0))k")
+			}
+			
+			return items
+		}
+		
+		var currentIndex = -1 {
+			didSet {
+				guard currentIndex != currentIndex,
+					let events = item?.accessLog()?.events,
+					currentIndex < events.count else { return }
+				
+				guard let urlString = events[currentIndex].uri,
+					let url = URL(string: urlString) else {
+						player.dispatchError(SambaPlayerError.invalidUrl.setValues("Invalid output URL"))
+						return
+				}
+				
+				player._player?.player.switch(player.createAsset(url))
+			}
+		}
+		
+		func onLoad() {
+			self.item = player._player?.player.player.currentItem
+		}
+		
+		func onProgress() {
+			guard let events = item?.accessLog()?.events else { return }
+			
+			if events.count > 1 {
+				player._player?.getControlsView().showHdButton()
+			}
+		}
+	}
+	
+	private class ErrorManager : SambaPlayerDelegate {
+		
+		private let player: SambaPlayer
+		private var timer: Timer?
 		private var currentBackupIndex = 0
 		private var currentRetryIndex = 0
 		private var secs = 0
@@ -743,8 +850,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			guard let playerInternal = player._player,
 				let media = player.media as? SambaMediaConfig,
 				playerInternal.player != nil else {
-				player.dispatchError(SambaPlayerError.playerNotLoaded)
-				return
+					player.dispatchError(SambaPlayerError.playerNotLoaded)
+					return
 			}
 			
 			let error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
@@ -754,12 +861,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			type = .recoverable
 			
 			switch code {
-			// unauthorized DRM content
+				// unauthorized DRM content
 			//case -11800 where media.drmRequest != nil: fallthrough
 			case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
 				type = .critical
 				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
-			
+				
 			// no network/internet connection
 			case -11853: if media.isLive { fallthrough }
 			case -11800: fallthrough
@@ -778,7 +885,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 					self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.retryHandler), userInfo: nil, repeats: true)
 				}
 				return
-			
+				
 			// URL not found (or server unreachable)
 			default:
 				if currentBackupIndex < media.backupUrls.count {
@@ -792,7 +899,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 						self.currentBackupIndex += 1
 					}
 				}
-				// all atempts have failed
+					// all atempts have failed
 				else { type = .critical }
 			}
 			
@@ -849,81 +956,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			
 			secs -= 1
 		}
-	}
-	
-	@objc private func progressEventHandler() {
-		for delegate in _delegates { delegate.onProgress?() }
-	}
-	
-	@objc private func fullscreenTouchHandler() {
-		fullscreen = !_isFullscreen
-	}
-	
-	@objc private func hdTouchHandler() {
-		guard let outputs = media.outputs else { return }
-		
-		showMenu(ModalMenu(sambaPlayer: self,
-		                   options: outputs.map { $0.label },
-		                   title: "Qualidade",
-		                   onSelect: { self.switchOutput($0) },
-		                   selectedIndex: _currentOutput))
-	}
-	
-	@objc private func captionsTouchHandler() {
-		guard let captions = media.captions,
-			let screen = _captionsScreen as? CaptionsScreen else { return }
-		
-		showMenu(ModalMenu(sambaPlayer: self,
-		                   options: captions.map { $0.label },
-		                   title: "Legendas",
-		                   onSelect: { self.changeCaption($0) },
-		                   selectedIndex: screen.currentIndex))
-	}
-	
-	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil, callback: (() -> Void)? = nil) {
-		let parent: UIViewController = parent ?? self
-		
-		guard let parentView = parentView ?? parent.view else {
-			fatalError("No view found (null) when attaching \(target) to parent \(parent)!")
-		}
-		
-		DispatchQueue.main.async {
-			parent.addChildViewController(target)
-			target.didMove(toParentViewController: parent)
-			target.view.frame = parentView.bounds
-			parentView.addSubview(target.view)
-			
-			// always try to keep error screen above all views
-			if let errorView = self._errorScreen?.view,
-				let errorParentView = errorView.superview {
-				errorParentView.bringSubview(toFront: errorView)
-			}
-			
-			parentView.setNeedsDisplay()
-			callback?()
-		}
-	}
-	
-	private func detachVC(_ vc: UIViewController, _ vcParent: UIViewController? = nil, _ animated: Bool = true, callback: (() -> Void)? = nil) {
-		DispatchQueue.main.async {
-			if vc.parent != (vcParent ?? self) {
-				vc.dismiss(animated: animated, completion: callback)
-			}
-			else {
-				vc.view.removeFromSuperview()
-				vc.removeFromParentViewController()
-				callback?()
-			}
-		}
-	}
-	
-	private func startTimer() {
-		stopTimer()
-		_progressTimer = Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(progressEventHandler), userInfo: nil, repeats: true)
-	}
-	
-	private func stopTimer() {
-		_progressTimer.invalidate()
 	}
 	
 	private class FakeListener : NSObject, SambaPlayerDelegate {

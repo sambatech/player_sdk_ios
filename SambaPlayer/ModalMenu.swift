@@ -17,14 +17,14 @@ class ModalMenu: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 	
 	private let _cellIdentifier: String = "menu_cell"
 	private let _player: SambaPlayer
-	private let _options: [String]
+	private let _items: [String]
 	private let _title: String
 	private let _selectedIndex: Int
 	private let _onSelect: (Int) -> ()
 	
-	init(sambaPlayer player: SambaPlayer, options: [String], title: String, onSelect: @escaping (Int) -> (), selectedIndex: Int = -1) {
+	init(sambaPlayer player: SambaPlayer, items: [String], title: String, onSelect: @escaping (Int) -> (), selectedIndex: Int = -1) {
 		_player = player
-		_options = options
+		_items = items
 		_title = title
 		_onSelect = onSelect
 		_selectedIndex = selectedIndex
@@ -55,14 +55,14 @@ class ModalMenu: UIViewController, UITableViewDataSource, UITableViewDelegate, U
 	// MARK: UITableViewDataSource implementation
 	
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return _options.count
+		return _items.count
 	}
 	
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: _cellIdentifier) ??
 			UITableViewCell(style: UITableViewCellStyle.default, reuseIdentifier: _cellIdentifier)
 
-		cell.textLabel?.text = _options[(indexPath as NSIndexPath).row]
+		cell.textLabel?.text = _items[(indexPath as NSIndexPath).row]
 		
 		if (indexPath as NSIndexPath).row == _selectedIndex {
 			//cell.contentView.backgroundColor = UIColor(_player.media.theme)
