@@ -365,12 +365,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		_pendingPlay = false
 		_disabled = false
 		
-		guard let asset = createAsset(decideUrl()) else { return }
+		guard let url = decideUrl(),
+			let asset = createAsset(url) else { return }
 		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
 		
-			self._outputManager = OutputManager(self)
+			self._outputManager = OutputManager(self, url)
 			
 			// captions
 			if let captions = self.media.captions, captions.count > 0 {
@@ -506,7 +507,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest {
-			// must retain a strong reference to it (weak reference init)
+			// must retain a strong reference to it (weak init reference)
 			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
 		}
 		
@@ -616,9 +617,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// disable ad
 		media.adUrl = nil
 		
-		if let url = url ?? (_outputManager.currentOutput != -1 &&
-			_outputManager.currentOutput < media.outputs?.count ?? 0 ?
-			media.outputs?[_outputManager._currentOutput].url : media.url) {
+		if let index = _outputManager?.currentIndex,
+			let url = url ?? (index != -1 &&
+			index < media.outputs?.count ?? 0 ?
+			media.outputs?[index].url : media.url) {
 			// try to connect again
 			loadAsset(createAsset(URL(string: url)), true)
 		}
@@ -773,28 +775,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private class OutputManager : SambaPlayerDelegate {
 		
 		private let player: SambaPlayer
+		private let url: URL
 		private var item: AVPlayerItem?
 		
-		init(_ player: SambaPlayer) {
+		init(_ player: SambaPlayer, _ url: URL) {
 			self.player = player
+			self.url = url
+			
 			player.delegate = self
-		}
-		
-		var menuItems: [String] {
-			var items = [String]()
-			
-			guard let events = item?.accessLog()?.events else {
-				return items
-			}
-			
-			let resSorted = [String]()
-			let fillWithRes = false
-			
-			for (i, event) in events.enumerated() where event.uri != nil {
-				items.append(fillWithRes ? "\(resSorted[i])p" : "\(Int(event.indicatedBitrate/1000.0))k")
-			}
-			
-			return items
 		}
 		
 		var currentIndex = -1 {
@@ -813,8 +801,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			}
 		}
 		
+		var menuItems = [String]()
+		
 		func onLoad() {
 			self.item = player._player?.player.player.currentItem
+			menuItems = extract()
 		}
 		
 		func onProgress() {
@@ -823,6 +814,31 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			if events.count > 1 {
 				player._player?.getControlsView().showHdButton()
 			}
+		}
+		
+		private func extract() -> [String]  {
+			guard let text = try? String(contentsOf: url, encoding: .utf8) else { return [String]() }
+			
+			var labels = Set<String>()
+			
+			for line in Helpers.matchesForRegexInText(".+(!?[\\r\\n])", text: text)
+				where line.hasPrefix("#EXT-X-STREAM-INF") {
+					
+					if let range = line.range(of: "RESOLUTION\\=[^\\,\\r\\n]+", options: .regularExpression) ??
+						line.range(of: "BANDWIDTH\\=\\d+", options: .regularExpression) {
+						
+						let kv = line.substring(with: range)
+						
+						if let rangeKv = kv.range(of: "\\d+$", options: .regularExpression),
+							let n = Int(kv.substring(with: rangeKv)) {
+							
+							labels.insert("\(kv.contains("x") ? "\(n)p" : "\(n/1000)k")")
+						}
+					}
+			}
+			
+			print(labels)
+			return labels.sorted(by: { $0 > $1 })
 		}
 	}
 	
