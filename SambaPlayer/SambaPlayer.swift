@@ -188,10 +188,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 		player.switchOutput(1)
 	
-	- parameter value: Index of the output
+	- parameter value: Index of the output (-1 for auto switch)
 	*/
 	public func switchOutput(_ value: Int) {
-		_outputManager?.currentIndex = value
+		_outputManager?.currentIndex = value + 1
 	}
 	
 	/**
@@ -617,10 +617,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// disable ad
 		media.adUrl = nil
 		
-		if let index = _outputManager?.currentIndex,
-			let url = url ?? (index != -1 &&
-			index < media.outputs?.count ?? 0 ?
-			media.outputs?[index].url : media.url) {
+		if let manager = _outputManager,
+			let url = url ??
+				manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
+				media.url {
 			// try to connect again
 			loadAsset(createAsset(URL(string: url)), true)
 		}
@@ -707,10 +707,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		guard let manager = _outputManager else { return }
 		
 		showMenu(ModalMenu(sambaPlayer: self,
-		                          items: manager.menuItems,
-		                          title: "Qualidade",
-		                          onSelect: { self.switchOutput($0) },
-		                          selectedIndex: manager.currentIndex))
+		                   items: manager.menuItems.map { $0.label },
+		                   title: "Qualidade",
+		                   onSelect: { self.switchOutput($0 - 1) },
+		                   selectedIndex: manager.currentIndex))
 	}
 	
 	@objc private func captionsTouchHandler() {
@@ -778,6 +778,18 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		private let url: URL
 		private var item: AVPlayerItem?
 		
+		struct Output : Hashable {
+			var hashValue: Int {
+				return Int(label.substring(to: label.index(before: label.endIndex))) ?? 0
+			}
+			
+			let url: URL, label: String
+			
+			static func ==(lhs: Output, rhs: Output) -> Bool {
+				return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
+			}
+		}
+		
 		init(_ player: SambaPlayer, _ url: URL) {
 			self.player = player
 			self.url = url
@@ -785,26 +797,24 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			player.delegate = self
 		}
 		
-		var currentIndex = -1 {
-			didSet {
-				guard currentIndex != currentIndex,
-					let events = item?.accessLog()?.events,
-					currentIndex < events.count else { return }
+		var currentIndex = 0 {
+			willSet {
+				guard newValue != currentIndex,
+					let menuItem = getMenuItem(newValue) else { return }
 				
-				guard let urlString = events[currentIndex].uri,
-					let url = URL(string: urlString) else {
-						player.dispatchError(SambaPlayerError.invalidUrl.setValues("Invalid output URL"))
-						return
-				}
-				
-				player._player?.player.switch(player.createAsset(url))
+				player._player?.player.switch(player.createAsset(menuItem.url))
 			}
 		}
 		
-		var menuItems = [String]()
+		func getMenuItem(_ index: Int) -> Output? {
+			return index > -1 && index < menuItems.count ?
+				menuItems[index] : nil
+		}
+		
+		var menuItems = [Output]()
 		
 		func onLoad() {
-			self.item = player._player?.player.player.currentItem
+			item = player._player?.player.player.currentItem
 			menuItems = extract()
 		}
 		
@@ -816,14 +826,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			}
 		}
 		
-		private func extract() -> [String]  {
-			guard let text = try? String(contentsOf: url, encoding: .utf8) else { return [String]() }
+		private func extract() -> [Output]  {
+			guard let text = try? String(contentsOf: url, encoding: .utf8) else { return [Output]() }
 			
-			var labels = Set<String>()
+			let baseUrl = url.absoluteString.replacingOccurrences(of: "[\\w\\.]+\\?.+", with: "", options: .regularExpression)
+			var outputs = Set<Output>()
+			var label: String?
 			
-			for line in Helpers.matchesForRegexInText(".+(!?[\\r\\n])", text: text)
-				where line.hasPrefix("#EXT-X-STREAM-INF") {
-					
+			outputs.insert(Output(url: url, label: "Auto"))
+			
+			for line in Helpers.matchesForRegexInText("[^\\r\\n]+", text: text) {
+				if line.hasPrefix("#EXT-X-STREAM-INF") {
 					if let range = line.range(of: "RESOLUTION\\=[^\\,\\r\\n]+", options: .regularExpression) ??
 						line.range(of: "BANDWIDTH\\=\\d+", options: .regularExpression) {
 						
@@ -832,13 +845,20 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 						if let rangeKv = kv.range(of: "\\d+$", options: .regularExpression),
 							let n = Int(kv.substring(with: rangeKv)) {
 							
-							labels.insert("\(kv.contains("x") ? "\(n)p" : "\(n/1000)k")")
+							label = "\(kv.contains("x") ? "\(n)p" : "\(n/1000)k")"
 						}
 					}
+				}
+				else if let labelString = label,
+					line.hasSuffix(".m3u8"),
+					let url = URL(string: line.hasPrefix("http") ? line : baseUrl + line) {
+					
+					outputs.insert(Output(url: url, label: labelString))
+					label = nil
+				}
 			}
 			
-			print(labels)
-			return labels.sorted(by: { $0 > $1 })
+			return outputs.sorted(by: { $0.hashValue < $1.hashValue })
 		}
 	}
 	
@@ -851,6 +871,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		private var secs = 0
 		private var hasError = false
 		private var currentPosition: Float = 0
+		private var error: NSError?
+		private var code = SambaPlayerError.unknown.code
 		private var type = SambaPlayerErrorCriticality.recoverable
 		
 		init(_ player: SambaPlayer) {
@@ -870,8 +892,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 					return
 			}
 			
-			let error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
-			let code = error?.code ?? SambaPlayerError.unknown.code
+			error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
+			code = error?.code ?? SambaPlayerError.unknown.code
+			
 			var msg = "Ocorreu um erro! Por favor, tente novamente."
 			
 			type = .recoverable
@@ -968,7 +991,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				player.retry()
 			}
 			
-			player.dispatchError(SambaPlayerError.unknown.setValues(secs > 0 ? "Reconectando em \(secs)s" : "Conectando...", .info))
+			player.dispatchError(SambaPlayerError(code, secs > 0 ? "Reconectando em \(secs)s" : "Conectando...", .info, error))
 			
 			secs -= 1
 		}

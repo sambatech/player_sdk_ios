@@ -198,7 +198,9 @@ BOOL _assetReplaced = NO;
   if (![self isLive]) {
     time = MIN(MAX(time, 0), [self totalMediaTime]);
   } else {
-    time = MAX(time, 0);
+	// TODO: somente com DVR (verificar totalMediaTime antes, talvez seja tratado como VoD)
+    //time = MAX(time, 0);
+	return;
   }
   [self setState:kGMFPlayerStateSeeking];
   __weak GMFVideoPlayer *weakSelf = self;
