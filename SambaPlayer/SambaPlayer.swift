@@ -58,6 +58,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		return _duration
 	}
 	
+	/// Outputs available
+	public var outputs: [Output] {
+		return _outputManager?.menuItems ?? [Output]()
+	}
+	
 	/// Current media
 	public var media: SambaMedia = SambaMedia() {
 		didSet {
@@ -772,23 +777,24 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	// MARK: Managers
 	
+	/// Represents an output menu item
+	public struct Output : Hashable {
+		public var hashValue: Int {
+			return Int(label.substring(to: label.index(before: label.endIndex))) ?? 0
+		}
+		
+		public let url: URL, label: String
+		
+		public static func ==(lhs: Output, rhs: Output) -> Bool {
+			return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
+		}
+	}
+	
 	private class OutputManager : SambaPlayerDelegate {
 		
 		private let player: SambaPlayer
 		private let url: URL
 		private var item: AVPlayerItem?
-		
-		struct Output : Hashable {
-			var hashValue: Int {
-				return Int(label.substring(to: label.index(before: label.endIndex))) ?? 0
-			}
-			
-			let url: URL, label: String
-			
-			static func ==(lhs: Output, rhs: Output) -> Bool {
-				return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
-			}
-		}
 		
 		init(_ player: SambaPlayer, _ url: URL) {
 			self.player = player
