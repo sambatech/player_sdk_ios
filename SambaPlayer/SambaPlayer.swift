@@ -198,7 +198,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 		player.switchOutput(1)
 	
-	- parameter value: Index of the output; -1 for auto switch.
+	- parameter value: Index of the output, -1 for auto switch.
 	*/
 	public func switchOutput(_ value: Int) {
 		_outputManager?.currentIndex = value + 1
@@ -939,6 +939,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				if currentBackupIndex < media.backupUrls.count {
 					let url = player.media.backupUrls[currentBackupIndex]
 					
+					type = .info
 					msg = "Conectando..."
 					
 					DispatchQueue.main.async {
@@ -980,7 +981,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			guard hasError else { return }
 			
 			hasError = false
-			currentRetryIndex = 0;
+			currentRetryIndex = 0
 			player._disabled = false
 			
 			if !player.media.isLive && currentPosition > 0 {
