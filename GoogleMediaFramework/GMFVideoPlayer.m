@@ -167,6 +167,7 @@ BOOL _assetReplaced = NO;
   } else if (![_player rate]) {
     _pendingPlay = YES;
     [_player play];
+	[self setRate:_rate];
   }
 }
 
@@ -215,6 +216,7 @@ BOOL _assetReplaced = NO;
             if (finished) {
               if ([strongSelf pendingPlay]) {
                 [[strongSelf player] play];
+				[strongSelf setRate:_rate];
               } else {
                 [strongSelf setState:kGMFPlayerStatePaused];
               }
@@ -409,6 +411,9 @@ BOOL _assetReplaced = NO;
 }
 
 - (void)setRate:(float)rate {
+	if (rate == _player.rate || rate == 0)
+	  return;
+	
 	// values greater than 2 must be checked
 	if (rate > 2) {
 	  if (!_playerItem.canPlayFastForward)
@@ -540,7 +545,10 @@ BOOL _assetReplaced = NO;
 		  
 		if (secs > 0)
 		  [self seekToTime:secs];
-		else [_player play];
+		else {
+		  [_player play];
+		  [self setRate:_rate];
+		}
 	  }
   }
   // fail state
@@ -617,6 +625,7 @@ BOOL _assetReplaced = NO;
     }
   } else if (![_player rate]) {
     [_player play];
+	[self setRate:_rate];
   }
 }
 

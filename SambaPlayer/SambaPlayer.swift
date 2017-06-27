@@ -60,7 +60,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	/// Outputs available
 	public var outputs: [Output] {
-		return _outputManager?.menuItems ?? [Output]()
+		return _outputManager?.menuItems.filter({ $0.label.lowercased() != "auto" }) ?? [Output]()
 	}
 	
 	/// Current media
@@ -108,10 +108,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	/// Sets playback speed (values can vary from -1 to 2)
-	public var rate: Float = 1 {
-		didSet {
-			_player?.player.rate = rate
+	public var rate: Float {
+		set(value) {
+			_player?.player.rate = value
 		}
+		get { return _player?.player.rate ?? 0 }
 	}
 	
 	// MARK: Public Methods
@@ -379,15 +380,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
 			guard let player = self._player else { return }
-		
-			self._outputManager = OutputManager(self, url)
-			
-			// captions
-			if let captions = self.media.captions, captions.count > 0 {
-				self.showScreen(CaptionsScreen(player: self, captions: captions, config: self.media.captionsConfig),
-				                &self._captionsScreen, player.playerOverlay())
-				player.getControlsView().showCaptionsButton()
-			}
 			
 			if self.media.isAudio {
 				player.hideBackground()
@@ -400,6 +392,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				if !self.media.isLive {
 					(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 					(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+				}
+			}
+			// video only features
+			else {
+				self._outputManager = OutputManager(self, url)
+				
+				// captions
+				if let captions = self.media.captions, captions.count > 0 {
+					self.showScreen(CaptionsScreen(player: self, captions: captions, config: self.media.captionsConfig),
+					                &self._captionsScreen, player.playerOverlay())
+					player.getControlsView().showCaptionsButton()
 				}
 			}
 			
@@ -826,12 +829,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		func onLoad() {
 			item = player._player?.player.player.currentItem
 			menuItems = extract()
-		}
-		
-		func onProgress() {
-			guard let events = item?.accessLog()?.events else { return }
 			
-			if events.count > 1 {
+			if menuItems.count > 2 {
 				player._player?.getControlsView().showHdButton()
 			}
 		}
