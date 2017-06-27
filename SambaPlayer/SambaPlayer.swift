@@ -107,6 +107,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 	}
 	
+	/// Sets playback speed (values can vary from -1 to 2)
+	public var rate: Float = 1 {
+		didSet {
+			_player?.player.rate = rate
+		}
+	}
+	
 	// MARK: Public Methods
 	/**
 	Default initializer
@@ -182,9 +189,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	- parameter pos: Time in seconds
 	*/
     public func seek(_ pos: Float) {
-		// do not seek on live
-		guard !media.isLive else { return }
-		
 		_player?.player.seek(toTime: TimeInterval(pos))
     }
 	
@@ -193,7 +197,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 		player.switchOutput(1)
 	
-	- parameter value: Index of the output (-1 for auto switch)
+	- parameter value: Index of the output; -1 for auto switch.
 	*/
 	public func switchOutput(_ value: Int) {
 		_outputManager?.currentIndex = value + 1

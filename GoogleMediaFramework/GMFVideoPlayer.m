@@ -408,6 +408,21 @@ BOOL _assetReplaced = NO;
 	[[_renderingView playerLayer] setBackgroundColor:[backgroundColor CGColor]];
 }
 
+- (void)setRate:(float)rate {
+	// values greater than 2 must be checked
+	if (rate > 2) {
+	  if (!_playerItem.canPlayFastForward)
+		return;
+	}
+	// values less than -1 must be checked
+	else if (rate < -1 && !(_playerItem.canPlayReverse &&
+	  _playerItem.canPlayFastReverse))
+	  return;
+
+	_rate = rate;
+	[_player setRate:rate];
+}
+
 - (void)startPlaybackStatusPoller {
   if (_playbackStatusPoller) {
     return;

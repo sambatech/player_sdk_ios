@@ -54,6 +54,8 @@
 
 @property(nonatomic, strong) UIColor* backgroundColor;
 
+@property(nonatomic) float rate;
+
 // |renderingView| will only be set after the player enters the ready to play state. After calling
 // |reset|, the player discards any previously set rendering view, so if
 // you maintain a separate reference to this rendering view, it will no longer be valid for the
