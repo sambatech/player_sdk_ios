@@ -14,7 +14,7 @@
     <a title="SambaPlayer Class Reference"></a>
     <header>
       <div class="content-wrapper">
-        <p><a href="../index.html">SambaPlayer Docs</a> (92% documented)</p>
+        <p><a href="../index.html">SambaPlayer Docs</a> (88% documented)</p>
       </div>
     </header>
     <div class="content-wrapper">
@@ -58,6 +58,9 @@
                 <a href="../Classes/SambaPlayer.html">SambaPlayer</a>
               </li>
               <li class="nav-group-task">
+                <a href="../Classes/SambaPlayer/Output.html">– Output</a>
+              </li>
+              <li class="nav-group-task">
                 <a href="../Classes/SambaPlayerError.html">SambaPlayerError</a>
               </li>
             </ul>
@@ -67,6 +70,12 @@
             <ul class="nav-group-tasks">
               <li class="nav-group-task">
                 <a href="../Enums/SambaEnvironment.html">SambaEnvironment</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SambaPlayerErrorCriticality.html">SambaPlayerErrorCriticality</a>
+              </li>
+              <li class="nav-group-task">
+                <a href="../Enums/SambaProtocol.html">SambaProtocol</a>
               </li>
             </ul>
           </li>
@@ -97,7 +106,7 @@
             <h1>SambaPlayer</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
 
                 </div>
               </div>
@@ -198,6 +207,33 @@
                 <li class="item">
                   <div>
                     <code>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer7outputsGSaVS0_6Output_"></a>
+                    <a name="//apple_ref/swift/Property/outputs" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer7outputsGSaVS0_6Output_">outputs</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Outputs available</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">outputs</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/SambaPlayer/Output.html">Output</a></span><span class="p">]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
                     <a name="/s:vC11SambaPlayer11SambaPlayer5mediaCS_10SambaMedia"></a>
                     <a name="//apple_ref/swift/Property/media" class="dashAnchor"></a>
                     <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer5mediaCS_10SambaMedia">media</a>
@@ -269,7 +305,61 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">controlsVisible</span><span class="p">:</span> <span class="kt">Bool</span> <span class="o">=</span> <span class="kc">true</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">controlsVisible</span> <span class="o">=</span> <span class="kc">true</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer10fullscreenSb"></a>
+                    <a name="//apple_ref/swift/Property/fullscreen" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer10fullscreenSb">fullscreen</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Whether player shoud be fullscreen or not</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">fullscreen</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:vC11SambaPlayer11SambaPlayer4rateSf"></a>
+                    <a name="//apple_ref/swift/Property/rate" class="dashAnchor"></a>
+                    <a class="token" href="#/s:vC11SambaPlayer11SambaPlayer4rateSf">rate</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Sets playback speed (values can vary from -1 to 2)</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">rate</span><span class="p">:</span> <span class="kt">Float</span></code></pre>
 
                         </div>
                       </div>
@@ -441,7 +531,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -618,7 +708,7 @@
                               </td>
                               <td>
                                 <div>
-                                  <p>Index of the output</p>
+                                  <p>Index of the output, -1 for auto switch.</p>
 
                                 </div>
                               </td>
@@ -760,7 +850,7 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -787,7 +877,34 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:FC11SambaPlayer11SambaPlayer13viewDidAppearFSbT_"></a>
+                    <a name="//apple_ref/swift/Method/viewDidAppear(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FC11SambaPlayer11SambaPlayer13viewDidAppearFSbT_">viewDidAppear(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
 
                         </div>
                       </div>
@@ -814,7 +931,46 @@
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">SambaPlayer</span> <span class="p">:</span> <span class="kt">UIViewController</span><span class="p">,</span> <span class="kt">ErrorScreenDelegate</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Managers"></a>
+                <a name="//apple_ref/swift/Section/Managers" class="dashAnchor"></a>
+                <a href="#/Managers">
+                  <h3 class="section-name">Managers</h3>
+                </a>
+              </div>
+              <ul>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:VC11SambaPlayer11SambaPlayer6Output"></a>
+                    <a name="//apple_ref/swift/Struct/Output" class="dashAnchor"></a>
+                    <a class="token" href="#/s:VC11SambaPlayer11SambaPlayer6Output">Output</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Represents an output menu item</p>
+
+                        <a href="../Classes/SambaPlayer/Output.html" class="slightly-smaller">See more</a>
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">struct</span> <span class="kt">Output</span> <span class="p">:</span> <span class="kt">Hashable</span></code></pre>
 
                         </div>
                       </div>
@@ -826,7 +982,7 @@
           </section>
         </section>
         <section id="footer">
-          <p>&copy; 2017 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2017-03-09)</p>
+          <p>&copy; 2017 <a class="link" href="http://sambatech.com" target="_blank" rel="external">Samba Tech Player Team</a>. All rights reserved. (Last updated: 2017-06-28)</p>
           <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.7.2</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
         </section>
       </article>

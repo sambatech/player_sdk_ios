@@ -23,51 +23,100 @@
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 126,
+      "line": 130,
       "symbol": "SambaMediaOutput.init(url:label:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 148,
+      "line": 152,
       "symbol": "SambaMediaCaption.init(url:label:language:cc:isDefault:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMedia.swift",
-      "line": 168,
+      "line": 172,
       "symbol": "SambaMediaCaptionsConfig.init(color:size:language:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaMediaRequest.swift",
+      "line": 14,
+      "symbol": "SambaMediaRequest.apiProtocol",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 135,
+      "line": 148,
       "symbol": "SambaPlayer.init(coder:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 261,
+      "line": 243,
       "symbol": "SambaPlayer.supportedInterfaceOrientations",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 265,
+      "line": 247,
       "symbol": "SambaPlayer.viewWillTransition(to:with:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
-      "line": 317,
+      "line": 314,
+      "symbol": "SambaPlayer.viewDidAppear(_:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 325,
       "symbol": "SambaPlayer.viewWillDisappear(_:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 793,
+      "symbol": "SambaPlayer.Output.url",
+      "symbol_kind": "source.lang.swift.decl.var.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 1085,
+      "symbol": "SambaPlayerErrorCriticality.critical",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 1085,
+      "symbol": "SambaPlayerErrorCriticality.info",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 1085,
+      "symbol": "SambaPlayerErrorCriticality.minor",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/zanol/projects/player-sdk-ios/SambaPlayer/SambaPlayer.swift",
+      "line": 1085,
+      "symbol": "SambaPlayerErrorCriticality.recoverable",
+      "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     }
   ],

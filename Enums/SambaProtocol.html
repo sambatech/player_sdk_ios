@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>UIImage Extension Reference</title>
+    <title>SambaProtocol Enum Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset='utf-8'>
@@ -10,8 +10,8 @@
     
   </head>
   <body>
-    <a name="//apple_ref/swift/Extension/UIImage" class="dashAnchor"></a>
-    <a title="UIImage Extension Reference"></a>
+    <a name="//apple_ref/swift/Enum/SambaProtocol" class="dashAnchor"></a>
+    <a title="SambaProtocol Enum Reference"></a>
     <header>
       <div class="content-wrapper">
         <p><a href="../index.html">SambaPlayer Docs</a> (88% documented)</p>
@@ -21,7 +21,7 @@
       <p id="breadcrumbs">
         <a href="../index.html">SambaPlayer Reference</a>
         <img id="carat" src="../img/carat.png" />
-        UIImage Extension Reference
+        SambaProtocol Enum Reference
       </p>
     </div>
     <div class="content-wrapper">
@@ -103,8 +103,14 @@
       <article class="main-content">
         <section>
           <section class="section">
-            <h1>UIImage</h1>
-            <p>Undocumented</p>
+            <h1>SambaProtocol</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">SambaProtocol</span><span class="p">:</span> <span class="kt">String</span></code></pre>
+
+                </div>
+              </div>
+            <p>Samba Player API protocol list</p>
 
           </section>
           <section class="section task-group-section">
@@ -113,9 +119,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FE11SambaPlayerCSo7UIImage9tintPhotoFCSo7UIColorS0_"></a>
-                    <a name="//apple_ref/swift/Method/tintPhoto(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FE11SambaPlayerCSo7UIImage9tintPhotoFCSo7UIColorS0_">tintPhoto(_:)</a>
+                    <a name="/s:FO11SambaPlayer13SambaProtocol4httpFMS0_S0_"></a>
+                    <a name="//apple_ref/swift/Element/http" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FO11SambaPlayer13SambaProtocol4httpFMS0_S0_">http</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -123,60 +129,30 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tint, Colorize image with given tint color<br><br>
-This is similar to Photoshop&rsquo;s <q>Color</q> layer blend mode<br><br>
-This is perfect for non-greyscale source images, and images that have both highlights and shadows that should be preserved<br><br>
-white will stay white and black will stay black as the lightness of the image is preserved<br><br></p>
-
-<p><img src="http://yannickstephan.com/easyhelper/tint1.png" height="70" width="120"/></p>
-
-<p><strong>To</strong></p>
-
-<p><img src="http://yannickstephan.com/easyhelper/tint2.png" height="70" width="120"/></p>
+                        <p>Insecure</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tintPhoto</span><span class="p">(</span><span class="n">_</span> <span class="nv">tintColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIImage</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">http</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>tintColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>UIColor</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>UIImage</p>
-
                       </div>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <ul>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:FE11SambaPlayerCSo7UIImage9tintPictoFCSo7UIColorS0_"></a>
-                    <a name="//apple_ref/swift/Method/tintPicto(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:FE11SambaPlayerCSo7UIImage9tintPictoFCSo7UIColorS0_">tintPicto(_:)</a>
+                    <a name="/s:FO11SambaPlayer13SambaProtocol5httpsFMS0_S0_"></a>
+                    <a name="//apple_ref/swift/Element/https" class="dashAnchor"></a>
+                    <a class="token" href="#/s:FO11SambaPlayer13SambaProtocol5httpsFMS0_S0_">https</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -184,41 +160,16 @@ white will stay white and black will stay black as the lightness of the image is
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tint Picto to color</p>
+                        <p>Secure</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">tintPicto</span><span class="p">(</span><span class="n">_</span> <span class="nv">fillColor</span><span class="p">:</span> <span class="kt">UIColor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kt">UIImage</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">https</span></code></pre>
 
                         </div>
-                      </div>
-                      <div>
-                        <h4>Parameters</h4>
-                        <table class="graybox">
-                          <tbody>
-                            <tr>
-                              <td>
-                                <code>
-                                <em>fillColor</em>
-                                </code>
-                              </td>
-                              <td>
-                                <div>
-                                  <p>UIColor</p>
-
-                                </div>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div>
-                        <h4>Return Value</h4>
-                        <p>UIImage</p>
-
                       </div>
                     </section>
                   </div>
