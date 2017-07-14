@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		16F68E8F9BEDC41BF5A5B560 /* libPods-SambaPlayer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE71BE91EC72B0DFB2EB5BC /* libPods-SambaPlayer.a */; };
 		9A1ADBB61D4A3D09008A5BEE /* GoogleMediaFramework.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADB901D4A3D09008A5BEE /* GoogleMediaFramework.strings */; };
 		9A1ADBB71D4A3D09008A5BEE /* player_control_close@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADB921D4A3D09008A5BEE /* player_control_close@2x.png */; };
 		9A1ADBB81D4A3D09008A5BEE /* player_control_hd@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADB931D4A3D09008A5BEE /* player_control_hd@1x.png */; };
@@ -44,7 +45,6 @@
 		9A1ADBD81D4A3D09008A5BEE /* player_scrubber_thumb@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB31D4A3D09008A5BEE /* player_scrubber_thumb@1x.png */; };
 		9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB41D4A3D09008A5BEE /* player_scrubber_thumb@2x.png */; };
 		9A1ADBDA1D4A3D09008A5BEE /* player_scrubber_thumb@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A1ADBB51D4A3D09008A5BEE /* player_scrubber_thumb@3x.png */; };
-		9A2B23961DDDED8900D59745 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */; };
 		9A385CBB1E2EAF4B00518BDD /* CaptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */; };
 		9A4C4DF21E2E659B001A75DD /* CaptionsScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
@@ -111,6 +111,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		64756740F8F1C47D8E89936C /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Pods/Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		79DF00C98AD76974D1F75AF9 /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		9A1ADB911D4A3D09008A5BEE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/GoogleMediaFramework.strings; sourceTree = "<group>"; };
 		9A1ADB921D4A3D09008A5BEE /* player_control_close@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_close@2x.png"; sourceTree = "<group>"; };
 		9A1ADB931D4A3D09008A5BEE /* player_control_hd@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_hd@1x.png"; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 		9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetLoaderDelegate.swift; sourceTree = "<group>"; };
+		FAE71BE91EC72B0DFB2EB5BC /* libPods-SambaPlayer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SambaPlayer.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -222,13 +225,22 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9A2B23961DDDED8900D59745 /* GoogleInteractiveMediaAds.framework in Frameworks */,
+				16F68E8F9BEDC41BF5A5B560 /* libPods-SambaPlayer.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		42DA019E3673DD486D8419D7 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				79DF00C98AD76974D1F75AF9 /* Pods-SambaPlayer.debug.xcconfig */,
+				64756740F8F1C47D8E89936C /* Pods-SambaPlayer.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		9A1ADB8E1D4A3D09008A5BEE /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -340,6 +352,7 @@
 				9AF325FB1D14B5E300B6E450 /* Frameworks */,
 				9A91E8C11D14BC5F00C30DD3 /* Products */,
 				9A1ADB8E1D4A3D09008A5BEE /* Fixtures */,
+				42DA019E3673DD486D8419D7 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -392,6 +405,7 @@
 			isa = PBXGroup;
 			children = (
 				9AF325FC1D14B5E300B6E450 /* GoogleInteractiveMediaAds.framework */,
+				FAE71BE91EC72B0DFB2EB5BC /* libPods-SambaPlayer.a */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -414,13 +428,11 @@
 				9AF325E51D14B5B900B6E450 /* GMFPlayerState.h in Headers */,
 				9AF325F21D14B5B900B6E450 /* GVPVideoPlayerSDK-Prefix.pch in Headers */,
 				9AF325E11D14B5B900B6E450 /* GMFPlayerOverlayView.h in Headers */,
-				9AF325DB1D14B5B900B6E450 /* GMFIMASDKAdService.h in Headers */,
 				9AF325E81D14B5B900B6E450 /* GMFPlayerViewController.h in Headers */,
 				9AF325EE1D14B5B900B6E450 /* GMFVideoPlayer.h in Headers */,
 				9AF325E01D14B5B900B6E450 /* GMFPlayerFinishReason.h in Headers */,
 				9AF325EA1D14B5B900B6E450 /* GMFResources.h in Headers */,
 				9AF325F31D14B5B900B6E450 /* UIButton+GMFTintableButton.h in Headers */,
-				9AF325F11D14B5B900B6E450 /* GoogleMediaFramework.h in Headers */,
 				9AF325F01D14B5B900B6E450 /* GoogleMediaFramework-Prefix.pch in Headers */,
 				9AF325EC1D14B5B900B6E450 /* GMFTopBarView.h in Headers */,
 				9AF325D71D14B5B900B6E450 /* GMFAdService.h in Headers */,
@@ -431,9 +443,11 @@
 				9AF325DD1D14B5B900B6E450 /* GMFPlayerControlsProtocol.h in Headers */,
 				9AF325D91D14B5B900B6E450 /* GMFContentPlayhead.h in Headers */,
 				9AF325DE1D14B5B900B6E450 /* GMFPlayerControlsView.h in Headers */,
+				9A5268011D22D5BD00C9C015 /* SambaPlayer.h in Headers */,
+				9AF325DB1D14B5B900B6E450 /* GMFIMASDKAdService.h in Headers */,
+				9AF325F11D14B5B900B6E450 /* GoogleMediaFramework.h in Headers */,
 				9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */,
 				9AF325F71D14B5B900B6E450 /* UILabel+GMFLabels.h in Headers */,
-				9A5268011D22D5BD00C9C015 /* SambaPlayer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -444,10 +458,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AF324E11D14356E00B6E450 /* Build configuration list for PBXNativeTarget "SambaPlayer" */;
 			buildPhases = (
+				6E9210880EC6FDFB68BDA592 /* [CP] Check Pods Manifest.lock */,
 				9AF324D41D14356E00B6E450 /* Sources */,
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
 				9AF324D71D14356E00B6E450 /* Resources */,
+				CA40937DD94BEE7ECD342945 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -555,6 +571,39 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E9210880EC6FDFB68BDA592 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CA40937DD94BEE7ECD342945 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		9AF324D41D14356E00B6E450 /* Sources */ = {
@@ -709,7 +758,9 @@
 		};
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 79DF00C98AD76974D1F75AF9 /* Pods-SambaPlayer.debug.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -723,7 +774,7 @@
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -733,7 +784,9 @@
 		};
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 64756740F8F1C47D8E89936C /* Pods-SambaPlayer.release.xcconfig */;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -747,7 +800,7 @@
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_VERSION = 3.0;

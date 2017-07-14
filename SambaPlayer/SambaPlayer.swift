@@ -290,8 +290,28 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			exitFullscreen()
 			return
 		}
+        
+        
+        if(_isFullscreen) {
+            if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+                exitFullscreen()
+            }
+        } else {
+            if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+                _fullscreenAnimating = true
+                _isFullscreen = true
+                
+                player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+                detachVC(player)
+                
+                DispatchQueue.main.async {
+                    self.present(player, animated: animated, completion: callback)
+                }
+            }
+        }
+        
 		
-		if player.parent == self {
+		/*if player.parent == self {
 			// if UI will be or already is in landscape
 			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) || UIApplication.shared.statusBarOrientation.isLandscape {
 				_fullscreenAnimating = true
@@ -308,7 +328,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// if UI will be or already is in portrait
 		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) || UIApplication.shared.statusBarOrientation.isPortrait {
 			exitFullscreen()
-		}
+		}*/
 	}
 	
 	public override func viewDidAppear(_ animated: Bool) {

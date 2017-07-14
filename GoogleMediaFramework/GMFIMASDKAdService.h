@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "GoogleMediaFramework.h"
-#import <GoogleInteractiveMediaAds/GoogleInteractiveMediaAds.h>
+@import GoogleInteractiveMediaAds;
 
 @interface GMFIMASDKAdService : GMFAdService<IMAAdsLoaderDelegate,
                                              IMAAdsManagerDelegate,

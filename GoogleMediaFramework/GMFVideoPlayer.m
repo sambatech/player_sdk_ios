@@ -39,17 +39,17 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
                                          AudioSessionPropertyID inID,
                                          UInt32 inDataSize,
                                          const void *inData) {
-  NSDictionary *routeChangeDictionary = (__bridge NSDictionary *)inData;
-  NSString *reasonKey =
-      [NSString stringWithCString:kAudioSession_AudioRouteChangeKey_Reason
-                         encoding:NSASCIIStringEncoding];
-  UInt32 reasonCode = 0;
-  [[routeChangeDictionary objectForKey:reasonKey] getValue:&reasonCode];
-  if (reasonCode == kAudioSessionRouteChangeReason_OldDeviceUnavailable) {
-    // If the user removed the headphones, pause the playback.
-    GMFVideoPlayer *_player = (__bridge GMFVideoPlayer *)inClientData;
-    [_player pause];
-  }
+//  NSDictionary *routeChangeDictionary = (__bridge NSDictionary *)inData;
+//  NSString *reasonKey =
+//      [NSString stringWithCString:kAudioSession_AudioRouteChangeKey_Reason
+//                         encoding:NSASCIIStringEncoding];
+//  int reasonCode = 0;
+//  [[routeChangeDictionary objectForKey:reasonKey] getValue:&reasonCode];
+//  if (reasonCode == kAudioSessionRouteChangeReason_OldDeviceUnavailable) {
+//    // If the user removed the headphones, pause the playback.
+//    GMFVideoPlayer *_player = (__bridge GMFVideoPlayer *)inClientData;
+//    //[_player pause];
+//  }
 }
 
 #pragma mark -
@@ -143,9 +143,10 @@ BOOL _assetReplaced = NO;
   self = [super init];
   if (self) {
     _state = kGMFPlayerStateEmpty;
-    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
-                                    GMFAudioRouteChangeListenerCallback,
-                                    (__bridge void *)self);
+//    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+//                                    GMFAudioRouteChangeListenerCallback,
+//                                    (__bridge void *)self);
+      [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(audioHardwareRouteChanged:) name:AVAudioSessionRouteChangeNotification object:nil];
 
     // Handles interruptions to playback, like phone calls and activating Siri.
     [[NSNotificationCenter defaultCenter] addObserver:self
@@ -471,11 +472,20 @@ BOOL _assetReplaced = NO;
   }
 }
 
+- (void)audioHardwareRouteChanged:(NSNotification *)notification {
+    NSInteger routeChangeReason = [notification.userInfo[AVAudioSessionRouteChangeReasonKey] integerValue];
+    if (routeChangeReason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
+            [self pause];
+    }
+}
+
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
-                                                 GMFAudioRouteChangeListenerCallback,
-                                                 (__bridge void *)self);
+//  AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
+//                                                 GMFAudioRouteChangeListenerCallback,
+//                                                 (__bridge void *)self);
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVAudioSessionRouteChangeNotification object:nil];
   [self clearPlayer];
 }
 
