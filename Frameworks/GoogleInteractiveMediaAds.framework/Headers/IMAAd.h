@@ -33,6 +33,11 @@
 @property(nonatomic, copy, readonly) NSString *adDescription;
 
 /**
+ *  The source ad server information included in the ad response.
+ */
+@property(nonatomic, copy, readonly) NSString *adSystem;
+
+/**
  *  Content type of the currently selected creative. For linear creatives
  *  returns the content type of the currently selected media file. Returns
  *  empty string if no creative or media file is selected on this ad.
@@ -82,6 +87,57 @@
  *  String representing custom trafficking parameters from the VAST response.
  */
 @property(nonatomic, copy, readonly) NSString *traffickingParameters;
+
+/**
+ *  Returns the ID of the selected creative for the ad.
+ */
+@property(nonatomic, copy, readonly) NSString *creativeID;
+
+/**
+ *  Returns the ISCI (Industry Standard Commercial Identifier) code for an ad. This
+ *  is the Ad-ID of the selected creative in the VAST response.
+ */
+@property(nonatomic, copy, readonly) NSString *creativeAdID;
+
+/**
+ *  The UniversalAdId of the selected creative for the ad. Returns the id value or "unknown"
+ *  if unavailable.
+ */
+@property(nonatomic, copy, readonly) NSString *universalAdIdValue;
+
+/**
+ *  The registry associated with cataloging the UniversalAdId of the selected creative for the ad.
+ *  Returns the registry value, or "unknown" if unavailable.
+ */
+@property(nonatomic, copy, readonly) NSString *universalAdIdRegistry;
+
+/**
+ *  The advertiser name as defined by the serving party.
+ */
+@property(nonatomic, copy, readonly) NSString *advertiserName;
+
+/**
+ *  Returns the URL associated with the survey for the given ad.
+ */
+@property(nonatomic, copy, readonly) NSString *surveyURL;
+
+/**
+ *  Returns the first deal ID present in the wrapper chain for the current ad,
+ *  starting from the top.
+ */
+@property(nonatomic, copy, readonly) NSString *dealID;
+
+/**
+ *  The IDs of the ads' creatives, starting with the first wrapper ad.
+ */
+@property(nonatomic, copy, readonly) NSArray<NSString *> *wrapperCreativeIDs;
+
+/**
+ *  Ad systems used for wrapper ads. The ad systems returned begin with the
+ *  first wrapper ad and continue to each wrapper ad recursively.
+ */
+@property(nonatomic, copy, readonly) NSArray<NSString *> *wrapperSystems;
+
 
 - (instancetype)init NS_UNAVAILABLE;
 

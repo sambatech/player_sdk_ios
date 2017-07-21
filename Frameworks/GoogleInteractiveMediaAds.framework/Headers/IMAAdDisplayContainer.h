@@ -16,7 +16,8 @@
 @interface IMAAdDisplayContainer : NSObject
 
 /**
- *  View containing the video display and ad related UI.
+ *  View containing the video display and ad related UI. This view must be present in the view
+ *  hierarchy in order to make ad or stream requests.
  */
 @property(nonatomic, strong, readonly) UIView *adContainer;
 

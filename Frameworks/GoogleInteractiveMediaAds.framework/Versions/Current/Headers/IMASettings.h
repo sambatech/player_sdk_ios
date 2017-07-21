@@ -47,6 +47,13 @@
 @property(nonatomic) BOOL autoPlayAdBreaks;
 
 /**
+ *  Specifies whether to update the MPNowPlayingInfoCenter content with the
+ *  title "Advertisement". If disabled, MPNowPlayingInfoCenter is untouched.
+ *  The default value is NO.
+ */
+@property(nonatomic) BOOL disableNowPlayingInfo;
+
+/**
  *  The partner specified video player that is integrating with the SDK.
  */
 @property(nonatomic, copy) NSString *playerType;

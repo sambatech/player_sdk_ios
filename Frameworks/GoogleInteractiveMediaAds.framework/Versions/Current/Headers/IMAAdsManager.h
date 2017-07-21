@@ -100,15 +100,6 @@
               totalTime:(NSTimeInterval)totalTime;
 
 /**
- *  @deprecated Replaced by adsManager:adDidProgressToTime:totalTime:
- *
- *  @param mediaTime  the current media time in seconds
- *  @param totalTime  the total media length in seconds
- */
-- (void)adDidProgressToTime:(NSTimeInterval)mediaTime
-                  totalTime:(NSTimeInterval)totalTime DEPRECATED_ATTRIBUTE;
-
-/**
  *  Called when the current ad is sufficiently buffered and playback is likely
  *  to keep up.
  *
@@ -158,28 +149,18 @@
 @property(nonatomic, strong, readonly) id<IMAAdPlaybackInfo> adPlaybackInfo;
 
 /**
+ *  Set and get the volume for the current ad. From 0 (muted) to 1 (loudest). This volume is
+ *  relative to device volume, not absolute. Default value is 1.
+ */
+@property(nonatomic, assign) float volume;
+
+/**
  *  Initializes and loads the ad.
  *
  *  @param adsRenderingSettings the IMAAdsRenderingSettings. Pass in to influence ad rendering.
  *                              Use nil to default to standard rendering.
  */
 - (void)initializeWithAdsRenderingSettings:(IMAAdsRenderingSettings *)adsRenderingSettings;
-
-/**
- *  @deprectated Replaced by initializeWithAdsRenderingSettings:. The IMAContentPlayhead
- *  is now passed as an argument when creating an IMAAdsRequest object.
- *
- *  Initializes and loads the ad.
- *
- *  @param contentPlayhead      the IMAContentPlayhead. Pass in to enable content tracking
- *                              and automatically scheduled ad breaks. Use nil to disable
- *                              this feature.
- *  @param adsRenderingSettings the IMAAdsRenderingSettings. Pass in to influence ad rendering.
- *                              Use nil to default to standard rendering.
- */
-- (void)initializeWithContentPlayhead:(NSObject<IMAContentPlayhead> *)contentPlayhead
-                 adsRenderingSettings:(IMAAdsRenderingSettings *)adsRenderingSettings
-                                                                  DEPRECATED_ATTRIBUTE;
 
 - (instancetype)init NS_UNAVAILABLE;
 

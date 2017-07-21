@@ -47,21 +47,6 @@ extern NSString *const kIMAStreamParamOrderType;
 @interface IMAStreamRequest : NSObject
 
 /**
- *  The stream request asset key.
- */
-@property(nonatomic, copy, readonly) NSString *assetKey;
-
-/**
- *  The stream request content source ID.
- */
-@property(nonatomic, copy, readonly) NSString *contentSourceId;
-
-/**
- *  The stream request video ID.
- */
-@property(nonatomic, copy, readonly) NSString *videoId;
-
-/**
  *  The stream display container for displaying the ad UI.
  */
 @property(nonatomic, strong, readonly) IMAAdDisplayContainer *adDisplayContainer;
@@ -72,54 +57,46 @@ extern NSString *const kIMAStreamParamOrderType;
 @property(nonatomic, strong, readonly) id<IMAVideoDisplay> videoDisplay;
 
 /**
- *  The stream request API key. This is used for content authentication. The API key is provided to
- *  the publisher to unlock their content. It's a security measure used to verify the applications
- *  that are attempting to access the content.
+ *  The stream request API key. It's configured through the
+ *  <a href="//support.google.com/dfp_premium/answer/6381445">
+ *  DFP Admin UI</a> and provided to the publisher to unlock their content.
+ *  It verifies the applications that are attempting to access the content.
  */
 @property(nonatomic, copy) NSString *apiKey;
 
 /**
- *  The parameters that the SDK will attempt to add to ad tags. The following parameters are
- *  allowed: "cust_params", "dai-ot", "dai-ov", "description_url", "durl", "iu", and "tfcd".
- *  All other parameters will be ignored.
+ *  The stream request authorization token. This is used in place of the API key for stricter
+ *  content authorization. The publisher can control individual content streams authorized based
+ *  on this token.
+ *  :nodoc:
+ */
+@property(nonatomic, copy) NSString *authToken;
+
+/**
+ *  The ID to be used to debug the stream with the stream activity monitor. This is used to provide
+ *  a convenient way to allow publishers to find a stream log in the stream activity monitor tool.
+ *  :nodoc:
+ */
+@property(nonatomic, copy) NSString *streamActivityMonitorID;
+
+/**
+ *  You can override a limited set of ad tag parameters on your stream request.
+ *  <a href="//support.google.com/dfp_premium/answer/7320899">
+ *  Supply targeting parameters to your stream</a> provides more information.
+ *
+ *  You can use the dai-ot and dai-ov parameters for stream variant preference.
+ *  See <a href="//support.google.com/dfp_premium/answer/7320898">
+ *  Override Stream Variant Parameters</a> for more information.
  */
 @property(nonatomic, copy) NSDictionary *adTagParameters;
 
 /**
- *  Whether the SDK should attempt to play a preroll during dynamic ad insertion.
- *  Defaults to false. This setting is only used for live streams.
+ *  The suffix that the SDK will append to the query of the stream manifest URL. Do not include the
+ *  '?' separator at the start. The SDK will account for the existence of parameters in the URL
+ *  already, removing existing ones that collide with ones supplied here. This suffix needs to be
+ *  sanitized and encoded as the SDK will not do this.
  */
-@property(nonatomic) BOOL attemptPreroll;
-
-/**
- *  Initializes a stream request instance with the given assetKey. Uses the given ad display
- *  container to display the stream. This is used for live streams.
- *
- *  @param assetKey           the stream assetKey
- *  @param adDisplayContainer the IMAAdDisplayContainer for rendering the ad UI
- *  @param videoDisplay       the IMAVideoDisplay for playing the stream
- *
- *  @return the IMAStreamRequest instance
- */
-- (instancetype)initWithAssetKey:(NSString *)assetKey
-              adDisplayContainer:(IMAAdDisplayContainer *)adDisplayContainer
-                    videoDisplay:(id<IMAVideoDisplay>)videoDisplay;
-
-/**
- *  Initializes a stream request instance with the given content source ID and video ID.
- *  Uses the given ad display container to display the stream. This is used for on-demand streams.
- *
- *  @param contentSourceId    the content source ID for this stream
- *  @param videoId            the video identifier for this stream
- *  @param adDisplayContainer the IMAAdDisplayContainer for rendering the ad UI
- *  @param videoDisplay       the IMAVideoDisplay for playing the stream
- *
- *  @return the IMAStreamRequest instance
- */
-- (instancetype)initWithContentSourceId:(NSString *)contentSourceId
-                                videoId:(NSString *)videoId
-                     adDisplayContainer:(IMAAdDisplayContainer *)adDisplayContainer
-                           videoDisplay:(id<IMAVideoDisplay>)videoDisplay;
+@property(nonatomic, copy) NSString *manifestURLSuffix;
 
 - (instancetype)init NS_UNAVAILABLE;
 

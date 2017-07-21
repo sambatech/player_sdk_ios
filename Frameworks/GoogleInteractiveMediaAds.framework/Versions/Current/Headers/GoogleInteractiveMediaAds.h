@@ -1,11 +1,22 @@
 //
 //  GoogleInteractiveMediaAds.h
-//  Google Interactive Media Ads SDK
+//  GoogleInteractiveMediaAds
 //
-//  Copyright 2015 Google Inc. All rights reserved.
+//  Copyright © 2016 Google. All rights reserved.
+//
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+
+//! Project version number for GoogleInteractiveMediaAds.
+FOUNDATION_EXPORT double GoogleInteractiveMediaAdsVersionNumber;
+
+//! Project version string for GoogleInteractiveMediaAds.
+FOUNDATION_EXPORT const unsigned char GoogleInteractiveMediaAdsVersionString[];
+
+#if __IPHONE_OS_VERSION_MIN_REQUIRED < __IPHONE_8_0
+#error The IMA SDK requires a deployment target of 8.0 or later.
+#endif
 
 #import <GoogleInteractiveMediaAds/IMAAVPlayerContentPlayhead.h>
 #import <GoogleInteractiveMediaAds/IMAAVPlayerVideoDisplay.h>
@@ -21,9 +32,12 @@
 #import <GoogleInteractiveMediaAds/IMAAdsRequest.h>
 #import <GoogleInteractiveMediaAds/IMACompanionAdSlot.h>
 #import <GoogleInteractiveMediaAds/IMAContentPlayhead.h>
+#import <GoogleInteractiveMediaAds/IMACuepoint.h>
+#import <GoogleInteractiveMediaAds/IMALiveStreamRequest.h>
 #import <GoogleInteractiveMediaAds/IMAPictureInPictureProxy.h>
 #import <GoogleInteractiveMediaAds/IMASettings.h>
 #import <GoogleInteractiveMediaAds/IMAStreamManager.h>
 #import <GoogleInteractiveMediaAds/IMAStreamRequest.h>
 #import <GoogleInteractiveMediaAds/IMAUiElements.h>
+#import <GoogleInteractiveMediaAds/IMAVODStreamRequest.h>
 #import <GoogleInteractiveMediaAds/IMAVideoDisplay.h>

@@ -27,6 +27,14 @@
  */
 - (void)companionSlot:(IMACompanionAdSlot *)slot filled:(BOOL)filled;
 
+/**
+ *  Called when the slot is clicked on by the user and will
+ *  successfully navigate away.
+ *
+ *  @param slot   the IMACompanionAdSlot receiving the event
+ */
+- (void)companionSlotWasClicked:(IMACompanionAdSlot *)slot;
+
 @end
 
 #pragma mark - IMACompanionAdSlot

@@ -43,6 +43,8 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
   kIMAAdEvent_COMPLETE,
   /**
    *  Cuepoints changed for VOD stream (only used for dynamic ad insertion).
+   *  For this event, the <code>IMAAdEvent.adData</code> property contains a list of
+   *  <code>IMACuepoint</code>s at <code>IMAAdEvent.adData[@"cuepoints"]</code>.
    */
   kIMAAdEvent_CUEPOINTS_CHANGED,
   /**
@@ -53,6 +55,10 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
    *  An ad was loaded.
    */
   kIMAAdEvent_LOADED,
+  /**
+   *  A log event for the ads being played. These are typically non fatal errors.
+   */
+  kIMAAdEvent_LOG,
   /**
    *  Midpoint of a linear ad was reached.
    */
@@ -73,6 +79,15 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
    *  Ad has started.
    */
   kIMAAdEvent_STARTED,
+  /**
+   *  Stream has loaded (only used for dynamic ad insertion).
+   */
+  kIMAAdEvent_STREAM_LOADED,
+  /**
+   *  Stream has started playing (only used for dynamic ad insertion). Start
+   *  Picture-in-Picture here if applicable.
+   */
+  kIMAAdEvent_STREAM_STARTED,
   /**
    *  Ad tapped.
    */
@@ -108,7 +123,8 @@ static NSString *const kIMAAdBreakTime = @"kIMAAdBreakTime";
 @property(nonatomic, copy, readonly) NSString *typeString;
 
 /**
- *  The current ad that is playing or just played. Can be nil.
+ *  The current ad that is playing or just played. This will be nil except for
+ *  events where an ad is available (start, quartiles, midpoint, complete, and tap).
  */
 @property(nonatomic, strong, readonly) IMAAd *ad;
 

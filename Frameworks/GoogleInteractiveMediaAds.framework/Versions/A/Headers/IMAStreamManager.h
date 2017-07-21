@@ -33,6 +33,7 @@
 #import "IMAAdsRenderingSettings.h"
 #import "IMAContentPlayhead.h"
 
+@class IMACuepoint;
 @class IMAStreamManager;
 
 #pragma mark IMAStreamManagerDelegate
@@ -54,22 +55,27 @@
  *  Called when there is an IMAAdEvent.
  *
  *  @param streamManager the IMAStreamManager receiving the error
- *  @param event         the IMAAdError received
+ *  @param error         the IMAAdError received
  */
 - (void)streamManager:(IMAStreamManager *)streamManager didReceiveAdError:(IMAAdError *)error;
 
-@optional
 
 /**
- *  Called every 200ms to provide time updates for the current stream.
+ *  Called when the ad is playing to give updates about ad progress.
  *
- *  @param streamManager the IMAStreamManager tracking ad playback
- *  @param mediaTime     the current media time in seconds
- *  @param totalTime     the total media length in seconds
+ *  @param streamManager    the IMAStreamManager tracking ad playback
+ *  @param time             the current ad playback time in seconds
+ *  @param adDuration       the total duration of the current ad in seconds
+ *  @param adPosition       the ad position of the current ad in the current ad break
+ *  @param totalAds         the total number of ads in the current ad break
+ *  @param adBreakDuration  the total duration of the current ad break in seconds
  */
 - (void)streamManager:(IMAStreamManager *)streamManager
-    adDidProgressToTime:(NSTimeInterval)mediaTime
-              totalTime:(NSTimeInterval)totalTime;
+  adDidProgressToTime:(NSTimeInterval)time
+           adDuration:(NSTimeInterval)adDuration
+           adPosition:(NSInteger)adPosition
+             totalAds:(NSInteger)totalAds
+      adBreakDuration:(NSTimeInterval)adBreakDuration;
 
 @end
 
@@ -86,7 +92,8 @@
 @property(nonatomic, weak) NSObject<IMAStreamManagerDelegate> *delegate;
 
 /**
- *  Identifier used during dynamic ad insertion to uniquely identify a stream.
+ *  Identifier used during dynamic ad insertion to uniquely identify a stream. This can be used in
+ *  the Stream Activity Monitor Debug Console to debug the stream session.
  */
 @property(nonatomic, copy, readonly) NSString *streamId;
 
@@ -97,6 +104,37 @@
  *                              Use nil to default to standard rendering.
  */
 - (void)initializeWithAdsRenderingSettings:(IMAAdsRenderingSettings *)adsRenderingSettings;
+
+/**
+ *  Returns the stream time with ads for a given content time. Returns the given content time
+ *  for live streams.
+ *
+ *  @param contentTime   the content time without any ads (in seconds)
+ *
+ *  @return the stream time that corresponds with the given content time once ads are inserted
+ */
+- (NSTimeInterval)streamTimeForContentTime:(NSTimeInterval)contentTime;
+
+/**
+ *  Returns the content time without ads for a given stream time. Returns the given stream time
+ *  for live streams.
+ *
+ *  @param streamTime   the stream time with inserted ads (in seconds)
+ *
+ *  @return the content time that corresponds with the given stream time once ads are removed
+ */
+- (NSTimeInterval)contentTimeForStreamTime:(NSTimeInterval)streamTime;
+
+/**
+ *  Returns the previous cuepoint for the given stream time. Retuns nil if no such cuepoint exists.
+ *  This is used to implement features like snap back, and called when the publisher detects that
+ *  the user seeked in order to force the user to watch an ad break they may have skipped over.
+ *
+ *  @param streamTime   the stream time that the was seeked to.
+ *
+ *  @return the previous IMACuepoint for the given stream time.
+ */
+- (IMACuepoint *)previousCuepointForStreamTime:(NSTimeInterval)streamTime;
 
 - (instancetype)init NS_UNAVAILABLE;
 

@@ -145,8 +145,7 @@
 - (void)requestAdsWithRequest:(IMAAdsRequest *)request;
 
 /**
- *  Request a stream with with ads inserted dynamically. The loader takes 1-2 seconds to setup on
- *  init and become ready to make stream requests. So reusing the same IMAAdsLoader instance is
+ *  Request a stream with with ads inserted dynamically. Reusing the same IMAAdsLoader instance is
  *  encouraged when making stream requests in order to minimize stream request latency.
  *
  *  @param request the stream request

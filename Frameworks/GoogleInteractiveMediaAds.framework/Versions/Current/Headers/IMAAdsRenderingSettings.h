@@ -59,31 +59,6 @@ extern const int kIMAAutodetectBitrate;
  */
 - (void)webOpenerDidCloseInAppBrowser:(NSObject *)webOpener;
 
-/**
- *  @deprecated Replaced by webOpenerWillOpenExternalBrowser:
- */
-- (void)willOpenExternalBrowser DEPRECATED_ATTRIBUTE;
-
-/**
- *  @deprecated Replaced by webOpenerWillOpenInAppBrowser:
- */
-- (void)willOpenInAppBrowser DEPRECATED_ATTRIBUTE;
-
-/**
- *  @deprecated Replaced by webOpenerDidOpenInAppBrowser:
- */
-- (void)didOpenInAppBrowser DEPRECATED_ATTRIBUTE;
-
-/**
- *  @deprecated Replaced by webOpenerWillCloseInAppBrowser:
- */
-- (void)willCloseInAppBrowser DEPRECATED_ATTRIBUTE;
-
-/**
- *  @deprecated Replaced by webOpenerDidCloseInAppBrowser:
- */
-- (void)didCloseInAppBrowser DEPRECATED_ATTRIBUTE;
-
 @end
 
 #pragma mark - IMAAdsRenderingSettings
@@ -112,8 +87,16 @@ extern const int kIMAAutodetectBitrate;
 @property(nonatomic) int bitrate;
 
 /**
+ *  For VMAP and ad rules playlists, only play ad breaks scheduled after this time (in seconds).
+ *  This setting is strictly after - for example, setting playAdsAfterTime to 15 will ignore an ad
+ *  break scheduled to play at 15s.
+ */
+@property(nonatomic) NSTimeInterval playAdsAfterTime;
+
+/**
  *  Specifies the list of UI elements that should be visible.
- *  This property may be ignored for AdSense/AdX ads.
+ *  This property may be ignored for AdSense/AdX ads. For valid values, see
+ *  <a href="../Enums/IMAUiElementType.html">IMAUiElementType</a>.
  */
 @property(nonatomic, copy) NSArray *uiElements;
 

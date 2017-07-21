@@ -18,7 +18,9 @@
  */
 @interface IMAAVPlayerContentPlayhead : NSObject<IMAContentPlayhead>
 
-// The player to track.
+/**
+ *  The player to track.
+ */
 @property(nonatomic, strong, readonly) AVPlayer *player;
 
 /**
