@@ -5,13 +5,10 @@ framework module SambaPlayer {
 	module * { export * }
 	
 	//link framework "AVFoundation"
+	
+	header "GMFContentPlayhead.h"
+	header "GMFSlider.h"
+	header "UIButton+GMFTintableButton.h"
+	header "UIImage+GMFTintableImage.h"
+	header "UILabel+GMFLabels.h"
 }
-
-/*framework module GoogleMediaFramework {
-	module GoogleMediaFramework {
-		header "GoogleMediaFramework.h"
-		
-		export *
-		//module * { export * }
-	}
-}*/

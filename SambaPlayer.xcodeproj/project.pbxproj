@@ -57,6 +57,7 @@
 		9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F91D22D5BD00C9C015 /* Tracking.swift */; };
 		9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */; };
 		9A56AA7B1E293DDE00D4F43F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A56AA7A1E293DDE00D4F43F /* Localizable.strings */; };
+		9A622B5D1F22B6060049E33D /* GMFIMASettings.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A622B5C1F22B6060049E33D /* GMFIMASettings.h */; };
 		9A67DD741DE4A2B600F8E172 /* player_error@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD711DE4A2B600F8E172 /* player_error@3x.png */; };
 		9A67DD751DE4A2B600F8E172 /* player_error@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD721DE4A2B600F8E172 /* player_error@2x.png */; };
 		9A67DD761DE4A2B600F8E172 /* player_error@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A67DD731DE4A2B600F8E172 /* player_error@1x.png */; };
@@ -162,6 +163,7 @@
 		9A5267F91D22D5BD00C9C015 /* Tracking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		9A52680C1D230C0500C9C015 /* Exportable.modulemap */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.module-map"; path = Exportable.modulemap; sourceTree = "<group>"; };
 		9A56AA7A1E293DDE00D4F43F /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		9A622B5C1F22B6060049E33D /* GMFIMASettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GMFIMASettings.h; path = GoogleMediaFramework/GMFIMASettings.h; sourceTree = "<group>"; };
 		9A67DD711DE4A2B600F8E172 /* player_error@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@3x.png"; sourceTree = "<group>"; };
 		9A67DD721DE4A2B600F8E172 /* player_error@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@2x.png"; sourceTree = "<group>"; };
 		9A67DD731DE4A2B600F8E172 /* player_error@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_error@1x.png"; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 				9AF325BD1D14B5B900B6E450 /* GMFPlayerOverlayView.h */,
 				9AF325BE1D14B5B900B6E450 /* GMFPlayerOverlayView.m */,
 				9AF325BF1D14B5B900B6E450 /* GMFPlayerOverlayViewController.h */,
+				9A622B5C1F22B6060049E33D /* GMFIMASettings.h */,
 				9AF325C01D14B5B900B6E450 /* GMFPlayerOverlayViewController.m */,
 				9AF325C11D14B5B900B6E450 /* GMFPlayerState.h */,
 				9AF325C21D14B5B900B6E450 /* GMFPlayerView.h */,
@@ -427,6 +430,7 @@
 				9AF325E61D14B5B900B6E450 /* GMFPlayerView.h in Headers */,
 				9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */,
 				9AF325E31D14B5B900B6E450 /* GMFPlayerOverlayViewController.h in Headers */,
+				9A622B5D1F22B6060049E33D /* GMFIMASettings.h in Headers */,
 				9AF325F51D14B5B900B6E450 /* UIImage+GMFTintableImage.h in Headers */,
 				9AF325DD1D14B5B900B6E450 /* GMFPlayerControlsProtocol.h in Headers */,
 				9AF325D91D14B5B900B6E450 /* GMFContentPlayhead.h in Headers */,

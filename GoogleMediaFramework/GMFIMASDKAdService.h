@@ -45,4 +45,3 @@
 - (void)didPressHd;
 
 @end
-
