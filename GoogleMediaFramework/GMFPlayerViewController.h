@@ -15,6 +15,7 @@
 #import "GMFPlayerView.h"
 #import "GMFVideoPlayer.h"
 #import "GMFPlayerOverlayViewController.h"
+#import "AdsSettings.h"
 
 @class GMFAdService;
 @class GMFPlayerControlsViewDelegate;
@@ -67,7 +68,9 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (void)loadStreamWithAsset:(AVAsset*)asset;
 
-- (void)loadStreamWithAsset:(AVAsset*)asset imaTag:(NSString *)tag;
+- (void)loadStreamWithAsset:(AVAsset*)asset
+					 imaTag:(NSString *)tag
+				andSettings:(AdsSettings *)settings;
 
 - (void)play;
 

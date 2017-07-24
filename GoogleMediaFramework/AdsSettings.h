@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+@import GoogleInteractiveMediaAds;
 
-@interface GMFIMASettings
+@interface AdsSettings : NSObject
 
 @property(nonatomic) NSUInteger maxRedirects;
-@property(nonatomic) BOOL enableDebugMode;
-@property(nonatomic, strong) IMAAdsRenderingSettings *rendering;
+@property(nonatomic) BOOL debugMode;
+@property(nonatomic, strong, nonnull) IMAAdsRenderingSettings *rendering;
 
 @end

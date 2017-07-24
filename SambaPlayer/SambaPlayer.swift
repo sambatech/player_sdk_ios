@@ -535,7 +535,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// IMA
 		if !media.isAudio, let adUrl = media.adUrl {
 			let mediaId = (media as? SambaMediaConfig)?.id ?? ""
-			player.loadStream(with: asset, imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]")
+			player.loadStream(with: asset,
+			                  imaTag: "\(adUrl)&vid=[\(mediaId.isEmpty ? "live" : mediaId)]",
+				andSettings: media.adsSettings)
 		}
 		// default
 		else {

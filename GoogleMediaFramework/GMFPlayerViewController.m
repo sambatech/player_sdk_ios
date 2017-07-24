@@ -111,12 +111,15 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
 // Loads a video stream with the provided URL and requests ads via the IMA SDK with the provided
 // ad tag.
-- (void)loadStreamWithAsset:(AVAsset*)asset imaTag:(NSString *)tag {
+- (void)loadStreamWithAsset:(AVAsset*)asset
+					 imaTag:(NSString *)tag
+				andSettings:(AdsSettings *)settings {
   [_player loadStreamWithAsset:asset];
   if (_adService && [_adService class] == [GMFIMASDKAdService class]) {
     [(GMFIMASDKAdService *)_adService reset];
   } else {
-    _adService = [[GMFIMASDKAdService alloc] initWithGMFVideoPlayer:self];
+    _adService = [[GMFIMASDKAdService alloc] initWithGMFVideoPlayer:self
+														andSettings:settings];
   }
   [(GMFIMASDKAdService*)_adService requestAdsWithRequest:tag];
 }

@@ -14,7 +14,6 @@
 
 #import "GMFIMASDKAdService.h"
 #import "GMFContentPlayhead.h"
-#import "GMFIMASettings.h"
 
 @class GMFPlayerOverlayView;
 
@@ -26,15 +25,14 @@
 @implementation GMFIMASDKAdService {
   BOOL _hasVideoPlayerControl;
   BOOL _contentComplete;
-  GMFIMASettings *_settings;
 }
 
 // Designated initializer
 - (instancetype)initWithGMFVideoPlayer:(GMFPlayerViewController *)videoPlayerController
-						   andSettings:(GMFIMASettings *)settings {
+						   andSettings:(AdsSettings *)settings {
   self = [super initWithGMFVideoPlayer:videoPlayerController];
   if (self) {
-	_settings = settings;
+	self.settings = settings;
     self.adsLoader = [[IMAAdsLoader alloc] initWithSettings:[self createIMASettings]];
     self.adsLoader.delegate = self;
   }
@@ -71,8 +69,8 @@
   settings.language = @"en";
   settings.playerType = @"google/gmf-ios";
   settings.playerVersion = @"1.0.0";
-  settings.maxRedirects = _settings.maxRedirects;
-  settings.enableDebugMode = _settings.enableDebugMode;
+  settings.maxRedirects = self.settings.maxRedirects;
+  settings.enableDebugMode = self.settings.debugMode;
   return settings;
 }
 
@@ -119,7 +117,7 @@
   // Get the ads manager from ads loaded data.
   self.adsManager = adsLoadedData.adsManager;
 
-  [self.adsManager initializeWithAdsRenderingSettings:_settings.rendering];
+  [self.adsManager initializeWithAdsRenderingSettings:self.settings.rendering];
 
   self.adsManager.delegate = self;
 
