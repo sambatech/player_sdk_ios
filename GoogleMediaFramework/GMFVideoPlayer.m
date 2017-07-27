@@ -35,7 +35,7 @@ static NSString * const kLikelyToKeepUpKey = @"playbackLikelyToKeepUp";
 static NSString * const kErrorKey = @"error";
 
 // Pause the video if user unplugs their headphones.
-void GMFAudioRouteChangeListenerCallback(void *inClientData,
+/*void GMFAudioRouteChangeListenerCallback(void *inClientData,
                                          AudioSessionPropertyID inID,
                                          UInt32 inDataSize,
                                          const void *inData) {
@@ -50,7 +50,7 @@ void GMFAudioRouteChangeListenerCallback(void *inClientData,
     GMFVideoPlayer *_player = (__bridge GMFVideoPlayer *)inClientData;
     [_player pause];
   }
-}
+}*/
 
 #pragma mark -
 #pragma mark GMFPlayerLayerView
@@ -143,10 +143,15 @@ BOOL _assetReplaced = NO;
   self = [super init];
   if (self) {
     _state = kGMFPlayerStateEmpty;
-    AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
+    /*AudioSessionAddPropertyListener(kAudioSessionProperty_AudioRouteChange,
                                     GMFAudioRouteChangeListenerCallback,
-                                    (__bridge void *)self);
-
+                                    (__bridge void *)self);*/
+	  
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(audioHardwareRouteChanged:)
+												 name:AVAudioSessionRouteChangeNotification
+											   object:nil];
+	
     // Handles interruptions to playback, like phone calls and activating Siri.
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(onAudioSessionInterruption:)
@@ -384,8 +389,6 @@ BOOL _assetReplaced = NO;
 - (void)switchAsset:(AVAsset*)asset {
 	if (!_player) return;
 	
-	AVPlayerItem* item = [AVPlayerItem playerItemWithAsset:asset];
-	
 	_initialTime = _player.currentTime;
 	
 	[self loadStreamWithAsset:asset];
@@ -471,11 +474,18 @@ BOOL _assetReplaced = NO;
   }
 }
 
+- (void)audioHardwareRouteChanged:(NSNotification *)notification {
+	NSInteger routeChangeReason = [notification.userInfo[AVAudioSessionRouteChangeReasonKey] integerValue];
+	if (routeChangeReason == AVAudioSessionRouteChangeReasonOldDeviceUnavailable) {
+		[self pause];
+	}
+}
+
 - (void)dealloc {
   [[NSNotificationCenter defaultCenter] removeObserver:self];
-  AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
+  /*AudioSessionRemovePropertyListenerWithUserData(kAudioSessionProperty_AudioRouteChange,
                                                  GMFAudioRouteChangeListenerCallback,
-                                                 (__bridge void *)self);
+                                                 (__bridge void *)self);*/
   [self clearPlayer];
 }
 

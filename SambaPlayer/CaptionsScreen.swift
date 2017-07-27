@@ -84,7 +84,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			#endif
 			self.parse(response)
 		}) { (error, response) in
-			print(error, response)
+			print(error ?? "error undefined", response ?? "response undefined")
 		}
 	}
 	

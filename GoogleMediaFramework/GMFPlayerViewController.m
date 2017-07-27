@@ -113,7 +113,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 // ad tag.
 - (void)loadStreamWithAsset:(AVAsset*)asset
 					 imaTag:(NSString *)tag
-				andSettings:(AdsSettings *)settings {
+				andSettings:(GMFAdsSettings *)settings {
   [_player loadStreamWithAsset:asset];
   if (_adService && [_adService class] == [GMFIMASDKAdService class]) {
     [(GMFIMASDKAdService *)_adService reset];

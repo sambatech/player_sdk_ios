@@ -13,7 +13,7 @@
 // limitations under the License.
 
 #import "GoogleMediaFramework.h"
-#import "AdsSettings.h"
+#import "GMFAdsSettings.h"
 @import GoogleInteractiveMediaAds;
 
 @interface GMFIMASDKAdService : GMFAdService<IMAAdsLoaderDelegate,
@@ -29,10 +29,10 @@
 
 @property(nonatomic, strong) IMAAdDisplayContainer *adDisplayContainer;
 
-@property(nonatomic, strong) AdsSettings *settings;
+@property(nonatomic, strong) GMFAdsSettings *settings;
 
 - (instancetype)initWithGMFVideoPlayer:(GMFPlayerViewController *)videoPlayerController
-						   andSettings:(AdsSettings *)settings;
+						   andSettings:(GMFAdsSettings *)settings;
 
 // Initiate a request to the ads server for ads associated with the given adtag.
 - (void)requestAdsWithRequest:(NSString *)request;

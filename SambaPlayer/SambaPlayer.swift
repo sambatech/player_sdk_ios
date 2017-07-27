@@ -291,6 +291,27 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return
 		}
 		
+		
+		/*if (_isFullscreen) {
+			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+				exitFullscreen()
+			}
+		}
+		else {
+			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+				_fullscreenAnimating = true
+				_isFullscreen = true
+				
+				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+				detachVC(player)
+				
+				DispatchQueue.main.async {
+					self.present(player, animated: animated, completion: callback)
+				}
+			}
+		}*/
+		
+		
 		if player.parent == self {
 			// if UI will be or already is in landscape
 			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) || UIApplication.shared.statusBarOrientation.isLandscape {
@@ -498,7 +519,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			// assume first output in case of no default
 			urlOpt = outputs[0].url
 			
-			for (k,v) in outputs.enumerated() where v.isDefault {
+			for (_, v) in outputs.enumerated() where v.isDefault {
 				urlOpt = v.url
 			}
 		}
@@ -903,7 +924,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 					return
 			}
 			
-			error = playerInternal.player.error != nil ? playerInternal.player.error as? NSError : nil
+			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
 			code = error?.code ?? SambaPlayerError.unknown.code
 			
 			var msg = "Ocorreu um erro! Por favor, tente novamente."
@@ -911,7 +932,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			type = .recoverable
 			
 			switch code {
-				// unauthorized DRM content
+			// unauthorized DRM content
 			//case -11800 where media.drmRequest != nil: fallthrough
 			case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
 				type = .critical

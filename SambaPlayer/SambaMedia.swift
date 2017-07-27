@@ -45,7 +45,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	public var adUrl: String?
 	
 	/// DFP settings
-	public var adsSettings = AdsSettings()
+	public var adsSettings = GMFAdsSettings()
 	
 	/// List of outputs
 	public var outputs: [SambaMediaOutput]?
@@ -70,10 +70,16 @@ If `outputs` field is nil, `url` field will be used instead.
 	
 	/// Media current color theme
 	public var theme: UInt = 0x72BE44
-
+	
+	/// Description of the media (returns media's title when empty)
+	public override var description: String { return title }
+	
 	/// Default initializer
-	public override init() {}
-
+	public override init() {
+		super.init()
+		initSettings()
+	}
+	
 	/**
 	Basic initializer
 	
@@ -81,19 +87,13 @@ If `outputs` field is nil, `url` field will be used instead.
 	- parameter title: Media's title
 	- parameter thumb: URL of the thumb
 	*/
-	public init(_ url: String, title: String?, thumb: UIImage?) {
+	public init(_ url: String, title: String? = nil, thumb: UIImage? = nil) {
 		self.title = title ?? ""
 		self.url = url
 		self.thumb = thumb
-	}
-	
-	/**
-	Convenience initializer
-	
-	- parameter url:String URL of the media
-	*/
-	public convenience init(_ url: String) {
-		self.init(url, title: nil, thumb: nil)
+		
+		super.init()
+		initSettings()
 	}
 	
 	/**
@@ -114,10 +114,14 @@ If `outputs` field is nil, `url` field will be used instead.
 		isLive = media.isLive
 		isAudio = media.isAudio
 		theme = media.theme
+		
+		super.init()
+		initSettings()
 	}
 	
-	/// Description of the media (returns media's title when empty)
-	public override var description: String { return title }
+	private func initSettings() {
+		adsSettings.rendering = IMAAdsRenderingSettings()
+	}
 }
 
 /**
@@ -209,7 +213,7 @@ Configuration for captions
 	/**
 	Default initializer
 	*/
-	public override init() {
+	public required override init() {
 		super.init()
 	}
 	

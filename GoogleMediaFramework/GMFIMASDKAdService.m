@@ -29,7 +29,7 @@
 
 // Designated initializer
 - (instancetype)initWithGMFVideoPlayer:(GMFPlayerViewController *)videoPlayerController
-						   andSettings:(AdsSettings *)settings {
+						   andSettings:(GMFAdsSettings *)settings {
   self = [super initWithGMFVideoPlayer:videoPlayerController];
   if (self) {
 	self.settings = settings;
@@ -278,7 +278,11 @@
 }
 
 - (void)didPressHd {
-	// Noop
+  // Noop
+}
+
+- (void)didPressCaptions {
+  // Noop
 }
 
 #pragma mark Debug Methods
