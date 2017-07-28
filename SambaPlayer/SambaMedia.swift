@@ -77,7 +77,6 @@ If `outputs` field is nil, `url` field will be used instead.
 	/// Default initializer
 	public override init() {
 		super.init()
-		initSettings()
 	}
 	
 	/**
@@ -93,7 +92,6 @@ If `outputs` field is nil, `url` field will be used instead.
 		self.thumb = thumb
 		
 		super.init()
-		initSettings()
 	}
 	
 	/**
@@ -116,11 +114,6 @@ If `outputs` field is nil, `url` field will be used instead.
 		theme = media.theme
 		
 		super.init()
-		initSettings()
-	}
-	
-	private func initSettings() {
-		adsSettings.rendering = IMAAdsRenderingSettings()
 	}
 }
 

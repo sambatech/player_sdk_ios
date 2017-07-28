@@ -117,7 +117,7 @@
   // Get the ads manager from ads loaded data.
   self.adsManager = adsLoadedData.adsManager;
 
-  [self.adsManager initializeWithAdsRenderingSettings:self.settings.rendering];
+  [self.adsManager initializeWithAdsRenderingSettings:self.settings];
 
   self.adsManager.delegate = self;
 

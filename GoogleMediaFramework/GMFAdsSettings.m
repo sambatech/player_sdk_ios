@@ -14,7 +14,6 @@
 - (instancetype)init {
 	if (self = [super init]) {
 		self.maxRedirects = 4;
-		//self.rendering = [[IMAAdsRenderingSettings alloc] init];
 	}
 	
 	return self;

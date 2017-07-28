@@ -291,7 +291,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return
 		}
 		
-		
+		//po "fullscreen=\(_isFullscreen) parent=\(player.parent != nil) landscape=\(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) landscape.status=\(UIApplication.shared.statusBarOrientation.isLandscape) portrait=\(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) portrait.status=\(UIApplication.shared.statusBarOrientation.isPortrait)"
 		/*if (_isFullscreen) {
 			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
 				exitFullscreen()
