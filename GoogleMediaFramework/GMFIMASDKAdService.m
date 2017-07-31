@@ -58,7 +58,7 @@
                                                    adDisplayContainer:self.adDisplayContainer
                                                       contentPlayhead:self.contentPlayhead
                                                           userContext:nil];
-
+  adsRequest.vastLoadTimeout = self.settings.vastLoadTimeout;
   _contentComplete = NO;
 
   [self.adsLoader requestAdsWithRequest:adsRequest];

@@ -14,6 +14,7 @@
 - (instancetype)init {
 	if (self = [super init]) {
 		self.maxRedirects = 4;
+		self.vastLoadTimeout = 8;
 	}
 	
 	return self;

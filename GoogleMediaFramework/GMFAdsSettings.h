@@ -13,5 +13,6 @@
 
 @property(nonatomic) NSUInteger maxRedirects;
 @property(nonatomic) BOOL debugMode;
+@property(nonatomic) float vastLoadTimeout;
 
 @end
