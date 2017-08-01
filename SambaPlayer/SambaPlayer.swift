@@ -25,7 +25,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private var _fullscreenAnimating = false
 	private var _isFullscreen = false
 	private var _pendingPlay = false
-	private var _duration: Float = 0
 	private var _wasPlayingBeforePause = false
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
@@ -50,12 +49,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	/// Current media duration
 	public var duration: Float {
-		if _duration == 0,
-			let d = _player?.totalMediaTime(), d > 0 {
-			_duration = Float(d)
-		}
-		
-		return _duration
+		return Float(_player?.totalMediaTime() ?? 0)
 	}
 	
 	/// Outputs available
@@ -73,8 +67,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				return
 			}
 			
-			// reset player
-			destroy()
+			// reset playback
+			if _player != nil,
+				let url = decideUrl() {
+				retry(url)
+			}
 			
 			DispatchQueue.main.async {
 				if self.media.isAudio {
@@ -312,23 +309,23 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}*/
 		
 		
-		if player.parent == self {
-			// if UI will be or already is in landscape
-			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) || UIApplication.shared.statusBarOrientation.isLandscape {
-				_fullscreenAnimating = true
-				_isFullscreen = true
-				
-				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
-				detachVC(player)
-				
-				DispatchQueue.main.async {
-					self.present(player, animated: animated, completion: callback)
-				}
+		if _isFullscreen {
+			// if UI will be or already is in portrait
+			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+				exitFullscreen()
 			}
 		}
-		// if UI will be or already is in portrait
-		else if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) || UIApplication.shared.statusBarOrientation.isPortrait {
-			exitFullscreen()
+		// if UI will be or already is in landscape
+		else if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+			_fullscreenAnimating = true
+			_isFullscreen = true
+			
+			player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+			detachVC(player)
+			
+			DispatchQueue.main.async {
+				self.present(player, animated: animated, completion: callback)
+			}
 		}
 	}
 	
@@ -550,7 +547,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private func loadAsset(_ asset: AVURLAsset?, _ autoPlay: Bool = false) {
 		guard let asset = asset,
 			let player = _player else {
-			fatalError("Asset not found (null) when loading stream!")
+			fatalError("Player or asset not found (null) when loading stream!")
 		}
 		
 		// IMA
@@ -583,8 +580,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private func destroyInternal() {
 		guard let player = _player else { return }
 		
-		stopTimer()
-		player.player.reset()
+		reset()
 		detachVC(player, nil, false)
 		NotificationCenter.default.removeObserver(self)
 		
@@ -648,16 +644,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	- parameter url: The URL to retry if provided
 	*/
-	private func retry(_ url: String? = nil) {
+	private func retry(_ url: URL? = nil) {
 		// disable ad
 		media.adUrl = nil
 		
 		if let manager = _outputManager,
 			let url = url ??
-				manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
-				media.url {
+				URL(string: manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
+				media.url ?? "") {
 			// try to connect again
-			loadAsset(createAsset(URL(string: url)), true)
+			loadAsset(createAsset(url), true)
 		}
 		else {
 			dispatchError(SambaPlayerError.invalidUrl)
@@ -960,7 +956,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			// URL not found (or server unreachable)
 			default:
 				if currentBackupIndex < media.backupUrls.count {
-					let url = player.media.backupUrls[currentBackupIndex]
+					let url = URL(string: player.media.backupUrls[currentBackupIndex])
 					
 					type = .info
 					msg = "Conectando..."
