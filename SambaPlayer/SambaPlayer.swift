@@ -257,7 +257,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		guard _errorScreen == nil, !_fullscreenAnimating,
 			let player = _player else { return }
 		
-		guard !media.isAudio else {
+		if media.isAudio {
 			guard let parentView = _parentView ?? parent?.view else { return }
 			var f = player.view.frame
 			f.size.width = size?.width ?? parentView.frame.width
