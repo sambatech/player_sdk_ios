@@ -563,6 +563,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func reset(_ restart: Bool = true) {
 		_hasStarted = !restart
+		_isFullscreen = false
 		stopTimer()
 		_player?.reset()
 		
