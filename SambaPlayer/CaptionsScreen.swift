@@ -15,20 +15,21 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	@IBOutlet var label: UILabel!
 	
 	private let _player: SambaPlayer
-	private let _captionsRequest: [SambaMediaCaption]
-	private let _config: SambaMediaCaptionsConfig
+	private var _captionsRequest = [SambaMediaCaption]()
 	private var _captionsMap = [Int:[Caption]]()
 	private var _parsed = false
 	private var _currentCaption: Caption?
+	
+	public var hasCaptions: Bool {
+		return _captionsRequest.count > 0
+	}
 	
 	private struct Caption {
 		let index: Int, startTime: Float, endTime: Float, text: String
 	}
 	
-	init(player: SambaPlayer, captions: [SambaMediaCaption], config: SambaMediaCaptionsConfig) {
+	init(player: SambaPlayer) {
 		_player = player
-		_captionsRequest = captions
-		_config = config
 		
 		super.init(nibName: "CaptionsScreen", bundle: Bundle(for: type(of: self)))
 		loadViewIfNeeded()
@@ -41,33 +42,14 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	}
 	
 	override func viewDidLoad() {
-		let index: Int
-		
-		if let lang = _config.language?.lowercased().replacingOccurrences(of: "_", with: "-"),
-			let indexConfig = _captionsRequest.index(where: { $0.language.lowercased().replacingOccurrences(of: "_", with: "-") == lang }) {
-			index = indexConfig
-		}
-		else if let indexApi = _captionsRequest.index(where: { $0.isDefault }) {
-			index = indexApi
-		}
-		else {
-			index = 0
-		}
-		
-		label.textColor = UIColor(_config.color)
-		label.font = label.font.withSize(CGFloat(_config.size))
-		
-		changeCaption(index)
+		load()
 	}
 	
 	func changeCaption(_ value: Int) {
 		guard value != currentIndex,
 			value < _captionsRequest.count else { return }
 		
-		currentIndex = value
-		_parsed = false
-		_currentCaption = nil
-		label.text = ""
+		reset(value)
 		
 		// disable
 		if _captionsRequest[value].url == "" {
@@ -89,6 +71,11 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	}
 	
 	// PLAYER DELEGATE
+	
+	func onLoad() {
+		guard isViewLoaded else { return }
+		load()
+	}
 	
 	func onProgress() {
 		guard _parsed else { return }
@@ -114,6 +101,46 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 			label.text = ""
 			_currentCaption = nil
 		}
+	}
+	
+	func onReset() {
+		reset()
+		_captionsRequest = [SambaMediaCaption]()
+	}
+	
+	private func load() {
+		let media = _player.media
+		
+		guard let captions = media.captions,
+			captions.count > 0 else { return }
+		
+		let config = media.captionsConfig
+		let index: Int
+		
+		_captionsRequest = captions
+		
+		if let lang = config.language?.lowercased().replacingOccurrences(of: "_", with: "-"),
+			let indexConfig = _captionsRequest.index(where: { $0.language.lowercased().replacingOccurrences(of: "_", with: "-") == lang }) {
+			index = indexConfig
+		}
+		else if let indexApi = _captionsRequest.index(where: { $0.isDefault }) {
+			index = indexApi
+		}
+		else {
+			index = 0
+		}
+		
+		label.textColor = UIColor(config.color)
+		label.font = label.font.withSize(CGFloat(config.size))
+		
+		changeCaption(index)
+	}
+	
+	private func reset(_ defaultIndex: Int = -1) {
+		_parsed = false
+		_currentCaption = nil
+		label.text = ""
+		currentIndex = defaultIndex
 	}
 	
 	private func parse(_ captionsText: String) {

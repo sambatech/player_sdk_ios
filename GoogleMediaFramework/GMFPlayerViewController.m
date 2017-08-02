@@ -147,7 +147,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
                         selector:(SEL)selector{
   
   // If the overlay view exists, create the action button.
-  if (self.playerOverlayView && [self.playerOverlayView respondsToSelector:@selector(addActionButtonWithImage:name:target:selector:)]) {
+  if ([self hasOverlay]) {
     [self.playerOverlayView addActionButtonWithImage:image
                                                 name:name
                                               target:target
@@ -404,6 +404,13 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   bufferedMediaTimeDidChangeToTime:(NSTimeInterval)time {
 }
 
+- (void)reset {
+  [_player reset];
+
+  if ([self hasOverlay])
+	[(GMFPlayerOverlayView*)self.playerOverlayView reset];
+}
+
 #pragma mark YTPlayerOverlayViewDelegate
 
 - (void)didPressPlay {
@@ -495,6 +502,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
       postNotificationName:kGMFPlayerCurrentTotalTimeDidChangeNotification
                     object:self
                   userInfo:nil];
+}
+
+- (BOOL)hasOverlay {
+	return self.playerOverlayView && [self.playerOverlayView respondsToSelector:@selector(addActionButtonWithImage:name:target:selector:)];
 }
 
 #pragma mark -

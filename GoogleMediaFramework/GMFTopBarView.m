@@ -189,4 +189,20 @@
 	[_backgroundView setHidden:YES];
 }
 
+- (void)reset {
+	UIButton* button;
+	
+	for (int i = 0; i < [_actionButtons count]; ++i) {
+		button = [_actionButtons objectAtIndex:i];
+		[button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+		[self removeConstraints:[button constraints]];
+		[button removeFromSuperview];
+	}
+
+	[_actionButtons removeAllObjects];
+	
+	[self setLogoImage:nil];
+	[self setVideoTitle:@""];
+}
+
 @end

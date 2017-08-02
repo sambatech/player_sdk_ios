@@ -37,4 +37,6 @@
 
 - (CGFloat)preferredHeight;
 
+- (void)reset;
+
 @end

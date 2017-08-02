@@ -23,14 +23,20 @@ class Tracking : NSObject, SambaPlayerDelegate {
 		
 		super.init()
 		
-		// media data cannot be user provided
-		guard let media = player.media as? SambaMediaConfig else { return }
-		
-		_sttm = STTM(media)
 		player.delegate = self
 	}
 	
+	// PLAYER DELEGATE
+	
 	func onStart() {
+		// media data must come from API
+		// do not track live nor audio
+		guard let media = _player.media as? SambaMediaConfig,
+			!media.isLive && !media.isAudio
+			else { return }
+		
+		// reset sttm on every new start
+		_sttm = STTM(media)
 		_sttm?.trackStart()
 	}
 	
@@ -40,6 +46,10 @@ class Tracking : NSObject, SambaPlayerDelegate {
 	
 	func onFinish() {
 		_sttm?.trackComplete()
+	}
+	
+	func onReset() {
+		onDestroy()
 	}
 	
 	func onDestroy() {

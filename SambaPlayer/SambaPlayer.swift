@@ -70,7 +70,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			// reset playback
 			if _player != nil,
 				let url = decideUrl() {
-				retry(url)
+				reset()
+				configUI()
+				retry(url, false)
 			}
 			
 			DispatchQueue.main.async {
@@ -157,7 +159,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return
 		}
 		
-		player.play()
+		if _hasStarted {
+			player.play()
+		}
+		else {
+			_pendingPlay = true
+		}
 	}
 	
 	/**
@@ -289,33 +296,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		//po "fullscreen=\(_isFullscreen) parent=\(player.parent != nil) landscape=\(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) landscape.status=\(UIApplication.shared.statusBarOrientation.isLandscape) portrait=\(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) portrait.status=\(UIApplication.shared.statusBarOrientation.isPortrait)"
-		/*if (_isFullscreen) {
-			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
-				exitFullscreen()
-			}
-		}
-		else {
-			if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
-				_fullscreenAnimating = true
-				_isFullscreen = true
-				
-				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
-				detachVC(player)
-				
-				DispatchQueue.main.async {
-					self.present(player, animated: animated, completion: callback)
-				}
-			}
-		}*/
-		
 		
 		if _isFullscreen {
-			// if UI will be or already is in portrait
+			// if UI will change to portrait
 			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
 				exitFullscreen()
 			}
 		}
-		// if UI will be or already is in landscape
+		// if UI will change to landscape
 		else if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
 			_fullscreenAnimating = true
 			_isFullscreen = true
@@ -396,46 +384,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		guard let url = decideUrl(),
 			let asset = createAsset(url) else { return }
 		
-		guard let gmf = (GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0)) {
-			guard let player = self._player else { return }
-			
-			if self.media.isAudio {
-				player.hideBackground()
-				player.getControlsView().hideFullscreenButton()
-				player.getControlsView().showPlayButton()
-				(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
-				player.playerOverlay().autoHideEnabled = false
-				player.playerOverlay().controlsHideEnabled = false
-				
-				if !self.media.isLive {
-					(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-					(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
-				}
-			}
-			// video only features
-			else {
-				self._outputManager = OutputManager(self, url)
-				
-				// captions
-				if let captions = self.media.captions, captions.count > 0 {
-					self.showScreen(CaptionsScreen(player: self, captions: captions, config: self.media.captionsConfig),
-					                &self._captionsScreen, player.playerOverlay())
-					player.getControlsView().showCaptionsButton()
-				}
-			}
-			
-			if self.media.isLive {
-				player.getControlsView().hideScrubber()
-				player.getControlsView().hideTotalTime()
-				player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
-				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-				(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
-			}
-			
-			if !self.controlsVisible {
-				self.controlsVisible = false
-			}
-		}) else {
+		guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0),
+		                                        andInitedBlock: configUI) else {
 			dispatchError(SambaPlayerError.creatingPlayer)
 			return
 		}
@@ -447,6 +397,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		if media.isAudio {
 			gmf.backgroundColor = UIColor(0x434343)
+		}
+		else {
+			_outputManager = OutputManager(self)
+			_captionsScreen = CaptionsScreen(player: self)
 		}
 		
 		destroyThumb()
@@ -467,11 +421,54 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		               name: NSNotification.Name.gmfPlayerDidPressCaptions, object: gmf)
 		
 		// Tracking
-		if !media.isLive && !media.isAudio {
-			let _ = Tracking(self)
-		}
+		let _ = Tracking(self)
 		
 		loadAsset(asset, autoPlay)
+	}
+	
+	private func configUI() {
+		guard let player = _player else { return }
+		
+		if media.isAudio {
+			player.hideBackground()
+			player.getControlsView().hideFullscreenButton()
+			player.getControlsView().showPlayButton()
+			(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
+			player.playerOverlay().autoHideEnabled = false
+			player.playerOverlay().controlsHideEnabled = false
+			
+			if !media.isLive {
+				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+			}
+		}
+		// video only features
+		else {
+			// captions
+			if let captionsScreen = _captionsScreen as? CaptionsScreen,
+					captionsScreen.hasCaptions {
+				if captionsScreen.parent == nil {
+					attachVC(captionsScreen, player.playerOverlay())
+				}
+
+				player.getControlsView().showCaptionsButton()
+			}
+			else {
+				player.getControlsView().hideCaptionsButton()
+			}
+		}
+		
+		if media.isLive {
+			player.getControlsView().hideScrubber()
+			player.getControlsView().hideTotalTime()
+			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
+			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+		}
+		
+		if !controlsVisible {
+			controlsVisible = false
+		}
 	}
 	
 	private func createThumb() {
@@ -564,9 +561,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 	}
 	
-	private func reset() {
+	private func reset(_ restart: Bool = true) {
+		_hasStarted = !restart
 		stopTimer()
-		_player?.player.reset()
+		_player?.reset()
+		
+		for delegate in _delegates { delegate.onReset?() }
 	}
 	
 	private func destroyThumb() {
@@ -644,7 +644,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	- parameter url: The URL to retry if provided
 	*/
-	private func retry(_ url: URL? = nil) {
+	private func retry(_ url: URL? = nil, _ autoPlay: Bool = true) {
 		// disable ad
 		media.adUrl = nil
 		
@@ -653,7 +653,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				URL(string: manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
 				media.url ?? "") {
 			// try to connect again
-			loadAsset(createAsset(url), true)
+			loadAsset(createAsset(url), autoPlay)
 		}
 		else {
 			dispatchError(SambaPlayerError.invalidUrl)
@@ -819,19 +819,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private class OutputManager : SambaPlayerDelegate {
 		
 		private let player: SambaPlayer
-		private let url: URL
+		private var url: URL?
 		private var item: AVPlayerItem?
 		
-		init(_ player: SambaPlayer, _ url: URL) {
+		init(_ player: SambaPlayer) {
 			self.player = player
-			self.url = url
-			
 			player.delegate = self
 		}
 		
 		var currentIndex = 0 {
 			willSet {
-				guard newValue != currentIndex,
+				guard item != nil, newValue != currentIndex,
 					let menuItem = getMenuItem(newValue) else { return }
 				
 				player._player?.player.switch(player.createAsset(menuItem.url))
@@ -843,19 +841,34 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				menuItems[index] : nil
 		}
 		
+		// PLAYER DELEGATE
+		
 		var menuItems = [Output]()
 		
 		func onLoad() {
+			currentIndex = 0
 			item = player._player?.player.player.currentItem
+			url = (item?.asset as? AVURLAsset)?.url
 			menuItems = extract()
 			
 			if menuItems.count > 2 {
 				player._player?.getControlsView().showHdButton()
 			}
+			else {
+				player._player?.getControlsView().hideHdButton()
+			}
+		}
+		
+		func onReset() {
+			url = nil
+			item = nil
+			menuItems = [Output]()
 		}
 		
 		private func extract() -> [Output]  {
-			guard let text = try? String(contentsOf: url, encoding: .utf8) else { return [Output]() }
+			guard let url = url,
+				let text = try? String(contentsOf: url, encoding: .utf8)
+				else { return [Output]() }
 			
 			let baseUrl = url.absoluteString.replacingOccurrences(of: "[\\w\\.]+\\?.+", with: "", options: .regularExpression)
 			var outputs = Set<Output>()
@@ -962,7 +975,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 					msg = "Conectando..."
 					
 					DispatchQueue.main.async {
-						self.player.reset()
+						self.player.reset(false)
 						self.player.retry(url)
 						self.currentBackupIndex += 1
 					}
@@ -1033,6 +1046,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		func onPause() {}
 		func onProgress() {}
 		func onFinish() {}
+		func onReset() {}
 		func onDestroy() {}
 		func onError(_ error: SambaPlayerError) {}
 	}
@@ -1123,6 +1137,9 @@ Player error list
 	
 	/// Fired up when player is finished
 	@objc optional func onFinish()
+	
+	/// Fired up when player is reset
+	@objc optional func onReset()
 	
 	/// Fired up when player is destroyed
 	@objc optional func onDestroy()

@@ -401,5 +401,9 @@
 	[_topBarView hideBackground];
 }
 
+- (void)reset {
+	[_topBarView reset];
+}
+
 @end
 

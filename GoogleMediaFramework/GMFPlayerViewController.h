@@ -108,4 +108,6 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (void)hideBackground;
 
+- (void)reset;
+
 @end

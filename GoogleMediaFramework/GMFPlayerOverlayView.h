@@ -62,6 +62,7 @@ typedef enum CurrentPlayPauseReplayIcon {
 - (void)disableTopBar;
 - (void)enableTopBar;
 - (void)hideBackground;
+- (void)reset;
 
 @end
 
