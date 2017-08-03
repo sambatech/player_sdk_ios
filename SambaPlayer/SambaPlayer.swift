@@ -564,6 +564,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private func reset(_ restart: Bool = true) {
 		_hasStarted = !restart
 		stopTimer()
+		_errorManager?.reset()
 		_player?.reset()
 		
 		for delegate in _delegates { delegate.onReset?() }
@@ -988,16 +989,29 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			
 		}
 		
+		func reset() {
+			timer?.invalidate()
+			
+			hasError = false
+			currentRetryIndex = 0
+			currentPosition = 0
+			player._disabled = false
+			
+			player.destroyScreen(&player._errorScreen) {
+				self.player.updateFullscreen(nil, false)
+			}
+		}
+		
 		func onLoad() {
-			reset()
+			recover()
 		}
 		
 		func onStart() {
-			reset()
+			recover()
 		}
 		
 		func onResume() {
-			reset()
+			recover()
 		}
 		
 		func onProgress() {
@@ -1006,24 +1020,18 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		func onDestroy() {
-			timer?.invalidate()
+			reset()
 		}
 		
-		private func reset() {
+		private func recover() {
 			guard hasError else { return }
-			
-			hasError = false
-			currentRetryIndex = 0
-			player._disabled = false
 			
 			if !player.media.isLive && currentPosition > 0 {
 				player.seek(currentPosition)
 				currentPosition = 0
 			}
 			
-			player.destroyScreen(&player._errorScreen) {
-				self.player.updateFullscreen(nil, false)
-			}
+			reset()
 		}
 		
 		@objc private func retryHandler() {
