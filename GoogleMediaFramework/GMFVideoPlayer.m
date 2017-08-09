@@ -201,16 +201,22 @@ BOOL _assetReplaced = NO;
     // TODO(tensafefrogs): Dev assert here instead of silent return.
     return;
   }
-  if (![self isLive]) {
-    time = MIN(MAX(time, 0), [self totalMediaTime]);
-  } else {
-	// TODO: somente com DVR (verificar totalMediaTime antes, talvez seja tratado como VoD)
-    //time = MAX(time, 0);
-	return;
+	
+  NSTimeInterval duration = [self totalMediaTime];
+  CMTime offset = kCMTimeZero;
+
+  if ([self isLive]) {
+	if (duration == 0)
+	  return;
+	
+	offset = [self getLastSeekableTimeRange].start;
   }
+
+  time = MIN(MAX(time, 0), duration);
+
   [self setState:kGMFPlayerStateSeeking];
   __weak GMFVideoPlayer *weakSelf = self;
-  [_player seekToTime:CMTimeMakeWithSeconds(time, _playerItem.asset.duration.timescale)
+  [_player seekToTime:CMTimeMakeWithSeconds(time, [_playerItem currentTime].timescale)
 	  toleranceBefore:kCMTimeZero
 	   toleranceAfter:kCMTimeZero
 	completionHandler:^(BOOL finished) {
@@ -229,6 +235,21 @@ BOOL _assetReplaced = NO;
         }];
 }
 
+- (CMTimeRange)getLastSeekableTimeRange {
+  if (!_playerItem)
+	return kCMTimeRangeZero;
+	
+  NSValue *timeRange = [_playerItem seekableTimeRanges].lastObject;
+
+  if (timeRange) {
+	CMTimeRange range;
+	[timeRange getValue:&range];
+	return range;
+  }
+	
+  return kCMTimeRangeZero;
+}
+
 - (void)loadStreamWithAsset:(AVAsset*)asset {
   [self setState:kGMFPlayerStateLoadingContent];
   [self handlePlayableAsset:asset];
@@ -242,8 +263,16 @@ BOOL _assetReplaced = NO;
 }
 
 - (NSTimeInterval)totalMediaTime {
+  if (![self isPlayableState])
+	return 0.0;
+
+  CMTime duration = [_playerItem duration];
+	
+  if (isnan(CMTimeGetSeconds(duration)))
+	  duration = [self getLastSeekableTimeRange].duration;
+
   // |_playerItem| duration is 0 if the video is a live stream.
-  return [self isPlayableState] ? [GMFVideoPlayer secondsWithCMTime:[_playerItem duration]] : 0.0;
+  return [GMFVideoPlayer secondsWithCMTime:duration];
 }
 
 - (NSTimeInterval)bufferedMediaTime {
@@ -496,7 +525,7 @@ BOOL _assetReplaced = NO;
   //[NSString stringWithFormat:@"%@: rate=%d likelyToKeepUp=%f bufferEmpty=%d error=%@; %@", keyPath, [_player rate], [_playerItem isPlaybackLikelyToKeepUp], [_playerItem isPlaybackBufferEmpty], [_playerItem error], [_playerItem errorLog]]
   if (context == kGMFPlayerDurationContext) {
     // Update total duration of player
-    NSTimeInterval currentTotalTime = [GMFVideoPlayer secondsWithCMTime:_playerItem.duration];
+    NSTimeInterval currentTotalTime = [self totalMediaTime];
     [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
   } else if (context == kGMFPlayerItemStatusContext) {
 	[self playerItemStatusDidChange:keyPath];

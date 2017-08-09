@@ -68,6 +68,9 @@ If `outputs` field is nil, `url` field will be used instead.
 	/// Indicates if the media is audio or not
 	public var isAudio = false
 	
+	/// Indicates if the media has DVR support
+	public var isDvr = false
+	
 	/// Media current color theme
 	public var theme: UInt = 0x72BE44
 	
@@ -111,6 +114,7 @@ If `outputs` field is nil, `url` field will be used instead.
 		thumb = media.thumb
 		isLive = media.isLive
 		isAudio = media.isAudio
+		isDvr = media.isDvr
 		theme = media.theme
 		
 		super.init()

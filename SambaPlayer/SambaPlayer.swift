@@ -459,8 +459,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		if media.isLive {
-			player.getControlsView().hideScrubber()
-			player.getControlsView().hideTotalTime()
+			if !media.isDvr {
+				player.getControlsView().hideScrubber()
+				player.getControlsView().hideTotalTime()
+			}
+			
 			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
@@ -688,7 +691,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			for delegate in _delegates { delegate.onLoad?() }
 			
 			if _pendingPlay {
-				play()
+				player.play()
 				_pendingPlay = false
 			}
 			

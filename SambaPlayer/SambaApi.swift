@@ -73,13 +73,20 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			fatalError("Error trying to fetch info in Settings.plist")
 		}
 		
-		var url = "\(endpoint)\(request.projectHash)/\(request.mediaId ?? "?")"
+		var url = "\(endpoint)\(request.projectHash)/"
+		
+		if let mediaId = request.mediaId {
+			url += mediaId
+		}
+		else if let liveChannelId = request.liveChannelId {
+			url += "live/\(liveChannelId)"
+		}
 		
 		if let streamUrl = request.streamUrl {
-			url += "alternateLive=\(streamUrl)"
+			url += "?alternateLive=\(streamUrl)"
 		}
 		else if let streamName = request.streamName {
-			url += "streamName=\(streamName)"
+			url += "?streamName=\(streamName)"
 		}
 		
 		print("\(type(of: self)) Requesting URL: \(url)")
@@ -228,10 +235,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 				media.outputs = mediaOutputs.sorted(by: { Int($0.label.match("^\\d+") ?? "0") < Int($1.label.match("^\\d+") ?? "0") })
 			}
 		}
-		else if let liveOutput = json["liveOutput"] as? [String:AnyObject] {
-			media.url = liveOutput["baseUrl"] as? String
+		else if let liveOutput = json["liveOutput"] as? [String:AnyObject],
+			let url = (liveOutput["primaryURL"] ?? liveOutput["baseUrl"]) as? String {
+			media.url = url
 			media.url = normalizeProtocol(url: media.url!, apiProtocol: request.apiProtocol)
 			media.backupUrls = request.backupUrls
+			
+			if let url = liveOutput["backupURL"] as? String {
+				media.backupUrls.append(url)
+			}
+			
+			media.isDvr = liveOutput["dvr"] as? Bool ?? false
 			media.isLive = true
 		}
 		

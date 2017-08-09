@@ -11,13 +11,16 @@ import Foundation
 /// Data entity that represents a media request to the Samba Player API
 @objc public class SambaMediaRequest : NSObject {
 	
-	public var apiProtocol: SambaProtocol = .https
+	public var apiProtocol = SambaProtocol.https
 	
 	/// The project hash the media belongs to
 	public var projectHash: String
 	
 	/// ID of the media
 	public var mediaId: String?
+	
+	/// The live channel ID
+	public var liveChannelId: String?
 	
 	/// Name of the media stream for live content
 	public var streamName: String?
@@ -32,7 +35,7 @@ import Foundation
 	public var isLiveAudio = false
 	
 	/// The environment of the Samba Player API to request for
-	public var environment: SambaEnvironment = .prod
+	public var environment = SambaEnvironment.prod
 	
 	/**
 	Live initializer (by URL)
@@ -98,6 +101,17 @@ import Foundation
 	public init(projectHash: String, mediaId: String) {
 		self.projectHash = projectHash
 		self.mediaId = mediaId
+	}
+	
+	/**
+	Live initializer
+	
+	- parameter projectHash: The project hash the media belongs to
+	- parameter mediaId: The ID of the media
+	*/
+	public init(projectHash: String, liveChannelId: String) {
+		self.projectHash = projectHash
+		self.liveChannelId = liveChannelId
 	}
 }
 
