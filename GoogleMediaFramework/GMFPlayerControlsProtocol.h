@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import <Foundation/Foundation.h>
+#import <AVFoundation/AVFoundation.h>
 #import "GMFPlayerControlsView.h"
 
 @protocol GMFPlayerControlsProtocol<NSObject>
@@ -30,7 +31,7 @@
 - (void)disableSeekbarInteraction;
 - (void)setSeekbarTrackColor:(UIColor *)color;
 
-- (void)setTotalTime:(NSTimeInterval)totalTime;
+- (void)setSeekableTimeRange:(CMTimeRange)range;
 - (void)setMediaTime:(NSTimeInterval)mediaTime;
 
 

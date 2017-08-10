@@ -148,7 +148,9 @@
 
   switch (event.type) {
     case kIMAAdEvent_LOADED:
-      [self.videoPlayerController.playerOverlayView setTotalTime:event.ad.duration];
+	  // TODO: review timescale
+      [self.videoPlayerController.playerOverlayView setSeekableTimeRange:
+		CMTimeRangeMake(kCMTimeZero, CMTimeMakeWithSeconds(event.ad.duration, 1))];
       [self.videoPlayerController.playerOverlayView setSeekbarTrackColor:[UIColor yellowColor]];
       break;
     case kIMAAdEvent_STARTED:

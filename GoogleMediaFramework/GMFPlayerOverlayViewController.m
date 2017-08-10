@@ -127,8 +127,8 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
   }
 }
 
-- (void)setTotalTime:(NSTimeInterval)totalTime {
-  [_playerOverlayView setTotalTime:totalTime];
+- (void)setSeekableTimeRange:(CMTimeRange)range {
+  [_playerOverlayView setSeekableTimeRange:range];
 }
 
 - (void)setMediaTime:(NSTimeInterval)mediaTime {
@@ -285,7 +285,7 @@ static const NSTimeInterval kAutoHideAnimationDelay = 2.0;
 }
 
 - (void)reset {
-  [self setTotalTime:0.0];
+  [self setSeekableTimeRange:kCMTimeRangeZero];
   [self setMediaTime:0.0];
   [self playerStateDidChangeToState:kGMFPlayerStateEmpty];
 }

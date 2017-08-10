@@ -311,8 +311,8 @@
   [_playPauseReplayButton setAccessibilityLabel:_replayLabel];
 }
 
-- (void)setTotalTime:(NSTimeInterval)totalTime {
-  [_playerControlsView setTotalTime:totalTime];
+- (void)setSeekableTimeRange:(CMTimeRange)range {
+  [_playerControlsView setSeekableTimeRange:range];
   [_playerControlsView updateScrubberAndTime];
 }
 

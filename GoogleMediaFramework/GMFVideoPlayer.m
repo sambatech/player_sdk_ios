@@ -132,6 +132,7 @@ static NSString * const kErrorKey = @"error";
 
 @implementation GMFVideoPlayer {
 	CMTime _initialTime;
+	CMTimeRange _currentRange;
 }
 
 // AVPlayerLayer class for video rendering.
@@ -159,6 +160,7 @@ BOOL _assetReplaced = NO;
                                                object:[AVAudioSession sharedInstance]];
 	_backgroundColor = [UIColor blackColor];
 	_initialTime = kCMTimeZero;
+	_currentRange = kCMTimeRangeInvalid;
   }
   return self;
 }
@@ -201,18 +203,20 @@ BOOL _assetReplaced = NO;
     // TODO(tensafefrogs): Dev assert here instead of silent return.
     return;
   }
-	
-  NSTimeInterval duration = [self totalMediaTime];
-  CMTime offset = kCMTimeZero;
 
-  if ([self isLive]) {
-	if (duration == 0)
-	  return;
-	
-	offset = [self getLastSeekableTimeRange].start;
-  }
+  CMTimeRange range = [self getCurrentSeekableTimeRange];
 
-  time = MIN(MAX(time, 0), duration);
+  // if invalid range, not a seekable media
+  if (!CMTIMERANGE_IS_VALID(range))
+	return;
+
+  NSTimeInterval end = [GMFVideoPlayer secondsWithCMTime:CMTimeRangeGetEnd(range)];
+
+  // must have an end
+  if (end == 0)
+	return;
+
+  time = MIN(MAX(time, CMTimeGetSeconds(range.start)), end);
 
   [self setState:kGMFPlayerStateSeeking];
   __weak GMFVideoPlayer *weakSelf = self;
@@ -235,19 +239,18 @@ BOOL _assetReplaced = NO;
         }];
 }
 
-- (CMTimeRange)getLastSeekableTimeRange {
-  if (!_playerItem)
-	return kCMTimeRangeZero;
-	
+- (CMTimeRange)getCurrentSeekableTimeRange {
   NSValue *timeRange = [_playerItem seekableTimeRanges].lastObject;
+
+  _currentRange = kCMTimeRangeZero;
 
   if (timeRange) {
 	CMTimeRange range;
 	[timeRange getValue:&range];
-	return range;
+	_currentRange = range;
   }
-	
-  return kCMTimeRangeZero;
+
+  return _currentRange;
 }
 
 - (void)loadStreamWithAsset:(AVAsset*)asset {
@@ -258,21 +261,23 @@ BOOL _assetReplaced = NO;
 #pragma mark Querying Player for info
 
 - (NSTimeInterval)currentMediaTime {
-  return [self isPlayableState] ?
-      [GMFVideoPlayer secondsWithCMTime:[_playerItem currentTime]] : 0.0;
-}
-
-- (NSTimeInterval)totalMediaTime {
   if (![self isPlayableState])
 	return 0.0;
 
-  CMTime duration = [_playerItem duration];
-	
-  if (isnan(CMTimeGetSeconds(duration)))
-	  duration = [self getLastSeekableTimeRange].duration;
+  // initializes range if it is invalid (or first time)
+  if (CMTimeRangeEqual(_currentRange, kCMTimeRangeInvalid))
+	_currentRange = [self getCurrentSeekableTimeRange];
 
-  // |_playerItem| duration is 0 if the video is a live stream.
-  return [GMFVideoPlayer secondsWithCMTime:duration];
+  return [GMFVideoPlayer secondsWithCMTime:CMTimeAdd([_playerItem currentTime], _currentRange.start)];
+}
+
+- (NSTimeInterval)totalMediaTime {
+  CMTimeRange range = [self getCurrentSeekableTimeRange];
+
+  if (CMTIMERANGE_IS_VALID(range))
+	return [GMFVideoPlayer secondsWithCMTime:CMTimeRangeGetEnd(range)];
+
+  return 0.0;
 }
 
 - (NSTimeInterval)bufferedMediaTime {
@@ -296,7 +301,7 @@ BOOL _assetReplaced = NO;
 - (BOOL)isLive {
   // |totalMediaTime| is 0 if the video is a live stream.
   // TODO(tensafefrogs): Is there a better way to determine if the video is live?
-  return [self totalMediaTime] == 0.0;
+  return [GMFVideoPlayer secondsWithCMTime:[_playerItem duration]] == 0.0;
 }
 
 #pragma mark Private methods
@@ -525,8 +530,7 @@ BOOL _assetReplaced = NO;
   //[NSString stringWithFormat:@"%@: rate=%d likelyToKeepUp=%f bufferEmpty=%d error=%@; %@", keyPath, [_player rate], [_playerItem isPlaybackLikelyToKeepUp], [_playerItem isPlaybackBufferEmpty], [_playerItem error], [_playerItem errorLog]]
   if (context == kGMFPlayerDurationContext) {
     // Update total duration of player
-    NSTimeInterval currentTotalTime = [self totalMediaTime];
-    [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
+    [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:[self getLastSeekableTimeRange]];
   } else if (context == kGMFPlayerItemStatusContext) {
 	[self playerItemStatusDidChange:keyPath];
   } else if (context == kGMFPlayerRateContext) {

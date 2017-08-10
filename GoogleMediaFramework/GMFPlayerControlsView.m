@@ -36,6 +36,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   UILabel *_timeSeparator; // Samba SDK Player
   GMFSlider *_scrubber;
   NSTimeInterval _totalSeconds;
+  NSTimeInterval _startSeconds;
   NSTimeInterval _mediaTime;
   NSTimeInterval _downloadedSeconds;
   NSLayoutConstraint* _hdHideConstraint;
@@ -452,8 +453,12 @@ static const CGFloat kGMFBarPaddingX = 8;
   [self addConstraints:constraints];
 }
 
-- (void)setTotalTime:(NSTimeInterval)totalTime {
-  _totalSeconds = totalTime;
+- (void)setSeekableTimeRange:(CMTimeRange)range {
+  if (!CMTIMERANGE_IS_VALID(range))
+	return;
+
+  _startSeconds = CMTimeGetSeconds(range.start);
+  _totalSeconds = CMTimeGetSeconds(CMTimeRangeGetEnd(range));
 }
 
 - (void)setDownloadedTime:(NSTimeInterval)downloadedTime {
@@ -475,6 +480,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 - (void)updateScrubberAndTime {
   // TODO(tensafefrogs): Handle live streams
   [_scrubber setMaximumValue:_totalSeconds];
+  [_scrubber setMinimumValue:_startSeconds];
   [_totalSecondsLabel setText:[self stringWithDurationSeconds:_totalSeconds]];
   [_secondsPlayedLabel setText:[self stringWithDurationSeconds:_mediaTime]];
   if (_userScrubbing) {
