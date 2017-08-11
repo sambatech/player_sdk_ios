@@ -178,7 +178,7 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 
 - (void)setDefaultVideoPlayerOverlayDelegate {
   // Duration was probably changed by whatever delegate took over, so reset it here.
-  [_videoPlayerOverlayViewController setSeekableTimeRange:[_player getLastSeekableTimeRange]];
+  [_videoPlayerOverlayViewController setTotalTime:[_player totalMediaTime]];
   [_videoPlayerOverlayViewController setMediaTime:[_player currentMediaTime]];
   [_videoPlayerOverlayViewController setDelegate:self];
 }
@@ -393,9 +393,9 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 }
 
 - (void)videoPlayer:(GMFVideoPlayer *)videoPlayer
-    currentTotalTimeDidChangeToTime:(CMTimeRange)range {
+    currentTotalTimeDidChangeToTime:(NSTimeInterval)time {
   if([_videoPlayerOverlayViewController.delegate isEqual:self]) {
-    [_videoPlayerOverlayViewController setSeekableTimeRange:range];
+    [_videoPlayerOverlayViewController setTotalTime:time];
     [self notifyCurrenTotalTimeDidChange];
   }
 }

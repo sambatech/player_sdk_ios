@@ -13,7 +13,6 @@
 // limitations under the License.
 
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 #import "GMFPlayerOverlayView.h"
 #import "GMFPlayerState.h"
 #import "GMFPlayerOverlayView.h"
@@ -38,7 +37,7 @@
 
 - (void) showPlayerControlsAnimated:(BOOL) animated;
 - (void) hidePlayerControlsAnimated:(BOOL) animated;
-- (void) setSeekableTimeRange:(CMTimeRange) range;
+- (void) setTotalTime:(NSTimeInterval) totalTime;
 - (void) setMediaTime:(NSTimeInterval) mediaTime;
 - (void) togglePlayerControlsVisibility;
 - (void) playerStateDidChangeToState:(GMFPlayerState) toState;

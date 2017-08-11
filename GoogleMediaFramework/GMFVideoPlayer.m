@@ -247,7 +247,7 @@ BOOL _assetReplaced = NO;
   if (timeRange) {
 	CMTimeRange range;
 	[timeRange getValue:&range];
-	_currentRange = range;
+	_currentRange = CMTimeRangeEqual(range, kCMTimeRangeInvalid) ? kCMTimeRangeZero : range;
   }
 
   return _currentRange;
@@ -268,16 +268,13 @@ BOOL _assetReplaced = NO;
   if (CMTimeRangeEqual(_currentRange, kCMTimeRangeInvalid))
 	_currentRange = [self getCurrentSeekableTimeRange];
 
-  return [GMFVideoPlayer secondsWithCMTime:CMTimeAdd([_playerItem currentTime], _currentRange.start)];
+  return [GMFVideoPlayer secondsWithCMTime:CMTimeSubtract([_playerItem currentTime],
+														  CMTIME_IS_NUMERIC(_currentRange.start) ?
+														  _currentRange.start : kCMTimeZero)];
 }
 
 - (NSTimeInterval)totalMediaTime {
-  CMTimeRange range = [self getCurrentSeekableTimeRange];
-
-  if (CMTIMERANGE_IS_VALID(range))
-	return [GMFVideoPlayer secondsWithCMTime:CMTimeRangeGetEnd(range)];
-
-  return 0.0;
+  return [GMFVideoPlayer secondsWithCMTime:[_playerItem duration]];
 }
 
 - (NSTimeInterval)bufferedMediaTime {
@@ -530,7 +527,8 @@ BOOL _assetReplaced = NO;
   //[NSString stringWithFormat:@"%@: rate=%d likelyToKeepUp=%f bufferEmpty=%d error=%@; %@", keyPath, [_player rate], [_playerItem isPlaybackLikelyToKeepUp], [_playerItem isPlaybackBufferEmpty], [_playerItem error], [_playerItem errorLog]]
   if (context == kGMFPlayerDurationContext) {
     // Update total duration of player
-    [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:[self getLastSeekableTimeRange]];
+    NSTimeInterval currentTotalTime = [self totalMediaTime];
+    [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
   } else if (context == kGMFPlayerItemStatusContext) {
 	[self playerItemStatusDidChange:keyPath];
   } else if (context == kGMFPlayerRateContext) {

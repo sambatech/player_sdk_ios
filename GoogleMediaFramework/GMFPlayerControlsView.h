@@ -14,7 +14,6 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-#import <AVFoundation/AVFoundation.h>
 
 @protocol GMFPlayerControlsViewDelegate <NSObject>
 
@@ -37,7 +36,7 @@
 
 // Set the total duration of the video. May be NaN or Infinity if the
 // total time is unknown. Call updateScrubberAndTime to make the change visible.
-- (void)setSeekableTimeRange:(CMTimeRange)range;
+- (void)setTotalTime:(NSTimeInterval)totalTime;
 
 // Set the amount of video downloaded. Call updateScrubberAndTime to make
 // the change visible.

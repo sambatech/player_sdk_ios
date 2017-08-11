@@ -31,7 +31,7 @@
 
 // Called when the media duration changes during playback
 - (void)videoPlayer:(GMFVideoPlayer *)videoPlayer
-    currentTotalTimeDidChangeToTime:(CMTimeRange)range;
+    currentTotalTimeDidChangeToTime:(NSTimeInterval)time;
 
 @optional
 // Called whenever buffered media time changes during playback or while loading or paused.
@@ -81,7 +81,7 @@
 - (NSTimeInterval)currentMediaTime;
 - (NSTimeInterval)totalMediaTime;
 - (NSTimeInterval)bufferedMediaTime;
-- (CMTimeRange)getLastSeekableTimeRange;
+- (CMTimeRange)getCurrentSeekableTimeRange;
 
 @end
 
