@@ -266,7 +266,7 @@ BOOL _assetReplaced = NO;
 
   // initializes range if it is invalid (or first time)
   if (CMTimeRangeEqual(_currentRange, kCMTimeRangeInvalid))
-	_currentRange = [self getCurrentSeekableTimeRange];
+	[self getCurrentSeekableTimeRange];
 
   return [GMFVideoPlayer secondsWithCMTime:CMTimeSubtract([_playerItem currentTime],
 														  CMTIME_IS_NUMERIC(_currentRange.start) ?
@@ -274,7 +274,9 @@ BOOL _assetReplaced = NO;
 }
 
 - (NSTimeInterval)totalMediaTime {
-  return [GMFVideoPlayer secondsWithCMTime:[_playerItem duration]];
+  [self getCurrentSeekableTimeRange];
+	return [GMFVideoPlayer secondsWithCMTime:CMTIME_IS_NUMERIC(_currentRange.duration) ?
+			_currentRange.duration : [_playerItem duration]];
 }
 
 - (NSTimeInterval)bufferedMediaTime {
@@ -422,7 +424,7 @@ BOOL _assetReplaced = NO;
 	
 	_initialTime = _player.currentTime;
 	
-	[self loadStreamWithAsset:asset];
+	[self handlePlayableAsset:asset];
 }
 
 - (void)setState:(GMFPlayerState)state {
