@@ -40,6 +40,7 @@
                             name:(NSString *)name
                           target:(id)target
                         selector:(SEL)selector;
+- (UIButton *)getActionButton:(NSString *)name;
 - (void)applyControlTintColor:(UIColor *)color;
 - (void)setVideoTitle:(NSString *)videoTitle;
 - (void)setLogoImage:(UIImage *)logoImage;

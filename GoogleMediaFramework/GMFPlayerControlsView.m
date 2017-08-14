@@ -42,7 +42,10 @@ static const CGFloat kGMFBarPaddingX = 8;
   NSLayoutConstraint* _captionsHideConstraint;
   NSLayoutConstraint* _playHideConstraint;
   NSLayoutConstraint* _minimizeHideConstraint;
+  NSLayoutConstraint* _totalSecsHideConstraint;
+  NSLayoutConstraint* _currentSecsHideConstraint;
   NSLayoutConstraint* _scrubberRightConstraint;
+  NSLayoutConstraint* _scrubberLeftConstraint;
   BOOL _userScrubbing;
   CGRect _padding;
 
@@ -160,7 +163,23 @@ static const CGFloat kGMFBarPaddingX = 8;
 														  toItem:nil
 													   attribute:NSLayoutAttributeNotAnAttribute
 													  multiplier:1.0f
-															  constant:0];
+														constant:0];
+	  
+	  _totalSecsHideConstraint = [NSLayoutConstraint constraintWithItem:_totalSecondsLabel
+													   attribute:NSLayoutAttributeWidth
+													   relatedBy:NSLayoutRelationEqual
+														  toItem:nil
+													   attribute:NSLayoutAttributeNotAnAttribute
+													  multiplier:1.0f
+														constant:0];
+	  
+	  _currentSecsHideConstraint = [NSLayoutConstraint constraintWithItem:_secondsPlayedLabel
+															  attribute:NSLayoutAttributeWidth
+															  relatedBy:NSLayoutRelationEqual
+																 toItem:nil
+															  attribute:NSLayoutAttributeNotAnAttribute
+															 multiplier:1.0f
+															   constant:0];
 	
 	[self addSubview:_playButton];
 	[self addSubview:_hdButton];
@@ -220,20 +239,45 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[self addConstraint:_scrubberRightConstraint];
 }
 
-- (void)hideScrubber {
-	_scrubber.hidden = YES;
-}
-
-- (void)hideTotalTime {
-	_totalSecondsLabel.hidden = YES;
-	_timeSeparator.hidden = YES;
-}
-
 - (void)showFullscreenButton {
 	[self removeConstraint:_minimizeHideConstraint];
 	[self removeConstraint:_scrubberRightConstraint];
 	_scrubberRightConstraint.constant = -kGMFBarPaddingX;
 	[self addConstraint:_scrubberRightConstraint];
+}
+
+- (void)hideScrubber {
+	_scrubber.hidden = YES;
+}
+
+- (void)showScrubber {
+	_scrubber.hidden = NO;
+}
+
+- (void)hideTime {
+	_secondsPlayedLabel.hidden = YES;
+	_totalSecondsLabel.hidden = YES;
+	_timeSeparator.hidden = YES;
+	
+	// update scrubber related constraints
+	[self addConstraint:_totalSecsHideConstraint];
+	[self addConstraint:_currentSecsHideConstraint];
+	[self removeConstraint:_scrubberLeftConstraint];
+	_scrubberLeftConstraint.constant = 0;
+	[self addConstraint:_scrubberLeftConstraint];
+}
+
+- (void)showTime {
+	_secondsPlayedLabel.hidden = NO;
+	_totalSecondsLabel.hidden = NO;
+	_timeSeparator.hidden = NO;
+	
+	// update scrubber related constraint
+	[self removeConstraint:_totalSecsHideConstraint];
+	[self removeConstraint:_currentSecsHideConstraint];
+	[self removeConstraint:_scrubberLeftConstraint];
+	_scrubberLeftConstraint.constant = kGMFBarPaddingX;
+	[self addConstraint:_scrubberLeftConstraint];
 }
 
 - (void)hideBackground {
@@ -372,7 +416,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
   constraints = [constraints arrayByAddingObject:
-                 [NSLayoutConstraint constraintWithItem:_scrubber
+                 _scrubberLeftConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
                                               attribute:NSLayoutAttributeLeft
                                               relatedBy:NSLayoutRelationEqual
                                                  toItem:_totalSecondsLabel

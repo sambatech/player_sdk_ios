@@ -270,6 +270,10 @@
   [_topBarView addActionButtonWithImage:image name:name target:target selector:selector];
 }
 
+- (UIButton *)getActionButton:(NSString *)name {
+  return [_topBarView getActionButton:name];
+}
+
 - (void)setVideoTitle:(NSString *)videoTitle {
   [_topBarView setVideoTitle:videoTitle];
 }

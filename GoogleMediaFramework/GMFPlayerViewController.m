@@ -167,6 +167,13 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   }
 }
 
+- (UIButton *)getActionButton:(NSString *)name {
+  if (![self hasOverlay])
+	return nil;
+
+  return [self.playerOverlayView getActionButton:name];
+}
+
 - (void)registerAdService:(GMFAdService *)adService {
   _adService = adService;
 }

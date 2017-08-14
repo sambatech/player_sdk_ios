@@ -173,6 +173,11 @@
   [self addConstraints:constraints];
 }
 
+- (UIButton *)getActionButton:(NSString *)name {
+  return (UIButton *)[_actionButtons filteredArrayUsingPredicate:
+					  [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", name]].lastObject;
+}
+
 - (void)setLogoImage:(UIImage *)logoImage {
   [_logoImageView setImage:logoImage];
 }

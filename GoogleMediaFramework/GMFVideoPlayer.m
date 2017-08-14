@@ -239,20 +239,6 @@ BOOL _assetReplaced = NO;
         }];
 }
 
-- (CMTimeRange)getCurrentSeekableTimeRange {
-  NSValue *timeRange = [_playerItem seekableTimeRanges].lastObject;
-
-  _currentRange = kCMTimeRangeZero;
-
-  if (timeRange) {
-	CMTimeRange range;
-	[timeRange getValue:&range];
-	_currentRange = CMTimeRangeEqual(range, kCMTimeRangeInvalid) ? kCMTimeRangeZero : range;
-  }
-
-  return _currentRange;
-}
-
 - (void)loadStreamWithAsset:(AVAsset*)asset {
   [self setState:kGMFPlayerStateLoadingContent];
   [self handlePlayableAsset:asset];
@@ -260,13 +246,32 @@ BOOL _assetReplaced = NO;
 
 #pragma mark Querying Player for info
 
+- (CMTimeRange)getCurrentSeekableTimeRange {
+  NSValue *timeRange = [_playerItem seekableTimeRanges].lastObject;
+
+  _currentRange = kCMTimeRangeZero;
+
+  if (timeRange) {
+	CMTimeRange range = kCMTimeRangeInvalid;
+	[timeRange getValue:&range];
+	_currentRange = CMTimeRangeEqual(range, kCMTimeRangeInvalid) ? kCMTimeRangeZero : range;
+  }
+
+  return _currentRange;
+}
+
 - (NSTimeInterval)currentMediaTime {
   if (![self isPlayableState])
 	return 0.0;
 
-  // initializes range if it is invalid (or first time)
-  if (CMTimeRangeEqual(_currentRange, kCMTimeRangeInvalid))
-	[self getCurrentSeekableTimeRange];
+  Float64 lastDuration = CMTimeGetSeconds(_currentRange.duration);
+
+  [self getCurrentSeekableTimeRange];
+
+  // notify duration changes
+  if (CMTimeGetSeconds(_currentRange.duration) != lastDuration) {
+	[self playerDurationDidChange];
+  }
 
   return [GMFVideoPlayer secondsWithCMTime:CMTimeSubtract([_playerItem currentTime],
 														  CMTIME_IS_NUMERIC(_currentRange.start) ?
@@ -529,8 +534,7 @@ BOOL _assetReplaced = NO;
   //[NSString stringWithFormat:@"%@: rate=%d likelyToKeepUp=%f bufferEmpty=%d error=%@; %@", keyPath, [_player rate], [_playerItem isPlaybackLikelyToKeepUp], [_playerItem isPlaybackBufferEmpty], [_playerItem error], [_playerItem errorLog]]
   if (context == kGMFPlayerDurationContext) {
     // Update total duration of player
-    NSTimeInterval currentTotalTime = [self totalMediaTime];
-    [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
+   [self playerDurationDidChange];
   } else if (context == kGMFPlayerItemStatusContext) {
 	[self playerItemStatusDidChange:keyPath];
   } else if (context == kGMFPlayerRateContext) {
@@ -614,6 +618,11 @@ BOOL _assetReplaced = NO;
 	self.error = [NSError errorWithDomain:@"player_item" code:NSURLErrorNotConnectedToInternet userInfo:nil];
 	[self setState:kGMFPlayerStateError];
   }*/
+}
+
+- (void)playerDurationDidChange {
+  NSTimeInterval currentTotalTime = [self totalMediaTime];
+  [_delegate videoPlayer:self currentTotalTimeDidChangeToTime:currentTotalTime];
 }
 
 - (void)playbackDidReachEnd {

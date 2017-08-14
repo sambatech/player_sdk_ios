@@ -411,6 +411,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		nc.addObserver(self, selector: #selector(playbackStateHandler),
 		               name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: gmf)
 		
+		nc.addObserver(self, selector: #selector(durationChangedHandler),
+		               name: NSNotification.Name.gmfPlayerCurrentTotalTimeDidChange, object: gmf)
+		
 		nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
 		               name: NSNotification.Name.gmfPlayerDidMinimize, object: gmf)
 		
@@ -459,11 +462,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		if media.isLive {
-			if !media.isDvr {
-				player.getControlsView().hideScrubber()
-				player.getControlsView().hideTotalTime()
-			}
-			
+			player.getControlsView().hideScrubber()
+			player.getControlsView().hideTime()
 			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
@@ -701,7 +701,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				for delegate in _delegates { delegate.onStart?() }
 			}
 			
-			if !player.isUserScrubbing && lastState != kGMFPlayerStateSeeking {
+			if lastState == kGMFPlayerStateSeeking {
+				updateDvrInfo()
+			}
+			else if !player.isUserScrubbing {
 				for delegate in _delegates { delegate.onResume?() }
 			}
 			
@@ -717,8 +720,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				}
 			}
 			// when paused seek dispatch extra progress event to update external infos
-			else { progressEventHandler() }
-		
+			else {
+				progressEventHandler()
+				updateDvrInfo()
+			}
+
 		case kGMFPlayerStateFinished:
 			stopTimer()
 			for delegate in _delegates { delegate.onFinish?() }
@@ -727,6 +733,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			_errorManager?.handle()
 			
 		default: break
+		}
+	}
+	
+	@objc private func durationChangedHandler() {
+		if media.isDvr && duration > 0 {
+			_player?.getControlsView().showScrubber()
 		}
 	}
 	
@@ -803,6 +815,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
+	}
+	
+	private func updateDvrInfo() {
+		// if DVR media, hide Live indicator if current time is below a tolerance
+		if media.isDvr {
+			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live").isHidden = currentTime < duration - 60
+		}
 	}
 	
 	// MARK: Managers

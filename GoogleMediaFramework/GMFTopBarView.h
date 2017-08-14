@@ -35,6 +35,8 @@
                           target:(id)target
                         selector:(SEL)selector;
 
+- (UIButton *)getActionButton:(NSString *)name;
+
 - (CGFloat)preferredHeight;
 
 - (void)reset;
