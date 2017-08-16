@@ -216,7 +216,9 @@ BOOL _assetReplaced = NO;
   if (end == 0)
 	return;
 
-  time = MIN(MAX(time, CMTimeGetSeconds(range.start)), end);
+  NSTimeInterval rangeStart = CMTimeGetSeconds(range.start);
+  time += rangeStart;
+  time = MIN(MAX(time, rangeStart), end);
 
   [self setState:kGMFPlayerStateSeeking];
   __weak GMFVideoPlayer *weakSelf = self;
@@ -280,8 +282,8 @@ BOOL _assetReplaced = NO;
 
 - (NSTimeInterval)totalMediaTime {
   [self getCurrentSeekableTimeRange];
-	return [GMFVideoPlayer secondsWithCMTime:CMTIME_IS_NUMERIC(_currentRange.duration) ?
-			_currentRange.duration : [_playerItem duration]];
+  return [GMFVideoPlayer secondsWithCMTime:CMTIME_IS_NUMERIC(_currentRange.duration) ?
+		  _currentRange.duration : [_playerItem duration]];
 }
 
 - (NSTimeInterval)bufferedMediaTime {

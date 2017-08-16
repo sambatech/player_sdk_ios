@@ -779,13 +779,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		// if DVR media, hide Live indicator if current time is below a tolerance
 		if media.isDvr,
 			let button = (_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live") {
+			
+			button.removeTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
+			
 			if currentTime < duration - 60 {
 				button.setImage(GMFResources.playerTitleRealtimeIcon(), for: .normal)
 				button.addTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
 			}
 			else {
 				button.setImage(GMFResources.playerTitleLiveIcon(), for: .normal)
-				button.removeTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
 			}
 		}
 	}
