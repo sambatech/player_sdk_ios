@@ -464,7 +464,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		if media.isLive {
 			player.getControlsView().hideScrubber()
 			player.getControlsView().hideTime()
-			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:nil)
+			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 		}
@@ -777,18 +777,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func updateDvrInfo() {
 		// if DVR media, hide Live indicator if current time is below a tolerance
-		if media.isDvr,
-			let button = (_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live") {
-			
-			button.removeTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
-			
-			if currentTime < duration - 60 {
-				button.setImage(GMFResources.playerTitleRealtimeIcon(), for: .normal)
-				button.addTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
-			}
-			else {
-				button.setImage(GMFResources.playerTitleLiveIcon(), for: .normal)
-			}
+		if media.isDvr {
+			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live")
+				.setImage(currentTime < duration - 45 ? GMFResources.playerTitleRealtimeIcon() : GMFResources.playerTitleLiveIcon(),
+				          for: .normal)
 		}
 	}
 	
@@ -984,8 +976,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				type = .critical
 				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
 				
+			// cannot parse
+			//case -11853 where media.isLive: fallthrough
 			// no network/internet connection
-			case -11853: if media.isLive { fallthrough }
 			case -11800: fallthrough
 			case NSURLErrorNotConnectedToInternet:
 				guard currentRetryIndex < media.retriesTotal else { break }
@@ -1002,7 +995,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 					self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.retryHandler), userInfo: nil, repeats: true)
 				}
 				return
-				
+			
 			// URL not found (or server unreachable)
 			default:
 				if currentBackupIndex < media.backupUrls.count {

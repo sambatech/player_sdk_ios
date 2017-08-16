@@ -59,6 +59,13 @@ import Foundation
 	}
 	
 	/**
+	Convenience constructor, please refer to its original version.
+	*/
+	public convenience init(projectHash: String, streamUrl: String) {
+		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls: [String]())
+	}
+	
+	/**
 	Live initializer (by URL + audio option)
 	
 	- parameter projectHash: The project hash the media belongs to
