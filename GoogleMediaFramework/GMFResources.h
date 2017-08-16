@@ -25,12 +25,14 @@
 + (UIImage *)playerBarReplayLargeButtonImage;
 + (UIImage *)playerBarMinimizeButtonImage;
 + (UIImage *)playerBarMaximizeButtonImage;
++ (UIImage *)playerBarRealtimeButtonImage;
 + (UIImage *)playerBarHdButtonImage;
 + (UIImage *)playerBarCaptionsButtonImage;
 + (UIImage *)playerBarScrubberThumbImage;
 + (UIImage *)playerBarBackgroundImage;
-+ (UIImage *)playerTitleBarBackgroundImage;
 + (UIImage *)playerTitleLiveIcon;
++ (UIImage *)playerTitleRealtimeIcon;
++ (UIImage *)playerTitleBarBackgroundImage;
 
 @end
 

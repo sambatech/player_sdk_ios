@@ -464,7 +464,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		if media.isLive {
 			player.getControlsView().hideScrubber()
 			player.getControlsView().hideTime()
-			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:player, selector:nil)
+			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:nil)
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 		}
@@ -771,6 +771,25 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		                   selectedIndex: screen.currentIndex))
 	}
 	
+	@objc private func realtimeButtonHandler() {
+		seek(duration)
+	}
+	
+	private func updateDvrInfo() {
+		// if DVR media, hide Live indicator if current time is below a tolerance
+		if media.isDvr,
+			let button = (_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live") {
+			if currentTime < duration - 60 {
+				button.setImage(GMFResources.playerTitleRealtimeIcon(), for: .normal)
+				button.addTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
+			}
+			else {
+				button.setImage(GMFResources.playerTitleLiveIcon(), for: .normal)
+				button.removeTarget(self, action: #selector(realtimeButtonHandler), for: .touchUpInside)
+			}
+		}
+	}
+	
 	private func attachVC(_ target: UIViewController, _ parent: UIViewController? = nil, _ parentView: UIView? = nil, callback: (() -> Void)? = nil) {
 		let parent: UIViewController = parent ?? self
 		
@@ -815,13 +834,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func stopTimer() {
 		_progressTimer.invalidate()
-	}
-	
-	private func updateDvrInfo() {
-		// if DVR media, hide Live indicator if current time is below a tolerance
-		if media.isDvr {
-			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.getActionButton("Live").isHidden = currentTime < duration - 60
-		}
 	}
 	
 	// MARK: Managers

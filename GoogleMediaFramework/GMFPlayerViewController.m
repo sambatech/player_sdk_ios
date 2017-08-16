@@ -27,6 +27,8 @@ NSString * const kGMFPlayerCurrentTotalTimeDidChangeNotification =
     @"kGMFPlayerCurrentTotalTimeDidChangeNotification";
 NSString * const kGMFPlayerDidMinimizeNotification =
 	@"kGMFPlayerDidMinimizeNotification";
+NSString * const kGMFPlayerDidRealtimeNotification =
+	@"kGMFPlayerDidRealtimeNotification";
 NSString * const kGMFPlayerDidPressHdNotification =
 	@"kGMFPlayerDidPressHdNotification";
 NSString * const kGMFPlayerDidPressCaptionsNotification =
@@ -463,6 +465,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   [self notifyUserDidMinimize];
 }
 
+- (void)didPressRealtime {
+  [self notifyUserDidRealtime];
+}
+
 - (void)didPressHd {
 	[self notifyUserDidHd];
 }
@@ -475,6 +481,14 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 - (void)notifyUserDidMinimize {
   [[NSNotificationCenter defaultCenter]
       postNotificationName:kGMFPlayerDidMinimizeNotification
+                    object:self
+                  userInfo:nil];
+}
+
+// Notifies a listener that the user tapped realtime button.
+- (void)notifyUserDidRealtime {
+  [[NSNotificationCenter defaultCenter]
+      postNotificationName:kGMFPlayerDidRealtimeNotification
                     object:self
                   userInfo:nil];
 }

@@ -264,6 +264,10 @@
   [self.videoPlayerController didPressMinimize];
 }
 
+- (void)didPressRealtime {
+  // Noop
+}
+
 // Not implemented since ads seek bar is read only.
 - (void)didSeekToTime:(NSTimeInterval)time {
   // Noop
