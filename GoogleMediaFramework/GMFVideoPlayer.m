@@ -591,7 +591,7 @@ BOOL _assetReplaced = NO;
 		_assetReplaced = NO;
 		
 		float secs = CMTimeGetSeconds(_initialTime);
-		  
+		
 		if (secs > 0)
 		  [self seekToTime:secs];
 		else {

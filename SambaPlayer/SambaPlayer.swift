@@ -237,9 +237,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			destroyScreen(&_captionsScreen)
 		}
 		
-		for delegate in _delegates { delegate.onDestroy?() }
+		reset(false)
 		
-		destroyInternal()
+		if let player = _player {
+			detachVC(player, nil, false)
+		}
+		
+		NotificationCenter.default.removeObserver(self)
+		_player = nil
+		
+		for delegate in _delegates { delegate.onDestroy?() }
 	}
 	
 	// MARK: Overrides
@@ -564,11 +571,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 	}
 	
-	private func reset(_ restart: Bool = true) {
-		_hasStarted = !restart
+	private func reset(_ recoverable: Bool = true) {
+		_hasStarted = recoverable
 		stopTimer()
-		_errorManager?.reset()
 		_player?.reset()
+		
+		if recoverable {
+			_errorManager?.reset()
+		}
 		
 		for delegate in _delegates { delegate.onReset?() }
 	}
@@ -579,16 +589,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		thumb.removeFromSuperview()
 		_thumb = nil
-	}
-	
-	private func destroyInternal() {
-		guard let player = _player else { return }
-		
-		reset()
-		detachVC(player, nil, false)
-		NotificationCenter.default.removeObserver(self)
-		
-		_player = nil
 	}
 	
 	private func dispatchError(_ error: SambaPlayerError) {
@@ -606,8 +606,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			case .recoverable:
 				self.stopTimer()
 				self.showError(error)
+			
 			case .critical:
 				self.destroy(withError: error)
+			
 			default: break
 			}
 		}
@@ -638,7 +640,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	private func destroyScreen(_ ref: inout UIViewController?, callback: (() -> Void)? = nil) {
-		guard let screen = ref else { return }
+		guard let screen = ref else {
+			callback?()
+			return
+		}
+		
 		detachVC(screen, nil, true, callback: callback)
 		ref = nil
 	}
@@ -701,13 +707,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				for delegate in _delegates { delegate.onStart?() }
 			}
 			
-			if lastState == kGMFPlayerStateSeeking {
-				updateDvrInfo()
-			}
-			else if !player.isUserScrubbing {
+			if lastState != kGMFPlayerStateSeeking && !player.isUserScrubbing {
 				for delegate in _delegates { delegate.onResume?() }
 			}
 			
+			updateDvrInfo()
 			startTimer()
 			
 		case kGMFPlayerStatePaused:
@@ -1001,16 +1005,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				if currentBackupIndex < media.backupUrls.count {
 					let url = URL(string: player.media.backupUrls[currentBackupIndex])
 					
-					type = .info
-					msg = "Conectando..."
-					
-					DispatchQueue.main.async {
-						self.player.reset(false)
-						self.player.retry(url)
-						self.currentBackupIndex += 1
-					}
+					currentBackupIndex += 1
+					player.retry(url)
+					return
 				}
-					// all atempts have failed
+				// all attempts have failed
 				else { type = .critical }
 			}
 			
