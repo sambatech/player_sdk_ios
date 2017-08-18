@@ -1048,7 +1048,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		func onDestroy() {
-			reset()
+			timer?.invalidate()
 		}
 		
 		private func recover() {

@@ -7,7 +7,7 @@
 	<key>playerapi_endpoint_staging</key>
 	<string>https://staging-player-api.sambavideos.sambatech.com/v3/v1/</string>
 	<key>playerapi_endpoint_test</key>
-	<string>http://playerapitest2.liquidplatform.com:7091/v1/</string>
+	<string>http://web1.qa.sambatech.com:13000/v1/</string>
 	<key>playerapi_endpoint_local</key>
 	<string>http://192.168.0.127:8080/player-api/v1/</string>
 </dict>
