@@ -689,6 +689,7 @@ BOOL _assetReplaced = NO;
   _pendingPlay = NO;
   _manuallyPaused = NO;
   [self stopPlaybackStatusPoller];
+  [_player pause];
   [self setAndObservePlayer:nil playerItem:nil];
   _lastReportedPlaybackTime = 0;
   _lastReportedBufferTime = 0;

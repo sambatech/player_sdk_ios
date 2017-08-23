@@ -67,15 +67,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				return
 			}
 			
-			// reset playback
-			if _player != nil,
-				let url = decideUrl() {
-				reset()
-				configUI()
-				retry(url, false)
-			}
+			let playerExists = _player != nil
 			
 			DispatchQueue.main.async {
+				// reset playback
+				if playerExists,
+					let url = self.decideUrl() {
+					self.reset()
+					self.configUI()
+					self.postConfigUI()
+					self.retry(url, false)
+					self.updateFullscreen(nil, false)
+				}
+				
 				if self.media.isAudio {
 					self.create(false)
 				}
@@ -399,25 +403,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			let asset = createAsset(url) else { return }
 		
 		guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0),
-		                                        andInitedBlock: configUI) else {
+		                                        andInitedBlock: postConfigUI) else {
 			dispatchError(SambaPlayerError.creatingPlayer)
 			return
 		}
 	
 		_player = gmf
+		_outputManager = OutputManager(self)
+		_captionsScreen = CaptionsScreen(player: self)
 		
-		gmf.videoTitle = media.title
-		gmf.controlTintColor = UIColor(media.theme)
-		
-		if media.isAudio {
-			gmf.backgroundColor = UIColor(0x434343)
-		}
-		else {
-			_outputManager = OutputManager(self)
-			_captionsScreen = CaptionsScreen(player: self)
-		}
-		
-		destroyThumb()
+		configUI()
+		DispatchQueue.main.async { self.destroyThumb() } // antecipates thumb destroy
 		attachVC(gmf, nil, nil) { self.updateFullscreen(nil, false) }
 		
 		let nc = NotificationCenter.default
@@ -444,6 +440,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	private func configUI() {
+		guard let player = _player else { return }
+		
+		player.videoTitle = media.title
+		player.controlTintColor = UIColor(media.theme)
+		
+		if media.isAudio {
+			player.backgroundColor = UIColor(0x434343)
+		}
+	}
+	
+	private func postConfigUI() {
 		guard let player = _player else { return }
 		
 		if media.isAudio {
@@ -579,12 +586,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
 	
 	private func reset(_ recoverable: Bool = true) {
-		_hasStarted = recoverable
+		_hasStarted = false
 		stopTimer()
-		_player?.reset()
 		
 		if recoverable {
 			_errorManager?.reset()
+		}
+		else {
+			_player?.reset()
 		}
 		
 		for delegate in _delegates { delegate.onReset?() }
@@ -661,16 +670,18 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	- parameter url: The URL to retry if provided
 	*/
-	private func retry(_ url: URL? = nil, _ autoPlay: Bool = true) {
-		// disable ad
-		media.adUrl = nil
+	private func retry(_ url: URL? = nil, _ isCurrentMedia: Bool = true) {
+		if isCurrentMedia {
+			// disable ad
+			media.adUrl = nil
+		}
 		
 		if let manager = _outputManager,
 			let url = url ??
 				URL(string: manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
 				media.url ?? "") {
 			// try to connect again
-			loadAsset(createAsset(url), autoPlay)
+			loadAsset(createAsset(url), isCurrentMedia)
 		}
 		else {
 			dispatchError(SambaPlayerError.invalidUrl)
@@ -704,6 +715,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			for delegate in _delegates { delegate.onLoad?() }
 			
 			if _pendingPlay {
+				DispatchQueue.main.async { self.destroyThumb() }
 				player.play()
 				_pendingPlay = false
 			}
