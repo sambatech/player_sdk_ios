@@ -160,6 +160,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		if _hasStarted {
+			DispatchQueue.main.async { self.destroyThumb() }
 			player.play()
 		}
 		else {
@@ -304,14 +305,20 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		//po "fullscreen=\(_isFullscreen) parent=\(player.parent != nil) landscape=\(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) landscape.status=\(UIApplication.shared.statusBarOrientation.isLandscape) portrait=\(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) portrait.status=\(UIApplication.shared.statusBarOrientation.isPortrait)"
 		
+		let isValidDeviceOrientation = UIDeviceOrientationIsValidInterfaceOrientation(UIDevice.current.orientation)
+		
 		if _isFullscreen {
 			// if UI will change to portrait
-			if UIDeviceOrientationIsPortrait(UIDevice.current.orientation) {
+			if isValidDeviceOrientation ?
+				UIDeviceOrientationIsPortrait(UIDevice.current.orientation) :
+				UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) {
 				exitFullscreen()
 			}
 		}
 		// if UI will change to landscape
-		else if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) {
+		else if isValidDeviceOrientation ?
+			UIDeviceOrientationIsLandscape(UIDevice.current.orientation) :
+			UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
 			_fullscreenAnimating = true
 			_isFullscreen = true
 			

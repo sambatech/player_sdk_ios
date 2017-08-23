@@ -218,7 +218,7 @@ private extension AssetLoaderDelegate {
              */
             spcData = try resourceLoadingRequest.streamingContentKeyRequestData(forApp: applicationCertificate, contentIdentifier: assetIDData, options: resourceLoadingRequestOptions)
         } catch let error as NSError {
-            print("Error obtaining key request data: \(error.domain) reason: \(error.localizedFailureReason)")
+            print("Error obtaining key request data: \(error.domain) reason: \(String(describing: error.localizedFailureReason))")
             resourceLoadingRequest.finishLoading(with: error)
             return
         }
@@ -325,7 +325,7 @@ private extension AssetLoaderDelegate {
         
         // AssetLoaderDelegate only should handle FPS Content Key requests.
 		if url.scheme?.compare(AssetLoaderDelegate.customScheme, options: .regularExpression) == nil {
-			print("Wrong DRM URL scheme: \(url.scheme)")
+			print("Wrong DRM URL scheme: \(String(describing: url.scheme))")
             return false
         }
         

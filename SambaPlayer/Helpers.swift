@@ -92,7 +92,7 @@ class Helpers {
 	
 	static func requestURL<T>(_ urlRequest: URLRequest, _ onComplete: ((T?) -> Void)?, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		let requestTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
-			let reqText = "\n\(urlRequest.url?.absoluteString ?? "")\nMethod: \(urlRequest.httpMethod ?? "")\nHeader: \(urlRequest.allHTTPHeaderFields)"
+			let reqText = "\n\(urlRequest.url?.absoluteString ?? "")\nMethod: \(urlRequest.httpMethod ?? "")\nHeader: \(String(describing: urlRequest.allHTTPHeaderFields))"
 			
 			if let error = error {
 				print("\(type(of: self)) Error: \(error.localizedDescription)\(reqText)")
