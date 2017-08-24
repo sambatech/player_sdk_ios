@@ -274,6 +274,14 @@
   return [_topBarView getActionButton:name];
 }
 
+- (void)removeActionButtonByName:(NSString *)name {
+  [_topBarView removeActionButtonByName:name];
+}
+
+- (void)removeActionButton:(UIButton *)button {
+  [_topBarView removeActionButton:button];
+}
+
 - (void)setVideoTitle:(NSString *)videoTitle {
   [_topBarView setVideoTitle:videoTitle];
 }
@@ -403,6 +411,10 @@
 
 - (void)hideBackground {
 	[_topBarView hideBackground];
+}
+
+- (void)showBackground {
+	[_topBarView showBackground];
 }
 
 - (void)reset {

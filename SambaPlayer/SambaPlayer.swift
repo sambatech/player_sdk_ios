@@ -249,6 +249,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		}
 		
 		NotificationCenter.default.removeObserver(self)
+		_isFullscreen = false
 		_player = nil
 		
 		for delegate in _delegates { delegate.onDestroy?() }
@@ -442,32 +443,34 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private func configUI() {
 		guard let player = _player else { return }
 		
-		player.videoTitle = media.title
 		player.controlTintColor = UIColor(media.theme)
-		
-		if media.isAudio {
-			player.backgroundColor = UIColor(0x434343)
-		}
+		player.backgroundColor = media.isAudio ? UIColor(0x434343) : UIColor.black
 	}
 	
 	private func postConfigUI() {
 		guard let player = _player else { return }
 		
 		if media.isAudio {
+			player.videoTitle = ""
 			player.hideBackground()
 			player.getControlsView().hideFullscreenButton()
 			player.getControlsView().showPlayButton()
+			player.getControlsView().hideCaptionsButton()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 			player.playerOverlay().autoHideEnabled = false
 			player.playerOverlay().controlsHideEnabled = false
-			
-			if !media.isLive {
-				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-				(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
-			}
 		}
 		// video only features
 		else {
+			player.videoTitle = media.title
+			player.showBackground()
+			player.getControlsView().showFullscreenButton()
+			player.getControlsView().hidePlayButton()
+			(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+			(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
+			player.playerOverlay().autoHideEnabled = true
+			player.playerOverlay().controlsHideEnabled = true
+			
 			// captions
 			if let captionsScreen = _captionsScreen as? CaptionsScreen,
 					captionsScreen.hasCaptions {
@@ -488,9 +491,26 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+			(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+		}
+		else {
+			player.getControlsView().showScrubber()
+			player.getControlsView().showTime()
+			player.removeActionButton(byName: "Live")
+			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = true
+			
+			if media.isAudio {
+				(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+				(player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+			}
+			else {
+				(player.playerOverlayView() as! GMFPlayerOverlayView).showBackground()
+				(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+			}
 		}
 		
 		if !controlsVisible {
+			// update setter
 			controlsVisible = false
 		}
 	}
@@ -526,7 +546,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		_thumb = thumb
 		
 		view.addSubview(thumb)
-		view.setNeedsLayout()
+		view.setNeedsDisplay()
 	}
 	
 	private func decideUrl() -> URL? {
@@ -605,6 +625,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		thumb.removeTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
 		thumb.removeFromSuperview()
 		_thumb = nil
+		view.setNeedsDisplay()
 	}
 	
 	private func dispatchError(_ error: SambaPlayerError) {
@@ -988,7 +1009,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
 			code = error?.code ?? SambaPlayerError.unknown.code
 			
-			var msg = "Ocorreu um erro! Por favor, tente novamente."
+			var msg = "Ocorreu um erro! Tente novamente."
 			
 			type = .recoverable
 			
@@ -1000,7 +1021,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
 				
 			// cannot parse
-			//case -11853 where media.isLive: fallthrough
+			case -11853: fallthrough
 			// no network/internet connection
 			case -11800: fallthrough
 			case NSURLErrorNotConnectedToInternet:

@@ -107,6 +107,10 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 	[[self getControlsView] hideBackground];
 }
 
+- (void)showBackground {
+	[[self getControlsView] showBackground];
+}
+
 - (void)loadStreamWithAsset:(AVAsset*)asset {
   [_player loadStreamWithAsset:asset];
 }
@@ -174,6 +178,14 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 	return nil;
 
   return [self.playerOverlayView getActionButton:name];
+}
+
+- (void)removeActionButtonByName:(NSString *)name {
+  [self.playerOverlayView removeActionButtonByName:name];
+}
+
+- (void)removeActionButton:(UIButton *)button {
+  [self.playerOverlayView removeActionButton:button];
 }
 
 - (void)registerAdService:(GMFAdService *)adService {

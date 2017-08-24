@@ -33,6 +33,8 @@
 
     _videoTitle = [UILabel GMF_clearLabelForPlayerControls];
     [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:16.0]];
+	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
+	_videoTitle.adjustsFontSizeToFitWidth = NO;
     [self addSubview:_videoTitle];
     
     _logoImageView = [[UIImageView alloc] init];
@@ -54,11 +56,11 @@
   NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_backgroundView,
                                                                  _videoTitle,
                                                                  _logoImageView);
-  NSDictionary *metrics = @{@"space": [NSNumber numberWithInt:4]};
+  NSDictionary *metrics = @{@"space": [NSNumber numberWithInt:8]};
   
   // Lay out the elements next to each other.
   NSArray *constraints = [NSLayoutConstraint
-      constraintsWithVisualFormat:@"H:|-space-[_logoImageView]-[_videoTitle]"
+      constraintsWithVisualFormat:@"H:|-space-[_videoTitle]|"
                           options:NSLayoutFormatAlignAllCenterY
                           metrics:metrics
                             views:viewsDictionary];
@@ -174,8 +176,22 @@
 }
 
 - (UIButton *)getActionButton:(NSString *)name {
-  return (UIButton *)[_actionButtons filteredArrayUsingPredicate:
-					  [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", name]].lastObject;
+  return [_actionButtons filteredArrayUsingPredicate:
+		  [NSPredicate predicateWithFormat:@"accessibilityLabel == %@", name]].lastObject;
+}
+
+- (void)removeActionButtonByName:(NSString *)name {
+  [self removeActionButton:[self getActionButton:name]];
+}
+
+- (void)removeActionButton:(UIButton *)button {
+  if (button == nil)
+	return;
+
+  [button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
+  [self removeConstraints:[button constraints]];
+  [button removeFromSuperview];
+  [_actionButtons removeObject:button];
 }
 
 - (void)setLogoImage:(UIImage *)logoImage {
@@ -194,20 +210,16 @@
 	[_backgroundView setHidden:YES];
 }
 
-- (void)reset {
-	UIButton* button;
-	
-	for (int i = 0; i < [_actionButtons count]; ++i) {
-		button = [_actionButtons objectAtIndex:i];
-		[button removeTarget:nil action:nil forControlEvents:UIControlEventAllEvents];
-		[self removeConstraints:[button constraints]];
-		[button removeFromSuperview];
-	}
+- (void)showBackground {
+	[_backgroundView setHidden:NO];
+}
 
-	[_actionButtons removeAllObjects];
-	
-	[self setLogoImage:nil];
-	[self setVideoTitle:@""];
+- (void)reset {
+  for (int i = 0; i < [_actionButtons count]; ++i)
+	[self removeActionButton:[_actionButtons objectAtIndex:i]];
+
+  [self setLogoImage:nil];
+  [self setVideoTitle:@""];
 }
 
 @end

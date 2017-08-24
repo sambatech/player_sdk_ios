@@ -41,6 +41,8 @@
                           target:(id)target
                         selector:(SEL)selector;
 - (UIButton *)getActionButton:(NSString *)name;
+- (void)removeActionButtonByName:(NSString *)name;
+- (void)removeActionButton:(UIButton *)button;
 - (void)applyControlTintColor:(UIColor *)color;
 - (void)setVideoTitle:(NSString *)videoTitle;
 - (void)setLogoImage:(UIImage *)logoImage;

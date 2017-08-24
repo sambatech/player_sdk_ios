@@ -87,6 +87,11 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
                           target:(id)target
                         selector:(SEL)selector;
 
+- (UIButton *)getActionButton:(NSString *)name;
+
+- (void)removeActionButtonByName:(NSString *)name;
+
+- (void)removeActionButton:(UIButton *)button;
 
 #pragma mark Advanced controls
 
@@ -107,6 +112,7 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 - (GMFPlayerControlsView*)getControlsView;
 
 - (void)hideBackground;
+- (void)showBackground;
 
 - (void)reset;
 

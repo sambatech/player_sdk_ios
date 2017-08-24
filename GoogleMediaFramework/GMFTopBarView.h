@@ -29,11 +29,18 @@
 // Hides the background gradient bar
 - (void)hideBackground;
 
+// Shows the background gradient bar
+- (void)showBackground;
+
 // Adds an action button to the right of the top bar.
 - (void)addActionButtonWithImage:(UIImage *)image
                             name:(NSString *)name
                           target:(id)target
                         selector:(SEL)selector;
+
+- (void)removeActionButtonByName:(NSString *)name;
+
+- (void)removeActionButton:(UIButton *)button;
 
 - (UIButton *)getActionButton:(NSString *)name;
 

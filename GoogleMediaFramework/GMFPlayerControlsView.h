@@ -71,9 +71,11 @@
 - (void)hideFullscreenButton;
 - (void)showFullscreenButton;
 - (void)hideBackground;
+- (void)showBackground;
 - (void)hideScrubber;
 - (void)showScrubber;
 - (void)hideTime;
+- (void)showTime;
 
 @end
 
