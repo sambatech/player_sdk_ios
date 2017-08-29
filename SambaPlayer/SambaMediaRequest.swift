@@ -114,7 +114,7 @@ import Foundation
 	Live initializer
 	
 	- parameter projectHash: The project hash the media belongs to
-	- parameter mediaId: The ID of the media
+	- parameter liveChannelId: The ID of the live channel
 	*/
 	public init(projectHash: String, liveChannelId: String) {
 		self.projectHash = projectHash
