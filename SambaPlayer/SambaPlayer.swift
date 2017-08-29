@@ -817,6 +817,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	@objc private func realtimeButtonHandler() {
 		seek(duration)
+		play()
 	}
 	
 	private func updateDvrInfo() {
