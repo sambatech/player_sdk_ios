@@ -253,11 +253,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		_player = nil
 		
 		for delegate in _delegates { delegate.onDestroy?() }
-        
-        /**
-            É necessário executar o .reset() do ErrorMenager para poder remover completamente o estado de erro da tela, assim quando uma nova media for setada, o estado de erro será completamente removido da tela.
-        **/
-        _errorManager?.reset()
 	}
 	
 	// MARK: Overrides
@@ -476,7 +471,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
                 Ao setar a variável controlsOnly, ela executa o metodo setter "- (void)setControlsOnly:(BOOL)state" da classe GMFPlayerOverlayView, este metodo ao ser executado esconde o spinner do loading.
                 por default o valor padrão é false, por tanto não precisa ser setado.
             **/
-			//(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
+            (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
 			player.playerOverlay().autoHideEnabled = true
 			player.playerOverlay().controlsHideEnabled = true
 			
@@ -618,11 +613,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		_hasStarted = false
 		stopTimer()
 		
-		if recoverable {
-			_errorManager?.reset()
-		}
-		else {
-			_player?.reset()
+        _errorManager?.reset()
+		if !recoverable {
+            _player?.reset()
 		}
 		
 		for delegate in _delegates { delegate.onReset?() }

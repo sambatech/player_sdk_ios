@@ -224,12 +224,12 @@
 - (void)setControlsOnly:(BOOL)state {
   _controlsOnly = state;
 
-  if (state)
-	[_playerControlsView setHidden:NO];
-
-  [_playPauseReplayButton setHidden:state];
-  [_spinner stopAnimating];
-  [_spinner setHidden:state];
+    if (state) {
+        [_playerControlsView setHidden:NO];
+        [_playPauseReplayButton setHidden:state];
+        [_spinner stopAnimating];
+        [_spinner setHidden:state];
+    }
   //[_topBarView setHidden:state];
 
   [self setNeedsLayout];
