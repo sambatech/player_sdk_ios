@@ -114,6 +114,9 @@
 		9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* GMFSlider.m */; };
 		9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */; };
+		C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */; };
+		C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */; };
+		C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7ED78131F97C9A400BB05E2 /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -227,6 +230,9 @@
 		9AF325D61D14B5B900B6E450 /* GMFSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFSlider.m; path = GoogleMediaFramework/GMFSlider.m; sourceTree = "<group>"; };
 		9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetLoaderDelegate.swift; sourceTree = "<group>"; };
+		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
+		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
+		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -294,6 +300,7 @@
 				9A1ADBB31D4A3D09008A5BEE /* player_scrubber_thumb@1x.png */,
 				9A1ADBB41D4A3D09008A5BEE /* player_scrubber_thumb@2x.png */,
 				9A1ADBB51D4A3D09008A5BEE /* player_scrubber_thumb@3x.png */,
+				C7ED78131F97C9A400BB05E2 /* Images.xcassets */,
 			);
 			path = Fixtures;
 			sourceTree = "<group>";
@@ -317,6 +324,8 @@
 				9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */,
 				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 				9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */,
+				C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */,
+				C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */,
 			);
 			name = Screens;
 			sourceTree = "<group>";
@@ -529,6 +538,7 @@
 				9A4C4DF21E2E659B001A75DD /* CaptionsScreen.xib in Resources */,
 				9A1ADBBE1D4A3D09008A5BEE /* player_control_maximize@1x.png in Resources */,
 				9A1ADBB61D4A3D09008A5BEE /* GoogleMediaFramework.strings in Resources */,
+				C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */,
 				9A1ADBD31D4A3D09008A5BEE /* player_control_replay_large@1x.png in Resources */,
 				9A1ADBC91D4A3D09008A5BEE /* player_control_pause_large@3x.png in Resources */,
 				9A1ADBCD1D4A3D09008A5BEE /* player_control_play_large@1x.png in Resources */,
@@ -540,6 +550,7 @@
 				9A1ADBC11D4A3D09008A5BEE /* player_control_minimize@1x.png in Resources */,
 				9A56AA7B1E293DDE00D4F43F /* Localizable.strings in Resources */,
 				9A1ADBC51D4A3D09008A5BEE /* player_control_pause@2x.png in Resources */,
+				C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */,
 				9A5268031D22D5BD00C9C015 /* Settings.plist in Resources */,
 				9A1ADBD91D4A3D09008A5BEE /* player_scrubber_thumb@2x.png in Resources */,
 				9AEE0BF31EC382500007E60B /* retry@1x.png in Resources */,
@@ -600,6 +611,7 @@
 				9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */,
 				9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */,
 				9AF325E71D14B5B900B6E450 /* GMFPlayerView.m in Sources */,
+				C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */,
 				9A5268041D22D5BD00C9C015 /* Tracking.swift in Sources */,
 				9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */,
 				9AF325E21D14B5B900B6E450 /* GMFPlayerOverlayView.m in Sources */,

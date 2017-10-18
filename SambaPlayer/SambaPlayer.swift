@@ -32,6 +32,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private var _disabled = false
 	private var _errorManager: ErrorManager?
 	private var _outputManager: OutputManager?
+    private let _rateOutputs: [Float] = [2.0, 1.5, 1.0, 0.5, 0.25]
 	
 	// MARK: Properties
 	
@@ -285,9 +286,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			if let menu = self._currentMenu {
 				self.showMenu(menu, true)
 			}
+            
+            self.presentOptionsAlert()
 		}
 		
 		let exitFullscreen = {
+            self.prepareAlertForFullScreen()
 			self._fullscreenAnimating = true
 			
 			self.detachVC(player, nil, animated) {
@@ -324,6 +328,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		else if isValidDeviceOrientation ?
 			UIDeviceOrientationIsLandscape(UIDevice.current.orientation) :
 			UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+            self.prepareAlertForFullScreen()
 			_fullscreenAnimating = true
 			_isFullscreen = true
 			
@@ -795,13 +800,32 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	@objc private func hdTouchHandler() {
 		guard let manager = _outputManager else { return }
-		
-		showMenu(ModalMenu(sambaPlayer: self,
-		                   items: manager.menuItems.map { $0.label },
-		                   title: "Qualidade",
-		                   onSelect: { self.switchOutput($0 - 1) },
-		                   selectedIndex: manager.currentIndex))
+        var actions:[UIAlertAction] = []
+        let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
+                self.switchOutput(index)
+                self._optionsAlertSheet = nil
+            }
+        }
+        for (index, item) in manager.menuItems.enumerated() {
+            let action = UIAlertAction.init(title: item.label, style: .default, handler: closure(index))
+            actions.append(action)
+        }
+        self.createAlert(with: actions, and: "Qualidade")
 	}
+    
+    @objc private func rateTouchHandler() {
+        var actions:[UIAlertAction] = []
+        let closure = { (rate: Float) in { (action: UIAlertAction!) -> Void in
+            self.rate = rate
+            self._optionsAlertSheet = nil
+            }
+        }
+        for rate in _rateOutputs {
+            let action = UIAlertAction.init(title: "\(rate) x", style: .default, handler: closure(rate))
+            actions.append(action)
+        }
+        self.createAlert(with: actions, and: "Velocidade")
+    }
 	
 	@objc private func captionsTouchHandler() {
 		guard let captions = media.captions,
@@ -888,6 +912,46 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
 		}
 	}
+    
+    //alert control methods
+    
+    private var _optionsAlertSheet: UIAlertController? {
+        didSet {
+            presentOptionsAlert(true)
+        }
+    }
+    
+    private func createAlert(with actions: [UIAlertAction], and title: String) {
+        let alert = UIAlertController.init(title: title, message: nil, preferredStyle: .actionSheet)
+        let cancel = UIAlertAction.init(title: "Cancelar", style: .cancel, handler: { (alertAction: UIAlertAction!) in
+            alert.dismiss(animated: true, completion: nil)
+            self._optionsAlertSheet = nil
+        })
+        for action in actions {
+            alert.addAction(action)
+        }
+        alert.addAction(cancel)
+        _optionsAlertSheet = alert
+    }
+    
+    private func prepareAlertForFullScreen() {
+        DispatchQueue.main.async {
+            self._optionsAlertSheet?.dismiss(animated: false, completion: nil)
+        }
+    }
+    
+    private func presentOptionsAlert(_ animated: Bool = false) {
+        guard let alert = _optionsAlertSheet else {
+            return
+            
+        }
+        DispatchQueue.main.async {
+            alert.dismiss(animated: false, completion: nil)
+            if let currentVC = self._isFullscreen ? self._player : self.parent {
+                currentVC.present(alert, animated: animated, completion: nil)
+            }
+        }
+    }
 	
 	private class OutputManager : SambaPlayerDelegate {
 		
