@@ -467,10 +467,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			player.getControlsView().showFullscreenButton()
 			player.getControlsView().hidePlayButton()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
-            /**
-                Ao setar a variável controlsOnly, ela executa o metodo setter "- (void)setControlsOnly:(BOOL)state" da classe GMFPlayerOverlayView, este metodo ao ser executado esconde o spinner do loading.
-                por default o valor padrão é false, por tanto não precisa ser setado.
-            **/
             (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
 			player.playerOverlay().autoHideEnabled = true
 			player.playerOverlay().controlsHideEnabled = true
@@ -611,6 +607,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func reset(_ recoverable: Bool = true) {
 		_hasStarted = false
+        stop()
 		stopTimer()
 		
         _errorManager?.reset()
@@ -841,7 +838,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		DispatchQueue.main.async {
 			parent.addChildViewController(target)
 			target.didMove(toParentViewController: parent)
-			target.view.frame = parentView.bounds
+            target.view.frame = parentView.bounds
 			parentView.addSubview(target.view)
 			
 			// always try to keep error screen above all views
