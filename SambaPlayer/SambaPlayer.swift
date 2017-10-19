@@ -963,6 +963,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         DispatchQueue.main.async {
             alert.dismiss(animated: false, completion: nil)
             if let currentVC = self._isFullscreen ? self._player : self.parent {
+                if let popoverController = alert.popoverPresentationController {
+                        popoverController.sourceView = currentVC.view
+                        popoverController.permittedArrowDirections = []
+                        popoverController.sourceRect = CGRect(x: currentVC.view.bounds.midX, y: currentVC.view.bounds.midY, width: 0, height: 0)
+                }
                 currentVC.present(alert, animated: animated, completion: nil)
             }
         }
@@ -1078,7 +1083,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             item = player._player?.player.player.currentItem
             url = (item?.asset as? AVURLAsset)?.url
             menuItems = extract()
-            debugPrint("aquqw   dassdasdads ")
             self.player.configureTopBar(outputsCount: self.menuItems.count)
         }
         
