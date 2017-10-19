@@ -321,10 +321,10 @@
 				9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */,
 				9A67DD791DE4BE2F00F8E172 /* ErrorScreen.swift */,
 				9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */,
+				C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */,
 				9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */,
 				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 				9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */,
-				C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */,
 				C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */,
 			);
 			name = Screens;

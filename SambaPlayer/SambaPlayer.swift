@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Responsible for managing media playback
-public class SambaPlayer : UIViewController, ErrorScreenDelegate {
+public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDelegate {
 	
 	private var _player: GMFPlayerViewController?
 	private var _parent: UIViewController!
@@ -288,10 +288,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			}
             
             self.presentOptionsAlert()
+            self.prepareOptionsMenuAfterFullScreen()
 		}
 		
 		let exitFullscreen = {
             self.prepareAlertForFullScreen()
+            self.prepareOptionsMenuBeforeFullScreen()
 			self._fullscreenAnimating = true
 			
 			self.detachVC(player, nil, animated) {
@@ -329,6 +331,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 			UIDeviceOrientationIsLandscape(UIDevice.current.orientation) :
 			UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
             self.prepareAlertForFullScreen()
+            self.prepareOptionsMenuBeforeFullScreen()
 			_fullscreenAnimating = true
 			_isFullscreen = true
 			
@@ -455,6 +458,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	private func postConfigUI() {
 		guard let player = _player else { return }
 		
+        player.removeActionButton(byName: "menuOptions")
+        player.removeActionButton(byName: "Live")
 		if media.isAudio {
 			player.videoTitle = ""
 			player.hideBackground()
@@ -475,7 +480,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
             (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
 			player.playerOverlay().autoHideEnabled = true
 			player.playerOverlay().controlsHideEnabled = true
-			
+
 			// captions
 			if let captionsScreen = _captionsScreen as? CaptionsScreen,
 					captionsScreen.hasCaptions {
@@ -493,7 +498,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		if media.isLive {
 			player.getControlsView().hideScrubber()
 			player.getControlsView().hideTime()
-			player.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
@@ -501,7 +505,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		else {
 			player.getControlsView().showScrubber()
 			player.getControlsView().showTime()
-			player.removeActionButton(byName: "Live")
 			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = true
 			
 			if media.isAudio {
@@ -612,8 +615,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func reset(_ recoverable: Bool = true) {
 		_hasStarted = false
+        _optionsAlertSheet = nil
         stop()
 		stopTimer()
+        destroyOptionsMenu()
 		
         _errorManager?.reset()
 		if !recoverable {
@@ -658,6 +663,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	
 	private func showError(_ error: SambaPlayerError) {
 		// try to use existing error screen
+        _optionsAlertSheet = nil
+        destroyOptionsMenu()
 		if let errorScreen = _errorScreen as? ErrorScreen {
 			errorScreen.error = error
 			return
@@ -804,6 +811,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
         let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
                 self.switchOutput(index)
                 self._optionsAlertSheet = nil
+                self.destroyOptionsMenu()
             }
         }
         for (index, item) in manager.menuItems.enumerated() {
@@ -816,8 +824,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
     @objc private func rateTouchHandler() {
         var actions:[UIAlertAction] = []
         let closure = { (rate: Float) in { (action: UIAlertAction!) -> Void in
-            self.rate = rate
-            self._optionsAlertSheet = nil
+                self.rate = rate
+                self._optionsAlertSheet = nil
+                self.destroyOptionsMenu()
             }
         }
         for rate in _rateOutputs {
@@ -914,8 +923,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 	}
     
     //alert control methods
-    
     private var _optionsAlertSheet: UIAlertController? {
+        willSet {
+            if newValue == nil {
+                DispatchQueue.main.async {
+                    self._optionsAlertSheet?.dismiss(animated: false, completion: nil)
+                }
+            }
+        }
         didSet {
             presentOptionsAlert(true)
         }
@@ -926,6 +941,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
         let cancel = UIAlertAction.init(title: "Cancelar", style: .cancel, handler: { (alertAction: UIAlertAction!) in
             alert.dismiss(animated: true, completion: nil)
             self._optionsAlertSheet = nil
+            self.destroyOptionsMenu()
         })
         for action in actions {
             alert.addAction(action)
@@ -943,12 +959,87 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
     private func presentOptionsAlert(_ animated: Bool = false) {
         guard let alert = _optionsAlertSheet else {
             return
-            
         }
         DispatchQueue.main.async {
             alert.dismiss(animated: false, completion: nil)
             if let currentVC = self._isFullscreen ? self._player : self.parent {
                 currentVC.present(alert, animated: animated, completion: nil)
+            }
+        }
+    }
+    
+    //options menu methods
+    
+    private var _optionsMenu: UIViewController? {
+        didSet {
+            (_optionsMenu as? OptionsMenuView)?.delegate = self
+        }
+    }
+    
+    @objc private func createOptionsMenu() {
+        var options = MenuOptions.all
+        if _outputManager?.menuItems.count ?? 0 > 2 {
+            if media.isLive {
+                options = .qualityOnly
+            }
+        } else {
+            options = media.isLive ? .none : .speedOnly
+        }
+        let optionsMenu = OptionsMenuView.init(withOptions: options)
+        optionsMenu.options = options
+        showScreen(optionsMenu, &_optionsMenu, _isFullscreen ? _player : nil)
+        _player?.playerOverlay().hidePlayerControls(animated: true)
+    }
+    
+    private func destroyOptionsMenu() {
+        guard let optionsMenu = _optionsMenu else {
+            return
+        }
+        detachVC(optionsMenu, _isFullscreen ? _player : nil)
+        _optionsMenu = nil
+    }
+    
+    func prepareOptionsMenuAfterFullScreen() {
+        guard let optionsMenu = _optionsMenu else {
+            return
+        }
+        attachVC(optionsMenu, _isFullscreen ? _player : nil)
+        _player?.playerOverlay().hidePlayerControls(animated: true)
+    }
+    
+    func prepareOptionsMenuBeforeFullScreen() {
+        guard let optionsMenu = _optionsMenu else {
+            return
+        }
+        detachVC(optionsMenu, _isFullscreen ? _player : nil)
+    }
+    
+    func didTouchQuality(){
+        self.hdTouchHandler()
+    }
+    
+    func didTouchSpeed(){
+        self.rateTouchHandler()
+    }
+    
+    func didTouchClose(){
+        destroyOptionsMenu()
+    }
+    
+    func configureTopBar(outputsCount: Int){
+        if media.isAudio {
+            _player?.removeActionButton(byName: "menuOptions")
+            _player?.removeActionButton(byName: "Live")
+        } else {
+            if outputsCount > 2 || !media.isLive {
+                _player?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
+            } else {
+                _player?.removeActionButton(byName: "menuOptions")
+            }
+            if media.isLive {
+                _player?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
+            } else {
+                _player?.removeActionButton(byName: "Live")
             }
         }
     }
@@ -982,20 +1073,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate {
 		
 		var menuItems = [Output]()
 		
-		func onLoad() {
-			currentIndex = 0
-			item = player._player?.player.player.currentItem
-			url = (item?.asset as? AVURLAsset)?.url
-			menuItems = extract()
-			
-			if menuItems.count > 2 {
-				player._player?.getControlsView().showHdButton()
-			}
-			else {
-				player._player?.getControlsView().hideHdButton()
-			}
-		}
-		
+        func onLoad() {
+            currentIndex = 0
+            item = player._player?.player.player.currentItem
+            url = (item?.asset as? AVURLAsset)?.url
+            menuItems = extract()
+            debugPrint("aquqw   dassdasdads ")
+            self.player.configureTopBar(outputsCount: self.menuItems.count)
+        }
+        
 		func onReset() {
 			url = nil
 			item = nil

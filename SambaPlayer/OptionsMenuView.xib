@@ -19,6 +19,7 @@
             <connections>
                 <outlet property="qualityOptionView" destination="7gB-FK-dHY" id="SLs-WY-Jyd"/>
                 <outlet property="speedOptionView" destination="mQw-4I-ecr" id="iH0-AV-HnS"/>
+                <outlet property="view" destination="iN0-l3-epB" id="SYn-uo-4eB"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -104,6 +105,9 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IPR-Cq-eDr">
                                             <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                            <connections>
+                                                <action selector="didTouchOption:" destination="-1" eventType="touchUpInside" id="ROE-Vl-34i"/>
+                                            </connections>
                                         </button>
                                     </subviews>
                                     <constraints>

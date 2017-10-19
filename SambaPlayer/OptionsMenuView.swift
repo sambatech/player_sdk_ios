@@ -16,15 +16,19 @@ class OptionsMenuView: UIViewController {
     
     weak var delegate: MenuOptionsDelegate?
     
-    var options: MenuOptions = .all {
+    var options: MenuOptions? {
         didSet {
             switch options {
-            case .qualityOnly:
+            case .qualityOnly?:
                 speedOptionView.isHidden = true
                 qualityOptionView.isHidden = false
                 break
-            case .speedOnly:
+            case .speedOnly?:
                 speedOptionView.isHidden = false
+                qualityOptionView.isHidden = true
+                break
+            case .none?:
+                speedOptionView.isHidden = true
                 qualityOptionView.isHidden = true
                 break
             default:
@@ -66,7 +70,7 @@ class OptionsMenuView: UIViewController {
 
 
 enum MenuOptions {
-    case qualityOnly, speedOnly, all
+    case qualityOnly, speedOnly, all, none
 }
 
 protocol MenuOptionsDelegate: class {
