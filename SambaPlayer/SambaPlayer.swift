@@ -1031,11 +1031,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         destroyOptionsMenu()
     }
     
-    func configureTopBar(outputsCount: Int){
-        if media.isAudio {
-            _player?.removeActionButton(byName: "menuOptions")
-            _player?.removeActionButton(byName: "Live")
-        } else {
+    func configureTopBar(outputsCount: Int) {
+        _player?.removeActionButton(byName: "menuOptions")
+        _player?.removeActionButton(byName: "Live")
+        if !media.isAudio {
             if outputsCount > 2 || !media.isLive {
                 _player?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
             } else {
