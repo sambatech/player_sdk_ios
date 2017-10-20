@@ -32,6 +32,7 @@
 + (UIImage *)playerTitleLiveIcon;
 + (UIImage *)playerTitleRealtimeIcon;
 + (UIImage *)playerTitleBarBackgroundImage;
++ (UIImage *)playerTopBarMenuImage;
 
 @end
 

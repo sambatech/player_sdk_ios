@@ -60,7 +60,7 @@
   
   // Lay out the elements next to each other.
   NSArray *constraints = [NSLayoutConstraint
-      constraintsWithVisualFormat:@"H:|-space-[_videoTitle]|"
+      constraintsWithVisualFormat:@"H:|-space-[_videoTitle]-125-|"
                           options:NSLayoutFormatAlignAllCenterY
                           metrics:metrics
                             views:viewsDictionary];
@@ -128,7 +128,7 @@
                                                    toItem:button.superview
                                                 attribute:NSLayoutAttributeRight
                                                multiplier:1.0f
-                                                 constant:-15.0f]];
+                                                 constant:0.0f]];
   } else {
     // If this is not the first button, position it to the left of the previous button that has
     // been placed.
@@ -140,7 +140,7 @@
                                                    toItem:previousButton
                                                 attribute:NSLayoutAttributeLeft
                                                multiplier:1.0f
-                                                 constant:-10.0f]];
+                                                 constant:-3.0f]];
   }
   
   // Ensure that the button has the same height as the top bar.
@@ -172,6 +172,16 @@
                                               attribute:NSLayoutAttributeBottom
                                              multiplier:1.0f
                                                constant:0.0f]];
+    
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_videoTitle
+                                                attribute:NSLayoutAttributeRight
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem:button.superview
+                                                attribute:NSLayoutAttributeLeft
+                                               multiplier:1.0f
+                                                 constant:3.0f]];
+
   [self addConstraints:constraints];
 }
 

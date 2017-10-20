@@ -90,6 +90,9 @@
 + (UIImage *)playerTitleBarBackgroundImage {
   return [self imageNamed:@"player_controls_title_bar_background"];
 }
++ (UIImage *)playerTopBarMenuImage {
+        return [self imageNamed:@"ic_options"];
+}
 
 #pragma mark Private Methods
 
