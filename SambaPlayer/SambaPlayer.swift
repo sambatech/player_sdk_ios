@@ -33,6 +33,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	private var _errorManager: ErrorManager?
 	private var _outputManager: OutputManager?
     private let _rateOutputs: [Float] = [2.0, 1.5, 1.0, 0.5, 0.25]
+    private var _hiddenPlayerControls: Set<SambaPlayerControls> = [] {
+        didSet{
+            guard let player = _player else {
+                return
+            }
+            configurePlayer(player, hiddenControls: _hiddenPlayerControls.map{$0})
+        }
+    }
 	
 	// MARK: Properties
 	
@@ -255,6 +263,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		for delegate in _delegates { delegate.onDestroy?() }
 	}
+    
+    public func hide(_ control: SambaPlayerControls) {
+        if !_hiddenPlayerControls.contains(control) {
+            _hiddenPlayerControls.insert(control)
+        }
+    }
+    
+    public func hide(_ controls: [SambaPlayerControls]) {
+        _hiddenPlayerControls = _hiddenPlayerControls.union(controls)
+    }
 	
 	// MARK: Overrides
 	
@@ -521,6 +539,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			// update setter
 			controlsVisible = false
 		}
+        configurePlayer(player, hiddenControls: _hiddenPlayerControls.map{$0})
 	}
 	
 	private func createThumb() {
@@ -1036,16 +1055,49 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         _player?.removeActionButton(byName: "Live")
         if !media.isAudio {
             if outputsCount > 2 || !media.isLive {
-                _player?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
-            } else {
-                _player?.removeActionButton(byName: "menuOptions")
+                if !_hiddenPlayerControls.contains(.menu) {
+                    _player?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
+                }
             }
             if media.isLive {
-                _player?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
-            } else {
-                _player?.removeActionButton(byName: "Live")
+                if !_hiddenPlayerControls.contains(.liveIcon) {
+                    _player?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
+                }
             }
         }
+    }
+    
+    //case play, playLarge, fullscreen, output, caption, seekbar, topBar, bottomBar, time
+    func configurePlayer(_ player: GMFPlayerViewController, hiddenControls: [SambaPlayerControls]) {
+        if hiddenControls.contains(.play){
+            player.getControlsView().hidePlayButton()
+        }
+        if hiddenControls.contains(.playLarge){
+            (player.playerOverlayView() as! GMFPlayerOverlayView).hidePlayPauseReplayButton()
+        }
+        if hiddenControls.contains(.fullscreen) {
+            player.getControlsView().hideFullscreenButton()
+        }
+        if hiddenControls.contains(.output) {
+            player.getControlsView().hideHdButton()
+        }
+        if hiddenControls.contains(.caption) {
+            player.getControlsView().hideCaptionsButton()
+        }
+        if hiddenControls.contains(.seekbar) {
+            player.getControlsView().hideScrubber()
+        }
+        if hiddenControls.contains(.topBar) {
+            (player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = true
+        }
+        if hiddenControls.contains(.bottomBar) {
+            player.getControlsView().hideBottomBar()
+        }
+        if hiddenControls.contains(.time) {
+            player.getControlsView().hideTime()
+        }
+        configureTopBar(outputsCount: _outputManager?.menuItems.count ?? 0)
     }
 	
 	private class OutputManager : SambaPlayerDelegate {

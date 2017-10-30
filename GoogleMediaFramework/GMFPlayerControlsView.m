@@ -290,6 +290,14 @@ static const CGFloat kGMFBarPaddingX = 8;
 	_backgroundView.hidden = NO;
 }
 
+- (void)hideBottomBar {
+    self.hidden = YES;
+}
+
+- (void)showBottomBar {
+    self.hidden = NO;
+}
+
 - (id)initWithFrame:(CGRect)frame {
   self = [super initWithFrame:frame];
   NSAssert(false, @"Invalid initializer.");

@@ -417,6 +417,34 @@
 	[_topBarView showBackground];
 }
 
+- (void)showPlayPauseReplayButton {
+    [self addSubview:_playPauseReplayButton];
+    
+    NSArray *constraints = [[NSArray alloc] init];
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_playPauseReplayButton
+                                                attribute:NSLayoutAttributeCenterY
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem:_playPauseReplayButton.superview
+                                                attribute:NSLayoutAttributeCenterY
+                                               multiplier:1.0f
+                                                 constant:0]];
+    
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_playPauseReplayButton
+                                                attribute:NSLayoutAttributeCenterX
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem:_playPauseReplayButton.superview
+                                                attribute:NSLayoutAttributeCenterX
+                                               multiplier:1.0f
+                                                 constant:0]];
+    [self addConstraints:constraints];
+}
+
+- (void)hidePlayPauseReplayButton {
+    [_playPauseReplayButton removeFromSuperview];
+}
+
 - (void)reset {
 	[_topBarView reset];
 }

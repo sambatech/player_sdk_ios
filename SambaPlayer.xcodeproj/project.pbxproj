@@ -114,6 +114,7 @@
 		9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* GMFSlider.m */; };
 		9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */; };
+		C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78A47831FA3992700D3136D /* SambaPlayerControls.swift */; };
 		C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */; };
 		C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */; };
 		C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7ED78131F97C9A400BB05E2 /* Images.xcassets */; };
@@ -230,6 +231,7 @@
 		9AF325D61D14B5B900B6E450 /* GMFSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFSlider.m; path = GoogleMediaFramework/GMFSlider.m; sourceTree = "<group>"; };
 		9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetLoaderDelegate.swift; sourceTree = "<group>"; };
+		C78A47831FA3992700D3136D /* SambaPlayerControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaPlayerControls.swift; sourceTree = "<group>"; };
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -345,6 +347,7 @@
 				9A5267F81D22D5BD00C9C015 /* Settings.plist */,
 				9A5267F91D22D5BD00C9C015 /* Tracking.swift */,
 				9A52680C1D230C0500C9C015 /* Exportable.modulemap */,
+				C78A47831FA3992700D3136D /* SambaPlayerControls.swift */,
 			);
 			path = SambaPlayer;
 			sourceTree = "<group>";
@@ -621,6 +624,7 @@
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,
 				9AF325F41D14B5B900B6E450 /* UIButton+GMFTintableButton.m in Sources */,
+				C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */,
 				9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */,
 				9AF325EF1D14B5B900B6E450 /* GMFVideoPlayer.m in Sources */,
 			);
