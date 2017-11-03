@@ -1078,9 +1078,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if hiddenControls.contains(.fullscreen) {
             player.getControlsView().hideFullscreenButton()
         }
-        if hiddenControls.contains(.output) {
-            player.getControlsView().hideHdButton()
-        }
         if hiddenControls.contains(.caption) {
             player.getControlsView().hideCaptionsButton()
         }
