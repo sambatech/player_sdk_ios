@@ -468,7 +468,8 @@ BOOL _assetReplaced = NO;
 	  return;
 
 	_rate = rate;
-	[_player setRate:rate];
+
+    if (_state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering || _state == kGMFPlayerStateSeeking)[_player setRate:rate];
 }
 
 - (void)startPlaybackStatusPoller {

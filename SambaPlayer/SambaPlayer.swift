@@ -123,7 +123,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	/// Sets playback speed (values can vary from -1 to 2)
 	public var rate: Float {
 		set(value) {
-			_player?.player.rate = value
+            _player?.player.rate = value
 		}
 		get { return _player?.player.rate ?? 0 }
 	}
