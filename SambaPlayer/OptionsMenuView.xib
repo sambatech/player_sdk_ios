@@ -17,6 +17,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="OptionsMenuView" customModule="SambaPlayer" customModuleProvider="target">
             <connections>
+                <outlet property="captionsOptionView" destination="L8X-sY-gPa" id="Ckc-xB-IqY"/>
                 <outlet property="qualityOptionView" destination="7gB-FK-dHY" id="SLs-WY-Jyd"/>
                 <outlet property="speedOptionView" destination="mQw-4I-ecr" id="iH0-AV-HnS"/>
                 <outlet property="view" destination="iN0-l3-epB" id="SYn-uo-4eB"/>
@@ -42,7 +43,7 @@
                             </connections>
                         </button>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="fxq-c7-LKL">
-                            <rect key="frame" x="102" y="122" width="170" height="70"/>
+                            <rect key="frame" x="52" y="122" width="270" height="70"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7gB-FK-dHY">
                                     <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
@@ -124,6 +125,46 @@
                                         <constraint firstItem="8wC-6F-Qcz" firstAttribute="top" secondItem="mQw-4I-ecr" secondAttribute="top" constant="9" id="yJy-Fe-2cq"/>
                                     </constraints>
                                 </view>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="L8X-sY-gPa">
+                                    <rect key="frame" x="200" y="0.0" width="70" height="70"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_caption" translatesAutoresizingMaskIntoConstraints="NO" id="8d7-su-p3g">
+                                            <rect key="frame" x="15" y="9" width="40" height="26"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="40" id="5j1-TL-ul9"/>
+                                                <constraint firstAttribute="height" constant="26" id="ZiG-1h-bOn"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Legenda" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="533-6T-eOs">
+                                            <rect key="frame" x="0.0" y="44.5" width="70" height="16.5"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" relation="greaterThanOrEqual" id="GEg-a2-VC7"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="14"/>
+                                            <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IVq-lJ-pI1">
+                                            <rect key="frame" x="0.0" y="0.0" width="70" height="70"/>
+                                            <connections>
+                                                <action selector="didTouchOption:" destination="-1" eventType="touchUpInside" id="jNo-r9-1jt"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="IVq-lJ-pI1" secondAttribute="bottom" id="5OC-ff-HpF"/>
+                                        <constraint firstAttribute="trailing" secondItem="533-6T-eOs" secondAttribute="trailing" id="7Ax-Fx-7KU"/>
+                                        <constraint firstItem="8d7-su-p3g" firstAttribute="top" secondItem="L8X-sY-gPa" secondAttribute="top" constant="9" id="DGE-l2-Wj1"/>
+                                        <constraint firstItem="IVq-lJ-pI1" firstAttribute="leading" secondItem="L8X-sY-gPa" secondAttribute="leading" id="DZE-6l-bwc"/>
+                                        <constraint firstItem="8d7-su-p3g" firstAttribute="centerX" secondItem="L8X-sY-gPa" secondAttribute="centerX" id="W29-65-FoW"/>
+                                        <constraint firstAttribute="width" constant="70" id="Wfl-s3-57g"/>
+                                        <constraint firstItem="533-6T-eOs" firstAttribute="leading" secondItem="L8X-sY-gPa" secondAttribute="leading" id="Zl1-Jb-gg9"/>
+                                        <constraint firstAttribute="height" constant="70" id="efy-pS-BWc"/>
+                                        <constraint firstAttribute="bottom" secondItem="533-6T-eOs" secondAttribute="bottom" constant="9" id="fij-Dc-wlg"/>
+                                        <constraint firstAttribute="trailing" secondItem="IVq-lJ-pI1" secondAttribute="trailing" id="o9K-5k-2Wl"/>
+                                        <constraint firstItem="IVq-lJ-pI1" firstAttribute="top" secondItem="L8X-sY-gPa" secondAttribute="top" id="qkc-qY-LFQ"/>
+                                    </constraints>
+                                </view>
                             </subviews>
                         </stackView>
                     </subviews>
@@ -150,6 +191,7 @@
         </view>
     </objects>
     <resources>
+        <image name="ic_caption" width="40" height="26"/>
         <image name="ic_close" width="12" height="12"/>
         <image name="ic_quality" width="42" height="20"/>
         <image name="ic_speed" width="27" height="26"/>

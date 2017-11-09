@@ -50,7 +50,6 @@
 		9A385CBB1E2EAF4B00518BDD /* CaptionsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */; };
 		9A4C4DF21E2E659B001A75DD /* CaptionsScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */; };
 		9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267EF1D22D5BD00C9C015 /* Helpers.swift */; };
-		9A5267FD1D22D5BD00C9C015 /* ModalMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */; };
 		9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F31D22D5BD00C9C015 /* SambaApi.swift */; };
 		9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A5267F51D22D5BD00C9C015 /* SambaMediaRequest.swift */; };
 		9A5268011D22D5BD00C9C015 /* SambaPlayer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9A5267F61D22D5BD00C9C015 /* SambaPlayer.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -71,7 +70,6 @@
 		9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */; };
 		9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AC577B31F26867E005D35AE /* GMFAdsSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC577B21F26867E005D35AE /* GMFAdsSettings.m */; };
-		9AE08ABC1D3FFEF500C847CC /* ModalMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */; };
 		9AE43F1A1F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */; };
 		9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9AEE0BF21EC382500007E60B /* retry@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BEF1EC382500007E60B /* retry@3x.png */; };
@@ -165,7 +163,6 @@
 		9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CaptionsScreen.xib; sourceTree = "<group>"; };
 		9A5267EF1D22D5BD00C9C015 /* Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		9A5267F01D22D5BD00C9C015 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModalMenu.swift; sourceTree = "<group>"; };
 		9A5267F31D22D5BD00C9C015 /* SambaApi.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaApi.swift; sourceTree = "<group>"; };
 		9A5267F41D22D5BD00C9C015 /* SambaMedia.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMedia.swift; sourceTree = "<group>"; };
 		9A5267F51D22D5BD00C9C015 /* SambaMediaRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SambaMediaRequest.swift; sourceTree = "<group>"; };
@@ -187,7 +184,6 @@
 		9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFHelpers.m; path = GoogleMediaFramework/GMFHelpers.m; sourceTree = "<group>"; };
 		9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMFHelpers.h; path = GoogleMediaFramework/GMFHelpers.h; sourceTree = "<group>"; };
 		9AC577B21F26867E005D35AE /* GMFAdsSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdsSettings.m; path = GoogleMediaFramework/GMFAdsSettings.m; sourceTree = "<group>"; };
-		9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModalMenu.xib; sourceTree = "<group>"; };
 		9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9AEE0BEF1EC382500007E60B /* retry@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@3x.png"; sourceTree = "<group>"; };
@@ -320,11 +316,9 @@
 		9A4C4DF51E2E6983001A75DD /* Screens */ = {
 			isa = PBXGroup;
 			children = (
-				9A5267F21D22D5BD00C9C015 /* ModalMenu.swift */,
 				9A67DD791DE4BE2F00F8E172 /* ErrorScreen.swift */,
 				9A385CBA1E2EAF4B00518BDD /* CaptionsScreen.swift */,
 				C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */,
-				9AE08ABB1D3FFEF500C847CC /* ModalMenu.xib */,
 				9A67DD7B1DE4BE7600F8E172 /* ErrorScreen.xib */,
 				9A4C4DF11E2E659B001A75DD /* CaptionsScreen.xib */,
 				C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */,
@@ -564,7 +558,6 @@
 				9A67DD761DE4A2B600F8E172 /* player_error@1x.png in Resources */,
 				9A1ADBC81D4A3D09008A5BEE /* player_control_pause_large@2x.png in Resources */,
 				9A1ADBB71D4A3D09008A5BEE /* player_control_close@2x.png in Resources */,
-				9AE08ABC1D3FFEF500C847CC /* ModalMenu.xib in Resources */,
 				9A1ADBCC1D4A3D09008A5BEE /* player_control_play@3x.png in Resources */,
 				9A67DD751DE4A2B600F8E172 /* player_error@2x.png in Resources */,
 				9A1ADBB81D4A3D09008A5BEE /* player_control_hd@1x.png in Resources */,
@@ -599,7 +592,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */,
-				9A5267FD1D22D5BD00C9C015 /* ModalMenu.swift in Sources */,
 				9AF325DF1D14B5B900B6E450 /* GMFPlayerControlsView.m in Sources */,
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,

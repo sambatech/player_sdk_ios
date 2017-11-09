@@ -9,5 +9,5 @@
 import Foundation
 
 public enum SambaPlayerControls {
-    case play, playLarge, fullscreen, caption, seekbar, topBar, bottomBar, time, menu, liveIcon
+    case play, playLarge, fullscreen, seekbar, topBar, bottomBar, time, menu, liveIcon
 }
