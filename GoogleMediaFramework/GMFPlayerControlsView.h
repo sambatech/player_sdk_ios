@@ -76,6 +76,7 @@
 - (void)showScrubber;
 - (void)hideTime;
 - (void)showTime;
-
+- (void)hideBottomBar;
+- (void)showBottomBar;
 @end
 
