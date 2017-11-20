@@ -13,34 +13,20 @@ class OptionsMenuView: UIViewController {
     
     @IBOutlet weak var qualityOptionView: UIView!
     @IBOutlet weak var speedOptionView: UIView!
+    @IBOutlet weak var captionsOptionView: UIView!
     
     weak var delegate: MenuOptionsDelegate?
     
-    var options: MenuOptions? {
+    var options: [MenuOptions] = [] {
         didSet {
-            switch options {
-            case .qualityOnly?:
-                speedOptionView.isHidden = true
-                qualityOptionView.isHidden = false
-                break
-            case .speedOnly?:
-                speedOptionView.isHidden = false
-                qualityOptionView.isHidden = true
-                break
-            case .none?:
-                speedOptionView.isHidden = true
-                qualityOptionView.isHidden = true
-                break
-            default:
-                speedOptionView.isHidden = false
-                qualityOptionView.isHidden = false
-                break
-            }
+            speedOptionView.isHidden = !options.contains(.speed)
+            qualityOptionView.isHidden = !options.contains(.quality)
+            captionsOptionView.isHidden = !options.contains(.captions)
         }
     }
     
     
-    init(withOptions options: MenuOptions) {
+    init(withOptions options: [MenuOptions] = []) {
         super.init(nibName: "OptionsMenuView", bundle: Bundle(for: type(of: self)))
         loadViewIfNeeded()
         self.options = options
@@ -58,6 +44,9 @@ class OptionsMenuView: UIViewController {
         case speedOptionView?:
             delegate?.didTouchSpeed()
             break
+        case captionsOptionView?:
+            delegate?.didTouchCaption()
+            break
         default:
             break
         }
@@ -70,11 +59,12 @@ class OptionsMenuView: UIViewController {
 
 
 enum MenuOptions {
-    case qualityOnly, speedOnly, all, none
+    case quality, speed, captions
 }
 
 protocol MenuOptionsDelegate: class {
     func didTouchQuality()
     func didTouchSpeed()
+    func didTouchCaption()
     func didTouchClose()
 }
