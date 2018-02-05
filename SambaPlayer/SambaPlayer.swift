@@ -591,7 +591,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	private func createAsset(_ url: URL?) -> AVURLAsset? {
-		guard let url = url else {
+		guard let url = url else { 
 			dispatchError(SambaPlayerError.invalidUrl)
 			return nil
 		}
@@ -1202,6 +1202,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		private var timer: Timer?
 		private var currentBackupIndex = 0
 		private var currentRetryIndex = 0
+        private var currentAutoRetryEachUrl = 0
 		private var secs = 0
 		private var hasError = false
 		private var currentPosition: Float = 0
@@ -1225,57 +1226,67 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 					player.dispatchError(SambaPlayerError.playerNotLoaded)
 					return
 			}
-			
+            let edfsdf = playerInternal.player.playerItem.error
+           // let fsdf = playerInternal.player.player.c
 			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
 			code = error?.code ?? SambaPlayerError.unknown.code
-			
+            
+            debugPrint(edfsdf)
+            
 			var msg = "Ocorreu um erro! Tente novamente."
 			
 			type = .recoverable
-			
-			switch code {
-			// unauthorized DRM content
-			//case -11800 where media.drmRequest != nil: fallthrough
-			case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
-				type = .critical
-				msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
-				
-			// cannot parse
-			case -11853: fallthrough
-			// no network/internet connection
-			case -11800: fallthrough
-			case NSURLErrorNotConnectedToInternet:
-				guard currentRetryIndex < media.retriesTotal else { break }
-				
-				currentRetryIndex += 1
-				secs = 8
-				type = .info
-				msg = ""
-				
-				DispatchQueue.main.async {
-					self.player.stop()
-					self.retryHandler()
-					self.timer?.invalidate()
-					self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.retryHandler), userInfo: nil, repeats: true)
-				}
-				return
-			
-			// URL not found (or server unreachable)
-			default:
-				if currentBackupIndex < media.backupUrls.count {
-					let url = URL(string: player.media.backupUrls[currentBackupIndex])
-					
-					currentBackupIndex += 1
-					player.retry(url)
-					return
-				}
-				// all attempts have failed
-				else { type = .critical }
-			}
-			
+            
+            debugPrint(error.debugDescription)
+            if Helpers.isConnectedToInternet() && code != NSURLErrorNotConnectedToInternet{ //11853
+                switch code {
+                    case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
+                        type = .critical
+                        msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
+                    default:
+                        if currentAutoRetryEachUrl < 1 {
+                            currentAutoRetryEachUrl += 1
+                            player.retry()
+                            return
+                        }
+                        if currentBackupIndex < media.backupUrls.count {
+                            let url = URL(string: player.media.backupUrls[currentBackupIndex])
+                            currentBackupIndex += 1
+                            currentAutoRetryEachUrl = 0
+                            player.retry(url)
+                            return
+                        } else {
+                            type = .critical
+                        }
+                }
+            } else {
+                code = NSURLErrorNotConnectedToInternet
+                if currentRetryIndex < media.retriesTotal {
+                    type = .info
+                    currentRetryIndex += 1
+                    secs = 8
+                    msg = ""
+                    
+                    DispatchQueue.main.async {
+                        self.player.stop()
+                        self.retryHandler()
+                        self.timer?.invalidate()
+                        self.timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.retryHandler), userInfo: nil, repeats: true)
+                    }
+                    return
+                }
+            }
 			player.dispatchError(SambaPlayerError(code, msg, type, error))
-			
 		}
+        
+        func checkUrl(url: String?) -> Bool{
+            guard let url = url else { return false}
+            let hostinfo = gethostbyname2(url, AF_INET6)//AF_INET6
+            if hostinfo != nil {
+                return true // internet available
+            }
+            return false
+        }
 		
 		func reset() {
 			timer?.invalidate()
@@ -1283,6 +1294,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			hasError = false
 			currentRetryIndex = 0
 			currentPosition = 0
+            currentAutoRetryEachUrl = 0
 			player._disabled = false
 			
 			player.destroyScreen(&player._errorScreen) {

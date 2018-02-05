@@ -161,6 +161,15 @@ class Helpers {
 			onComplete(jsonOpt)
 		}, onError)
 	}
+    
+    static func isConnectedToInternet() -> Bool {
+        let hostname = "google.com"
+        let hostinfo = gethostbyname2(hostname, AF_INET6)//AF_INET6
+        if hostinfo != nil {
+            return true // internet available
+        }
+        return false // no internet
+    }
 }
 
 extension UIColor {
@@ -274,4 +283,5 @@ public extension UIImage {
 		UIGraphicsEndImageContext()
 		return image!
 	}
+    
 }
