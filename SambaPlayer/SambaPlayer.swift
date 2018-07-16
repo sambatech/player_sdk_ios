@@ -1226,18 +1226,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 					player.dispatchError(SambaPlayerError.playerNotLoaded)
 					return
 			}
-            let edfsdf = playerInternal.player.playerItem.error
-           // let fsdf = playerInternal.player.player.c
+
 			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
 			code = error?.code ?? SambaPlayerError.unknown.code
-            
-            debugPrint(edfsdf)
             
 			var msg = "Ocorreu um erro! Tente novamente."
 			
 			type = .recoverable
             
-            debugPrint(error.debugDescription)
             if Helpers.isConnectedToInternet() && code != NSURLErrorNotConnectedToInternet{ //11853
                 switch code {
                     case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
