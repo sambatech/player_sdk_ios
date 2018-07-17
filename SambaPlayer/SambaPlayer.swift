@@ -758,7 +758,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		switch _state {
 		case kGMFPlayerStateReadyToPlay:
-			for delegate in _delegates { delegate.onLoad?() }
+            for delegate in _delegates {
+                delegate.onLoad?()
+            }
 			
 			if _pendingPlay {
 				DispatchQueue.main.async { self.destroyThumb() }
@@ -1148,7 +1150,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             currentIndex = 0
             item = player._player?.player.player.currentItem
             url = (item?.asset as? AVURLAsset)?.url
-            menuItems = extract()
+            menuItems = extractM3u8()
             self.player.configureTopBar(outputsCount: self.menuItems.count)
         }
         
@@ -1158,8 +1160,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			menuItems = [Output]()
 		}
 		
-		private func extract() -> [Output]  {
+		private func extractM3u8() -> [Output]  {
 			guard let url = url,
+                url.pathExtension.contains("m3u8"),
 				let text = try? String(contentsOf: url, encoding: .utf8)
 				else { return [Output]() }
 			
