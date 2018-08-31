@@ -261,6 +261,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 		_player = nil
+        
+        PluginManager.sharedInstance.onDestroyPlugin()
 		
 		for delegate in _delegates { delegate.onDestroy?() }
 	}
@@ -462,7 +464,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		               name: NSNotification.Name.gmfPlayerDidPressCaptions, object: gmf)
 		
 		// Tracking
-		let _ = Tracking(self)
+		PluginManager.sharedInstance.onLoadPlugin(with: self)
 		
 		loadAsset(asset, autoPlay)
 	}
