@@ -1,14 +1,5 @@
 import Foundation
 
-
-
-
-//private static final String EVENT_LOAD = "lo";
-//private static final String EVENT_PLAY = "pl";
-//private static final String EVENT_PAUSE = "pa";
-//private static final String EVENT_ONLINE = "on";
-//private static final String EVENT_COMPLETE = "co";
-
 class TrackingLive: NSObject, Tracking {
 
 	fileprivate weak var player: SambaPlayer?
@@ -17,22 +8,31 @@ class TrackingLive: NSObject, Tracking {
     func onLoadPlugin(with player: SambaPlayer) {
         self.player = player
 
+        sttm2 = STTM2(player.media as! SambaMediaConfig)
+        
         player.delegate = self
     }
     
     
     func onDestroyPlugin() {
-        
+        if sttm2 != nil {
+            sttm2?.destroy()
+            sttm2 = nil
+        }
     }
     
 }
 
+
+
 class STTM2 {
     
-    fileprivate static let EVENT_LOAD = "lo"
-    fileprivate static let EVENT_PLAY = "pl"
-    fileprivate static let EVENT_PAUSE = "pa"
-    fileprivate static let EVENT_ONLINE = "on"
+    enum STTM2Event: String {
+        case load = "lo"
+        case play = "pl"
+        case pause = "pa"
+        case online = "on"
+    }
     
 	private var _media: SambaMediaConfig
 	private var _timer: Timer?
@@ -59,37 +59,34 @@ class STTM2 {
     func cancelOnEventTask() {
         guard let mTimer = _timer else {return}
         mTimer.invalidate()
+        _timer = nil
         isEventTimerTaskRunning = false
     }
     
-	func trackStart() {
-    
-	}
-    
     func trackPlayAndONEvent() {
-        
+        sendEvents(.play, .online)
     }
     
     func trackPauseEvent() {
-        
+        sendEvents(.pause)
     }
     
     func trackLoadEvent() {
-        
+        sendEvents(.load)
     }
     
     func trackOnEvent() {
-        
+        sendEvents(.online)
     }
     
-    func sendEvents(_ events: String...) {
+    func sendEvents(_ events: STTM2Event...) {
         
         var finalEvent: String?
         
         if events.count > 1 {
-            finalEvent = events.joined(separator: ",")
+            finalEvent = events.map{$0.rawValue}.joined(separator: ",")
         } else {
-            finalEvent = events[0]
+            finalEvent = events[0].rawValue
         }
         
         
@@ -113,7 +110,7 @@ class STTM2 {
 
 	
 	@objc private func timerHandlerOnEvent() {
-		
+		trackOnEvent()
 	}
 }
 
@@ -121,24 +118,24 @@ class STTM2 {
 
 extension TrackingLive: SambaPlayerDelegate {
     
-    func onStart() {
-//        guard let media = player.media as? SambaMediaConfig,
-//            !media.isLive && !media.isAudio
-//            else { return }
-//        sttm2 = STTM2(media)
-        sttm2?.trackStart()
-    }
-    
     func onLoad() {
         sttm2?.trackLoadEvent()
     }
     
     func onResume() {
-        sttm2?.trackPlayAndONEvent()
+        if let mSttm2 = sttm2, !mSttm2.isOnEventTaskRunning() {
+            sttm2?.trackPlayAndONEvent()
+            sttm2?.startOnEventTask()
+        }
     }
     
     func onPause() {
+        sttm2?.cancelOnEventTask()
         sttm2?.trackPauseEvent()
+    }
+    
+    func onError(_ error: SambaPlayerError) {
+        sttm2?.cancelOnEventTask()
     }
     
     func onFinish() {
