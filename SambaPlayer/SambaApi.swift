@@ -149,6 +149,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
+        media.clientId = project["clientId"] as! Int
 		media.isAudio = request.isLiveAudio || qualifier.lowercased() == "audio"
 		
 		if let title = json["title"] as? String {

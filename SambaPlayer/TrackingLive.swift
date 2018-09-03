@@ -28,6 +28,8 @@ class TrackingLive: NSObject, Tracking {
 
 class STTM2 {
     
+    private static let ORIGIN_SDK_IOS = "player.sambatech.sdk.ios"
+    
     enum STTM2Event: String {
         case load = "lo"
         case play = "pl"
@@ -79,27 +81,6 @@ class STTM2 {
     func trackOnEvent() {
         sendEvents(.online)
     }
-    
-    func sendEvents(_ events: STTM2Event...) {
-        
-        var finalEvent: String?
-        
-        if events.count > 1 {
-            finalEvent = events.map{$0.rawValue}.joined(separator: ",")
-        } else {
-            finalEvent = events[0].rawValue
-        }
-        
-        
-//        String finalEvents = null;
-//        if (events.length > 1) {
-//            finalEvents = TextUtils.join(",", events);
-//        } else {
-//            finalEvents = events[0];
-//        }
-//
-//        new RequestTrackerLiveTask().execute(finalEvents);
-    }
 	
 	func destroy() {
 		#if DEBUG
@@ -113,6 +94,92 @@ class STTM2 {
 	@objc private func timerHandlerOnEvent() {
 		trackOnEvent()
 	}
+    
+    
+    private func sendEvents(_ events: STTM2Event...) {
+        
+        var finalEvent: String!
+        
+        if events.count > 1 {
+            finalEvent = events.map{$0.rawValue}.joined(separator: ",")
+        } else {
+            finalEvent = events[0].rawValue
+        }
+        
+        sendRequest(with: finalEvent)
+        
+    }
+    
+    private func sendRequest(with event: String) {
+        
+        getSTTM2Data { [weak self] sttm2Data in
+            guard let strongSelf = self else {return}
+            guard let mSTTM = sttm2Data else {return}
+            
+            let urlString = "\(mSTTM.url)?event=\(event)&cid=\(strongSelf._media.clientId)&pid=\(strongSelf._media.projectId)&lid=\(strongSelf._media.id)&cat=\(strongSelf._media.categoryId)&org=\(STTM2.ORIGIN_SDK_IOS)"
+            
+            var urlRequest = URLRequest(url: URL(string: urlString)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: Helpers.requestTimeout)
+            
+            urlRequest.setValue("Bearer \(mSTTM.key)", forHTTPHeaderField: "Authorization")
+            urlRequest.setValue(Helpers.getUserAgentString(), forHTTPHeaderField: "User-Agent")
+            urlRequest.httpMethod = "GET"
+            
+            
+            Helpers.requestURLWithHttpResponse(urlRequest, {(data: Data?, response: HTTPURLResponse?) in
+                print(response?.statusCode)
+            })
+        }
+       
+    }
+    
+    
+    private func getSTTM2Data(_ onComplete: @escaping (_ sttm2data: STTM2Data?) -> Void) {
+        let urlString = "\(Helpers.settings["playerapi_endpoint_prod"]!)\(_media.projectHash)/jwt/\(_media.id)"
+        
+        
+        let urlRequest = URLRequest(url: URL(string: urlString)!, cachePolicy: .useProtocolCachePolicy, timeoutInterval: Helpers.requestTimeout)
+        
+        Helpers.requestURLWithHttpResponse(urlRequest, { [weak self] (data: Data?, response: HTTPURLResponse?) in
+            
+            guard let strongSelf = self else {return}
+            
+            if (response?.statusCode)! >= 200 && (response?.statusCode)! <= 299 {
+                let responseText = String(data: data!, encoding: .utf8)!
+                
+                var tokenBase64: String = responseText
+                
+                let mediaId = strongSelf._media.id
+                
+                if let m = mediaId.range(of: "\\d(?=[a-zA-Z]*$)", options: .regularExpression),
+                    let delimiter = Int(mediaId[m]) {
+                    tokenBase64 = responseText.substring(with: responseText.characters.index(responseText.startIndex, offsetBy: delimiter)..<responseText.characters.index(responseText.endIndex, offsetBy: -delimiter))
+                }
+                
+                tokenBase64 = tokenBase64.replacingOccurrences(of: "-", with: "+")
+                    .replacingOccurrences(of: "_", with: "/")
+                
+                switch tokenBase64.characters.count % 4 {
+                case 2:
+                    tokenBase64 += "=="
+                case 3:
+                    tokenBase64 += "="
+                default: break
+                }
+                
+                guard let jsonText = Data(base64Encoded: tokenBase64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters) else {
+                    print("\(type(of: self)) Error: Base64 token failed to create encoded data.")
+                    return
+                }
+                
+                let sttm2Data = try? STTM2Data(anyObject: JSONSerialization.jsonObject(with: jsonText, options: .allowFragments) as AnyObject)
+                
+                onComplete(sttm2Data)
+                
+            }
+        }) { (player, response) in
+            onComplete(nil)
+        }
+    }
 }
 
 //MARK: - Extensions
@@ -149,6 +216,19 @@ extension TrackingLive: SambaPlayerDelegate {
     
     func onDestroy() {
         sttm2?.destroy()
+    }
+    
+}
+
+
+fileprivate struct STTM2Data {
+    
+    var key: String
+    var url: String
+    
+    init(anyObject: AnyObject) {
+        key = anyObject["key"] as! String
+        url = anyObject["url"] as! String
     }
     
 }
