@@ -20,7 +20,11 @@ class TrackingVOD : NSObject, Tracking, SambaPlayerDelegate {
     }
     
     func onDestroyPlugin() {
-        _sttm?.destroy()
+        _player?.unsubscribeDelegate(self)
+        if _sttm != nil {
+            _sttm?.destroy()
+            _sttm = nil
+        }
     }
     
 	
@@ -113,8 +117,13 @@ class STTM {
 		#if DEBUG
 		print("destroy")
 		#endif
-		
-		_timer?.invalidate()
+        if _timer != nil {
+            _timer?.invalidate()
+            _timer = nil
+        }
+        _targets.removeAll()
+        _progresses.removeAllObjects()
+        _trackedRetentions.removeAll()
 	}
 	
 	private func collectProgress() {

@@ -15,6 +15,7 @@ class TrackingLive: NSObject, Tracking {
     
     
     func onDestroyPlugin() {
+        player?.unsubscribeDelegate(self)
         if sttm2 != nil {
             sttm2?.destroy()
             sttm2 = nil
