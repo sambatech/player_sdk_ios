@@ -191,6 +191,7 @@ Configuration for captions
 	/// The project hash the media belongs to
 	public var projectHash = ""
 	/// The project ID the media belongs to
+    public var clientId = 0
 	public var projectId = 0
 	/// The category ID the media belongs to
 	public var categoryId = 0
@@ -225,6 +226,7 @@ Configuration for captions
 		if let m = media as? SambaMediaConfig {
 			id = m.id
 			projectHash = m.projectHash
+            clientId = m.clientId
 			projectId = m.projectId
 			categoryId = m.categoryId
 			sessionId = m.sessionId

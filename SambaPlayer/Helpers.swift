@@ -138,6 +138,21 @@ class Helpers {
 		
 		requestTask.resume()
 	}
+    
+    
+    static func requestURLWithHttpResponse<T>(_ urlRequest: URLRequest,  _ onComplete: ((T?, HTTPURLResponse?) -> Void)?, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
+        let requestTask = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+
+            if let error = error {
+                onError?(error, response)
+                return
+            }
+            
+            onComplete?(data as? T, response as? HTTPURLResponse)
+        }
+        
+        requestTask.resume()
+    }
 	
 	static func requestURLJson(_ url: String, _ onComplete: @escaping (AnyObject?) -> Void, _ onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		requestURL(url, { (data: Data?) in
@@ -169,6 +184,42 @@ class Helpers {
             return true // internet available
         }
         return false // no internet
+    }
+    
+    private static func DarwinVersion() -> String {
+        var sysinfo = utsname()
+        uname(&sysinfo)
+        let dv = String(bytes: Data(bytes: &sysinfo.release, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
+        return "Darwin/\(dv)"
+    }
+    
+    private static func CFNetworkVersion() -> String {
+        let dictionary = Bundle(identifier: "com.apple.CFNetwork")?.infoDictionary!
+        let version = dictionary?["CFBundleShortVersionString"] as! String
+        return "CFNetwork/\(version)"
+    }
+    
+    
+    private static func deviceVersion() -> String {
+        let currentDevice = UIDevice.current
+        return "\(currentDevice.systemName)/\(currentDevice.systemVersion)"
+    }
+    
+    private static func deviceName() -> String {
+        var sysinfo = utsname()
+        uname(&sysinfo)
+        return String(bytes: Data(bytes: &sysinfo.machine, count: Int(_SYS_NAMELEN)), encoding: .ascii)!.trimmingCharacters(in: .controlCharacters)
+    }
+    
+    private static func appNameAndVersion() -> String {
+        let dictionary = Bundle.main.infoDictionary!
+        let version = dictionary["CFBundleShortVersionString"] as! String
+        let name = dictionary["CFBundleName"] as! String
+        return "\(name)/\(version)"
+    }
+    
+    static func getUserAgentString() -> String {
+        return "\(appNameAndVersion()) \(deviceName()) \(deviceVersion()) \(CFNetworkVersion()) \(DarwinVersion())"
     }
 }
 
@@ -283,5 +334,4 @@ public extension UIImage {
 		UIGraphicsEndImageContext()
 		return image!
 	}
-    
 }
