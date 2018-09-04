@@ -32,9 +32,9 @@ class TrackingVOD : NSObject, Tracking, SambaPlayerDelegate {
 	
 	func onStart() {
 		// media data must come from API
-		// do not track live nor audio
+		// do not track live
 		guard let media = _player?.media as? SambaMediaConfig,
-			!media.isLive && !media.isAudio
+			!media.isLive
 			else { return }
 		
 		// reset sttm on every new start
