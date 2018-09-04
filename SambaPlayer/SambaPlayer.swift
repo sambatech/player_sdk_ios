@@ -51,6 +51,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			_delegates.append(delegate)
 		}
 	}
+    
+    public func unsubscribeDelegate(_ delegate: SambaPlayerDelegate) {
+        let indexToRemove = _delegates.index(where: {$0 === delegate})
+        
+        if indexToRemove != nil {
+            _delegates.remove(at: indexToRemove!)
+        }
+        
+    }
 	
 	/// Current media time
 	public var currentTime: Float {
@@ -97,6 +106,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 					self.createThumb()
 				}
 			}
+            
+            PluginManager.sharedInstance.onDestroyPlugin()
+            PluginManager.sharedInstance.onLoadPlugin(with: self)
 		}
 	}
 	
@@ -261,6 +273,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 		_player = nil
+        
+        PluginManager.sharedInstance.onDestroyPlugin()
 		
 		for delegate in _delegates { delegate.onDestroy?() }
 	}
@@ -460,9 +474,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		nc.addObserver(self, selector: #selector(captionsTouchHandler),
 		               name: NSNotification.Name.gmfPlayerDidPressCaptions, object: gmf)
-		
-		// Tracking
-		let _ = Tracking(self)
 		
 		loadAsset(asset, autoPlay)
 	}
