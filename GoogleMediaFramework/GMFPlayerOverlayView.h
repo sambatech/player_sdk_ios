@@ -67,6 +67,9 @@ typedef enum CurrentPlayPauseReplayIcon {
 - (void)enableTopBar;
 - (void)hideBackground;
 - (void)showBackground;
+- (void)showThumbAudioBackground;
+- (void)hideThumbAudioBackground;
+- (void)setThumbImageBackground:(UIImage *)image;
 - (void)showPlayPauseReplayButton;
 - (void)hidePlayPauseReplayButton;
 - (void)reset;

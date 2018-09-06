@@ -12,6 +12,8 @@ import UIKit
 class Helpers {
 	static let settings = NSDictionary.init(contentsOfFile: Bundle(for:Helpers.self).path(forResource: "Settings", ofType: "plist")!)! as! [String:String]
 	static let requestTimeout = TimeInterval(30)
+    
+    static let imageCache = NSCache<NSString, UIImage>()
 	
 	static func matchesForRegexInText(_ regex: String!, text: String!) -> [String] {
 		do {
@@ -221,6 +223,35 @@ class Helpers {
     static func getUserAgentString() -> String {
         return "\(appNameAndVersion()) \(deviceName()) \(deviceVersion()) \(CFNetworkVersion()) \(DarwinVersion())"
     }
+    
+    static func downloadImage(from url: String, completion: @escaping (_ image: UIImage?,_ error: Error?) -> Void) {
+        if let cachedImage = imageCache.object(forKey: url as NSString) {
+            DispatchQueue.main.async {
+                completion(cachedImage, nil)
+            }
+        } else {
+            let requestTask = URLSession.shared.dataTask(with: URL(string: url)!) { data, response, error in
+    
+                if let error = error {
+                    DispatchQueue.main.async {
+                        completion(nil, error)
+                    }
+                } else if let data = data, let image = UIImage(data: data) {
+                    imageCache.setObject(image, forKey: url as NSString)
+                    DispatchQueue.main.async {
+                        completion(image, nil)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                       completion(nil, NSError())
+                    }
+                }
+                
+            }
+            requestTask.resume()
+        }
+    }
+    
 }
 
 extension UIColor {

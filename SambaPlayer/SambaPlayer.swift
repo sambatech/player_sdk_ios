@@ -444,7 +444,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		guard let url = decideUrl(),
 			let asset = createAsset(url) else { return }
 		
-		guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: media.isAudio ? 10 : 0),
+		guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
 		                                        andInitedBlock: postConfigUI) else {
 			dispatchError(SambaPlayerError.creatingPlayer)
 			return
@@ -492,12 +492,30 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         player.removeActionButton(byName: "Live")
 		if media.isAudio {
 			player.videoTitle = ""
-			player.hideBackground()
+			player.showBackground()
 			player.getControlsView().hideFullscreenButton()
 			player.getControlsView().showPlayButton()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
 			player.playerOverlay().autoHideEnabled = false
 			player.playerOverlay().controlsHideEnabled = false
+            
+            if let mThumbAudioUrl = media.thumbAudioURL {
+                player.backgroundColor = UIColor.clear
+                Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
+                    guard let strongSelf = self else {return}
+                    guard let player = strongSelf._player else { return }
+                    guard error == nil, let mImage = image else {
+                        player.backgroundColor = UIColor(0x434343)
+                        return
+                    }
+
+                    player.backgroundColor = UIColor.clear
+                    (player.playerOverlayView() as! GMFPlayerOverlayView).setThumbImageBackground(mImage)
+
+                }
+            } else {
+                player.backgroundColor = UIColor(0x434343)
+            }
 		}
 		// video only features
 		else {
