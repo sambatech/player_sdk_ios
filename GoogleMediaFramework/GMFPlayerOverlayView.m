@@ -25,6 +25,7 @@
 
 @implementation GMFPlayerOverlayView {
   UIActivityIndicatorView *_spinner;
+  UIImageView *_image;
   UIImage *_playImage;
   UIImage *_pauseImage;
   UIImage *_replayImage;
@@ -45,6 +46,11 @@
 	_topBarHideEnabled = YES;
 	_visible = YES;
     
+    _image = [[UIImageView alloc] init];
+    _image.backgroundColor = UIColor.clearColor;
+    _image.hidden = YES;
+    [self addSubview: _image];
+      
     // Set the images.
     _playImage = [GMFResources playerBarPlayLargeButtonImage];
     _pauseImage = [GMFResources playerBarPauseLargeButtonImage];
@@ -111,6 +117,7 @@
   [_playerControlsView setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_playPauseReplayButton setTranslatesAutoresizingMaskIntoConstraints:NO];
   [_topBarView setTranslatesAutoresizingMaskIntoConstraints:NO];
+  [_image setTranslatesAutoresizingMaskIntoConstraints:NO];
 
   NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(_spinner,
                                                                  _playerControlsView,
@@ -141,6 +148,40 @@
                                              multiplier:1.0f
                                                constant:0]];
   
+  constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_image
+                                                attribute:NSLayoutAttributeTrailing
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem: self
+                                                attribute:NSLayoutAttributeTrailing
+                                               multiplier:1.0f
+                                                 constant:0]];
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_image
+                                                attribute:NSLayoutAttributeLeading
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem: self
+                                                attribute:NSLayoutAttributeLeading
+                                               multiplier:1.0f
+                                                 constant:0]];
+
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_image
+                                                attribute:NSLayoutAttributeTop
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem: self
+                                                attribute:NSLayoutAttributeTop
+                                               multiplier:1.0f
+                                                 constant:0]];
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_image
+                                                attribute:NSLayoutAttributeBottom
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem: self
+                                                attribute:NSLayoutAttributeBottom
+                                               multiplier:1.0f
+                                                 constant:0]];
+    
   // Technically this works with just the Y alignment, but xcode will complain about missing
   // constraints, so we add the X as well.
   constraints = [constraints arrayByAddingObject:
@@ -247,6 +288,19 @@
 	
 	[self setNeedsLayout];
 	[self layoutIfNeeded];
+}
+
+-(void)showThumbAudioBackground {
+    _image.hidden = NO;
+}
+
+-(void)hideThumbAudioBackground {
+    _image.hidden = YES;
+}
+
+- (void)setThumbImageBackground:(UIImage *)image {
+    _image.hidden = NO;
+    _image.image = image;
 }
 
 - (void)disableTopBar {
