@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B15BE8021512EEE002C41CF /* SambaCast.swift */; };
 		6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */; };
 		6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */; };
 		6B3CC8AB214FD52800FAC5A4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8AA214FD52800FAC5A4 /* AVFoundation.framework */; };
@@ -25,6 +26,7 @@
 		6B43787D2139A0C200A7C3EC /* TrackingLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B43787C2139A0C100A7C3EC /* TrackingLive.swift */; };
 		6B4378802139AC1C00A7C3EC /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B43787F2139AC1C00A7C3EC /* PluginManager.swift */; };
 		6B4378822139AF5600A7C3EC /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4378812139AF5600A7C3EC /* Tracking.swift */; };
+		6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */; };
 		9A0617AC1F448A6A00345EFC /* player_control_realtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */; };
 		9A0617AD1F448A6B00345EFC /* player_control_realtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */; };
 		9A0617AE1F448A6B00345EFC /* player_control_realtime@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */; };
@@ -137,6 +139,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
 		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		6B3CC8AA214FD52800FAC5A4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -155,6 +158,7 @@
 		6B43787C2139A0C100A7C3EC /* TrackingLive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingLive.swift; sourceTree = "<group>"; };
 		6B43787F2139AC1C00A7C3EC /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		6B4378812139AF5600A7C3EC /* Tracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
+		6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastButton.swift; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -297,6 +301,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B15BE7F21512ECC002C41CF /* Cast */ = {
+			isa = PBXGroup;
+			children = (
+				6B15BE8021512EEE002C41CF /* SambaCast.swift */,
+				6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */,
+			);
+			name = Cast;
+			sourceTree = "<group>";
+		};
 		6B43787E2139ABE700A7C3EC /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -391,6 +404,7 @@
 		9A5267EE1D22D5BD00C9C015 /* SambaPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				6B15BE7F21512ECC002C41CF /* Cast */,
 				9AF57B7F1DA431690062E54A /* Drm */,
 				9A4C4DF51E2E6983001A75DD /* Screens */,
 				9A5267EF1D22D5BD00C9C015 /* Helpers.swift */,
@@ -710,11 +724,13 @@
 				9AF325ED1D14B5B900B6E450 /* GMFTopBarView.m in Sources */,
 				9A67DD7A1DE4BE2F00F8E172 /* ErrorScreen.swift in Sources */,
 				9AF325DC1D14B5B900B6E450 /* GMFIMASDKAdService.m in Sources */,
+				6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */,
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,
 				9AF325F41D14B5B900B6E450 /* UIButton+GMFTintableButton.m in Sources */,
 				C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */,
 				9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */,
+				6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */,
 				9AF325EF1D14B5B900B6E450 /* GMFVideoPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
