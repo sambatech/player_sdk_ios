@@ -17,6 +17,8 @@ public class SambaCast: NSObject {
     
     private var channel: SambaCastChannel?
     
+    private var sambaCastRequest: SambaCastRequest = SambaCastRequest()
+    
     public var enableSDKLogging: Bool = false
     
     private weak var buttonForIntrucions: SambaCastButton?
@@ -66,7 +68,7 @@ public class SambaCast: NSObject {
                                                object: GCKCastContext.sharedInstance())
     }
     
-    public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil) {
+    public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil, completion: @escaping (SambaCastCompletionType, Error?) -> Void) {
         guard hasCastSession() else { return }
         let castModel = CastModel.castModelFrom(media: media, currentTime: currentTime, captionTheme: captionTheme)
         guard let jsonCastModel = castModel.toStringJson() else { return }
@@ -74,18 +76,32 @@ public class SambaCast: NSObject {
         let metadata = GCKMediaMetadata(metadataType: .movie)
         metadata.setString(media.title, forKey: kGCKMetadataKeyTitle)
     
-        let mediaInfo = GCKMediaInformation(contentID: jsonCastModel, streamType: .buffered,
-                                            contentType: "video/mp4", metadata: metadata,
-                                            streamDuration: TimeInterval(media.duration),
-                                            mediaTracks: nil,
-                                            textTrackStyle: nil, customData: nil)
-        let builder = GCKMediaQueueItemBuilder()
-        builder.mediaInformation = mediaInfo
-        builder.autoplay = false
-        let item = builder.build()
-        let request = GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remoteMediaClient?.queueLoad([item], start: 0, playPosition: 0,
-        repeatMode: .off, customData: nil)
-        request?.delegate = self
+        
+        if getPersistedCurrentMedia() != castModel.m {
+            let mediaInfo = GCKMediaInformation(contentID: jsonCastModel, streamType: .buffered,
+                                                contentType: "video/mp4", metadata: metadata,
+                                                streamDuration: TimeInterval(media.duration),
+                                                mediaTracks: nil,
+                                                textTrackStyle: nil, customData: nil)
+            let builder = GCKMediaQueueItemBuilder()
+            builder.mediaInformation = mediaInfo
+            builder.autoplay = false
+            let item = builder.build()
+            let request = GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remoteMediaClient?.queueLoad([item], start: 0, playPosition: 0,
+                                                                                                                          repeatMode: .off, customData: nil)
+            sambaCastRequest.set { [weak self] error in
+                guard let strongSelf = self else { return }
+                guard error == nil else {
+                    completion(.error, error)
+                    return
+                }
+                strongSelf.persistCurrentMedia(id: castModel.m!)
+                completion(.loaded, nil)
+            }
+            request?.delegate = sambaCastRequest
+        } else {
+            completion(.resumed, nil)
+        }
         
     }
     
@@ -145,6 +161,7 @@ public class SambaCast: NSObject {
     
     fileprivate func onCastSessionDisconnected() {
         disableChannel()
+        clearCaches()
         delegates.forEach({$0.onDisconnected?()})
     }
     
@@ -175,8 +192,23 @@ public class SambaCast: NSObject {
         }
     }
     
+    //MARK: - Helpers
+    
     private func enableChannelForReceiveMessages() {
+        registerDeviceForProgress(enable: true)
         channel?.delegate = self
+    }
+    
+    private func persistCurrentMedia(id: String) {
+        UserDefaults.standard.set(id, forKey: "media_id")
+    }
+    
+    private func getPersistedCurrentMedia() -> String? {
+        return UserDefaults.standard.string(forKey: "media_id")
+    }
+    
+    private func clearCaches() {
+        UserDefaults.standard.removeObject(forKey: "media_id")
     }
     
     //MARK: - Observers
@@ -233,17 +265,6 @@ extension SambaCast: GCKSessionManagerListener {
     }
 }
 
-extension SambaCast: GCKRequestDelegate {
-    
-    public func requestDidComplete(_ request: GCKRequest) {
-        print("request \(Int(request.requestID)) completed")
-    }
-    
-    public func request(_ request: GCKRequest, didFailWithError error: GCKError) {
-        print("request \(Int(request.requestID)) failed with error \(error)")
-    }
-    
-}
 
 extension SambaCast: SambaCastChannelDelegate {
     
@@ -278,6 +299,14 @@ extension SambaCast: SambaCastChannelDelegate {
     @objc optional func onCastFinish()
 }
 
+
+//MARK: - Enums
+
+public enum SambaCastCompletionType {
+    case loaded
+    case resumed
+    case error
+}
 
 
 
