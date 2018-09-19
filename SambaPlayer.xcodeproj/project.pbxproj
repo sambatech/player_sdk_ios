@@ -27,6 +27,8 @@
 		6B4378802139AC1C00A7C3EC /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B43787F2139AC1C00A7C3EC /* PluginManager.swift */; };
 		6B4378822139AF5600A7C3EC /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4378812139AF5600A7C3EC /* Tracking.swift */; };
 		6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */; };
+		6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */; };
+		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
 		9A0617AC1F448A6A00345EFC /* player_control_realtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */; };
 		9A0617AD1F448A6B00345EFC /* player_control_realtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */; };
 		9A0617AE1F448A6B00345EFC /* player_control_realtime@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */; };
@@ -159,6 +161,8 @@
 		6B43787F2139AC1C00A7C3EC /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		6B4378812139AF5600A7C3EC /* Tracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
 		6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastButton.swift; sourceTree = "<group>"; };
+		6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastChannel.swift; sourceTree = "<group>"; };
+		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -306,6 +310,8 @@
 			children = (
 				6B15BE8021512EEE002C41CF /* SambaCast.swift */,
 				6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */,
+				6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */,
+				6BAFD2BC2152A689004882A3 /* CastModel.swift */,
 			);
 			name = Cast;
 			sourceTree = "<group>";
@@ -700,6 +706,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */,
+				6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */,
 				9AF325DF1D14B5B900B6E450 /* GMFPlayerControlsView.m in Sources */,
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,
@@ -712,6 +719,7 @@
 				9AF325EB1D14B5B900B6E450 /* GMFResources.m in Sources */,
 				9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */,
 				9A5268021D22D5BD00C9C015 /* SambaPlayer.swift in Sources */,
+				6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */,
 				9AF325E41D14B5B900B6E450 /* GMFPlayerOverlayViewController.m in Sources */,
 				9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */,
 				6B43787D2139A0C200A7C3EC /* TrackingLive.swift in Sources */,

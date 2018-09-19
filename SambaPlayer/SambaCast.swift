@@ -13,7 +13,9 @@ public class SambaCast: NSObject {
     
     public static var sharedInstance = SambaCast()
     
-    private var delegates: [SambaCastDelegate] = []
+    fileprivate var delegates: [SambaCastDelegate] = []
+    
+    private var channel: SambaCastChannel?
     
     public var enableSDKLogging: Bool = false
     
@@ -64,6 +66,48 @@ public class SambaCast: NSObject {
                                                object: GCKCastContext.sharedInstance())
     }
     
+    public func loadMedia(media: SambaMedia) {
+        if hasCastSession() {
+            
+        }
+    }
+
+    //MARK: - Internal Methods
+    
+    func playCast() {
+        let message = "{\"type\": \"play\"}"
+        sendRequest(with: message);
+    }
+    
+    func pauseCast() {
+        let message = "{\"type\": \"pause\"}"
+        sendRequest(with: message);
+    }
+    
+    func seek(to position: CLong) {
+        let message = "{\"type\": \"seek\", \"data\": \(position/1000) }"
+        sendRequest(with: message);
+    }
+    
+    func changeSubtitle(to language: String?) {
+        let data: String!
+        
+        if let mLanguage = language {
+            data = "{\"lang\": \"\(mLanguage)\"}"
+        } else {
+            data = "{\"lang\": \"none\"}"
+        }
+        
+        let message = "{\"type\": \"changeSubtitle\", \"data\": \(data) }"
+            
+        sendRequest(with: message)
+    }
+    
+    func registerDeviceForProgress(enable: Bool) {
+        let message = "{\"type\": \"registerForProgressUpdate\", \"data\": \(enable) }"
+        sendRequest(with: message)
+    }
+    
     //MARK: - Private Methods
     
     private func setupCastLogging() {
@@ -76,11 +120,45 @@ public class SambaCast: NSObject {
     }
     
     fileprivate func onCastSessionConnected() {
+        enableChannel()
+        enableChannelForReceiveMessages()
         delegates.forEach({$0.onConnected?()})
     }
     
     fileprivate func onCastSessionDisconnected() {
+        disableChannel()
         delegates.forEach({$0.onDisconnected?()})
+    }
+    
+    private func hasCastSession() -> Bool {
+        guard let currentCastSession = GCKCastContext.sharedInstance().sessionManager.currentCastSession  else { return false }
+        guard currentCastSession.connectionState == .connected else { return false }
+        return true
+    }
+    
+    private func sendRequest(with message: String) {
+        if hasCastSession() {
+            channel?.sendTextMessage(message, error: nil)
+        }
+    }
+    
+    private func enableChannel() {
+        if channel == nil && hasCastSession() {
+            channel = SambaCastChannel(namespace: Helpers.settings["cast_namespace_prod"]!)
+            GCKCastContext.sharedInstance().sessionManager.currentCastSession?.add(channel!)
+        }
+    }
+    
+    private func disableChannel() {
+        if channel != nil {
+            GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remove(channel!)
+            channel?.delegate = nil
+            channel = nil
+        }
+    }
+    
+    private func enableChannelForReceiveMessages() {
+        channel?.delegate = self
     }
     
     //MARK: - Observers
@@ -149,6 +227,22 @@ extension SambaCast: GCKRequestDelegate {
     
 }
 
+extension SambaCast: SambaCastChannelDelegate {
+    
+    func didReceiveMessage(message: String) {
+        guard let jsonDicitonary = Helpers.convertToDictionary(text: message) else { return }
+        
+        if let position = jsonDicitonary["progress"] as? Double, let duration = jsonDicitonary["duration"] as? Double {
+            delegates.forEach({ $0.onCastProgress?(position: CLong(position * 1000), duration: CLong(duration * 1000))})
+        } else if let type = jsonDicitonary["type"] as? String {
+            if type.lowercased().elementsEqual("finish") {
+                delegates.forEach({ $0.onCastFinish?() })
+            }
+        }
+    }
+    
+}
+
 //MARK: - Protocols
 
 @objc public protocol SambaCastDelegate: class {
@@ -156,5 +250,16 @@ extension SambaCast: GCKRequestDelegate {
     @objc optional func onConnected()
     
     @objc optional func onDisconnected()
-
+    
+    @objc optional func onCastPlay()
+    
+    @objc optional func onCastPause()
+    
+    @objc optional func onCastProgress(position: CLong, duration: CLong)
+    
+    @objc optional func onCastFinish()
 }
+
+
+
+
