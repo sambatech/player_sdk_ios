@@ -66,12 +66,30 @@ public class SambaCast: NSObject {
                                                object: GCKCastContext.sharedInstance())
     }
     
-    public func loadMedia(media: SambaMedia) {
-        if hasCastSession() {
-            
-        }
+    public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil) {
+        guard hasCastSession() else { return }
+        let castModel = CastModel.castModelFrom(media: media, currentTime: currentTime, captionTheme: captionTheme)
+        guard let jsonCastModel = castModel.toStringJson() else { return }
+        
+        let metadata = GCKMediaMetadata(metadataType: .movie)
+        metadata.setString(media.title, forKey: kGCKMetadataKeyTitle)
+    
+        let mediaInfo = GCKMediaInformation(contentID: jsonCastModel, streamType: .buffered,
+                                            contentType: "video/mp4", metadata: metadata,
+                                            streamDuration: TimeInterval(media.duration),
+                                            mediaTracks: nil,
+                                            textTrackStyle: nil, customData: nil)
+        let builder = GCKMediaQueueItemBuilder()
+        builder.mediaInformation = mediaInfo
+        builder.autoplay = false
+        let item = builder.build()
+        let request = GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remoteMediaClient?.queueLoad([item], start: 0, playPosition: 0,
+        repeatMode: .off, customData: nil)
+        request?.delegate = self
+        
     }
-
+    
+    
     //MARK: - Internal Methods
     
     func playCast() {

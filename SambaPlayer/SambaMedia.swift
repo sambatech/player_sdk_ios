@@ -75,6 +75,10 @@ If `outputs` field is nil, `url` field will be used instead.
 	
 	/// Media current color theme
 	public var theme: UInt = 0x72BE44
+    
+    public var themeColorHex: String = "#72BE44"
+    
+    public var duration: Float = 0
 	
 	/// Description of the media (returns media's title when empty)
 	public override var description: String { return title }

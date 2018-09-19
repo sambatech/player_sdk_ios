@@ -21,7 +21,7 @@ class CastModel {
     var baseURL : String?
     var drm : CastDRM?
     
-    public class func modelsFromDictionaryArray(array:NSArray) -> [CastModel] {
+    class func modelsFromDictionaryArray(array:NSArray) -> [CastModel] {
         var models:[CastModel] = []
         for item in array
         {
@@ -30,9 +30,45 @@ class CastModel {
         return models
     }
     
-    public init() {}
+    class func castModelFrom(media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil) -> CastModel {
+        let castQuery = CastQuery()
+        castQuery.html5 = true
+        castQuery.castApi = "prod"
+        castQuery.captionTheme = captionTheme
+        castQuery.initialTime = currentTime
+        castQuery.castApi = Helpers.settings["cast_application_id_prod"]!
+        
+        
+        let mediaConfig = media as! SambaMediaConfig
+        
+        let castModel = CastModel()
+        castModel.qs = castQuery
+        castModel.m = mediaConfig.id
+        castModel.ph = mediaConfig.projectHash
+        castModel.duration = CLong(mediaConfig.duration)
+        castModel.theme = mediaConfig.themeColorHex
+        castModel.baseURL = Helpers.settings["player_url_prod"]
+        castModel.thumbURL = ""
+        
+        if mediaConfig.isLive {
+            castModel.live = mediaConfig.id
+        } else {
+            castModel.live = nil
+        }
+        
+        if let drmRequest = mediaConfig.drmRequest {
+            let castDrm = CastDRM()
+            castDrm.sessionId = drmRequest.getLicenseParam(key: "SessionId")
+            castDrm.ticket = drmRequest.getLicenseParam(key: "Ticket")
+            castModel.drm = castDrm
+        }
+        
+        return castModel
+    }
     
-    public init?(dictionary: NSDictionary) {
+    init() {}
+    
+    init?(dictionary: NSDictionary) {
         
         title = dictionary["title"] as? String
         m = dictionary["m"] as? String
@@ -47,7 +83,7 @@ class CastModel {
     }
     
     
-    public func dictionaryRepresentation() -> NSDictionary {
+    func dictionaryRepresentation() -> NSDictionary {
         
         let dictionary = NSMutableDictionary()
         
@@ -64,6 +100,11 @@ class CastModel {
         dictionary.setValue(self.drm, forKey: "drm")
         
         return dictionary
+    }
+    
+    func toStringJson() -> String? {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: self.dictionaryRepresentation(), options: []) else { return nil }
+        return String(data: jsonData, encoding: .utf8)
     }
     
 }
