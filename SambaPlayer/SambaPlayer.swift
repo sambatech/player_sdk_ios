@@ -443,37 +443,49 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		guard let url = decideUrl(),
 			let asset = createAsset(url) else { return }
+       
+
+        
+        if SambaCast.sharedInstance.isCasting() {
+            guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
+                                                    andInitedBlock: postConfigUI, andGMFVideoPlayer: CastPlayer()) else {
+                                                            dispatchError(SambaPlayerError.creatingPlayer)
+                                                            return
+            }
+            _player = gmf
+        } else {
+            guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
+                                                    andInitedBlock: postConfigUI) else {
+                                                        dispatchError(SambaPlayerError.creatingPlayer)
+                                                        return
+            }
+            _player = gmf
+        }
 		
-		guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
-		                                        andInitedBlock: postConfigUI) else {
-			dispatchError(SambaPlayerError.creatingPlayer)
-			return
-		}
 	
-		_player = gmf
 		_outputManager = OutputManager(self)
 		_captionsScreen = CaptionsScreen(player: self)
 		
 		configUI()
 		DispatchQueue.main.async { self.destroyThumb() } // antecipates thumb destroy
-		attachVC(gmf, nil, nil) { self.updateFullscreen(nil, false) }
+        attachVC(_player!, nil, nil) { self.updateFullscreen(nil, false) }
 		
-		let nc = NotificationCenter.default
-		
-		nc.addObserver(self, selector: #selector(playbackStateHandler),
-		               name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: gmf)
-		
-		nc.addObserver(self, selector: #selector(durationChangedHandler),
-		               name: NSNotification.Name.gmfPlayerCurrentTotalTimeDidChange, object: gmf)
-		
-		nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
-		               name: NSNotification.Name.gmfPlayerDidMinimize, object: gmf)
-		
-		nc.addObserver(self, selector: #selector(hdTouchHandler),
-		               name: NSNotification.Name.gmfPlayerDidPressHd, object: gmf)
-		
-		nc.addObserver(self, selector: #selector(captionsTouchHandler),
-		               name: NSNotification.Name.gmfPlayerDidPressCaptions, object: gmf)
+        let nc = NotificationCenter.default
+        
+        nc.addObserver(self, selector: #selector(playbackStateHandler),
+                       name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(durationChangedHandler),
+                       name: NSNotification.Name.gmfPlayerCurrentTotalTimeDidChange, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(fullscreenTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidMinimize, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(hdTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidPressHd, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(captionsTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidPressCaptions, object: _player!)
 		
 		loadAsset(asset, autoPlay)
 	}

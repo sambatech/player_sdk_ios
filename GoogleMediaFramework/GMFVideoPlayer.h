@@ -83,6 +83,9 @@
 - (NSTimeInterval)bufferedMediaTime;
 - (CMTimeRange)getCurrentSeekableTimeRange;
 
+// Updates the internal player state and notifies the delegate.
+- (void)setState:(GMFPlayerState)state;
+
 @end
 
 

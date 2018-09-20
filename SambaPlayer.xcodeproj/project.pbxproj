@@ -29,6 +29,7 @@
 		6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */; };
 		6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */; };
 		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
+		6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BE215424ED004882A3 /* CastPlayer.swift */; };
 		9A0617AC1F448A6A00345EFC /* player_control_realtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */; };
 		9A0617AD1F448A6B00345EFC /* player_control_realtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */; };
 		9A0617AE1F448A6B00345EFC /* player_control_realtime@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */; };
@@ -163,6 +164,7 @@
 		6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastButton.swift; sourceTree = "<group>"; };
 		6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastChannel.swift; sourceTree = "<group>"; };
 		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
+		6BAFD2BE215424ED004882A3 /* CastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastPlayer.swift; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 				6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */,
 				6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */,
 				6BAFD2BC2152A689004882A3 /* CastModel.swift */,
+				6BAFD2BE215424ED004882A3 /* CastPlayer.swift */,
 			);
 			name = Cast;
 			sourceTree = "<group>";
@@ -736,6 +739,7 @@
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,
 				9AF325F41D14B5B900B6E450 /* UIButton+GMFTintableButton.m in Sources */,
+				6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */,
 				C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */,
 				9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */,
 				6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */,
