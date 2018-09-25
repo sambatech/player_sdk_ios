@@ -671,12 +671,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		_parentView = _parentView ?? parent.view
 	}
 	
+    
+    
 	public override func viewWillDisappear(_ animated: Bool) {
 		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
 		
-		destroy()
+        destroy()
 	}
 	
 	// MARK: Internal Methods (may we publish them?)

@@ -21,6 +21,8 @@ public class SambaCast: NSObject {
     
     public var enableSDKLogging: Bool = false
     
+    public var isCastDialogShowing: Bool = false
+    
     private weak var buttonForIntrucions: SambaCastButton?
     
     private override init() {}
@@ -55,6 +57,13 @@ public class SambaCast: NSObject {
         GCKCastContext.setSharedInstanceWith(options)
         setupCastLogging()
         GCKCastContext.sharedInstance().sessionManager.add(self)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.castDialogWillShow),
+                                               name: NSNotification.Name.gckuiCastDialogWillShow,
+                                               object: GCKCastContext.sharedInstance())
+        NotificationCenter.default.addObserver(self, selector: #selector(self.castDialogDidHide),
+                                               name: NSNotification.Name.gckuiCastDialogDidHide,
+                                               object: GCKCastContext.sharedInstance())
     }
     
     public func isCasting() -> Bool {
@@ -225,6 +234,13 @@ public class SambaCast: NSObject {
         }
     }
     
+    @objc private func castDialogWillShow() {
+        isCastDialogShowing = true
+    }
+    
+    @objc private func castDialogDidHide() {
+        isCastDialogShowing = false
+    }
 }
 
 //MARK: - Extensions
