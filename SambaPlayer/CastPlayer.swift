@@ -10,9 +10,20 @@ import Foundation
 
 class CastPlayer: GMFVideoPlayer {
     
-    override init() {
+    override init() {}
     
+    //MARK: - Cast Methods
+    
+    func start()  {
+        SambaCast.sharedInstance.subscribe(delegate: self)
     }
+    
+    func destroy() {
+        SambaCast.sharedInstance.unSubscribe(delegate: self)
+    }
+    
+    
+    //MARK: - GMF Methods
     
     override func play() {
          setState(kGMFPlayerStatePlaying)
@@ -56,4 +67,11 @@ class CastPlayer: GMFVideoPlayer {
     }
     
     
+}
+
+extension CastPlayer: SambaCastDelegate {
+    
+    func onCastProgress(position: CLong, duration: CLong) {
+        
+    }
 }

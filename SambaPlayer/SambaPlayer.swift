@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 /// Responsible for managing media playback
-public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDelegate {
+public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDelegate, SambaCastDelegate {
 	
 	private var _player: GMFPlayerViewController?
 	private var _parent: UIViewController!
@@ -42,6 +42,239 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
     }
     private var _wasPlaying = false
+    
+    
+    //MARK: Chromecast
+    
+    private var castPlayerController: GMFPlayerViewController?
+    private var castPlayer: CastPlayer?
+    private var castPlayerState = kGMFPlayerStateEmpty
+    
+    public var isChromecastEnable = false {
+        didSet {
+            if isChromecastEnable {
+                SambaCast.sharedInstance.subscribe(delegate: self)
+            } else {
+                SambaCast.sharedInstance.unSubscribe(delegate: self)
+            }
+        }
+    }
+    
+    
+    private func configUICast() {
+        guard isChromecastEnable, let player = castPlayerController else { return }
+        
+        player.controlTintColor = UIColor(media.theme)
+        player.backgroundColor = media.isAudio ? UIColor(0x434343) : UIColor.black
+    }
+    
+    private func postConfigUICast() {
+        guard isChromecastEnable, let player = castPlayerController else { return }
+        
+        player.removeActionButton(byName: "menuOptions")
+        player.removeActionButton(byName: "Live")
+        if media.isAudio {
+            player.videoTitle = ""
+            player.showBackground()
+            player.getControlsView().hideFullscreenButton()
+            player.getControlsView().showPlayButton()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = true
+            player.playerOverlay().autoHideEnabled = false
+            player.playerOverlay().controlsHideEnabled = false
+            
+            if let mThumbAudioUrl = media.thumbAudioURL {
+                player.backgroundColor = UIColor.clear
+                Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
+                    guard let strongSelf = self else {return}
+                    guard let player = strongSelf._player else { return }
+                    guard error == nil, let mImage = image else {
+                        player.backgroundColor = UIColor(0x434343)
+                        return
+                    }
+                    
+                    player.backgroundColor = UIColor.clear
+                    (player.playerOverlayView() as! GMFPlayerOverlayView).setThumbImageBackground(mImage)
+                    
+                }
+            } else {
+                player.backgroundColor = UIColor(0x434343)
+            }
+        }
+            // video only features
+        else {
+            player.videoTitle = media.title
+            player.showBackground()
+            player.getControlsView().showFullscreenButton()
+            player.getControlsView().hidePlayButton()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
+            player.playerOverlay().autoHideEnabled = true
+            player.playerOverlay().controlsHideEnabled = true
+            
+            // captions
+            if let captionsScreen = _captionsScreen as? CaptionsScreen,
+                captionsScreen.hasCaptions {
+                if captionsScreen.parent == nil {
+                    attachVC(captionsScreen, player.playerOverlay())
+                }
+            }
+        }
+        
+        if media.isLive {
+            player.getControlsView().hideScrubber()
+            player.getControlsView().hideTime()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
+            (player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+        } else {
+            player.getControlsView().showScrubber()
+            player.getControlsView().showTime()
+            (player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = true
+            
+            if media.isAudio {
+                (player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
+                (player.playerOverlayView() as! GMFPlayerOverlayView).disableTopBar()
+            }
+            else {
+                (player.playerOverlayView() as! GMFPlayerOverlayView).showBackground()
+                (player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
+            }
+        }
+        
+        if !controlsVisible {
+            controlsVisible = false
+        }
+        configurePlayer(player, hiddenControls: _hiddenPlayerControls.map{$0})
+    }
+    
+    private func createCastPlayer() {
+       
+        guard castPlayerController == nil else {
+            return
+        }
+        
+        castPlayer = CastPlayer()
+        
+        guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0), andInitedBlock: postConfigUICast, andGMFVideoPlayer: castPlayer!) else { return }
+        
+        castPlayerController = gmf
+        
+        configUICast()
+        
+        let notificationCenter = NotificationCenter.default
+        
+        notificationCenter.addObserver(self, selector: #selector(playbackCastStateHandler),
+                       name: NSNotification.Name.gmfPlayerPlaybackStateDidChange, object: castPlayerController!)
+        
+        notificationCenter.addObserver(self, selector: #selector(durationCastChangedHandler),
+                       name: NSNotification.Name.gmfPlayerCurrentTotalTimeDidChange, object: castPlayerController!)
+        
+        notificationCenter.addObserver(self, selector: #selector(fullscreenCastTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidMinimize, object: castPlayerController!)
+        
+        notificationCenter.addObserver(self, selector: #selector(hdTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidPressHd, object: castPlayerController!)
+        
+        notificationCenter.addObserver(self, selector: #selector(captionsTouchHandler),
+                       name: NSNotification.Name.gmfPlayerDidPressCaptions, object: castPlayerController!)
+        
+    }
+    
+    // SambaCast Delegate
+    public func onCastConnected() {
+        
+    }
+    
+    public func onCastDisconnected() {
+        
+    }
+    
+    @objc private func playbackCastStateHandler() {
+        guard let player = castPlayerController else { return }
+        
+        let lastCastState = castPlayerState
+        
+        castPlayerState = player.playbackState()
+        
+        #if DEBUG
+        print("state: \(lastState) => \(castPlayerState)")
+        #endif
+        
+        switch castPlayerState {
+        case kGMFPlayerStateReadyToPlay:
+            print("Cast Ready To Play")
+            
+        case kGMFPlayerStatePlaying:
+             print("Cast Playing")
+//            if !_hasStarted {
+//                _hasStarted = true
+//                for delegate in _delegates { delegate.onStart?() }
+//            }
+//
+//            if lastState != kGMFPlayerStateSeeking && !player.isUserScrubbing {
+//                for delegate in _delegates { delegate.onResume?() }
+//            }
+//
+//            updateDvrInfo()
+//            startTimer()
+            
+        case kGMFPlayerStatePaused:
+            print("Cast Paused")
+//            stopTimer()
+//
+//            if _stopping { _stopping = false }
+//            else if lastState != kGMFPlayerStateSeeking {
+//                if !player.isUserScrubbing {
+//                    for delegate in _delegates { delegate.onPause?() }
+//                }
+//            }
+//                // when paused seek dispatch extra progress event to update external infos
+//            else {
+//                progressEventHandler()
+//                updateDvrInfo()
+//            }
+            
+        case kGMFPlayerStateFinished:
+            print("Cast Finish")
+//            stopTimer()
+//            for delegate in _delegates { delegate.onFinish?() }
+            
+        case kGMFPlayerStateError:
+             print("Cast Finish")
+//            _errorManager?.handle()
+            
+        default: break
+        }
+    }
+    
+    @objc private func durationCastChangedHandler() {
+        
+    }
+    
+    @objc private func fullscreenCastTouchHandler() {
+        
+    }
+    
+    @objc private func hdCastTouchHandler() {
+        
+    }
+    
+    @objc private func captionsCastTouchHandler() {
+        guard let captions = media.captions else { return }
+        var actions:[UIAlertAction] = []
+        let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
+            self.changeCaption(index)
+            self._optionsAlertSheet = nil
+            self.closeOptionsMenu()
+            }
+        }
+        for (index, item) in captions.enumerated() {
+            let action = UIAlertAction.init(title: item.label, style: .default, handler: closure(index))
+            actions.append(action)
+        }
+        self.createAlert(with: actions, and: "Legendas")
+    }
+    
 	
 	// MARK: Properties
 	
@@ -95,14 +328,17 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 					self.reset()
 					self.configUI()
 					self.postConfigUI()
+                    if self.isChromecastEnable {
+                        self.configUICast()
+                        self.postConfigUICast()
+                    }
 					self.retry(url, false)
 					self.updateFullscreen(nil, false)
 				}
 				
 				if self.media.isAudio {
 					self.create(false)
-				}
-				else {
+				} else {
 					self.createThumb()
 				}
 			}
@@ -139,6 +375,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		}
 		get { return _player?.player.rate ?? 0 }
 	}
+    
 	
 	// MARK: Public Methods
 	/**
@@ -269,10 +506,20 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		if let player = _player {
 			detachVC(player, nil, false)
 		}
+        
+        if let mCastPlayer = castPlayer {
+            castPlayer?.destroy()
+        }
+        
+        if let mCastPlayerController = castPlayerController {
+            detachVC(mCastPlayerController, nil, false)
+        }
 		
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 		_player = nil
+        castPlayer = nil
+        castPlayerController = nil
         
         PluginManager.sharedInstance.onDestroyPlugin()
 		
@@ -446,21 +693,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
        
 
         
-        if SambaCast.sharedInstance.isCasting() {
-            guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
-                                                    andInitedBlock: postConfigUI, andGMFVideoPlayer: CastPlayer()) else {
-                                                            dispatchError(SambaPlayerError.creatingPlayer)
-                                                            return
-            }
-            _player = gmf
-        } else {
-            guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
+
+        guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
                                                     andInitedBlock: postConfigUI) else {
                                                         dispatchError(SambaPlayerError.creatingPlayer)
                                                         return
-            }
-            _player = gmf
         }
+        
+        _player = gmf
+        
 		
 	
 		_outputManager = OutputManager(self)
@@ -488,6 +729,27 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: _player!)
 		
 		loadAsset(asset, autoPlay)
+        
+        if isChromecastEnable {
+            createCastPlayer()
+            
+            if media.isAudio {
+                if SambaCast.sharedInstance.isCasting() {
+                    SambaCast.sharedInstance.stopCasting()
+                    castPlayer?.destroy()
+                } else {
+                    SambaCast.sharedInstance.clearCaches()
+                }
+                
+            } else {
+               if SambaCast.sharedInstance.isCasting() {
+                  onCastConnected()
+               } else {
+                  SambaCast.sharedInstance.clearCaches()
+               }
+            }
+        }
+        
 	}
 	
 	private func configUI() {

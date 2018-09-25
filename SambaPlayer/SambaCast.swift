@@ -68,6 +68,10 @@ public class SambaCast: NSObject {
                                                object: GCKCastContext.sharedInstance())
     }
     
+    public func stopCasting() {
+        GCKCastContext.sharedInstance().sessionManager.endSessionAndStopCasting(true)
+    }
+    
     public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil, completion: @escaping (SambaCastCompletionType, Error?) -> Void) {
         guard hasCastSession() else { return }
         let castModel = CastModel.castModelFrom(media: media, currentTime: currentTime, captionTheme: captionTheme)
@@ -156,13 +160,13 @@ public class SambaCast: NSObject {
     fileprivate func onCastSessionConnected() {
         enableChannel()
         enableChannelForReceiveMessages()
-        delegates.forEach({$0.onConnected?()})
+        delegates.forEach({$0.onCastConnected?()})
     }
     
     fileprivate func onCastSessionDisconnected() {
         disableChannel()
         clearCaches()
-        delegates.forEach({$0.onDisconnected?()})
+        delegates.forEach({$0.onCastDisconnected?()})
     }
     
     private func hasCastSession() -> Bool {
@@ -207,7 +211,7 @@ public class SambaCast: NSObject {
         return UserDefaults.standard.string(forKey: "media_id")
     }
     
-    private func clearCaches() {
+    func clearCaches() {
         UserDefaults.standard.removeObject(forKey: "media_id")
     }
     
@@ -286,9 +290,9 @@ extension SambaCast: SambaCastChannelDelegate {
 
 @objc public protocol SambaCastDelegate: class {
     
-    @objc optional func onConnected()
+    @objc optional func onCastConnected()
     
-    @objc optional func onDisconnected()
+    @objc optional func onCastDisconnected()
     
     @objc optional func onCastPlay()
     
