@@ -61,6 +61,21 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
     
     
+    private func getCastCaptionFormat() -> String? {
+        guard let mCaptionScreen = _captionsScreen as? CaptionsScreen,
+        mCaptionScreen.hasCaptions,
+        let mCaptions = media.captions, mCaptions.count > 0 else {
+            return nil
+        }
+        
+        let currentCaptionIndex = mCaptionScreen.currentIndex
+        
+        let currentCaption = mCaptions[currentCaptionIndex]
+        
+        return String(format: "[%s,ffcc00,42]", currentCaption.language)
+    }
+    
+    
     private func configUICast() {
         guard isChromecastEnable, let player = castPlayerController else { return }
         
@@ -183,6 +198,24 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     // SambaCast Delegate
     public func onCastConnected() {
         
+        _wasPlayingBeforePause = isPlaying
+        _player?.pause()
+        
+        SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(currentTime), captionTheme: getCastCaptionFormat()) { (sambaCastCompletionType, error) in
+            
+            guard error == nil else {
+                return
+            }
+            
+            switch sambaCastCompletionType {
+                case .loaded:
+                    print("")
+                case .resumed:
+                    print("")
+                case .error:
+                    print("")
+            }
+        }
     }
     
     public func onCastDisconnected() {
@@ -507,10 +540,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			detachVC(player, nil, false)
 		}
         
-        if let mCastPlayer = castPlayer {
-            castPlayer?.destroy()
-        }
-        
         if let mCastPlayerController = castPlayerController {
             detachVC(mCastPlayerController, nil, false)
         }
@@ -518,6 +547,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 		_player = nil
+        
+        // Cast
+        if let mCastPlayer = castPlayer {
+            mCastPlayer.destroy()
+        }
+        
+        SambaCast.sharedInstance.unSubscribe(delegate: self)
         castPlayer = nil
         castPlayerController = nil
         
