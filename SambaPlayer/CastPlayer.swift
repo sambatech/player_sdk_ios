@@ -10,12 +10,16 @@ import Foundation
 
 class CastPlayer: GMFVideoPlayer {
     
+    fileprivate var currentPosition: CLong = 0
+    fileprivate var currentDuration: CLong = 0
+    
     override init() {}
     
     //MARK: - Cast Methods
     
     func start()  {
         SambaCast.sharedInstance.subscribe(delegate: self)
+        SambaCast.sharedInstance.registerDeviceForProgress(enable: true)
     }
     
     func destroy() {
@@ -26,10 +30,12 @@ class CastPlayer: GMFVideoPlayer {
     //MARK: - GMF Methods
     
     override func play() {
-         setState(kGMFPlayerStatePlaying)
+        SambaCast.sharedInstance.playCast()
+        setState(kGMFPlayerStatePlaying)
     }
     
     override func pause() {
+         SambaCast.sharedInstance.pauseCast()
          setState(kGMFPlayerStatePaused)
     }
     
@@ -50,16 +56,15 @@ class CastPlayer: GMFVideoPlayer {
     }
     
     override func currentMediaTime() -> TimeInterval {
-        setState(kGMFPlayerStatePaused)
-        return TimeInterval(400)
+        return TimeInterval(currentPosition)
     }
     
     override func totalMediaTime() -> TimeInterval {
-        return TimeInterval(2000)
+        return TimeInterval(currentDuration)
     }
     
     override func bufferedMediaTime() -> TimeInterval {
-        return TimeInterval(600)
+        return TimeInterval(currentPosition)
     }
     
     override func getCurrentSeekableTimeRange() -> CMTimeRange {
@@ -72,6 +77,9 @@ class CastPlayer: GMFVideoPlayer {
 extension CastPlayer: SambaCastDelegate {
     
     func onCastProgress(position: CLong, duration: CLong) {
-        
+        currentPosition = position / 1000
+        currentDuration = duration / 1000
+        delegate.videoPlayer(self, currentTotalTimeDidChangeToTime: TimeInterval(currentDuration))
+        delegate.videoPlayer(self, currentMediaTimeDidChangeToTime: TimeInterval(currentPosition))
     }
 }
