@@ -97,7 +97,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             player.playerOverlay().autoHideEnabled = false
             player.playerOverlay().controlsHideEnabled = false
             
-            if let mThumbAudioUrl = media.thumbAudioURL {
+            if let mThumbAudioUrl = media.externalThumbURL {
                 player.backgroundColor = UIColor.clear
                 Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
                     guard let strongSelf = self else {return}
@@ -119,12 +119,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         else {
             player.videoTitle = media.title
             player.showBackground()
-            player.getControlsView().showFullscreenButton()
+            player.getControlsView().hideFullscreenButton()
             player.getControlsView().hidePlayButton()
             (player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
             (player.playerOverlayView() as! GMFPlayerOverlayView).controlsOnly = false
-            player.playerOverlay().autoHideEnabled = true
-            player.playerOverlay().controlsHideEnabled = true
+            player.playerOverlay().autoHideEnabled = false
+            player.playerOverlay().controlsHideEnabled = false
             
             // captions
             if let captionsScreen = _captionsScreen as? CaptionsScreen,
@@ -205,7 +205,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(currentTime), captionTheme: getCastCaptionFormat()) { [weak self](sambaCastCompletionType, error) in
             
-            guard let strongSelf = self else {return}
+            guard let strongSelf = self else { return }
             
             guard error == nil else {
                 return
@@ -217,6 +217,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                     strongSelf.castPlayer?.start()
                     strongSelf.castPlayerController?.play()
                 case .resumed:
+                    strongSelf.castPlayer?.start()
                     print("")
                 case .error:
                     print("Error")
@@ -225,8 +226,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
     
     public func onCastDisconnected() {
+        
+        let currentPosition = CLong(castPlayer?.currentMediaTime() ?? 0)
          castPlayer?.destroy()
          showCastPlayer(enable: false)
+         _player?.player.seek(toTime: TimeInterval(currentPosition))
          _player?.play()
     }
     
@@ -851,7 +855,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			player.playerOverlay().autoHideEnabled = false
 			player.playerOverlay().controlsHideEnabled = false
             
-            if let mThumbAudioUrl = media.thumbAudioURL {
+            if let mThumbAudioUrl = media.externalThumbURL {
                 player.backgroundColor = UIColor.clear
                 Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
                     guard let strongSelf = self else {return}

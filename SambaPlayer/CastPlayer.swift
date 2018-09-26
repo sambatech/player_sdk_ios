@@ -23,6 +23,8 @@ class CastPlayer: GMFVideoPlayer {
     }
     
     func destroy() {
+        currentPosition = 0
+        currentDuration = 0
         SambaCast.sharedInstance.unSubscribe(delegate: self)
     }
     
@@ -35,8 +37,8 @@ class CastPlayer: GMFVideoPlayer {
     }
     
     override func pause() {
-         SambaCast.sharedInstance.pauseCast()
-         setState(kGMFPlayerStatePaused)
+        SambaCast.sharedInstance.pauseCast()
+        setState(kGMFPlayerStatePaused)
     }
     
     override func replay() {
@@ -44,7 +46,10 @@ class CastPlayer: GMFVideoPlayer {
     }
     
     override func seek(toTime time: TimeInterval) {
-        
+        let newPosition = CLong(time)
+        SambaCast.sharedInstance.seek(to: newPosition)
+        delegate.videoPlayer(self, currentMediaTimeDidChangeToTime: time)
+        currentPosition = newPosition
     }
     
     override func loadStream(with asset: AVAsset!) {
@@ -77,8 +82,8 @@ class CastPlayer: GMFVideoPlayer {
 extension CastPlayer: SambaCastDelegate {
     
     func onCastProgress(position: CLong, duration: CLong) {
-        currentPosition = position / 1000
-        currentDuration = duration / 1000
+        currentPosition = position
+        currentDuration = duration
         delegate.videoPlayer(self, currentTotalTimeDidChangeToTime: TimeInterval(currentDuration))
         delegate.videoPlayer(self, currentMediaTimeDidChangeToTime: TimeInterval(currentPosition))
     }

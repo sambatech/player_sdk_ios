@@ -57,6 +57,7 @@ public class SambaCast: NSObject {
         GCKCastContext.setSharedInstanceWith(options)
         setupCastLogging()
         GCKCastContext.sharedInstance().sessionManager.add(self)
+        GCKCastContext.sharedInstance().imagePicker = self
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.castDialogWillShow),
                                                name: NSNotification.Name.gckuiCastDialogWillShow,
@@ -88,6 +89,11 @@ public class SambaCast: NSObject {
         
         let metadata = GCKMediaMetadata(metadataType: .movie)
         metadata.setString(media.title, forKey: kGCKMetadataKeyTitle)
+        
+        if let thumbUrlString = media.externalThumbURL, let thumbUrl = URL(string: thumbUrlString) {
+            let image = GCKImage(url: thumbUrl, width: 720, height: 480)
+            metadata.addImage(image)
+        }
     
         
         if getPersistedCurrentMedia() != castModel.m {
@@ -132,7 +138,7 @@ public class SambaCast: NSObject {
     }
     
     func seek(to position: CLong) {
-        let message = "{\"type\": \"seek\", \"data\": \(position/1000) }"
+        let message = "{\"type\": \"seek\", \"data\": \(position) }"
         sendRequest(with: message);
     }
     
@@ -254,6 +260,18 @@ extension SambaCast: GCKLoggerDelegate {
     
 }
 
+extension SambaCast: GCKUIImagePicker {
+    public func getImageWith(_ imageHints: GCKUIImageHints, from metadata: GCKMediaMetadata) -> GCKImage? {
+        let images = metadata.images
+        guard !images().isEmpty else { print("No images available in media metadata."); return nil }
+        if images().count > 1 && imageHints.imageType == .background {
+            return images()[1] as? GCKImage
+        } else {
+            return images()[0] as? GCKImage
+        }
+    }
+}
+
 extension SambaCast: GCKSessionManagerListener {
     
     public func sessionManager(_ sessionManager: GCKSessionManager, didStart session: GCKSession) {
@@ -292,7 +310,7 @@ extension SambaCast: SambaCastChannelDelegate {
         guard let jsonDicitonary = Helpers.convertToDictionary(text: message) else { return }
         
         if let position = jsonDicitonary["progress"] as? Double, let duration = jsonDicitonary["duration"] as? Double {
-            delegates.forEach({ $0.onCastProgress?(position: CLong(position * 1000), duration: CLong(duration * 1000))})
+            delegates.forEach({ $0.onCastProgress?(position: CLong(position), duration: CLong(duration))})
         } else if let type = jsonDicitonary["type"] as? String {
             if type.lowercased().elementsEqual("finish") {
                 delegates.forEach({ $0.onCastFinish?() })

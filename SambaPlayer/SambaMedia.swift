@@ -62,7 +62,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	/// Thumb's URL
 	public var thumb: UIImage?
     
-    public var thumbAudioURL: String?
+    public var externalThumbURL: String?
 	
 	/// Indicates if the media is live or not
 	public var isLive = false
@@ -122,7 +122,7 @@ If `outputs` field is nil, `url` field will be used instead.
 		isAudio = media.isAudio
 		isDvr = media.isDvr
 		theme = media.theme
-        thumbAudioURL = media.thumbAudioURL
+        externalThumbURL = media.externalThumbURL
 		
 		super.init()
 	}
