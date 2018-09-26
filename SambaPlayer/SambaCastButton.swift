@@ -12,4 +12,21 @@ import GoogleCast
 
 public class SambaCastButton: GCKUICastButton {
     
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+    }
+    
+    public required init(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+    }
+    
+    @objc private func buttonClicked() {
+        SambaCast.sharedInstance.isCastDialogShowing = true
+    }
+    
+    deinit {
+        removeTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
+    }
 }

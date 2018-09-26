@@ -21,7 +21,7 @@ public class SambaCast: NSObject {
     
     public var enableSDKLogging: Bool = false
     
-    public var isCastDialogShowing: Bool = false
+    public internal(set) var isCastDialogShowing: Bool = false
     
     private weak var buttonForIntrucions: SambaCastButton?
     

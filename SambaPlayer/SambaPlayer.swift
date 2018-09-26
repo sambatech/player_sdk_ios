@@ -677,6 +677,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		super.viewWillDisappear(animated)
 		
 		guard !_fullscreenAnimating else { return }
+        
+        guard !SambaCast.sharedInstance.isCastDialogShowing else { return }
 		
         destroy()
 	}
