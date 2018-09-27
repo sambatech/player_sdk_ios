@@ -19,6 +19,9 @@ public class SambaCast: NSObject {
     
     private var sambaCastRequest: SambaCastRequest = SambaCastRequest()
     
+    private var currentMedia: SambaMedia?
+    private var currentCaptionTheme: String?
+    
     public var enableSDKLogging: Bool = false
     
     public internal(set) var isCastDialogShowing: Bool = false
@@ -26,6 +29,15 @@ public class SambaCast: NSObject {
     private weak var buttonForIntrucions: SambaCastButton?
     
     private override init() {}
+    
+    public internal(set) var playbackState: SambaCastPlaybackState {
+        get {
+            return getCurrentCastState()
+        }
+        set {
+            persistCurrentCastState(state: newValue)
+        }
+    }
     
     
     //MARK: - Public Methods
@@ -95,6 +107,8 @@ public class SambaCast: NSObject {
             metadata.addImage(image)
         }
     
+        currentMedia = media
+        currentCaptionTheme = captionTheme
         
         if getPersistedCurrentMedia() != castModel.m {
             let mediaInfo = GCKMediaInformation(contentID: jsonCastModel, streamType: .buffered,
@@ -107,7 +121,8 @@ public class SambaCast: NSObject {
             builder.autoplay = false
             let item = builder.build()
             let request = GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remoteMediaClient?.queueLoad([item], start: 0, playPosition: 0,
-                                                                                                                          repeatMode: .off, customData: nil)
+                                                                                                                          repeatMode: .all, customData: nil)
+             
             sambaCastRequest.set { [weak self] error in
                 guard let strongSelf = self else { return }
                 guard error == nil else {
@@ -126,6 +141,11 @@ public class SambaCast: NSObject {
     
     
     //MARK: - Internal Methods
+    
+    func replayCast() {
+        playCast()
+        seek(to: 0)
+    }
     
     func playCast() {
         let message = "{\"type\": \"play\"}"
@@ -178,7 +198,15 @@ public class SambaCast: NSObject {
         delegates.forEach({$0.onCastConnected?()})
     }
     
+    fileprivate func onCastSessionResumed() {
+        enableChannel()
+        enableChannelForReceiveMessages()
+        delegates.forEach({$0.onCastResumed?()})
+    }
+    
     fileprivate func onCastSessionDisconnected() {
+        currentMedia = nil
+        currentCaptionTheme = nil
         disableChannel()
         clearCaches()
         delegates.forEach({$0.onCastDisconnected?()})
@@ -222,11 +250,23 @@ public class SambaCast: NSObject {
         UserDefaults.standard.set(id, forKey: "media_id")
     }
     
+    private func persistCurrentCastState(state: SambaCastPlaybackState) {
+        UserDefaults.standard.set(state.rawValue, forKey: "cast_state")
+    }
+    
+    private func getCurrentCastState() -> SambaCastPlaybackState {
+        guard let state = UserDefaults.standard.object(forKey: "cast_state") as? String else {
+            return .empty
+        }
+        return SambaCastPlaybackState(rawValue: state) ?? .empty
+    }
+    
     private func getPersistedCurrentMedia() -> String? {
         return UserDefaults.standard.string(forKey: "media_id")
     }
     
     func clearCaches() {
+        UserDefaults.standard.removeObject(forKey: "cast_state")
         UserDefaults.standard.removeObject(forKey: "media_id")
     }
     
@@ -281,7 +321,7 @@ extension SambaCast: GCKSessionManagerListener {
     
     public func sessionManager(_ sessionManager: GCKSessionManager, didResumeSession session: GCKSession) {
         print("SessionManager didResumeSession \(session)")
-        onCastSessionConnected()
+        onCastSessionResumed()
     }
     
     public func sessionManager(_ sessionManager: GCKSessionManager, didEnd session: GCKSession, withError error: Error?) {
@@ -326,6 +366,8 @@ extension SambaCast: SambaCastChannelDelegate {
     
     @objc optional func onCastConnected()
     
+    @objc optional func onCastResumed()
+    
     @objc optional func onCastDisconnected()
     
     @objc optional func onCastPlay()
@@ -344,6 +386,13 @@ public enum SambaCastCompletionType {
     case loaded
     case resumed
     case error
+}
+
+public enum SambaCastPlaybackState: String {
+    case empty
+    case playing
+    case paused
+    case finished
 }
 
 

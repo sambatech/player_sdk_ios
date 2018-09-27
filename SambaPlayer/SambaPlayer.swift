@@ -88,6 +88,25 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         player.removeActionButton(byName: "menuOptions")
         player.removeActionButton(byName: "Live")
+        
+        if let mThumbAudioUrl = media.externalThumbURL {
+            player.backgroundColor = UIColor.clear
+            Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
+                guard let strongSelf = self else {return}
+                guard let player = strongSelf.castPlayerController else { return }
+                guard error == nil, let mImage = image else {
+                    player.backgroundColor = UIColor(0x434343)
+                    return
+                }
+                
+                player.backgroundColor = UIColor.clear
+                (player.playerOverlayView() as! GMFPlayerOverlayView).setThumbImageBackground(mImage)
+                
+            }
+        } else {
+            player.backgroundColor = UIColor(0x434343)
+        }
+        
         if media.isAudio {
             player.videoTitle = ""
             player.showBackground()
@@ -97,23 +116,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             player.playerOverlay().autoHideEnabled = false
             player.playerOverlay().controlsHideEnabled = false
             
-            if let mThumbAudioUrl = media.externalThumbURL {
-                player.backgroundColor = UIColor.clear
-                Helpers.downloadImage(from: mThumbAudioUrl) { [weak self] (image, error) in
-                    guard let strongSelf = self else {return}
-                    guard let player = strongSelf._player else { return }
-                    guard error == nil, let mImage = image else {
-                        player.backgroundColor = UIColor(0x434343)
-                        return
-                    }
-                    
-                    player.backgroundColor = UIColor.clear
-                    (player.playerOverlayView() as! GMFPlayerOverlayView).setThumbImageBackground(mImage)
-                    
-                }
-            } else {
-                player.backgroundColor = UIColor(0x434343)
-            }
         }
             // video only features
         else {
@@ -218,6 +220,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                     strongSelf.castPlayerController?.play()
                 case .resumed:
                     strongSelf.castPlayer?.start()
+                    strongSelf.castPlayer?.syncInternalState()
                     print("")
                 case .error:
                     print("Error")
@@ -234,6 +237,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
          _player?.play()
     }
     
+    public func onCastFinish() {
+        
+    }
+    
     private func showCastPlayer(enable: Bool) {
         if let castPlayerControler = castPlayerController {
             if enable {
@@ -247,14 +254,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     
     @objc private func playbackCastStateHandler() {
         guard let player = castPlayerController else { return }
-        
-        let lastCastState = castPlayerState
-        
+    
         castPlayerState = player.playbackState()
-        
-        #if DEBUG
-        print("state: \(lastState) => \(castPlayerState)")
-        #endif
         
         switch castPlayerState {
         case kGMFPlayerStateReadyToPlay:
@@ -262,42 +263,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             
         case kGMFPlayerStatePlaying:
              print("Cast Playing")
-//            if !_hasStarted {
-//                _hasStarted = true
-//                for delegate in _delegates { delegate.onStart?() }
-//            }
-//
-//            if lastState != kGMFPlayerStateSeeking && !player.isUserScrubbing {
-//                for delegate in _delegates { delegate.onResume?() }
-//            }
-//
-//            updateDvrInfo()
-//            startTimer()
             
         case kGMFPlayerStatePaused:
             print("Cast Paused")
-//            stopTimer()
-//
-//            if _stopping { _stopping = false }
-//            else if lastState != kGMFPlayerStateSeeking {
-//                if !player.isUserScrubbing {
-//                    for delegate in _delegates { delegate.onPause?() }
-//                }
-//            }
-//                // when paused seek dispatch extra progress event to update external infos
-//            else {
-//                progressEventHandler()
-//                updateDvrInfo()
-//            }
             
         case kGMFPlayerStateFinished:
             print("Cast Finish")
-//            stopTimer()
-//            for delegate in _delegates { delegate.onFinish?() }
             
         case kGMFPlayerStateError:
              print("Cast Finish")
-//            _errorManager?.handle()
             
         default: break
         }
@@ -1151,10 +1125,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				DispatchQueue.main.async { self.destroyThumb() }
                 
                 
-                if isChromecastEnable && SambaCast.sharedInstance.isCasting(), let castPlayer = castPlayerController {
+                if isChromecastEnable && SambaCast.sharedInstance.isCasting(), let castPlayer = castPlayer {
                     stopTimer()
                     player.pause()
-                    castPlayer.play()
+                    castPlayer.syncInternalState()
                 } else {
                     player.play()
                 }
