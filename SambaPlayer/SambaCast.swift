@@ -89,7 +89,7 @@ public class SambaCast: NSObject {
         let options = GCKCastOptions(discoveryCriteria: criteria)
         options.stopReceiverApplicationWhenEndingSession = true
         GCKCastContext.setSharedInstanceWith(options)
-        setupCastLogging()
+//        setupCastLogging()
         GCKCastContext.sharedInstance().sessionManager.add(self)
         GCKCastContext.sharedInstance().imagePicker = self
         

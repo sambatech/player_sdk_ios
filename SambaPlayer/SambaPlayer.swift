@@ -200,10 +200,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     // SambaCast Delegate
     public func onCastConnected() {
         
+        guard !media.isAudio else {
+            SambaCast.sharedInstance.stopCasting()
+
+            return
+        }
+        
         showCastPlayer(enable: true)
         
-        _wasPlayingBeforePause = isPlaying
-        _player?.pause()
+        self._wasPlayingBeforePause = self.isPlaying
+        self._player?.pause()
         
         SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(currentTime), captionTheme: getCastCaptionFormat()) { [weak self](sambaCastCompletionType, error) in
             
@@ -228,6 +234,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
     }
     
+    public func onCastResumed() {
+        onCastConnected()
+    }
+    
     public func onCastDisconnected() {
         
         let currentPosition = CLong(castPlayer?.currentMediaTime() ?? 0)
@@ -237,8 +247,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
          _player?.play()
     }
     
-    public func onCastFinish() {
-        
+    public func onCastProgress(position: CLong, duration: CLong) {
+        if _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering {
+            self._wasPlayingBeforePause = self.isPlaying
+            self._player?.pause()
+        }
     }
     
     private func showCastPlayer(enable: Bool) {
@@ -541,14 +554,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		reset(false)
 		
+        if let mCastPlayerController = castPlayerController {
+            detachVC(mCastPlayerController, nil, false)
+        }
+        
 		if let player = _player {
 			detachVC(player, nil, false)
 		}
         
-        if let mCastPlayerController = castPlayerController {
-            detachVC(mCastPlayerController, nil, false)
-        }
-		
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 		_player = nil
@@ -1124,8 +1137,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			if _pendingPlay {
 				DispatchQueue.main.async { self.destroyThumb() }
                 
-                
-                if isChromecastEnable && SambaCast.sharedInstance.isCasting(), let castPlayer = castPlayer {
+                print("#### casting: \(SambaCast.sharedInstance.isCasting())")
+                print("#### isChromecastEnable: \(isChromecastEnable)")
+                print("#### castPlayer: \((castPlayer != nil ? "castplayer": "nil"))")
+                if let castPlayer = castPlayer, isChromecastEnable && SambaCast.sharedInstance.isCasting() {
                     stopTimer()
                     player.pause()
                     castPlayer.syncInternalState()
