@@ -273,7 +273,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			if let url = url,
 				let nsurl = URL(string: url),
 				let data = try? Data(contentsOf: nsurl) {
-                media.externalThumbURL = url
+                media.thumbURL = url
 				media.thumb = UIImage(data: data)
 			}
 		}

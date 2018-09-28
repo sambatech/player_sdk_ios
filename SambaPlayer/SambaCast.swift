@@ -13,6 +13,7 @@ public class SambaCast: NSObject {
     
     public static var sharedInstance = SambaCast()
     
+    fileprivate var internalDelegates: [SambaCastDelegate] = []
     fileprivate var delegates: [SambaCastDelegate] = []
     
     private var channel: SambaCastChannel?
@@ -62,6 +63,27 @@ public class SambaCast: NSObject {
         delegates.remove(at: index)
     }
     
+    
+    func subscribeInternal(delegate: SambaCastDelegate)  {
+        let index = internalDelegates.index(where: {$0 === delegate})
+        
+        guard index == nil else {
+            return
+        }
+        
+        internalDelegates.append(delegate)
+        
+    }
+    
+    func unSubscribeInternal(delegate: SambaCastDelegate)  {
+        
+        guard let index = internalDelegates.index(where: {$0 === delegate}) else {
+            return
+        }
+        
+        internalDelegates.remove(at: index)
+    }
+    
     public func config() {
         let criteria = GCKDiscoveryCriteria(applicationID: Helpers.settings["cast_application_id_prod"]!)
         let options = GCKCastOptions(discoveryCriteria: criteria)
@@ -102,7 +124,7 @@ public class SambaCast: NSObject {
         let metadata = GCKMediaMetadata(metadataType: .movie)
         metadata.setString(media.title, forKey: kGCKMetadataKeyTitle)
         
-        if let thumbUrlString = media.externalThumbURL, let thumbUrl = URL(string: thumbUrlString) {
+        if let thumbUrlString = media.thumbURL, let thumbUrl = URL(string: thumbUrlString) {
             let image = GCKImage(url: thumbUrl, width: 720, height: 480)
             metadata.addImage(image)
         }
@@ -121,7 +143,7 @@ public class SambaCast: NSObject {
             builder.autoplay = false
             let item = builder.build()
             let request = GCKCastContext.sharedInstance().sessionManager.currentCastSession?.remoteMediaClient?.queueLoad([item], start: 0, playPosition: 0,
-                                                                                                                          repeatMode: .all, customData: nil)
+                                                                                                                          repeatMode: .off, customData: nil)
              
             sambaCastRequest.set { [weak self] error in
                 guard let strongSelf = self else { return }
@@ -143,8 +165,15 @@ public class SambaCast: NSObject {
     //MARK: - Internal Methods
     
     func replayCast() {
-        playCast()
-        seek(to: 0)
+        
+        guard let media = currentMedia else {
+            return
+        }
+        clearCaches()
+        loadMedia(with: media, currentTime: 0, captionTheme: currentCaptionTheme) { [weak self] (sambaCastCompletionType, error) in
+            guard let strongSelf = self else {return}
+            strongSelf.pauseCast()
+        }
     }
     
     func playCast() {
@@ -195,12 +224,14 @@ public class SambaCast: NSObject {
     fileprivate func onCastSessionConnected() {
         enableChannel()
         enableChannelForReceiveMessages()
+        internalDelegates.forEach({$0.onCastConnected?()})
         delegates.forEach({$0.onCastConnected?()})
     }
     
     fileprivate func onCastSessionResumed() {
         enableChannel()
         enableChannelForReceiveMessages()
+        internalDelegates.forEach({$0.onCastResumed?()})
         delegates.forEach({$0.onCastResumed?()})
     }
     
@@ -209,6 +240,7 @@ public class SambaCast: NSObject {
         currentCaptionTheme = nil
         disableChannel()
         clearCaches()
+        internalDelegates.forEach({$0.onCastDisconnected?()})
         delegates.forEach({$0.onCastDisconnected?()})
     }
     
@@ -350,9 +382,11 @@ extension SambaCast: SambaCastChannelDelegate {
         guard let jsonDicitonary = Helpers.convertToDictionary(text: message) else { return }
         
         if let position = jsonDicitonary["progress"] as? Double, let duration = jsonDicitonary["duration"] as? Double {
+            internalDelegates.forEach({ $0.onCastProgress?(position: CLong(position), duration: CLong(duration))})
             delegates.forEach({ $0.onCastProgress?(position: CLong(position), duration: CLong(duration))})
         } else if let type = jsonDicitonary["type"] as? String {
             if type.lowercased().elementsEqual("finish") {
+                internalDelegates.forEach({ $0.onCastFinish?() })
                 delegates.forEach({ $0.onCastFinish?() })
             }
         }

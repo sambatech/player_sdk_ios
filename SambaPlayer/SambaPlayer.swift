@@ -53,9 +53,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     public var isChromecastEnable = false {
         didSet {
             if isChromecastEnable {
-                SambaCast.sharedInstance.subscribe(delegate: self)
+                SambaCast.sharedInstance.subscribeInternal(delegate: self)
             } else {
-                SambaCast.sharedInstance.unSubscribe(delegate: self)
+                SambaCast.sharedInstance.subscribeInternal(delegate: self)
             }
         }
     }
@@ -558,7 +558,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             mCastPlayer.destroy()
         }
         
-        SambaCast.sharedInstance.unSubscribe(delegate: self)
+        SambaCast.sharedInstance.unSubscribeInternal(delegate: self)
         castPlayer = nil
         castPlayerController = nil
         

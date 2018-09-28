@@ -18,14 +18,14 @@ internal class CastPlayer: GMFVideoPlayer {
     //MARK: - Cast Methods
     
     func start()  {
-        SambaCast.sharedInstance.subscribe(delegate: self)
+        SambaCast.sharedInstance.subscribeInternal(delegate: self)
         SambaCast.sharedInstance.registerDeviceForProgress(enable: true)
     }
     
     func destroy() {
         currentPosition = 0
         currentDuration = 0
-        SambaCast.sharedInstance.unSubscribe(delegate: self)
+        SambaCast.sharedInstance.unSubscribeInternal(delegate: self)
     }
     
     func syncInternalState()  {
@@ -49,7 +49,7 @@ internal class CastPlayer: GMFVideoPlayer {
     override func play() {
         SambaCast.sharedInstance.playCast()
         setState(kGMFPlayerStatePlaying)
-        SambaCast.sharedInstance.playbackState = .playing
+         SambaCast.sharedInstance.playbackState = .playing
     }
     
     override func pause() {
@@ -58,11 +58,7 @@ internal class CastPlayer: GMFVideoPlayer {
         SambaCast.sharedInstance.playbackState = .paused
     }
     
-    override func replay() {
-        SambaCast.sharedInstance.replayCast()
-        setState(kGMFPlayerStatePlaying)
-        SambaCast.sharedInstance.playbackState = .playing
-    }
+    override func replay() {}
     
     override func seek(toTime time: TimeInterval) {
         let newPosition = CLong(time)
@@ -109,8 +105,11 @@ extension CastPlayer: SambaCastDelegate {
     }
     
     func onCastFinish() {
-        setState(kGMFPlayerStateFinished)
-        delegate.videoPlayer(self, stateDidChangeFrom: state, to: kGMFPlayerStateFinished)
-        SambaCast.sharedInstance.playbackState = .finished
+        reset()
+        delegate.videoPlayer(self, currentMediaTimeDidChangeToTime: TimeInterval(0))
+        setState(kGMFPlayerStatePaused)
+        delegate.videoPlayer(self, stateDidChangeFrom: state, to: kGMFPlayerStatePaused)
+        SambaCast.sharedInstance.replayCast()
+        SambaCast.sharedInstance.playbackState = .paused
     }
 }
