@@ -55,9 +55,9 @@ class AssetLoaderDelegate: NSObject {
 		
         let applicationCertificate: Data? = try? Data(contentsOf: URL(string: drmRequest.acUrl)!)
         
-        if applicationCertificate == nil {
-            fatalError("No certificate being returned by \(#function)!")
-        }
+//        if applicationCertificate == nil {
+//            fatalError("No certificate being returned by \(#function)!")
+//        }
         
         
         return applicationCertificate
@@ -67,7 +67,7 @@ class AssetLoaderDelegate: NSObject {
 		
         var ckcData: Data? = nil
 		
-		guard let url = URL(string: requestUrl + (requestUrl.contains("&") ? "&" : "?") + drmRequest.licenseUrlParamsStr) else {
+		guard let url = URL(string: drmRequest.licenseUrl + (requestUrl.contains("&") ? "&" : "?") + drmRequest.licenseUrlParamsStr) else {
 			fatalError("Invalid URL (\(requestUrl)) and query string (\(drmRequest.licenseUrlParamsStr)) at \(#function)!")
 		}
 		
@@ -77,19 +77,22 @@ class AssetLoaderDelegate: NSObject {
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
+//        req.setValue("Bearer ", forHTTPHeaderField: "Authorization")
 		
 		let sem = DispatchSemaphore.init(value: 0)
 		
-		Helpers.requestURL(req) { (data: Data?) in
+		Helpers.requestURL(req, { (data: Data?) in
 			ckcData = data
 			sem.signal()
-		}
+		},{ (error, response) in
+            sem.signal()
+        })
 		
 		_ = sem.wait(timeout: .distantFuture)
 		
-        if ckcData == nil {
-            fatalError("No CKC being returned by \(#function)!")
-        }
+//        if ckcData == nil {
+//            fatalError("No CKC being returned by \(#function)!")
+//        }
 		
         return ckcData
     }

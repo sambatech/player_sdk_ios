@@ -282,6 +282,9 @@ Configuration for captions
 	private var _acUrlParams = [String: String]()
 	private var _acUrl: String
 	private var _licenseUrl: String
+    
+    var applicationID: String?
+    var provider: String?
 	
 	/**
 	Default initializer
@@ -299,7 +302,7 @@ Configuration for captions
 	/**
 	Adds a license URL parameter for the request
 	*/
-	public func addLicenseParam(key: String, value: String) {
+	public func addLicenseParam(key: String, value: String?) {
 		_licenseUrlParams[key] = value
 	}
 	
