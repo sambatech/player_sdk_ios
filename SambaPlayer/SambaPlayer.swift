@@ -200,6 +200,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     // SambaCast Delegate
     public func onCastConnected() {
         
+        guard isChromecastEnable else {
+            return
+        }
+        
         guard !media.isAudio else {
             SambaCast.sharedInstance.stopCasting()
 
@@ -239,6 +243,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
     
     public func onCastDisconnected() {
+        
+        guard isChromecastEnable else {
+            return
+        }
         
         let currentPosition = CLong(castPlayer?.currentMediaTime() ?? 0)
          castPlayer?.destroy()
