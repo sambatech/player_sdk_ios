@@ -884,7 +884,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			player.getControlsView().hideScrubber()
 			player.getControlsView().hideTime()
 			(player.playerOverlayView() as! GMFPlayerOverlayView).hideBackground()
-			(player.playerOverlayView() as! GMFPlayerOverlayView).topBarHideEnabled = false
 			(player.playerOverlayView() as! GMFPlayerOverlayView).enableTopBar()
 		}
 		else {
@@ -1137,9 +1136,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			if _pendingPlay {
 				DispatchQueue.main.async { self.destroyThumb() }
                 
-                print("#### casting: \(SambaCast.sharedInstance.isCasting())")
-                print("#### isChromecastEnable: \(isChromecastEnable)")
-                print("#### castPlayer: \((castPlayer != nil ? "castplayer": "nil"))")
                 if let castPlayer = castPlayer, isChromecastEnable && SambaCast.sharedInstance.isCasting() {
                     stopTimer()
                     player.pause()
@@ -1460,15 +1456,23 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     func configureTopBar(outputsCount: Int) {
         _player?.removeActionButton(byName: "menuOptions")
         _player?.removeActionButton(byName: "Live")
+        _player?.removeActionButton(byName: "CAST_BUTTON")
         if !media.isAudio {
             if outputsCount > 2 || !media.isLive || media.captions?.count ?? 0 > 0{
                 if !_hiddenPlayerControls.contains(.menu) {
                     _player?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
                 }
+                if isChromecastEnable {
+                     _player?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
+                }
             }
             if media.isLive {
                 if !_hiddenPlayerControls.contains(.liveIcon) {
                     _player?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
+                }
+                
+                if isChromecastEnable {
+                    _player?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
                 }
             }
         }

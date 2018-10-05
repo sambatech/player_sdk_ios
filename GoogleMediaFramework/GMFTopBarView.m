@@ -15,6 +15,7 @@
 #import "GMFTopBarView.h"
 #import "UILabel+GMFLabels.h"
 #import "GMFResources.h"
+#import <SambaPlayer/SambaPlayer-Swift.h>
 
 @implementation GMFTopBarView {
   UIImageView *_backgroundView;
@@ -104,14 +105,26 @@
   
   // Create the button with the given image, name (used as the accessibility label),
   // and target/selector for UIControlEventTouchUpInside.
-  UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-  [button setContentMode:UIViewContentModeScaleAspectFit];
-  [button setImage:image forState:UIControlStateNormal];
-  [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
-  [button setShowsTouchWhenHighlighted:YES];
-  [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
-  [button setTranslatesAutoresizingMaskIntoConstraints:NO];
-  [button setAccessibilityLabel:name];
+    
+    UIButton *button;
+    if ([name isEqualToString:@"CAST_BUTTON"]) {
+        CGRect frame = CGRectMake(0, 0, 24, 24);
+        SambaCastButton *castButton = [[SambaCastButton alloc] initWithFrame:
+                                       frame];
+        castButton.tintColor = [UIColor whiteColor];
+        button = castButton;
+    } else {
+        button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setImage:image forState:UIControlStateNormal];
+        [button addTarget:target action:selector forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+    [button setContentMode:UIViewContentModeScaleAspectFit];
+    [button setShowsTouchWhenHighlighted:YES];
+    [button.imageView setContentMode:UIViewContentModeScaleAspectFit];
+    [button setTranslatesAutoresizingMaskIntoConstraints:NO];
+    [button setAccessibilityLabel:name];
+ 
   
   [self addSubview:button];
   [_actionButtons addObject:button];
