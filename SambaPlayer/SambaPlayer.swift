@@ -161,7 +161,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if !controlsVisible {
             controlsVisible = false
         }
-        configurePlayer(player, hiddenControls: _hiddenPlayerControls.map{$0})
+        configurePlayer(player, hiddenControls: _hiddenPlayerControls.map{$0}, isPlayerCast: true)
     }
     
     private func createCastPlayer() {
@@ -299,7 +299,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
     
     @objc private func hdCastTouchHandler() {
-        
+//        guard let manager = _outputManager else { return }
+//        var actions:[UIAlertAction] = []
+//        let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
+//            self.switchOutput(index)
+//            self._optionsAlertSheet = nil
+//            self.closeOptionsMenu()
+//            }
+//        }
+//        for (index, item) in manager.menuItems.enumerated() {
+//            let action = UIAlertAction.init(title: item.label, style: .default, handler: closure(index))
+//            actions.append(action)
+//        }
+//        self.createAlert(with: actions, and: "Qualidade")
     }
     
     @objc private func captionsCastTouchHandler() {
@@ -316,6 +328,31 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             actions.append(action)
         }
         self.createAlert(with: actions, and: "Legendas")
+    }
+    
+    func configureCastTopBar(outputsCount: Int) {
+        castPlayerController?.removeActionButton(byName: "menuOptions")
+        castPlayerController?.removeActionButton(byName: "Live")
+        castPlayerController?.removeActionButton(byName: "CAST_BUTTON")
+        if !media.isAudio {
+            if outputsCount > 2 || !media.isLive || media.captions?.count ?? 0 > 0{
+                if !_hiddenPlayerControls.contains(.menu) {
+                    castPlayerController?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
+                }
+                if isChromecastEnable {
+                    castPlayerController?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
+                }
+            }
+            if media.isLive {
+                if !_hiddenPlayerControls.contains(.liveIcon) {
+                    castPlayerController?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
+                }
+                
+                if isChromecastEnable {
+                    castPlayerController?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
+                }
+            }
+        }
     }
     
 	
@@ -1478,7 +1515,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
     }
     
-    func configurePlayer(_ player: GMFPlayerViewController, hiddenControls: [SambaPlayerControls]) {
+    func configurePlayer(_ player: GMFPlayerViewController, hiddenControls: [SambaPlayerControls], isPlayerCast: Bool = false) {
         if hiddenControls.contains(.play){
             player.getControlsView().hidePlayButton()
         }
@@ -1501,7 +1538,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if hiddenControls.contains(.time) {
             player.getControlsView().hideTime()
         }
-        configureTopBar(outputsCount: _outputManager?.menuItems.count ?? 0)
+        if isPlayerCast {
+            configureCastTopBar(outputsCount: _outputManager?.menuItems.count ?? 0)
+        } else {
+            configureTopBar(outputsCount: _outputManager?.menuItems.count ?? 0)
+        }
+        
     }
 	
 	private class OutputManager : SambaPlayerDelegate {
