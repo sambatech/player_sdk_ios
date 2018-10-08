@@ -128,13 +128,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             player.playerOverlay().autoHideEnabled = false
             player.playerOverlay().controlsHideEnabled = false
             
-            // captions
-            if let captionsScreen = _captionsScreen as? CaptionsScreen,
-                captionsScreen.hasCaptions {
-                if captionsScreen.parent == nil {
-                    attachVC(captionsScreen, player.playerOverlay())
-                }
-            }
         }
         
         if media.isLive {
@@ -189,10 +182,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         notificationCenter.addObserver(self, selector: #selector(fullscreenCastTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidMinimize, object: castPlayerController!)
         
-        notificationCenter.addObserver(self, selector: #selector(hdTouchHandler),
-                       name: NSNotification.Name.gmfPlayerDidPressHd, object: castPlayerController!)
+//        notificationCenter.addObserver(self, selector: #selector(hdCastTouchHandler),
+//                       name: NSNotification.Name.gmfPlayerDidPressHd, object: castPlayerController!)
         
-        notificationCenter.addObserver(self, selector: #selector(captionsTouchHandler),
+        notificationCenter.addObserver(self, selector: #selector(captionsCastTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: castPlayerController!)
         
     }
@@ -209,6 +202,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 
             return
         }
+        
+        fullscreen = false
+        closeOptionsMenu()
         
         showCastPlayer(enable: true)
         
@@ -247,6 +243,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         guard isChromecastEnable else {
             return
         }
+        
+        closeCastOptionsMenu()
         
         let currentPosition = CLong(castPlayer?.currentMediaTime() ?? 0)
          castPlayer?.destroy()
@@ -310,7 +308,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 //        guard let manager = _outputManager else { return }
 //        var actions:[UIAlertAction] = []
 //        let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
-//            self.switchOutput(index)
+////            self.switchOutput(index)
 //            self._optionsAlertSheet = nil
 //            self.closeOptionsMenu()
 //            }
@@ -326,9 +324,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         guard let captions = media.captions else { return }
         var actions:[UIAlertAction] = []
         let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
-            self.changeCaption(index)
+//            self.changeCaption(index)
             self._optionsAlertSheet = nil
-            self.closeOptionsMenu()
+            self.closeCastOptionsMenu()
             }
         }
         for (index, item) in captions.enumerated() {
@@ -338,6 +336,22 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         self.createAlert(with: actions, and: "Legendas")
     }
     
+    @objc private func rateCastTouchHandler() {
+        var actions:[UIAlertAction] = []
+        let closure = { (rate: Float) in { (action: UIAlertAction!) -> Void in
+            self.rate = rate
+            SambaCast.sharedInstance.changeSpeed(to: rate)
+            self._optionsAlertSheet = nil
+            self.closeCastOptionsMenu()
+            }
+        }
+        for rate in _rateOutputs {
+            let action = UIAlertAction.init(title: "\(rate) x", style: .default, handler: closure(rate))
+            actions.append(action)
+        }
+        self.createAlert(with: actions, and: "Velocidade")
+    }
+    
     func configureCastTopBar(outputsCount: Int) {
         castPlayerController?.removeActionButton(byName: "menuOptions")
         castPlayerController?.removeActionButton(byName: "Live")
@@ -345,7 +359,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if !media.isAudio {
             if outputsCount > 2 || !media.isLive || media.captions?.count ?? 0 > 0{
                 if !_hiddenPlayerControls.contains(.menu) {
-                    castPlayerController?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createOptionsMenu))
+                    castPlayerController?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createCastOptionsMenu))
                 }
                 if isChromecastEnable {
                     castPlayerController?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
@@ -360,6 +374,41 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                     castPlayerController?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
                 }
             }
+        }
+    }
+    
+    
+    @objc private func createCastOptionsMenu() {
+        var options: [MenuOptions] = []
+//        if _outputManager?.menuItems.count ?? 0 > 2 {
+//            options.append(.quality)
+//        }
+        if !media.isLive {
+            options.append(.speed)
+        }
+        if media.captions?.count ?? 0 > 0 {
+            options.append(.captions)
+        }
+        let optionsMenu = OptionsMenuView.init()
+        optionsMenu.options = options
+        _wasPlaying = self.isPlaying
+        self.pause()
+        showScreen(optionsMenu, &_optionsMenu, _isFullscreen ? castPlayerController : nil)
+        castPlayerController?.playerOverlay().hidePlayerControls(animated: true)
+    }
+    
+    private func destroyCastOptionsMenu() {
+        guard let optionsMenu = _optionsMenu else {
+            return
+        }
+        detachVC(optionsMenu, _isFullscreen ? castPlayerController : nil)
+        _optionsMenu = nil
+    }
+    
+    func closeCastOptionsMenu() {
+        destroyCastOptionsMenu()
+        if self.castPlayerController?.playerOverlay() != nil {
+           self.castPlayerController?.playerOverlay().showPlayerControls(animated: true)
         }
     }
     
@@ -1049,6 +1098,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         stop()
 		stopTimer()
         destroyOptionsMenu()
+        destroyCastOptionsMenu()
 		
         _errorManager?.reset()
 		if !recoverable {
@@ -1095,6 +1145,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		// try to use existing error screen
         _optionsAlertSheet = nil
         destroyOptionsMenu()
+        destroyCastOptionsMenu()
 		if let errorScreen = _errorScreen as? ErrorScreen {
 			errorScreen.error = error
 			return
@@ -1470,16 +1521,28 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
     
     func didTouchQuality(){
-        self.hdTouchHandler()
+        if (isChromecastEnable && SambaCast.sharedInstance.isCasting()) {
+            self.hdCastTouchHandler()
+        } else {
+            self.hdTouchHandler()
+        }
     }
     
     func didTouchSpeed(){
-        self.rateTouchHandler()
+        if (isChromecastEnable && SambaCast.sharedInstance.isCasting()) {
+            self.rateCastTouchHandler()
+        } else {
+            self.rateTouchHandler()
+        }
     }
     
     
     func didTouchCaption() {
-        self.captionsTouchHandler()
+        if (isChromecastEnable && SambaCast.sharedInstance.isCasting()) {
+            self.captionsCastTouchHandler()
+        } else {
+            self.captionsTouchHandler()
+        }
     }
     
     func didTouchClose(){
@@ -1491,10 +1554,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if self._wasPlaying {
             self.play()
             DispatchQueue.main.async {
-                self._player?.playerOverlay().hidePlayerControls(animated: true)
+                if self._player?.playerOverlay() != nil {
+                     self._player?.playerOverlay().hidePlayerControls(animated: true)
+                }
             }
         } else {
-            self._player?.playerOverlay().showPlayerControls(animated: true)
+            if self._player?.playerOverlay() != nil {
+                self._player?.playerOverlay().showPlayerControls(animated: true)
+            }
         }
     }
     

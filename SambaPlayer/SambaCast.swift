@@ -205,6 +205,20 @@ public class SambaCast: NSObject {
         sendRequest(with: message)
     }
     
+    func changeSpeed(to speed: Float?) {
+        let data: String!
+        
+        if let mSpeed = speed {
+            data = "{\"times\": \(mSpeed)}"
+        } else {
+            data = "{\"times\": \(1.0)}"
+        }
+        
+        let message = "{\"type\": \"changeSpeed\", \"data\": \(data!) }"
+        
+        sendRequest(with: message)
+    }
+    
     func registerDeviceForProgress(enable: Bool) {
         let message = "{\"type\": \"registerForProgressUpdate\", \"data\": \(enable) }"
         sendRequest(with: message)
