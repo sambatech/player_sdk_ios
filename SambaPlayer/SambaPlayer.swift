@@ -72,7 +72,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         let currentCaption = mCaptions[currentCaptionIndex]
         
-        return String(format: "[%s,ffcc00,42]", currentCaption.language)
+        return "[\(currentCaption.language),ffcc00,42]"
     }
     
     
@@ -203,7 +203,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             return
         }
         
-        fullscreen = false
         closeOptionsMenu()
         
         showCastPlayer(enable: true)
@@ -698,6 +697,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	private func updateFullscreen(_ size: CGSize? = nil, _ animated: Bool = true, _ forcePortrait: Bool = false) {
 		guard _errorScreen == nil, !_fullscreenAnimating,
 			let player = _player else { return }
+        
+        guard !SambaCast.sharedInstance.isCastDialogShowing else { return }
 		
         if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
             guard let parentView = _parentView ?? parent?.view,
@@ -739,6 +740,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				self._isFullscreen = false
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
+                player.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
 				self.attachVC(player)
 				callback()
 			}
@@ -778,6 +780,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			detachVC(player)
 			
 			DispatchQueue.main.async {
+                player.removeActionButton(byName: "CAST_BUTTON")
 				self.present(player, animated: animated, completion: callback)
 			}
 		}
