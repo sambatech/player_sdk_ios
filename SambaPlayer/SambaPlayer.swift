@@ -50,15 +50,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     private var castPlayer: CastPlayer?
     private var castPlayerState = kGMFPlayerStateEmpty
     
-    public var isChromecastEnable = false {
-        didSet {
-            if isChromecastEnable {
-                SambaCast.sharedInstance.subscribeInternal(delegate: self)
-            } else {
-                SambaCast.sharedInstance.subscribeInternal(delegate: self)
-            }
-        }
-    }
+    public var isChromecastEnable = false
     
     
     private func getCastCaptionFormat() -> String? {
@@ -926,6 +918,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		loadAsset(asset, autoPlay)
         
         if isChromecastEnable {
+            SambaCast.sharedInstance.subscribeInternal(delegate: self)
             createCastPlayer()
             
             if media.isAudio {
