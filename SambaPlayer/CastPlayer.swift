@@ -18,6 +18,7 @@ internal class CastPlayer: GMFVideoPlayer {
     //MARK: - Cast Methods
     
     func start()  {
+        setState(kGMFPlayerStatePlaying)
         SambaCast.sharedInstance.subscribeInternal(delegate: self)
         SambaCast.sharedInstance.registerDeviceForProgress(enable: true)
     }

@@ -194,13 +194,13 @@ public class SambaCast: NSObject {
     func changeSubtitle(to language: String?) {
         let data: String!
         
-        if let mLanguage = language {
+        if let mLanguage = language?.lowercased().replacingOccurrences(of: "_", with: "-"), !mLanguage.isEmpty {
             data = "{\"lang\": \"\(mLanguage)\"}"
         } else {
             data = "{\"lang\": \"none\"}"
         }
         
-        let message = "{\"type\": \"changeSubtitle\", \"data\": \(data) }"
+        let message = "{\"type\": \"changeSubtitle\", \"data\": \(data!) }"
             
         sendRequest(with: message)
     }

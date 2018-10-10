@@ -199,7 +199,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         guard !media.isAudio else {
             SambaCast.sharedInstance.stopCasting()
-
             return
         }
         
@@ -210,25 +209,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         self._wasPlayingBeforePause = self.isPlaying
         self._player?.pause()
         
-        SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(currentTime), captionTheme: getCastCaptionFormat()) { [weak self](sambaCastCompletionType, error) in
+        SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(Float(_player?.currentMediaTime() ?? 0)), captionTheme: getCastCaptionFormat()) { [weak self](sambaCastCompletionType, error) in
             
             guard let strongSelf = self else { return }
             
-            guard error == nil else {
-                return
-            }
-            
             switch sambaCastCompletionType {
-                case .loaded:
+                case .loaded, .error:
                     print("")
-                    strongSelf.castPlayer?.start()
                     strongSelf.castPlayerController?.play()
-                case .resumed:
                     strongSelf.castPlayer?.start()
+                case .resumed:
                     strongSelf.castPlayer?.syncInternalState()
+                    strongSelf.castPlayer?.start()
                     print("")
-                case .error:
-                    print("Error")
             }
         }
     }
@@ -248,8 +241,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         let currentPosition = CLong(castPlayer?.currentMediaTime() ?? 0)
          castPlayer?.destroy()
          showCastPlayer(enable: false)
-         _player?.player.seek(toTime: TimeInterval(currentPosition))
-         _player?.play()
+        if !media.isLive {
+            _player?.player.seek(toTime: TimeInterval(currentPosition))
+        }
+        _player?.play()
     }
     
     public func onCastProgress(position: CLong, duration: CLong) {
@@ -323,7 +318,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         guard let captions = media.captions else { return }
         var actions:[UIAlertAction] = []
         let closure = { (index: Int) in { (action: UIAlertAction!) -> Void in
-//            self.changeCaption(index)
+            let caption = captions[index]
+            SambaCast.sharedInstance.changeSubtitle(to: caption.language)
+
             self._optionsAlertSheet = nil
             self.closeCastOptionsMenu()
             }
@@ -356,8 +353,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         castPlayerController?.removeActionButton(byName: "Live")
         castPlayerController?.removeActionButton(byName: "CAST_BUTTON")
         if !media.isAudio {
-            if outputsCount > 2 || !media.isLive || media.captions?.count ?? 0 > 0{
-                if !_hiddenPlayerControls.contains(.menu) {
+            if !media.isLive {
+                if !_hiddenPlayerControls.contains(.menu) &&  media.captions?.count ?? 0 > 0  {
                     castPlayerController?.addActionButton(with: GMFResources.playerTopBarMenuImage(), name: "menuOptions", target: self, selector: #selector(createCastOptionsMenu))
                 }
                 if isChromecastEnable {
@@ -366,12 +363,32 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             }
             if media.isLive {
                 if !_hiddenPlayerControls.contains(.liveIcon) {
-                    castPlayerController?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeButtonHandler))
+                    castPlayerController?.addActionButton(with: GMFResources.playerTitleLiveIcon(), name:"Live", target:self, selector:#selector(realtimeCastButtonHandler))
                 }
                 
                 if isChromecastEnable {
                     castPlayerController?.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
                 }
+            }
+        }
+    }
+    
+    @objc private func realtimeCastButtonHandler() {
+        self.castPlayer?.destroy()
+        SambaCast.sharedInstance.clearCaches()
+        SambaCast.sharedInstance.loadMedia(with: media, currentTime: CLong(currentTime), captionTheme: getCastCaptionFormat()) { [weak self](sambaCastCompletionType, error) in
+            
+            guard let strongSelf = self else { return }
+            
+            switch sambaCastCompletionType {
+            case .loaded, .error:
+                print("")
+                strongSelf.castPlayerController?.play()
+                strongSelf.castPlayer?.start()
+            case .resumed:
+                strongSelf.castPlayer?.syncInternalState()
+                strongSelf.castPlayer?.start()
+                print("")
             }
         }
     }
@@ -382,16 +399,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 //        if _outputManager?.menuItems.count ?? 0 > 2 {
 //            options.append(.quality)
 //        }
-        if !media.isLive {
-            options.append(.speed)
-        }
+//        if !media.isLive {
+//            options.append(.speed)
+//        }
         if media.captions?.count ?? 0 > 0 {
             options.append(.captions)
         }
         let optionsMenu = OptionsMenuView.init()
         optionsMenu.options = options
-        _wasPlaying = self.isPlaying
-        self.pause()
         showScreen(optionsMenu, &_optionsMenu, _isFullscreen ? castPlayerController : nil)
         castPlayerController?.playerOverlay().hidePlayerControls(animated: true)
     }
@@ -432,12 +447,22 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	/// Current media time
 	public var currentTime: Float {
-		return Float(_player?.currentMediaTime() ?? 0)
+        
+        if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
+            return Float(castPlayerController?.currentMediaTime() ?? 0)
+        } else {
+            return Float(_player?.currentMediaTime() ?? 0)
+        }
+        
 	}
 	
 	/// Current media duration
 	public var duration: Float {
-		return Float(_player?.totalMediaTime() ?? 0)
+        if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
+            return Float(castPlayerController?.totalMediaTime() ?? 0)
+        } else {
+            return Float(_player?.totalMediaTime() ?? 0)
+        }
 	}
 	
 	/// Outputs available
@@ -579,8 +604,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	Pauses the media
 	*/
 	public func pause() {
-		_wasPlayingBeforePause = isPlaying
-		_player?.pause()
+        if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
+            castPlayerController?.pause()
+        } else {
+            _wasPlayingBeforePause = isPlaying
+            _player?.pause()
+        }
 	}
 	
 	/**
@@ -1098,7 +1127,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	private func reset(_ recoverable: Bool = true) {
 		_hasStarted = false
         _optionsAlertSheet = nil
-        stop()
+        
+        if !SambaCast.sharedInstance.isCasting() {
+            stop()
+        }
 		stopTimer()
         destroyOptionsMenu()
         destroyCastOptionsMenu()
