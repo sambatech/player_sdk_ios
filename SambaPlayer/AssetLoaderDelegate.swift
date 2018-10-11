@@ -27,7 +27,7 @@ class AssetLoaderDelegate: NSObject {
     fileprivate let assetName: String
 	
 	/// The SambaTech/Irdeto DRM request.
-	private let drmRequest: DrmRequest
+	fileprivate let drmRequest: DrmRequest
 	
     /// The DispatchQueue to use for AVAssetResourceLoaderDelegate callbacks.
     fileprivate let resourceLoadingRequestQueue = DispatchQueue(label: "com.sambatech.resourcerequests")
@@ -67,7 +67,7 @@ class AssetLoaderDelegate: NSObject {
 		
         var ckcData: Data? = nil
 		
-		guard let url = URL(string: drmRequest.licenseUrl + (requestUrl.contains("&") ? "&" : "?") + drmRequest.licenseUrlParamsStr) else {
+		guard let url = URL(string: requestUrl + (requestUrl.contains("&") ? "&" : "?") + drmRequest.licenseUrlParamsStr) else {
 			fatalError("Invalid URL (\(requestUrl)) and query string (\(drmRequest.licenseUrlParamsStr)) at \(#function)!")
 		}
 		
@@ -77,7 +77,10 @@ class AssetLoaderDelegate: NSObject {
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
-//        req.setValue("Bearer ", forHTTPHeaderField: "Authorization")
+        
+        if drmRequest.provider == "SAMBA_DRM", let token = drmRequest.token {
+             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 		
 		let sem = DispatchSemaphore.init(value: 0)
 		
@@ -133,7 +136,16 @@ private extension AssetLoaderDelegate {
     
     func prepareAndSendContentKeyRequest(resourceLoadingRequest: AVAssetResourceLoadingRequest) {
         
-		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "^skd", with: "http", options: .regularExpression),
+        
+        var proto: String?
+        
+        if drmRequest.provider == "SAMBA_DRM" {
+            proto = "https"
+        } else {
+            proto = "http"
+        }
+        
+		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "^skd", with: proto!, options: .regularExpression),
 			let url = URL(string: urlStr), let assetIDString = url.host else {
 			print("Failed to get url or assetIDString for the request object of the resource.")
 			return

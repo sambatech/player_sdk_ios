@@ -277,6 +277,8 @@ Configuration for captions
 		
 		return p.joined(separator: "&")
 	}
+    
+    public var token: String?
 	
 	private var _licenseUrlParams = [String: String]()
 	private var _acUrlParams = [String: String]()
