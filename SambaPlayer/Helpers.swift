@@ -252,6 +252,16 @@ class Helpers {
         }
     }
     
+    static func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any]
+            } catch {
+            }
+        }
+        return nil
+    }
+    
 }
 
 extension UIColor {

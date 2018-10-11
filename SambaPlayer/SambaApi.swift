@@ -166,6 +166,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		if let theme = playerConfig["theme"] as? String, theme.lowercased() != "default" {
 			media.theme = UInt(theme.replacingOccurrences(of: "^#*", with: "", options: .regularExpression), radix: 16)!
+            media.themeColorHex = "#\(theme)"
 		}
 		
 		if let sttm = apiConfig["sttm"] as? [String:AnyObject] {
@@ -225,7 +226,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					}
 					
 					let urlNormalized = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
-					
+                    
+                    if let fileInfo = output["fileInfo"] as? NSDictionary, let duration = fileInfo["duration"] as? CLong {
+                        media.duration = Float(duration/1000)
+                    }
+                    
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,
 						label: label.contains("abr") ? "Auto" : label,
@@ -268,6 +273,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			if let url = url,
 				let nsurl = URL(string: url),
 				let data = try? Data(contentsOf: nsurl) {
+                media.thumbURL = url
 				media.thumb = UIImage(data: data)
 			}
 		}
