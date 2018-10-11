@@ -66,6 +66,10 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 - (id)initWithControlsPadding:(CGRect)controlsPadding
 	   andInitedBlock:(void (^)(void))initedBlock;
 
+- (id)initWithControlsPadding:(CGRect)controlsPadding
+               andInitedBlock:(void (^)(void))initedBlock
+            andGMFVideoPlayer:(GMFVideoPlayer*)player;
+
 - (void)loadStreamWithAsset:(AVAsset*)asset;
 
 - (void)loadStreamWithAsset:(AVAsset*)asset

@@ -27,7 +27,7 @@ class AssetLoaderDelegate: NSObject {
     fileprivate let assetName: String
 	
 	/// The SambaTech/Irdeto DRM request.
-	private let drmRequest: DrmRequest
+	fileprivate let drmRequest: DrmRequest
 	
     /// The DispatchQueue to use for AVAssetResourceLoaderDelegate callbacks.
     fileprivate let resourceLoadingRequestQueue = DispatchQueue(label: "com.sambatech.resourcerequests")
@@ -55,9 +55,9 @@ class AssetLoaderDelegate: NSObject {
 		
         let applicationCertificate: Data? = try? Data(contentsOf: URL(string: drmRequest.acUrl)!)
         
-        if applicationCertificate == nil {
-            fatalError("No certificate being returned by \(#function)!")
-        }
+//        if applicationCertificate == nil {
+//            fatalError("No certificate being returned by \(#function)!")
+//        }
         
         
         return applicationCertificate
@@ -77,19 +77,25 @@ class AssetLoaderDelegate: NSObject {
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
+        
+        if drmRequest.provider == "SAMBA_DRM", let token = drmRequest.token {
+             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
 		
 		let sem = DispatchSemaphore.init(value: 0)
 		
-		Helpers.requestURL(req) { (data: Data?) in
+		Helpers.requestURL(req, { (data: Data?) in
 			ckcData = data
 			sem.signal()
-		}
+		},{ (error, response) in
+            sem.signal()
+        })
 		
 		_ = sem.wait(timeout: .distantFuture)
 		
-        if ckcData == nil {
-            fatalError("No CKC being returned by \(#function)!")
-        }
+//        if ckcData == nil {
+//            fatalError("No CKC being returned by \(#function)!")
+//        }
 		
         return ckcData
     }
@@ -130,7 +136,16 @@ private extension AssetLoaderDelegate {
     
     func prepareAndSendContentKeyRequest(resourceLoadingRequest: AVAssetResourceLoadingRequest) {
         
-		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "^skd", with: "http", options: .regularExpression),
+        
+        var proto: String?
+        
+        if drmRequest.provider == "SAMBA_DRM" {
+            proto = "https"
+        } else {
+            proto = "http"
+        }
+        
+		guard let urlStr = resourceLoadingRequest.request.url?.absoluteString.replacingOccurrences(of: "^skd", with: proto!, options: .regularExpression),
 			let url = URL(string: urlStr), let assetIDString = url.host else {
 			print("Failed to get url or assetIDString for the request object of the resource.")
 			return

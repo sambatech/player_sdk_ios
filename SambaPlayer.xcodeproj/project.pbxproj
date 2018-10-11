@@ -7,9 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B15BE8021512EEE002C41CF /* SambaCast.swift */; };
+		6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */; };
+		6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */; };
+		6B3CC8AB214FD52800FAC5A4 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8AA214FD52800FAC5A4 /* AVFoundation.framework */; };
+		6B3CC8AD214FD54100FAC5A4 /* CoreBluetooth.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8AC214FD54100FAC5A4 /* CoreBluetooth.framework */; };
+		6B3CC8AF214FD55200FAC5A4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8AE214FD55100FAC5A4 /* CoreGraphics.framework */; };
+		6B3CC8B1214FD56600FAC5A4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B0214FD56600FAC5A4 /* CoreText.framework */; };
+		6B3CC8B3214FD59B00FAC5A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B2214FD59B00FAC5A4 /* Foundation.framework */; };
+		6B3CC8B5214FD5B200FAC5A4 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */; };
+		6B3CC8B7214FD5C500FAC5A4 /* MediaAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B6214FD5C500FAC5A4 /* MediaAccessibility.framework */; };
+		6B3CC8B9214FD5DB00FAC5A4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B8214FD5DA00FAC5A4 /* MediaPlayer.framework */; };
+		6B3CC8BB214FD5E500FAC5A4 /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8BA214FD5E500FAC5A4 /* MediaToolbox.framework */; };
+		6B3CC8BD214FD5F500FAC5A4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8BC214FD5F500FAC5A4 /* QuartzCore.framework */; };
+		6B3CC8BF214FD60200FAC5A4 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8BE214FD60200FAC5A4 /* SystemConfiguration.framework */; };
+		6B3CC8C1214FD61100FAC5A4 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */; };
+		6B3CC8C8214FE48300FAC5A4 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */; };
 		6B43787D2139A0C200A7C3EC /* TrackingLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B43787C2139A0C100A7C3EC /* TrackingLive.swift */; };
 		6B4378802139AC1C00A7C3EC /* PluginManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B43787F2139AC1C00A7C3EC /* PluginManager.swift */; };
 		6B4378822139AF5600A7C3EC /* Tracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B4378812139AF5600A7C3EC /* Tracking.swift */; };
+		6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */; };
+		6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */; };
+		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
+		6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BE215424ED004882A3 /* CastPlayer.swift */; };
 		9A0617AC1F448A6A00345EFC /* player_control_realtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */; };
 		9A0617AD1F448A6B00345EFC /* player_control_realtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */; };
 		9A0617AE1F448A6B00345EFC /* player_control_realtime@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */; };
@@ -122,9 +142,29 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
+		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		6B3CC8AA214FD52800FAC5A4 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6B3CC8AC214FD54100FAC5A4 /* CoreBluetooth.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreBluetooth.framework; path = System/Library/Frameworks/CoreBluetooth.framework; sourceTree = SDKROOT; };
+		6B3CC8AE214FD55100FAC5A4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6B3CC8B0214FD56600FAC5A4 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		6B3CC8B2214FD59B00FAC5A4 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = Frameworks/GoogleCast.framework; sourceTree = "<group>"; };
+		6B3CC8B6214FD5C500FAC5A4 /* MediaAccessibility.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaAccessibility.framework; path = System/Library/Frameworks/MediaAccessibility.framework; sourceTree = SDKROOT; };
+		6B3CC8B8214FD5DA00FAC5A4 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		6B3CC8BA214FD5E500FAC5A4 /* MediaToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaToolbox.framework; path = System/Library/Frameworks/MediaToolbox.framework; sourceTree = SDKROOT; };
+		6B3CC8BC214FD5F500FAC5A4 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6B3CC8BE214FD60200FAC5A4 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		6B43787C2139A0C100A7C3EC /* TrackingLive.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrackingLive.swift; sourceTree = "<group>"; };
 		6B43787F2139AC1C00A7C3EC /* PluginManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PluginManager.swift; sourceTree = "<group>"; };
 		6B4378812139AF5600A7C3EC /* Tracking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracking.swift; sourceTree = "<group>"; };
+		6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastButton.swift; sourceTree = "<group>"; };
+		6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastChannel.swift; sourceTree = "<group>"; };
+		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
+		6BAFD2BE215424ED004882A3 /* CastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastPlayer.swift; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -244,6 +284,21 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6B3CC8C8214FE48300FAC5A4 /* libc++.tbd in Frameworks */,
+				6B3CC8C1214FD61100FAC5A4 /* UIKit.framework in Frameworks */,
+				6B3CC8BF214FD60200FAC5A4 /* SystemConfiguration.framework in Frameworks */,
+				6B3CC8BD214FD5F500FAC5A4 /* QuartzCore.framework in Frameworks */,
+				6B3CC8BB214FD5E500FAC5A4 /* MediaToolbox.framework in Frameworks */,
+				6B3CC8B9214FD5DB00FAC5A4 /* MediaPlayer.framework in Frameworks */,
+				6B3CC8B7214FD5C500FAC5A4 /* MediaAccessibility.framework in Frameworks */,
+				6B3CC8B5214FD5B200FAC5A4 /* GoogleCast.framework in Frameworks */,
+				6B3CC8B3214FD59B00FAC5A4 /* Foundation.framework in Frameworks */,
+				6B3CC8B1214FD56600FAC5A4 /* CoreText.framework in Frameworks */,
+				6B3CC8AF214FD55200FAC5A4 /* CoreGraphics.framework in Frameworks */,
+				6B3CC8AD214FD54100FAC5A4 /* CoreBluetooth.framework in Frameworks */,
+				6B3CC8AB214FD52800FAC5A4 /* AVFoundation.framework in Frameworks */,
+				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
+				6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */,
 				9AE43F1A1F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 				9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */,
 			);
@@ -252,6 +307,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6B15BE7F21512ECC002C41CF /* Cast */ = {
+			isa = PBXGroup;
+			children = (
+				6B15BE8021512EEE002C41CF /* SambaCast.swift */,
+				6BAFD2B8215189C9004882A3 /* SambaCastButton.swift */,
+				6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */,
+				6BAFD2BC2152A689004882A3 /* CastModel.swift */,
+				6BAFD2BE215424ED004882A3 /* CastPlayer.swift */,
+			);
+			name = Cast;
+			sourceTree = "<group>";
+		};
 		6B43787E2139ABE700A7C3EC /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
@@ -346,6 +413,7 @@
 		9A5267EE1D22D5BD00C9C015 /* SambaPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				6B15BE7F21512ECC002C41CF /* Cast */,
 				9AF57B7F1DA431690062E54A /* Drm */,
 				9A4C4DF51E2E6983001A75DD /* Screens */,
 				9A5267EF1D22D5BD00C9C015 /* Helpers.swift */,
@@ -374,6 +442,21 @@
 		9AE43F181F2A8BA2001DD6D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */,
+				6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */,
+				6B3CC8BE214FD60200FAC5A4 /* SystemConfiguration.framework */,
+				6B3CC8BC214FD5F500FAC5A4 /* QuartzCore.framework */,
+				6B3CC8BA214FD5E500FAC5A4 /* MediaToolbox.framework */,
+				6B3CC8B8214FD5DA00FAC5A4 /* MediaPlayer.framework */,
+				6B3CC8B6214FD5C500FAC5A4 /* MediaAccessibility.framework */,
+				6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */,
+				6B3CC8B2214FD59B00FAC5A4 /* Foundation.framework */,
+				6B3CC8B0214FD56600FAC5A4 /* CoreText.framework */,
+				6B3CC8AE214FD55100FAC5A4 /* CoreGraphics.framework */,
+				6B3CC8AC214FD54100FAC5A4 /* CoreBluetooth.framework */,
+				6B3CC8AA214FD52800FAC5A4 /* AVFoundation.framework */,
+				6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */,
+				6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */,
 				9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */,
 				9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */,
 			);
@@ -626,6 +709,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */,
+				6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */,
 				9AF325DF1D14B5B900B6E450 /* GMFPlayerControlsView.m in Sources */,
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
 				9AF325DA1D14B5B900B6E450 /* GMFContentPlayhead.m in Sources */,
@@ -638,6 +722,7 @@
 				9AF325EB1D14B5B900B6E450 /* GMFResources.m in Sources */,
 				9A5267FE1D22D5BD00C9C015 /* SambaApi.swift in Sources */,
 				9A5268021D22D5BD00C9C015 /* SambaPlayer.swift in Sources */,
+				6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */,
 				9AF325E41D14B5B900B6E450 /* GMFPlayerOverlayViewController.m in Sources */,
 				9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */,
 				6B43787D2139A0C200A7C3EC /* TrackingLive.swift in Sources */,
@@ -650,11 +735,14 @@
 				9AF325ED1D14B5B900B6E450 /* GMFTopBarView.m in Sources */,
 				9A67DD7A1DE4BE2F00F8E172 /* ErrorScreen.swift in Sources */,
 				9AF325DC1D14B5B900B6E450 /* GMFIMASDKAdService.m in Sources */,
+				6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */,
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,
 				9AF325F41D14B5B900B6E450 /* UIButton+GMFTintableButton.m in Sources */,
+				6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */,
 				C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */,
 				9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */,
+				6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */,
 				9AF325EF1D14B5B900B6E450 /* GMFVideoPlayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -717,9 +805,11 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -765,8 +855,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = "${SRCROOT}";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CODE_SIGN_FLAGS = "--deep";
+				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -779,6 +871,8 @@
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -791,8 +885,12 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -803,6 +901,8 @@
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
@@ -815,8 +915,12 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = (
+					"-ObjC",
+					"-lc++",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				SWIFT_VERSION = 3.0;

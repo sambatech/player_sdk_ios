@@ -88,11 +88,31 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   return self;
 }
 
+- (id)initWithPlayer:(GMFVideoPlayer*)player {
+    self = [super init];
+    if (self) {
+        _actionButtonDictionaries = [[NSMutableArray alloc] init];
+        if (!_player) {
+            _player = player;
+            [_player setDelegate:self];
+        }
+    }
+    return self;
+}
+
 - (id)initWithControlsPadding:(CGRect)controlsPadding
 			  andInitedBlock:(void (^)(void))initedBlock {
 	_controlsPadding = controlsPadding;
 	_initedBlock = initedBlock;
 	return [self init];
+}
+
+- (id)initWithControlsPadding:(CGRect)controlsPadding
+               andInitedBlock:(void (^)(void))initedBlock
+            andGMFVideoPlayer:(GMFVideoPlayer*)player {
+    _controlsPadding = controlsPadding;
+    _initedBlock = initedBlock;
+    return [self initWithPlayer: player];
 }
 
 - (void)setControlsVisibility:(BOOL)visible animated:(BOOL)animated {

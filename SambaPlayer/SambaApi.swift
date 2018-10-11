@@ -166,6 +166,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		
 		if let theme = playerConfig["theme"] as? String, theme.lowercased() != "default" {
 			media.theme = UInt(theme.replacingOccurrences(of: "^#*", with: "", options: .regularExpression), radix: 16)!
+            media.themeColorHex = "#\(theme)"
 		}
 		
 		if let sttm = apiConfig["sttm"] as? [String:AnyObject] {
@@ -225,7 +226,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					}
 					
 					let urlNormalized = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
-					
+                    
+                    if let fileInfo = output["fileInfo"] as? NSDictionary, let duration = fileInfo["duration"] as? CLong {
+                        media.duration = Float(duration/1000)
+                    }
+                    
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,
 						label: label.contains("abr") ? "Auto" : label,
@@ -268,6 +273,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			if let url = url,
 				let nsurl = URL(string: url),
 				let data = try? Data(contentsOf: nsurl) {
+                media.thumbURL = url
 				media.thumb = UIImage(data: data)
 			}
 		}
@@ -320,14 +326,19 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		if let sec = json["playerSecurity"] as? [String:AnyObject] {
 			if let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
 				let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
-				let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
-				drm.addACParam(key: "applicationId", value: "sambatech")
-				/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
-				drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
-				drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
-				//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-				//headerParams["Content-Type"] = "application/octet-stream"
-
+				let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)getckc")
+                drm.addLicenseParam(key: "CrmId", value: drmSecurity["crmId"] as? String)
+                drm.addLicenseParam(key: "AccountId", value: drmSecurity["accountId"] as? String)
+                drm.addLicenseParam(key: "ContentId", value: drmSecurity["contentId"] as? String)
+                drm.provider = drmSecurity["provider"] as? String
+                drm.applicationID = drmSecurity["applicationId"] as? String
+                
+                if drm.provider == "SAMBA_DRM", let applicationId = drm.applicationID  {
+                    drm.addACParam(key: "applicationId", value:  applicationId)
+                } else {
+                    drm.addACParam(key: "applicationId", value:  "sambatech")
+                }
+                
 				media.drmRequest = drm
 			}
 			

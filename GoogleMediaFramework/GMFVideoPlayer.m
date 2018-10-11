@@ -107,8 +107,6 @@ static NSString * const kErrorKey = @"error";
 // Updates the current |playerItem| and removes and re-adds observers.
 - (void)setAndObservePlayerItem:(AVPlayerItem *)playerItem;
 
-// Updates the internal player state and notifies the delegate.
-- (void)setState:(GMFPlayerState)state;
 
 // Starts a polling timer to track content playback state and time.
 - (void)startPlaybackStatusPoller;
