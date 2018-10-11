@@ -34,7 +34,7 @@ github "sambatech/player_sdk_ios" ~> x.x.x
 
 Basta executar `carthage update` para gerar o `SambaPlayer.framework` e as demais dependências.
 
-Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para seu projeto Xcode. Caso o "GoogleInteractiveMediaAds.framework" não esteja na pasta "Carthage/Build/iOS", copiar o mesmo da pasta "Carthage/Checkouts/player_sdk_ios/Frameworks/":
+Em seguida, arraste os frameworks da pasta de saída (Carthage/Build/iOS/) para seu projeto Xcode. Caso o "GoogleInteractiveMediaAds.framework" e "GoogleCast.framework" não estejam na pasta "Carthage/Build/iOS", copiar os mesmo das pasta "Carthage/Checkouts/player_sdk_ios/Frameworks/" e adicionar ao projeto:
 
 ![readme1](https://cloud.githubusercontent.com/assets/484062/16528649/85e947ce-3f94-11e6-8806-6020775d8d02.gif)
 
