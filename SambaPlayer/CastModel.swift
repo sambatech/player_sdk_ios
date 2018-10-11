@@ -60,6 +60,7 @@ class CastModel {
             let castDrm = CastDRM()
             castDrm.sessionId = drmRequest.getLicenseParam(key: "SessionId")
             castDrm.ticket = drmRequest.getLicenseParam(key: "Ticket")
+            castDrm.token = drmRequest.token
             castModel.drm = castDrm
         }
         
@@ -97,7 +98,6 @@ class CastModel {
         dictionary.setValue(self.drm?.dictionaryRepresentation(), forKey: "drm")
         dictionary.setValue(self.thumbURL, forKey: "thumbURL")
         dictionary.setValue(self.baseURL, forKey: "baseURL")
-        dictionary.setValue(self.drm, forKey: "drm")
         
         return dictionary
     }
@@ -160,6 +160,7 @@ class CastDRM {
     
     var sessionId : String?
     var ticket : String?
+    var token: String?
     
     class func modelsFromDictionaryArray(array:NSArray) -> [CastDRM] {
         var models:[CastDRM] = []
@@ -177,6 +178,7 @@ class CastDRM {
         
         sessionId = dictionary["SessionId"] as? String
         ticket = dictionary["Ticket"] as? String
+        token = dictionary["Token"] as? String
     }
     
     func dictionaryRepresentation() -> NSDictionary {
@@ -185,6 +187,7 @@ class CastDRM {
         
         dictionary.setValue(self.sessionId, forKey: "SessionId")
         dictionary.setValue(self.ticket, forKey: "Ticket")
+        dictionary.setValue(self.token, forKey: "Token")
         
         return dictionary
     }
