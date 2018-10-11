@@ -65,6 +65,7 @@ If `outputs` field is nil, `url` field will be used instead.
     public var thumbURL: String?
     
     public var externalThumbURL: String?
+
 	
 	/// Indicates if the media is live or not
 	public var isLive = false
@@ -284,11 +285,16 @@ Configuration for captions
 		
 		return p.joined(separator: "&")
 	}
+    
+    public var token: String?
 	
 	private var _licenseUrlParams = [String: String]()
 	private var _acUrlParams = [String: String]()
 	private var _acUrl: String
 	private var _licenseUrl: String
+    
+    var applicationID: String?
+    var provider: String?
 	
 	/**
 	Default initializer
@@ -306,7 +312,7 @@ Configuration for captions
 	/**
 	Adds a license URL parameter for the request
 	*/
-	public func addLicenseParam(key: String, value: String) {
+	public func addLicenseParam(key: String, value: String?) {
 		_licenseUrlParams[key] = value
 	}
 	

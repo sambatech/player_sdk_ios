@@ -1086,8 +1086,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			return nil
 		}
 		
+//        let headers = ["teste-header" : "teste value"]
+//        let asset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey" : headers])
 		let asset = AVURLAsset(url: url)
-		
 		if let m = media as? SambaMediaConfig,
 			let drmRequest = m.drmRequest {
 			// must retain a strong reference to it (weak init reference)
@@ -1771,7 +1772,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             
             if Helpers.isConnectedToInternet() && code != NSURLErrorNotConnectedToInternet{ //11853
                 switch code {
-                    case -11833: // actual error: #EXT-X-KEY: invalid KEYFORMAT
+                    case -11833,-5: // actual error: #EXT-X-KEY: invalid KEYFORMAT
                         type = .critical
                         msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
                     default:
