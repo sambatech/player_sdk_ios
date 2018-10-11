@@ -320,14 +320,19 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		if let sec = json["playerSecurity"] as? [String:AnyObject] {
 			if let drmSecurity = sec["drmSecurity"] as? [String:AnyObject],
 				let licenseUrl = drmSecurity["fairplaySignatureURL"] as? String {
-				let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)/getckc")
-				drm.addACParam(key: "applicationId", value: "sambatech")
-				/*drm.licenseUrlParams["CrmId"] = drmSecurity["crmId"] as? String
-				drm.licenseUrlParams["AccountId"] = drmSecurity["accountId"] as? String
-				drm.licenseUrlParams["ContentId"] = "MrPoppersPenguins" //media.id*/
-				//licenseUrlParams["SubContentType"] = drmSecurity["subContentType"] as? String ?? "Default"
-				//headerParams["Content-Type"] = "application/octet-stream"
-
+				let drm = DrmRequest("\(licenseUrl)/getcertificate", "\(licenseUrl)getckc")
+                drm.addLicenseParam(key: "CrmId", value: drmSecurity["crmId"] as? String)
+                drm.addLicenseParam(key: "AccountId", value: drmSecurity["accountId"] as? String)
+                drm.addLicenseParam(key: "ContentId", value: drmSecurity["contentId"] as? String)
+                drm.provider = drmSecurity["provider"] as? String
+                drm.applicationID = drmSecurity["applicationId"] as? String
+                
+                if drm.provider == "SAMBA_DRM", let applicationId = drm.applicationID  {
+                    drm.addACParam(key: "applicationId", value:  applicationId)
+                } else {
+                    drm.addACParam(key: "applicationId", value:  "sambatech")
+                }
+                
 				media.drmRequest = drm
 			}
 			
