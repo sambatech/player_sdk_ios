@@ -30,6 +30,8 @@
 		6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */; };
 		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
 		6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BE215424ED004882A3 /* CastPlayer.swift */; };
+		6BF484EE21B00CAD0014E371 /* OfflineUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */; };
+		6BF484F021B025B40014E371 /* SambaOfflineMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */; };
 		9A0617AC1F448A6A00345EFC /* player_control_realtime@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */; };
 		9A0617AD1F448A6B00345EFC /* player_control_realtime@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */; };
 		9A0617AE1F448A6B00345EFC /* player_control_realtime@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */; };
@@ -165,6 +167,8 @@
 		6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastChannel.swift; sourceTree = "<group>"; };
 		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
 		6BAFD2BE215424ED004882A3 /* CastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastPlayer.swift; sourceTree = "<group>"; };
+		6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineUtils.swift; sourceTree = "<group>"; };
+		6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaOfflineMedia.swift; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -330,6 +334,23 @@
 			name = Plugins;
 			sourceTree = "<group>";
 		};
+		6BF484EB21B00C4D0014E371 /* Offline */ = {
+			isa = PBXGroup;
+			children = (
+				6BF484EC21B00C540014E371 /* Model */,
+				6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */,
+			);
+			name = Offline;
+			sourceTree = "<group>";
+		};
+		6BF484EC21B00C540014E371 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		9A1ADB8E1D4A3D09008A5BEE /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
@@ -413,6 +434,7 @@
 		9A5267EE1D22D5BD00C9C015 /* SambaPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				6BF484EB21B00C4D0014E371 /* Offline */,
 				6B15BE7F21512ECC002C41CF /* Cast */,
 				9AF57B7F1DA431690062E54A /* Drm */,
 				9A4C4DF51E2E6983001A75DD /* Screens */,
@@ -709,6 +731,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */,
+				6BF484F021B025B40014E371 /* SambaOfflineMedia.swift in Sources */,
 				6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */,
 				9AF325DF1D14B5B900B6E450 /* GMFPlayerControlsView.m in Sources */,
 				9A5268001D22D5BD00C9C015 /* SambaMediaRequest.swift in Sources */,
@@ -742,6 +765,7 @@
 				6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */,
 				C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */,
 				9AF325D81D14B5B900B6E450 /* GMFAdService.m in Sources */,
+				6BF484EE21B00CAD0014E371 /* OfflineUtils.swift in Sources */,
 				6BAFD2B9215189C9004882A3 /* SambaCastButton.swift in Sources */,
 				9AF325EF1D14B5B900B6E450 /* GMFVideoPlayer.m in Sources */,
 			);

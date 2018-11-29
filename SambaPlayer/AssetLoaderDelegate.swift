@@ -77,10 +77,6 @@ class AssetLoaderDelegate: NSObject {
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
-        
-        if drmRequest.provider == "SAMBA_DRM", let token = drmRequest.token {
-             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
 		
 		let sem = DispatchSemaphore.init(value: 0)
 		

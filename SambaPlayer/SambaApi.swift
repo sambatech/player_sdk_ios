@@ -227,9 +227,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					
 					let urlNormalized = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
                     
-                    if let fileInfo = output["fileInfo"] as? NSDictionary, let duration = fileInfo["duration"] as? CLong {
-                        media.duration = Float(duration/1000)
+                    if let fileInfo = output["fileInfo"] as? NSDictionary {
+                        
+                        if let duration = fileInfo["duration"] as? CLong {
+                            media.duration = Float(duration/1000)
+                        }
+                        
+                        if let bitrate = fileInfo["bitrate"] as? CLong {
+                            media.bitrate = bitrate
+                        }
                     }
+                    
                     
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,

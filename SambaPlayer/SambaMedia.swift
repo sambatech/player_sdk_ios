@@ -72,6 +72,8 @@ If `outputs` field is nil, `url` field will be used instead.
 	
 	/// Indicates if the media is audio or not
 	public var isAudio = false
+    
+    public var isOffline = false
 	
 	/// Indicates if the media has DVR support
 	public var isDvr = false
@@ -135,7 +137,7 @@ If `outputs` field is nil, `url` field will be used instead.
 /**
 Output entity
 */
-@objc public class SambaMediaOutput : NSObject {
+@objc public class SambaMediaOutput : NSObject, Codable {
 	/// Media URL
 	public let url: String
 	/// Output label
@@ -153,7 +155,7 @@ Output entity
 /**
 Caption entity
 */
-@objc public class SambaMediaCaption : NSObject {
+@objc public class SambaMediaCaption : NSObject, Codable {
 	/// Caption URL
 	public let url: String
 	/// Caption label
@@ -177,7 +179,7 @@ Caption entity
 /**
 Configuration for captions
 */
-@objc public class SambaMediaCaptionsConfig : NSObject {
+@objc public class SambaMediaCaptionsConfig : NSObject, Codable {
 	/// Captions color
 	public let color: UInt
 	/// Captions size
@@ -219,6 +221,8 @@ Configuration for captions
 	/// Number of times the player can try to resume the media on failure
 	public var retriesTotal = 3
 	
+    public var bitrate: CLong?
+    
 	/**
 	Default initializer
 	*/
@@ -245,12 +249,13 @@ Configuration for captions
 			sttmKey = m.sttmKey
 			drmRequest = m.drmRequest
 			blockIfRooted = m.blockIfRooted
+            bitrate = m.bitrate
 		}
 	}
 }
 
 /// Represents a DRM validation request
-@objc public class DrmRequest : NSObject {
+@objc public class DrmRequest : NSObject, Codable {
 	
 	/// Application Certificate URL
 	public var acUrl: String {
@@ -271,6 +276,10 @@ Configuration for captions
 		for (k,v) in _licenseUrlParams {
 			p.append("\(k)=\(v)")
 		}
+        
+        if let mToken = token, !mToken.isEmpty {
+            p.append("ls_session=\(mToken)")
+        }
 		
 		return p.joined(separator: "&")
 	}
