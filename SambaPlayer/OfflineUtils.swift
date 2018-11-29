@@ -8,14 +8,13 @@
 
 import Foundation
 
-
-public class OfflineUtils {
+class OfflineUtils {
     
     private static let MEDIAS_KEY = "MEDIAS_KEY"
     
     private init(){}
     
-    public static func persistMedias(_ medias: [SambaMediaConfig]) {
+    static func persistMedias(_ medias: [SambaMediaConfig]) {
         
         let mediaOffline = medias.map{SambaOfflineMedia.from(sambaMedia: $0)}
         
@@ -26,7 +25,7 @@ public class OfflineUtils {
         UserDefaults.standard.set(data, forKey: MEDIAS_KEY)
     }
     
-    public static func getPersistedMedias() -> [SambaMediaConfig]? {
+    static func getPersistedMedias() -> [SambaMediaConfig]? {
         let jsonData = UserDefaults.standard.data(forKey: MEDIAS_KEY)
         
         guard let data = jsonData else {
