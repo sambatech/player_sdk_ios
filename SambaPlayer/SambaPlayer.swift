@@ -1442,7 +1442,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		}
 		
 		public let url: URL, label: String
-		
+        
+        public let width: Int
+        public let height: Int
+        
+        public let bandwidth: CLong
+        
+        
 		public static func ==(lhs: Output, rhs: Output) -> Bool {
 			return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
 		}
@@ -1703,7 +1709,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			var outputs = Set<Output>()
 			var label: String?
 			
-			outputs.insert(Output(url: url, label: "Auto"))
+            outputs.insert(Output(url: url, label: "Auto", width: 0, height: 0,bandwidth: 0))
 			
 			for line in Helpers.matchesForRegexInText("[^\\r\\n]+", text: text) {
 				if line.hasPrefix("#EXT-X-STREAM-INF") {
@@ -1711,22 +1717,23 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 						line.range(of: "BANDWIDTH\\=\\d+", options: .regularExpression) {
 						
 						let kv = line.substring(with: range)
-						
+                    
 						if let rangeKv = kv.range(of: "\\d+$", options: .regularExpression),
 							let n = Int(kv.substring(with: rangeKv)) {
 							
 							label = "\(kv.contains("x") ? "\(n)p" : "\(n/1000)k")"
 						}
 					}
-				}
-				else if let labelString = label,
+				} else if let labelString = label,
 					line.hasSuffix(".m3u8"),
 					let url = URL(string: line.hasPrefix("http") ? line : baseUrl + line) {
 					
-					outputs.insert(Output(url: url, label: labelString))
+                    outputs.insert(Output(url: url, label: labelString, width: 0, height: 0, bandwidth: 0))
 					label = nil
 				}
 			}
+            
+            
 			
 			return outputs.sorted(by: { $0.hashValue < $1.hashValue })
 		}

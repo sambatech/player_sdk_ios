@@ -9,23 +9,26 @@
 import Foundation
 
 
-public struct SambaDownloadRequest {
+public class SambaDownloadRequest {
     
-    var mediaId: String
-    var projectHash: String
-    var drmToken: String?
-    var totalDownloadSize: Double?
-    
-    
-    var sambaMedia: SambaMedia?
-    
-    var sambaVideoTracks: [SambaTrack]?
-    var sambaAudioTracks: [SambaTrack]?
-    var sambaSubtitles: [SambaSubtitle]?
+    public var mediaId: String
+    public var projectHash: String
+    public var drmToken: String?
+    public var totalDownloadSize: Double?
     
     
-    var sambaTrackForDownload: SambaTrack?
-    var sambaSubtitlesForDownload: SambaSubtitle?
+    public var sambaMedia: SambaMedia?
+    
+    public var sambaVideoTracks: [SambaTrack]?
+    public var sambaAudioTracks: [SambaTrack]?
+    public var sambaSubtitles: [SambaSubtitle]?
     
     
+    public var sambaTrackForDownload: SambaTrack?
+    public var sambaSubtitlesForDownload: SambaSubtitle?
+    
+    public init(mediaId: String, projectHash: String) {
+        self.mediaId = mediaId
+        self.projectHash = projectHash
+    }
 }
