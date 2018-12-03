@@ -9,11 +9,12 @@
 import Foundation
 
 public struct SambaTrack {
-    var title: String
-    var sizeInMb: Double
-    var width: Int
-    var height: Int
-    var isAudio: Bool
+    public var title: String
+    public var sizeInMb: Double
+    public var width: Int
+    public var height: Int
+    public var isAudio: Bool
+    var output: SambaPlayer.Output
 }
 
 public struct SambaSubtitle {

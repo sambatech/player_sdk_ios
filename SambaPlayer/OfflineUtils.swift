@@ -128,5 +128,11 @@ class OfflineUtils {
         return outputs.sorted(by: { $0.hashValue < $1.hashValue })
     }
     
+    static func getSizeInMB(bitrate: CLong, duration: CLong) -> Double {
+        
+        let bitrateInSeconds = (Double(bitrate) / 1000000.0) as Double
+        
+        return (bitrateInSeconds * Double(duration)) / Double(8)
+    }
     
 }
