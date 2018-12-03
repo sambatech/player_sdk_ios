@@ -135,4 +135,8 @@ class OfflineUtils {
         return (bitrateInSeconds * Double(duration)) / Double(8)
     }
     
+    static func isValidRequest(_ request: SambaDownloadRequest) -> Bool {
+          return request.sambaMedia != nil && request.sambaTrackForDownload != nil
+    }
+    
 }

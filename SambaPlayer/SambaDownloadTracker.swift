@@ -33,28 +33,28 @@ class SambaDownloadTracker: NSObject {
     override private init() {
         
         super.init()
-    
-//        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_ID)
-//
-//
-//        assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration,
-//                                      assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
         
-//        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        //        let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_ID)
+        //
+        //
+        //        assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration,
+        //                                      assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
+        
+        //        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
     }
     
     
-//    @objc func applicationWillResignActive() {
-//        activeDownloadsMap.forEach { (arg0) in
-//
-//            let (key, value) = arg0
-//
-//            key.suspend()
-//            key.resume()
-//
-//        }
-//    }
+    //    @objc func applicationWillResignActive() {
+    //        activeDownloadsMap.forEach { (arg0) in
+    //
+    //            let (key, value) = arg0
+    //
+    //            key.suspend()
+    //            key.resume()
+    //
+    //        }
+    //    }
     
     func prepareDownload(with request: SambaDownloadRequest, successCallback: @escaping (SambaDownloadRequest) -> Void, errorCallback: @escaping (Error?,String) -> Void) {
         
@@ -82,6 +82,26 @@ class SambaDownloadTracker: NSObject {
         }) { (error, response) in
             errorCallback(error, "Error to resquest Media")
         }
+        
+    }
+    
+    func performDownload(with request: SambaDownloadRequest) {
+        
+        let media = request.sambaMedia as! SambaMediaConfig
+        
+        if isDownloading(media.id) {
+            
+        } else if isDownloaded(media.id) {
+            
+        }  else {
+            if OfflineUtils.isValidRequest(request) {
+                startDownload(request)
+            }
+        }
+    }
+    
+    
+    private func startDownload(_ request: SambaDownloadRequest) {
         
     }
     
