@@ -117,11 +117,11 @@ class SambaDownloadTracker: NSObject {
         let downloadUrl = track.output.url
         
         let urlAsset = AVURLAsset(url: downloadUrl)
-    
+        
         guard let task = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset,
-                                                                           assetTitle: sambaMedia.title,
-                                                                           assetArtworkData: nil,
-                                                                           options: nil) else { return }
+                                                                       assetTitle: sambaMedia.title,
+                                                                       assetArtworkData: nil,
+                                                                       options: nil) else { return }
         task.taskDescription = sambaMedia.id
         
         
@@ -139,15 +139,15 @@ class SambaDownloadTracker: NSObject {
         var userInfo = [DownloadState.Key: Any]()
         
         userInfo[DownloadState.Key.state] = downloadState
-
+        
         NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: nil, userInfo: userInfo)
-
+        
     }
     
     func isDownloading(_ mediaId: String) -> Bool {
         guard activeDownloadsMap.contains(where: { $1.id == mediaId }),
             sambaMediasDownloading.contains(where: { $0.id == mediaId}) else {
-            return false
+                return false
         }
         
         return true
@@ -266,50 +266,54 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
         //        NotificationCenter.default.post(name: .AssetDownloadStateChanged, object: nil, userInfo: userInfo)
         //    }
         //
-        //    func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
-        //                    didFinishDownloadingTo location: URL) {
-        //        let userDefaults = UserDefaults.standard
-        //
-        //        /*
-        //         This delegate callback should only be used to save the location URL
-        //         somewhere in your application. Any additional work should be done in
-        //         `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
-        //         */
-        //        if let asset = activeDownloadsMap[assetDownloadTask] {
-        //
-        //            do {
-        //                let bookmark = try location.bookmarkData()
-        //
-        //                userDefaults.set(bookmark, forKey: asset.stream.name)
-        //            } catch {
-        //                print("Failed to create bookmark for location: \(location)")
-        //                deleteAsset(asset)
-        //            }
-        //        }
+        
+    }
+    
+    func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
+                    didFinishDownloadingTo location: URL) {
+//        let userDefaults = UserDefaults.standard
+//        
+//        /*
+//         This delegate callback should only be used to save the location URL
+//         somewhere in your application. Any additional work should be done in
+//         `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
+//         */
+//        if let asset = activeDownloadsMap[assetDownloadTask] {
+//            
+//            do {
+//                let bookmark = try location.bookmarkData()
+//                
+//                userDefaults.set(bookmark, forKey: asset.stream.name)
+//            } catch {
+//                print("Failed to create bookmark for location: \(location)")
+//                deleteAsset(asset)
+//            }
+//        }
+//        
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didLoad timeRange: CMTimeRange,
                     totalTimeRangesLoaded loadedTimeRanges: [NSValue], timeRangeExpectedToLoad: CMTimeRange) {
         
-                guard let media = activeDownloadsMap[assetDownloadTask] else { return }
+        guard let media = activeDownloadsMap[assetDownloadTask] else { return }
         
-                var percentComplete = 0.0
-                for value in loadedTimeRanges {
-                    let loadedTimeRange: CMTimeRange = value.timeRangeValue
-                    percentComplete += CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
-                }
+        var percentComplete = 0.0
+        for value in loadedTimeRanges {
+            let loadedTimeRange: CMTimeRange = value.timeRangeValue
+            percentComplete += CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
+        }
         
-                var userInfo = [DownloadState.Key: Any]()
+        var userInfo = [DownloadState.Key: Any]()
         
-                userInfo[DownloadState.Key.progress] = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: Float(percentComplete), media: media, sambaSubtitle: nil)
+        userInfo[DownloadState.Key.progress] = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: Float(percentComplete), media: media, sambaSubtitle: nil)
         
         
-                NotificationCenter.default.post(name: .SambaDownloadProgress, object: nil, userInfo: userInfo)
+        NotificationCenter.default.post(name: .SambaDownloadProgress, object: nil, userInfo: userInfo)
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
                     didResolve resolvedMediaSelection: AVMediaSelection) {
-  
+        
         mediaSelectionMap[assetDownloadTask] = resolvedMediaSelection
         
     }
@@ -319,11 +323,11 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
 
 
 extension Notification.Name {
-   
+    
     static let SambaDownloadProgress = Notification.Name(rawValue: "SambaDownloadProgressNotification")
     
     static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
-
+    
     static let SambaPersistenceManagerDidRestoreState = Notification.Name(rawValue: "SambaPersistenceManagerDidRestoreStateNotification")
 }
 
