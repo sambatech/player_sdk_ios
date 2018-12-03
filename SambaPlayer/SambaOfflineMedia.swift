@@ -40,6 +40,8 @@ class SambaOfflineMedia: NSObject, Codable {
     public var blockIfRooted = false
     public var retriesTotal = 3
     public var bitrate: CLong?
+    public var offlineUrl: String?
+    public var offlinePath: String?
     
     
     private enum CodingKeys: String, CodingKey {
@@ -73,6 +75,8 @@ class SambaOfflineMedia: NSObject, Codable {
         case blockIfRooted
         case retriesTotal
         case bitrate
+        case offlineUrl
+        case offlinePath
     }
     
     override init() {}
@@ -110,6 +114,8 @@ class SambaOfflineMedia: NSObject, Codable {
         blockIfRooted = try container.decode(Bool.self, forKey: .blockIfRooted)
         retriesTotal = try container.decode(Int.self, forKey: .retriesTotal)
         bitrate = try? container.decode(CLong.self, forKey: .bitrate)
+        offlineUrl = try? container.decode(String.self, forKey: .offlineUrl)
+        offlinePath = try? container.decode(String.self, forKey: .offlinePath)
         
     }
     
@@ -146,6 +152,8 @@ class SambaOfflineMedia: NSObject, Codable {
         try container.encode(blockIfRooted, forKey: .blockIfRooted)
         try container.encode(retriesTotal, forKey: .retriesTotal)
         try container.encode(bitrate, forKey: .bitrate)
+        try container.encode(offlineUrl, forKey: .offlineUrl)
+        try container.encode(offlinePath, forKey: .offlinePath)
         
     }
     
@@ -184,6 +192,8 @@ class SambaOfflineMedia: NSObject, Codable {
         sambaOfflineMedia.blockIfRooted = media.blockIfRooted
         sambaOfflineMedia.retriesTotal = media.retriesTotal
         sambaOfflineMedia.bitrate = media.bitrate
+        sambaOfflineMedia.offlineUrl = media.offlineUrl
+        sambaOfflineMedia.offlinePath = media.offlinePath
         
         return sambaOfflineMedia
     }
@@ -222,6 +232,8 @@ class SambaOfflineMedia: NSObject, Codable {
         media.blockIfRooted = blockIfRooted
         media.retriesTotal = retriesTotal
         media.bitrate = bitrate
+        media.offlineUrl = offlineUrl
+        media.offlinePath = offlinePath
         
         return media
     }

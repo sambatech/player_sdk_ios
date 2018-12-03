@@ -84,6 +84,10 @@ If `outputs` field is nil, `url` field will be used instead.
     public var themeColorHex: String = "#72BE44"
     
     public var duration: Float = 0
+    
+    public var offlineUrl: String?
+    
+    public var offlinePath: String?
 	
 	/// Description of the media (returns media's title when empty)
 	public override var description: String { return title }
@@ -129,7 +133,9 @@ If `outputs` field is nil, `url` field will be used instead.
 		theme = media.theme
         thumbURL = media.thumbURL
         externalThumbURL = media.externalThumbURL
-		
+		offlineUrl = media.offlineUrl
+        offlinePath = media.offlinePath
+        
 		super.init()
 	}
 }

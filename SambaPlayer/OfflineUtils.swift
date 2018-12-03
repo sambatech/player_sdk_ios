@@ -10,11 +10,12 @@ import Foundation
 
 class OfflineUtils {
     
-    private static let MEDIAS_KEY = "MEDIAS_KEY"
+    private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
+     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
     
     private init(){}
     
-    static func persistMedias(_ medias: [SambaMediaConfig]) {
+    private static func persistMedias(_ medias: [SambaMediaConfig], key: String) {
         
         let mediaOffline = medias.map{SambaOfflineMedia.from(sambaMedia: $0)}
         
@@ -22,11 +23,11 @@ class OfflineUtils {
         
         guard let data = jsonData else {return}
         
-        UserDefaults.standard.set(data, forKey: MEDIAS_KEY)
+        UserDefaults.standard.set(data, forKey: key)
     }
     
-    static func getPersistedMedias() -> [SambaMediaConfig]? {
-        let jsonData = UserDefaults.standard.data(forKey: MEDIAS_KEY)
+    private static func getPersistedMedias(key: String) -> [SambaMediaConfig]? {
+        let jsonData = UserDefaults.standard.data(forKey: key)
         
         guard let data = jsonData else {
             return nil
@@ -39,6 +40,22 @@ class OfflineUtils {
         }
         
         return medias.map{$0.toSambaMedia()}
+    }
+    
+    static func persistDownloadedMedias(_ medias: [SambaMediaConfig]) {
+        persistMedias(medias, key: MEDIAS_KEY_DOWNLOADED)
+    }
+    
+    static func persistDownloadingMedias(_ medias: [SambaMediaConfig]) {
+        persistMedias(medias, key: MEDIAS_KEY_DOWNLOADING)
+    }
+    
+    static func getPersistDownloadedMedias() -> [SambaMediaConfig]? {
+        return getPersistedMedias(key: MEDIAS_KEY_DOWNLOADED)
+    }
+    
+    static func getPersistDownloadingMedias() -> [SambaMediaConfig]? {
+        return getPersistedMedias(key: MEDIAS_KEY_DOWNLOADING)
     }
     
     

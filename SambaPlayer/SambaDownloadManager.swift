@@ -27,4 +27,12 @@ public class SambaDownloadManager{
         SambaDownloadTracker.sharedInstance.performDownload(with: request)
     }
     
+    public func isDownloading(_ mediaID: String) -> Bool {
+        return SambaDownloadTracker.sharedInstance.isDownloading(mediaID)
+    }
+    
+    public func isDownloaded(_ mediaID: String) -> Bool {
+        return SambaDownloadTracker.sharedInstance.isDownloaded(mediaID)
+    }
+    
 }
