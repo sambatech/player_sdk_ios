@@ -39,7 +39,6 @@ class SambaDownloadTracker: NSObject {
         
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_ID)
         
-        
         assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration,
                                                             assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
         
@@ -54,7 +53,7 @@ class SambaDownloadTracker: NSObject {
     @objc func applicationWillResignActive() {
         activeDownloadsMap.forEach { (arg0) in
             
-            let (key, value) = arg0
+            let (key, _) = arg0
             
             key.suspend()
             key.resume()
@@ -112,9 +111,7 @@ class SambaDownloadTracker: NSObject {
         guard #available(iOS 10.0, *),
             let sambaMedia = request.sambaMedia as? SambaMediaConfig,
             let track = request.sambaTrackForDownload
-            else {
-                return
-        }
+            else { return }
         
         
         let downloadUrl = track.output.url
@@ -126,18 +123,22 @@ class SambaDownloadTracker: NSObject {
                                                                            assetArtworkData: nil,
                                                                            options: nil) else { return }
         task.taskDescription = sambaMedia.id
+        
+        
+        let downloadState = DownloadState.from(state: DownloadState.State.WAITING, totalDownloadSize: track.sizeInMb, downloadPercentage: 0, media: sambaMedia)
+        sambaMedia.downloadData = downloadState.downloadData
+        
         activeDownloadsMap[task] = sambaMedia
         
         sambaMediasDownloading.append(sambaMedia)
+        
         OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
         
         task.resume()
         
         var userInfo = [DownloadState.Key: Any]()
         
-        
-
-        userInfo[DownloadState.Key.state] = DownloadState.from(state: DownloadState.State.WAITING, totalDownloadSize: track.sizeInMb, downloadPercentage: 0, media: sambaMedia)
+        userInfo[DownloadState.Key.state] = downloadState
 
         NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: nil, userInfo: userInfo)
 
@@ -289,21 +290,21 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didLoad timeRange: CMTimeRange,
                     totalTimeRangesLoaded loadedTimeRanges: [NSValue], timeRangeExpectedToLoad: CMTimeRange) {
-        //        // This delegate callback should be used to provide download progress for your AVAssetDownloadTask.
-        //        guard let asset = activeDownloadsMap[assetDownloadTask] else { return }
-        //
-        //        var percentComplete = 0.0
-        //        for value in loadedTimeRanges {
-        //            let loadedTimeRange: CMTimeRange = value.timeRangeValue
-        //            percentComplete +=
-        //                CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
-        //        }
-        //
-        //        var userInfo = [String: Any]()
-        //        userInfo[Asset.Keys.name] = asset.stream.name
-        //        userInfo[Asset.Keys.percentDownloaded] = percentComplete
-        //
-        //        NotificationCenter.default.post(name: .AssetDownloadProgress, object: nil, userInfo: userInfo)
+        
+                guard let media = activeDownloadsMap[assetDownloadTask] else { return }
+        
+                var percentComplete = 0.0
+                for value in loadedTimeRanges {
+                    let loadedTimeRange: CMTimeRange = value.timeRangeValue
+                    percentComplete += CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
+                }
+        
+                var userInfo = [DownloadState.Key: Any]()
+        
+                userInfo[DownloadState.Key.progress] = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: Float(percentComplete), media: media, sambaSubtitle: nil)
+        
+        
+                NotificationCenter.default.post(name: .SambaDownloadProgress, object: nil, userInfo: userInfo)
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,

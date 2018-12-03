@@ -8,12 +8,44 @@
 
 import Foundation
 
-public struct DownloadData {
+public struct DownloadData: Codable {
     var mediaId: String
     var mediaTitle: String
     var totalDownloadSizeInMB: Double
-    var sambaMedia: SambaMediaConfig
+    var sambaMedia: SambaMediaConfig?
     var sambaSubtitle: SambaSubtitle?
+    
+    private enum CodingKeys: String, CodingKey {
+        case mediaId
+        case mediaTitle
+        case totalDownloadSizeInMB
+    }
+    
+    init(mediaId: String, mediaTitle: String, totalDownloadSizeInMB: Double, sambaMedia: SambaMediaConfig, sambaSubtitle: SambaSubtitle?) {
+        self.mediaId = mediaId
+        self.mediaTitle = mediaTitle
+        self.totalDownloadSizeInMB = totalDownloadSizeInMB
+        self.sambaMedia = sambaMedia
+        self.sambaSubtitle = sambaSubtitle
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        mediaId = try container.decode(String.self, forKey: .mediaId)
+        mediaTitle = try container.decode(String.self, forKey: .mediaTitle)
+        totalDownloadSizeInMB = try container.decode(Double.self, forKey: .totalDownloadSizeInMB)
+        sambaMedia = nil
+        sambaSubtitle = nil
+    }
+    
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(mediaId, forKey: .mediaId)
+        try container.encode(mediaTitle, forKey: .mediaTitle)
+        try container.encode(totalDownloadSizeInMB, forKey: .totalDownloadSizeInMB)
+    }
 }
 
 
@@ -33,6 +65,7 @@ public struct DownloadState {
     
     public enum Key: String {
         case state
+        case progress
     }
     
     static func from(state: DownloadState.State,

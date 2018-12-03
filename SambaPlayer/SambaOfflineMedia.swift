@@ -42,7 +42,7 @@ class SambaOfflineMedia: NSObject, Codable {
     public var bitrate: CLong?
     public var offlineUrl: String?
     public var offlinePath: String?
-    
+    public var downloadData: DownloadData?
     
     private enum CodingKeys: String, CodingKey {
         case title
@@ -77,6 +77,7 @@ class SambaOfflineMedia: NSObject, Codable {
         case bitrate
         case offlineUrl
         case offlinePath
+        case downloadData
     }
     
     override init() {}
@@ -116,6 +117,7 @@ class SambaOfflineMedia: NSObject, Codable {
         bitrate = try? container.decode(CLong.self, forKey: .bitrate)
         offlineUrl = try? container.decode(String.self, forKey: .offlineUrl)
         offlinePath = try? container.decode(String.self, forKey: .offlinePath)
+        downloadData = try? container.decode(DownloadData.self, forKey: .downloadData)
         
     }
     
@@ -154,6 +156,7 @@ class SambaOfflineMedia: NSObject, Codable {
         try container.encode(bitrate, forKey: .bitrate)
         try container.encode(offlineUrl, forKey: .offlineUrl)
         try container.encode(offlinePath, forKey: .offlinePath)
+        try container.encode(downloadData, forKey: .downloadData)
         
     }
     
@@ -194,6 +197,7 @@ class SambaOfflineMedia: NSObject, Codable {
         sambaOfflineMedia.bitrate = media.bitrate
         sambaOfflineMedia.offlineUrl = media.offlineUrl
         sambaOfflineMedia.offlinePath = media.offlinePath
+        sambaOfflineMedia.downloadData = media.downloadData
         
         return sambaOfflineMedia
     }
@@ -234,6 +238,7 @@ class SambaOfflineMedia: NSObject, Codable {
         media.bitrate = bitrate
         media.offlineUrl = offlineUrl
         media.offlinePath = offlinePath
+        media.downloadData = downloadData
         
         return media
     }

@@ -88,6 +88,8 @@ If `outputs` field is nil, `url` field will be used instead.
     public var offlineUrl: String?
     
     public var offlinePath: String?
+    
+    public var downloadData: DownloadData?
 	
 	/// Description of the media (returns media's title when empty)
 	public override var description: String { return title }
@@ -135,7 +137,7 @@ If `outputs` field is nil, `url` field will be used instead.
         externalThumbURL = media.externalThumbURL
 		offlineUrl = media.offlineUrl
         offlinePath = media.offlinePath
-        
+        downloadData = media.downloadData
 		super.init()
 	}
 }
