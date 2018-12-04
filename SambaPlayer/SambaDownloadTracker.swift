@@ -165,7 +165,7 @@ class SambaDownloadTracker: NSObject {
         deleteMediaDownload(media)
     }
     
-    fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false) {
+    fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false, _ isNotify: Bool = true) {
         
         do {
             guard let localFileLocation = OfflineUtils.localAssetForMedia(withMedia: media)?.url else {
@@ -177,11 +177,14 @@ class SambaDownloadTracker: NSObject {
             OfflineUtils.removeMediaLocation(from: media)
             sambaMediasDownloaded.removeAll(where: {$0.id == media.id})
             OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
-                
-            let downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED , totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
-                
-            OfflineUtils.sendNotification(with: downloadState)
             
+            
+            if isNotify {
+                let downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.DELETED , totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+                
+                OfflineUtils.sendNotification(with: downloadState)
+            }
+         
         } catch {
             print("An error occured deleting the file: \(error)")
         }
@@ -264,7 +267,7 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
                             print("An unexpected error occured \(error.domain)")
                     }
                     
-                    deleteMediaDownload(media, isError)
+                    deleteMediaDownload(media, isError, false)
 
                     downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
                     
@@ -331,31 +334,29 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
                     didFinishDownloadingTo location: URL) {
-        /*
-         This delegate callback should only be used to save the location URL
-         somewhere in your application. Any additional work should be done in
-         `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
-         */
-        if let media = activeDownloadsMap[assetDownloadTask] {
+        
+        guard let media = activeDownloadsMap[assetDownloadTask] else {
+            return
+        }
 
-            do {
-                let bookmark = try location.bookmarkData()
-                OfflineUtils.saveMediaLocation(with: media, location: bookmark)
-                media.isOffline = true
+        do {
+            let bookmark = try location.bookmarkData()
+            OfflineUtils.saveMediaLocation(with: media, location: bookmark)
+            media.isOffline = true
                 
-                if !sambaMediasDownloaded.contains(where: {$0.id == media.id}) {
-                    sambaMediasDownloaded.append(media)
-                } else {
-                    let newMedia = sambaMediasDownloaded.filter({$0.id == media.id})
-                    newMedia.forEach({$0.isOffline = true})
-                }
+            if !sambaMediasDownloaded.contains(where: {$0.id == media.id}) {
+                sambaMediasDownloaded.append(media)
+            } else {
+                let newMedia = sambaMediasDownloaded.filter({$0.id == media.id})
+                newMedia.forEach({$0.isOffline = true})
+            }
                 
                 
-                OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
-            } catch {
+            OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
+            
+        } catch {
                 print("Failed to create bookmark for location: \(location)")
                 deleteMediaDownload(media, true)
-            }
         }
     }
     
