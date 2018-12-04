@@ -389,8 +389,8 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
 
 extension Notification.Name {
     
-    static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
+    public static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
     
-    static let SambaPersistenceManagerDidRestoreState = Notification.Name(rawValue: "SambaPersistenceManagerDidRestoreStateNotification")
+    public static let SambaPersistenceManagerDidRestoreState = Notification.Name(rawValue: "SambaPersistenceManagerDidRestoreStateNotification")
 }
 

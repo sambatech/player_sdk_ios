@@ -9,11 +9,11 @@
 import Foundation
 
 public struct DownloadData: Codable {
-    var mediaId: String
-    var mediaTitle: String
-    var totalDownloadSizeInMB: Double
-    var sambaMedia: SambaMediaConfig?
-    var sambaSubtitle: SambaSubtitle?
+    public var mediaId: String
+    public var mediaTitle: String
+    public var totalDownloadSizeInMB: Double
+    public var sambaMedia: SambaMediaConfig?
+    public var sambaSubtitle: SambaSubtitle?
     
     private enum CodingKeys: String, CodingKey {
         case mediaId
@@ -50,9 +50,9 @@ public struct DownloadData: Codable {
 
 
 public struct DownloadState {
-    var downloadPercentage: Float
-    var downloadData: DownloadData
-    var state: State
+    public var downloadPercentage: Float
+    public var downloadData: DownloadData
+    public var state: State
     
     public enum State: String {
         case WAITING
@@ -61,11 +61,6 @@ public struct DownloadState {
         case IN_PROGRESS
         case FAILED
         case DELETED
-    }
-    
-    public enum Key: String {
-        case state
-        case progress
     }
     
     static func from(state: DownloadState.State,
@@ -81,6 +76,14 @@ public struct DownloadState {
                                         sambaSubtitle: sambaSubtitle)
         
         return DownloadState(downloadPercentage: downloadPercentage, downloadData: downloadData, state: state)
+    }
+    
+    public static func from(notification: Notification) -> DownloadState? {
+        guard let downloadState = notification.object as? DownloadState else {
+            return nil
+        }
+        
+        return downloadState
     }
     
 }

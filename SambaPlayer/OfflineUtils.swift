@@ -8,7 +8,7 @@
 
 import Foundation
 
-class OfflineUtils {
+public class OfflineUtils {
     
     private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
@@ -190,17 +190,7 @@ class OfflineUtils {
     }
     
     static func sendNotification(with downloadState: DownloadState) {
-        var userInfo = [DownloadState.Key: Any]()
-        userInfo[DownloadState.Key.state] = downloadState
-        NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: nil, userInfo: userInfo)
-    }
-    
-    public static func getDownloadState(from notification: Notification) -> DownloadState? {
-        guard let userInfo = notification.userInfo, let downloadState = userInfo[DownloadState.Key.state] as? DownloadState else {
-            return nil
-        }
-        
-        return downloadState
+        NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: downloadState, userInfo: nil)
     }
     
 }
