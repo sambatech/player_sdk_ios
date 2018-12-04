@@ -77,6 +77,7 @@ class SambaDownloadTracker: NSObject {
                 request.sambaMedia = sambaMediaConfig
                 
                 if let drmRequest = sambaMediaConfig.drmRequest {
+                    sambaMediaConfig.drmRequest?.token = request.drmToken
                     successCallback(request)
                 } else {
                     StartDownloadHelper.prepare(request: request, successCallback: successCallback, errorCallback: errorCallback)
@@ -136,11 +137,7 @@ class SambaDownloadTracker: NSObject {
         
         task.resume()
         
-        var userInfo = [DownloadState.Key: Any]()
-        
-        userInfo[DownloadState.Key.state] = downloadState
-        
-        NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: nil, userInfo: userInfo)
+        OfflineUtils.sendNotification(with: downloadState)
         
     }
     
@@ -156,9 +153,83 @@ class SambaDownloadTracker: NSObject {
     func isDownloaded(_ mediaId: String) -> Bool {
         
         guard let media = sambaMediasDownloaded.first(where: { $0.id == mediaId }),
-            let path = media.offlinePath, !path.isEmpty  else {return false}
+            media.isOffline, let _ = OfflineUtils.getMediaLocation(from: media)  else {return false}
         
         return true
+    }
+    
+    func deleteMedia(for mediaId: String) {
+        
+        guard let media = sambaMediasDownloaded.first(where: {$0.id == mediaId}) else {return}
+        
+        deleteMediaDownload(media)
+    }
+    
+    fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false) {
+        
+        do {
+            guard let localFileLocation = OfflineUtils.localAssetForMedia(withMedia: media)?.url else {
+                return
+            }
+            
+            try FileManager.default.removeItem(at: localFileLocation)
+                
+            OfflineUtils.removeMediaLocation(from: media)
+            sambaMediasDownloaded.removeAll(where: {$0.id == media.id})
+            OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
+                
+            let downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED , totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+                
+            OfflineUtils.sendNotification(with: downloadState)
+            
+        } catch {
+            print("An error occured deleting the file: \(error)")
+        }
+    }
+    
+    func cancelDownload(for mediaId: String) {
+        
+        guard let _ = sambaMediasDownloading.first(where: {$0.id == mediaId}) else {return}
+        
+        var task: AVAssetDownloadTask?
+        
+        for (taskKey, mediaDownloading) in activeDownloadsMap where mediaDownloading.id == mediaId {
+            task = taskKey
+            break
+        }
+        
+        task?.cancel()
+        
+        sambaMediasDownloading.removeAll(where: {$0.id == mediaId})
+        OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
+    }
+
+    
+    fileprivate func nextMediaSelection(_ asset: AVURLAsset) -> (mediaSelectionGroup: AVMediaSelectionGroup?,
+        mediaSelectionOption: AVMediaSelectionOption?) {
+            guard #available(iOS 10.0, *),
+                let assetCache = asset.assetCache else { return (nil, nil) }
+            
+            let mediaCharacteristics = [AVMediaCharacteristicAudible, AVMediaCharacteristicLegible]
+            
+            for mediaCharacteristic in mediaCharacteristics {
+                if let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) {
+                    let savedOptions = assetCache.mediaSelectionOptions(in: mediaSelectionGroup)
+                    
+                    if savedOptions.count < mediaSelectionGroup.options.count {
+                        // There are still media options left to download.
+                        for option in mediaSelectionGroup.options {
+                            if !savedOptions.contains(option) && option.mediaType != AVMediaTypeClosedCaption {
+                                // This option has not been download.
+                                return (mediaSelectionGroup, option)
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // At this point all media options have been downloaded.
+            return (nil, nil)
     }
     
 }
@@ -168,128 +239,123 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
     
     /// Tells the delegate that the task finished transferring data.
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        //        let userDefaults = UserDefaults.standard
-        //
-        //        /*
-        //         This is the ideal place to begin downloading additional media selections
-        //         once the asset itself has finished downloading.
-        //         */
-        //        guard let task = task as? AVAssetDownloadTask, let asset = activeDownloadsMap.removeValue(forKey: task) else { return }
-        //
-        //        // Prepare the basic userInfo dictionary that will be posted as part of our notification.
-        //        var userInfo = [String: Any]()
-        //        userInfo[Asset.Keys.name] = asset.stream.name
-        //
-        //        if let error = error as NSError? {
-        //            switch (error.domain, error.code) {
-        //            case (NSURLErrorDomain, NSURLErrorCancelled):
-        //                /*
-        //                 This task was canceled, you should perform cleanup using the
-        //                 URL saved from AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didFinishDownloadingTo:).
-        //                 */
-        //                guard let localFileLocation = localAssetForStream(withName: asset.stream.name)?.urlAsset.url else { return }
-        //
-        //                do {
-        //                    try FileManager.default.removeItem(at: localFileLocation)
-        //
-        //                    userDefaults.removeObject(forKey: asset.stream.name)
-        //                } catch {
-        //                    print("An error occured trying to delete the contents on disk for \(asset.stream.name): \(error)")
-        //                }
-        //
-        //                userInfo[Asset.Keys.downloadState] = Asset.DownloadState.notDownloaded.rawValue
-        //
-        //            case (NSURLErrorDomain, NSURLErrorUnknown):
-        //                fatalError("Downloading HLS streams is not supported in the simulator.")
-        //
-        //            default:
-        //                fatalError("An unexpected error occured \(error.domain)")
-        //            }
-        //        } else {
-        //            let mediaSelectionPair = nextMediaSelection(task.urlAsset)
-        //
-        //            if mediaSelectionPair.mediaSelectionGroup != nil {
-        //                /*
-        //                 This task did complete sucessfully. At this point the application
-        //                 can download additional media selections if needed.
-        //
-        //                 To download additional `AVMediaSelection`s, you should use the
-        //                 `AVMediaSelection` reference saved in `AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didResolve:)`.
-        //                 */
-        //
-        //                guard let originalMediaSelection = mediaSelectionMap[task] else { return }
-        //
-        //                /*
-        //                 There are still media selections to download.
-        //
-        //                 Create a mutable copy of the AVMediaSelection reference saved in
-        //                 `AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didResolve:)`.
-        //                 */
-        //                let mediaSelection = originalMediaSelection.mutableCopy() as! AVMutableMediaSelection
-        //
-        //                // Select the AVMediaSelectionOption in the AVMediaSelectionGroup we found earlier.
-        //                mediaSelection.select(mediaSelectionPair.mediaSelectionOption!,
-        //                                      in: mediaSelectionPair.mediaSelectionGroup!)
-        //
-        //                /*
-        //                 Ask the `URLSession` to vend a new `AVAssetDownloadTask` using
-        //                 the same `AVURLAsset` and assetTitle as before.
-        //
-        //                 This time, the application includes the specific `AVMediaSelection`
-        //                 to download as well as a higher bitrate.
-        //                 */
-        //                guard let task = assetDownloadURLSession.makeAssetDownloadTask(asset: task.urlAsset,
-        //                                                                               assetTitle: asset.stream.name,
-        //                                                                               assetArtworkData: nil,
-        //                                                                               options: [AVAssetDownloadTaskMinimumRequiredMediaBitrateKey: 2_000_000,
-        //                                                                                         AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
-        //                    else { return }
-        //
-        //                task.taskDescription = asset.stream.name
-        //
-        //                activeDownloadsMap[task] = asset
-        //
-        //                task.resume()
-        //
-        //                userInfo[Asset.Keys.downloadState] = Asset.DownloadState.downloading.rawValue
-        //                userInfo[Asset.Keys.downloadSelectionDisplayName] = mediaSelectionPair.mediaSelectionOption!.displayName
-        //
-        //                NotificationCenter.default.post(name: .AssetDownloadStateChanged, object: nil, userInfo: userInfo)
-        //            } else {
-        //                // All additional media selections have been downloaded.
-        //
-        //                userInfo[Asset.Keys.downloadState] = Asset.DownloadState.downloaded.rawValue
-        //
-        //            }
-        //        }
-        //
-        //        NotificationCenter.default.post(name: .AssetDownloadStateChanged, object: nil, userInfo: userInfo)
-        //    }
-        //
+                /*
+                 This is the ideal place to begin downloading additional media selections
+                 once the asset itself has finished downloading.
+                 */
+                guard let task = task as? AVAssetDownloadTask, let media = activeDownloadsMap.removeValue(forKey: task) else { return }
         
+                sambaMediasDownloading.removeAll(where: {$0.id == media.id})
+                OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
+        
+                // Prepare the basic userInfo dictionary that will be posted as part of our notification.
+                var downloadState: DownloadState!
+        
+                if let error = error as NSError? {
+                    switch (error.domain, error.code) {
+                        case (NSURLErrorDomain, NSURLErrorCancelled):
+                            print("Downloading was canceled with erro domain")
+                        
+                        case (NSURLErrorDomain, NSURLErrorUnknown):
+                            print("Downloading HLS streams is not supported in the simulator.")
+            
+                        default:
+                            print("An unexpected error occured \(error.domain)")
+                    }
+                    
+                    deleteMediaDownload(media, true)
+
+                    
+                    downloadState = DownloadState.from(state: DownloadState.State.FAILED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
+                } else {
+                    let mediaSelectionPair = nextMediaSelection(task.urlAsset)
+        
+                    if mediaSelectionPair.mediaSelectionGroup != nil {
+                        /*
+                         This task did complete sucessfully. At this point the application
+                         can download additional media selections if needed.
+        
+                         To download additional `AVMediaSelection`s, you should use the
+                         `AVMediaSelection` reference saved in `AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didResolve:)`.
+                         */
+        
+                        guard let originalMediaSelection = mediaSelectionMap[task] else { return }
+        
+                        /*
+                         There are still media selections to download.
+        
+                         Create a mutable copy of the AVMediaSelection reference saved in
+                         `AVAssetDownloadDelegate.urlSession(_:assetDownloadTask:didResolve:)`.
+                         */
+                        let mediaSelection = originalMediaSelection.mutableCopy() as! AVMutableMediaSelection
+        
+                        // Select the AVMediaSelectionOption in the AVMediaSelectionGroup we found earlier.
+                        mediaSelection.select(mediaSelectionPair.mediaSelectionOption!,
+                                              in: mediaSelectionPair.mediaSelectionGroup!)
+        
+                        /*
+                         Ask the `URLSession` to vend a new `AVAssetDownloadTask` using
+                         the same `AVURLAsset` and assetTitle as before.
+        
+                         This time, the application includes the specific `AVMediaSelection`
+                         to download as well as a higher bitrate.
+                         */
+                        guard #available(iOS 10.0, *), let task = assetDownloadURLSession.makeAssetDownloadTask(asset: task.urlAsset,
+                                                                                       assetTitle: media.title,
+                                                                                       assetArtworkData: nil,
+                                                                                       options: [AVAssetDownloadTaskMediaSelectionKey: mediaSelection])
+                            else { return }
+        
+                        task.taskDescription = media.id
+        
+                        let downloadState = DownloadState.from(state: DownloadState.State.WAITING, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+                        media.downloadData = downloadState.downloadData
+                        
+                        activeDownloadsMap[task] = media
+                        
+                        sambaMediasDownloading.append(media)
+                        
+                        OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
+                        
+                        task.resume()
+    
+                    } else {
+                         downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+                    }
+                }
+        
+                OfflineUtils.sendNotification(with: downloadState)
+    
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
                     didFinishDownloadingTo location: URL) {
-//        let userDefaults = UserDefaults.standard
-//        
-//        /*
-//         This delegate callback should only be used to save the location URL
-//         somewhere in your application. Any additional work should be done in
-//         `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
-//         */
-//        if let asset = activeDownloadsMap[assetDownloadTask] {
-//            
-//            do {
-//                let bookmark = try location.bookmarkData()
-//                
-//                userDefaults.set(bookmark, forKey: asset.stream.name)
-//            } catch {
-//                print("Failed to create bookmark for location: \(location)")
-//                deleteAsset(asset)
-//            }
-//        }
-//        
+        /*
+         This delegate callback should only be used to save the location URL
+         somewhere in your application. Any additional work should be done in
+         `URLSessionTaskDelegate.urlSession(_:task:didCompleteWithError:)`.
+         */
+        if let media = activeDownloadsMap[assetDownloadTask] {
+
+            do {
+                let bookmark = try location.bookmarkData()
+                OfflineUtils.saveMediaLocation(with: media, location: bookmark)
+                media.isOffline = true
+                
+                if !sambaMediasDownloaded.contains(where: {$0.id == media.id}) {
+                    sambaMediasDownloaded.append(media)
+                } else {
+                    let newMedia = sambaMediasDownloaded.filter({$0.id == media.id})
+                    newMedia.forEach({$0.isOffline = true})
+                }
+                
+                
+                OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
+            } catch {
+                print("Failed to create bookmark for location: \(location)")
+                deleteMediaDownload(media, true)
+            }
+        }
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didLoad timeRange: CMTimeRange,
@@ -303,12 +369,9 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
             percentComplete += CMTimeGetSeconds(loadedTimeRange.duration) / CMTimeGetSeconds(timeRangeExpectedToLoad.duration)
         }
         
-        var userInfo = [DownloadState.Key: Any]()
+        let downloadState = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: Float(percentComplete), media: media, sambaSubtitle: nil)
         
-        userInfo[DownloadState.Key.progress] = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: Float(percentComplete), media: media, sambaSubtitle: nil)
-        
-        
-        NotificationCenter.default.post(name: .SambaDownloadProgress, object: nil, userInfo: userInfo)
+        OfflineUtils.sendNotification(with: downloadState)
     }
     
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask,
@@ -323,8 +386,6 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
 
 
 extension Notification.Name {
-    
-    static let SambaDownloadProgress = Notification.Name(rawValue: "SambaDownloadProgressNotification")
     
     static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
     

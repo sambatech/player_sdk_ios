@@ -11,7 +11,8 @@ import Foundation
 class OfflineUtils {
     
     private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
-     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
+    private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
+    private static let MEDIAS_LOCATION_KEY = "MEDIAS_LOCATION_KEY"
     
     private init(){}
     
@@ -154,6 +155,52 @@ class OfflineUtils {
     
     static func isValidRequest(_ request: SambaDownloadRequest) -> Bool {
           return request.sambaMedia != nil && request.sambaTrackForDownload != nil
+    }
+    
+    static func saveMediaLocation(with media: SambaMediaConfig, location: Data) {
+        UserDefaults.standard.set(location, forKey: "\(media.id)_\(MEDIAS_LOCATION_KEY)")
+    }
+    
+    static func getMediaLocation(from media: SambaMediaConfig) -> Data? {
+        return UserDefaults.standard.data(forKey: "\(media.id)_\(MEDIAS_LOCATION_KEY)")
+    }
+    
+    static func removeMediaLocation(from media: SambaMediaConfig) {
+        UserDefaults.standard.removeObject(forKey: "\(media.id)_\(MEDIAS_LOCATION_KEY)")
+    }
+    
+    static func localAssetForMedia(withMedia media: SambaMediaConfig) -> AVURLAsset? {
+        guard let localFileLocation = getMediaLocation(from: media) as? Data else { return nil }
+        
+        var bookmarkDataIsStale = false
+        do {
+            guard let url = try URL(resolvingBookmarkData: localFileLocation,
+                                    bookmarkDataIsStale: &bookmarkDataIsStale) else {
+                                        fatalError("Failed to create URL from bookmark!")
+            }
+            
+            if bookmarkDataIsStale {
+                fatalError("Bookmark data is stale!")
+            }
+            
+            return AVURLAsset(url: url)
+        } catch {
+            fatalError("Failed to create URL from bookmark with error: \(error)")
+        }
+    }
+    
+    static func sendNotification(with downloadState: DownloadState) {
+        var userInfo = [DownloadState.Key: Any]()
+        userInfo[DownloadState.Key.state] = downloadState
+        NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: nil, userInfo: userInfo)
+    }
+    
+    public static func getDownloadState(from notification: Notification) -> DownloadState? {
+        guard let userInfo = notification.userInfo, let downloadState = userInfo[DownloadState.Key.state] as? DownloadState else {
+            return nil
+        }
+        
+        return downloadState
     }
     
 }

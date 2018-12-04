@@ -35,4 +35,12 @@ public class SambaDownloadManager{
         return SambaDownloadTracker.sharedInstance.isDownloaded(mediaID)
     }
     
+    public func cancelDownload(for mediaId: String) {
+        SambaDownloadTracker.sharedInstance.cancelDownload(for: mediaId)
+    }
+    
+    public func deleteMedia(for mediaId: String) {
+        SambaDownloadTracker.sharedInstance.deleteMedia(for: mediaId)
+    }
+    
 }
