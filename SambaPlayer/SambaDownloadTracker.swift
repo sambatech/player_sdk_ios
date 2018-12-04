@@ -250,12 +250,13 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
         
                 // Prepare the basic userInfo dictionary that will be posted as part of our notification.
                 var downloadState: DownloadState!
+                var isError = true
         
                 if let error = error as NSError? {
                     switch (error.domain, error.code) {
                         case (NSURLErrorDomain, NSURLErrorCancelled):
                             print("Downloading was canceled with erro domain")
-                        
+                            isError = false
                         case (NSURLErrorDomain, NSURLErrorUnknown):
                             print("Downloading HLS streams is not supported in the simulator.")
             
@@ -263,10 +264,10 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
                             print("An unexpected error occured \(error.domain)")
                     }
                     
-                    deleteMediaDownload(media, true)
+                    deleteMediaDownload(media, isError)
 
+                    downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
                     
-                    downloadState = DownloadState.from(state: DownloadState.State.FAILED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
                 } else {
                     let mediaSelectionPair = nextMediaSelection(task.urlAsset)
         
