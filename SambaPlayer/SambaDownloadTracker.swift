@@ -38,6 +38,12 @@ class SambaDownloadTracker: NSObject {
         super.init()
         
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_ID)
+        backgroundConfiguration.allowsCellularAccess = true
+        backgroundConfiguration.httpMaximumConnectionsPerHost = 1
+        backgroundConfiguration.shouldUseExtendedBackgroundIdleMode = true
+        if #available(iOS 11.0, *) {
+            backgroundConfiguration.waitsForConnectivity = true
+        } 
         
         assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration,
                                                             assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
@@ -46,6 +52,10 @@ class SambaDownloadTracker: NSObject {
         sambaMediasDownloaded = OfflineUtils.getPersistDownloadedMedias() ?? []
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        
+         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
         
     }
     
@@ -60,6 +70,37 @@ class SambaDownloadTracker: NSObject {
             
         }
     }
+    
+    @objc func applicationWillTerminate() {
+        
+        activeDownloadsMap.forEach { (arg0) in
+            
+            let (_, media) = arg0
+
+            cancelDownload(for: media.id)
+        }
+    }
+    
+    func restoreTasks() {
+        guard !didRestorePersistenceManager else { return }
+        
+        didRestorePersistenceManager = true
+        
+        assetDownloadURLSession.getAllTasks { [weak self] tasksArray in
+            
+            guard let strongSelf = self else {return}
+            
+            for task in tasksArray {
+                guard let assetDownloadTask = task as? AVAssetDownloadTask, let media = strongSelf.sambaMediasDownloading.first(where: {$0.id == assetDownloadTask.taskDescription}) else { break }
+                
+                strongSelf.activeDownloadsMap[assetDownloadTask] = media
+                
+                strongSelf.cancelDownload(for: media.id)
+            }
+//            NotificationCenter.default.post(name: .AssetPersistenceManagerDidRestoreState, object: nil)
+        }
+    }
+    
     
     func prepareDownload(with request: SambaDownloadRequest, successCallback: @escaping (SambaDownloadRequest) -> Void, errorCallback: @escaping (Error?,String) -> Void) {
         
@@ -360,6 +401,24 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
         }
     }
     
+    func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
+        
+        
+        guard let assetDownloadTask = task as?  AVAssetDownloadTask else {
+            return
+        }
+        
+        guard let media = activeDownloadsMap[assetDownloadTask] else { return }
+        
+         let downloadState = DownloadState.from(state: DownloadState.State.WAITING, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media, sambaSubtitle: nil)
+        
+         OfflineUtils.sendNotification(with: downloadState)
+    }
+    
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        print(error)
+    }
+    
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didLoad timeRange: CMTimeRange,
                     totalTimeRangesLoaded loadedTimeRanges: [NSValue], timeRangeExpectedToLoad: CMTimeRange) {
         
@@ -391,6 +450,6 @@ extension Notification.Name {
     
     public static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
     
-    public static let SambaPersistenceManagerDidRestoreState = Notification.Name(rawValue: "SambaPersistenceManagerDidRestoreStateNotification")
+    static let SambaDidRestoreState = Notification.Name(rawValue: "SambaDidRestoreState")
 }
 
