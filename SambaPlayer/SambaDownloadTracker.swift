@@ -31,6 +31,9 @@ class SambaDownloadTracker: NSObject {
     fileprivate var sambaMediasDownloading: [SambaMediaConfig]!
     fileprivate var sambaMediasDownloaded: [SambaMediaConfig]!
     
+    
+    fileprivate var sambaMediasPaused: [SambaMediaConfig] = []
+    
     // MARK: Intialization
     
     override private init() {
@@ -127,7 +130,9 @@ class SambaDownloadTracker: NSObject {
             }
             
         }) { (error, response) in
-            errorCallback(error, "Error to resquest Media")
+            DispatchQueue.main.async {
+                errorCallback(error, "Error to resquest Media")
+            }
         }
         
     }
@@ -182,6 +187,16 @@ class SambaDownloadTracker: NSObject {
         
     }
     
+    //MARK:- Booleans
+    
+    func isPaused(_ mediaId: String) -> Bool {
+        guard sambaMediasPaused.contains(where: { $0.id == mediaId }) else {
+            return false
+        }
+        
+        return true
+    }
+    
     func isDownloading(_ mediaId: String) -> Bool {
         guard activeDownloadsMap.contains(where: { $1.id == mediaId }),
             sambaMediasDownloading.contains(where: { $0.id == mediaId}) else {
@@ -205,6 +220,17 @@ class SambaDownloadTracker: NSObject {
         
         deleteMediaDownload(media)
     }
+    
+    func deleteAllMedias() {
+        guard let medias = sambaMediasDownloaded, !medias.isEmpty else {
+            return
+        }
+        
+        medias.forEach { (media) in
+            deleteMediaDownload(media)
+        }
+    }
+    
     
     fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false, _ isNotify: Bool = true) {
         
@@ -247,6 +273,67 @@ class SambaDownloadTracker: NSObject {
         sambaMediasDownloading.removeAll(where: {$0.id == mediaId})
         OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
     }
+    
+    func cancelAllDownloads() {
+        guard let medias = sambaMediasDownloading, !medias.isEmpty else {return}
+        
+        medias.forEach { media in
+            cancelDownload(for: media.id)
+        }
+    }
+    
+    func pauseDownload(for mediaId: String) {
+         guard !activeDownloadsMap.isEmpty, !sambaMediasPaused.contains(where: {$0.id == mediaId}),
+            let values = activeDownloadsMap.first(where: {$1.id == mediaId})
+            else {return}
+        
+        let task = values.key
+        let media = values.value
+        
+        task.suspend()
+        
+        sambaMediasPaused.append(media)
+        
+        let downloadState = DownloadState.from(state: DownloadState.State.PAUSED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+            
+        OfflineUtils.sendNotification(with: downloadState)
+        
+    }
+    
+    func resumeDownload(for mediaId: String) {
+        guard !activeDownloadsMap.isEmpty, sambaMediasPaused.contains(where: {$0.id == mediaId}),
+            let values = activeDownloadsMap.first(where: {$1.id == mediaId})
+            else {return}
+        
+        let task = values.key
+        let media = values.value
+        
+        task.resume()
+        
+        sambaMediasPaused.removeAll(where: {$0.id == mediaId})
+        
+        let downloadState = DownloadState.from(state: DownloadState.State.RESUMED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+            
+        OfflineUtils.sendNotification(with: downloadState)
+        
+    }
+    
+    
+    func pauseAllDownloads()  {
+        guard let medias = sambaMediasDownloading, !medias.isEmpty else {return}
+        
+        medias.forEach { media in
+            pauseDownload(for: media.id)
+        }
+    }
+    
+    func resumeAllDownloads()  {
+        guard let medias = sambaMediasDownloading, !medias.isEmpty else {return}
+        
+        medias.forEach { media in
+            resumeDownload(for: media.id)
+        }
+    }
 
     
     fileprivate func nextMediaSelection(_ asset: AVURLAsset) -> (mediaSelectionGroup: AVMediaSelectionGroup?,
@@ -279,6 +366,7 @@ class SambaDownloadTracker: NSObject {
 }
 
 
+//MARK: - Delegate Download Asset
 extension SambaDownloadTracker: AVAssetDownloadDelegate {
     
     /// Tells the delegate that the task finished transferring data.
@@ -401,28 +489,11 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
         }
     }
     
-    func urlSession(_ session: URLSession, taskIsWaitingForConnectivity task: URLSessionTask) {
-        
-        
-        guard let assetDownloadTask = task as?  AVAssetDownloadTask else {
-            return
-        }
-        
-        guard let media = activeDownloadsMap[assetDownloadTask] else { return }
-        
-         let downloadState = DownloadState.from(state: DownloadState.State.WAITING, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media, sambaSubtitle: nil)
-        
-         OfflineUtils.sendNotification(with: downloadState)
-    }
-    
-    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
-        print(error)
-    }
-    
     func urlSession(_ session: URLSession, assetDownloadTask: AVAssetDownloadTask, didLoad timeRange: CMTimeRange,
                     totalTimeRangesLoaded loadedTimeRanges: [NSValue], timeRangeExpectedToLoad: CMTimeRange) {
         
-        guard let media = activeDownloadsMap[assetDownloadTask] else { return }
+        guard let media = activeDownloadsMap[assetDownloadTask],
+         !sambaMediasPaused.contains(where: {$0.id == media.id}) else { return }
         
         var percentComplete = 0.0
         for value in loadedTimeRanges {

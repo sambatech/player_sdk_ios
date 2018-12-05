@@ -61,6 +61,8 @@ public struct DownloadState {
         case IN_PROGRESS
         case FAILED
         case DELETED
+        case PAUSED
+        case RESUMED
     }
     
     static func from(state: DownloadState.State,
