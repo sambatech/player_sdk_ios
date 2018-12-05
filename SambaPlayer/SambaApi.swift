@@ -45,6 +45,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void) {
 		requestMedia(request, onComplete: onComplete, onError: nil)
 	}
+    
+    public func prepareOfflineMedia(media: SambaMedia, onComplete: @escaping (SambaMedia?) -> Void, onError: @escaping (Error?, URLResponse?) -> Void) {
+        
+        if media.isOffline {
+            onComplete(media)
+        } else {
+            onError(nil, nil)
+        }
+    }
 	
 	/**
 	Requests and decodes a Base64 media data from the Samba Player API

@@ -75,5 +75,12 @@ public class SambaDownloadManager{
         SambaDownloadTracker.sharedInstance.resumeAllDownloads()
     }
     
+    public func getDownloadedMedia(for mediaId: String) -> SambaMedia? {
+        return SambaDownloadTracker.sharedInstance.getDownloadedMedia(for: mediaId)
+    }
+    
+    public func getAllDownloadedMedia() -> [SambaMedia] {
+        return SambaDownloadTracker.sharedInstance.getAllDownloadedMedia()
+    }
     
 }

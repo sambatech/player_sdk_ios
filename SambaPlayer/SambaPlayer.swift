@@ -888,12 +888,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
         _player = gmf
-        
 		
-	
-		_outputManager = OutputManager(self)
-		_captionsScreen = CaptionsScreen(player: self)
-		
+        if !media.isOffline {
+            _outputManager = OutputManager(self)
+            _captionsScreen = CaptionsScreen(player: self)
+        }
+    
 		configUI()
 		DispatchQueue.main.async { self.destroyThumb() } // antecipates thumb destroy
         attachVC(_player!, nil, nil) { self.updateFullscreen(nil, false) }
@@ -1062,6 +1062,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	private func decideUrl() -> URL? {
+        
+        if  media.isOffline, let offlineURL = media.offlineUrl {
+            return URL(string: offlineURL)
+        }
+        
 		var urlOpt = media.url
 		
 		// outputs
@@ -1088,12 +1093,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 //        let headers = ["teste-header" : "teste value"]
 //        let asset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey" : headers])
-		let asset = AVURLAsset(url: url)
-		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest {
-			// must retain a strong reference to it (weak init reference)
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
-		}
+		
+        let asset: AVURLAsset!
+        if media.isOffline {
+           asset = OfflineUtils.localAssetForMedia(withMedia: media as! SambaMediaConfig)
+        } else {
+           asset = AVURLAsset(url: url)
+        }
+        
+        if let m = media as? SambaMediaConfig,
+            let drmRequest = m.drmRequest {
+            // must retain a strong reference to it (weak init reference)
+            _decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
+        }
 		
 		return asset
 	}

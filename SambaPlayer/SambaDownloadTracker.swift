@@ -34,6 +34,8 @@ class SambaDownloadTracker: NSObject {
     
     fileprivate var sambaMediasPaused: [SambaMediaConfig] = []
     
+    private var _decryptDelegate: AssetLoaderDelegate?
+    
     // MARK: Intialization
     
     override private init() {
@@ -120,12 +122,11 @@ class SambaDownloadTracker: NSObject {
             } else {
                 request.sambaMedia = sambaMediaConfig
                 
-                if let drmRequest = sambaMediaConfig.drmRequest {
+                if let _ = sambaMediaConfig.drmRequest {
                     sambaMediaConfig.drmRequest?.token = request.drmToken
-                    successCallback(request)
-                } else {
-                    StartDownloadHelper.prepare(request: request, successCallback: successCallback, errorCallback: errorCallback)
                 }
+                
+                StartDownloadHelper.prepare(request: request, successCallback: successCallback, errorCallback: errorCallback)
                 
             }
             
@@ -162,8 +163,16 @@ class SambaDownloadTracker: NSObject {
         
         
         let downloadUrl = track.output.url
+//        var components = URLComponents(url: downloadUrl, resolvingAgainstBaseURL: true)
+//        components?.scheme = "fakehttps"
         
         let urlAsset = AVURLAsset(url: downloadUrl)
+        
+        if sambaMedia.drmRequest != nil {
+            _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!)
+        }
+        
+        sambaMedia.offlineUrl = downloadUrl.absoluteString
         
         guard let task = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset,
                                                                        assetTitle: sambaMedia.title,
@@ -231,6 +240,13 @@ class SambaDownloadTracker: NSObject {
         }
     }
     
+    func getDownloadedMedia(for mediaId: String) -> SambaMedia? {
+        return sambaMediasDownloaded.first(where: {$0.id == mediaId})
+    }
+    
+    func getAllDownloadedMedia() -> [SambaMedia] {
+        return sambaMediasDownloaded
+    }
     
     fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false, _ isNotify: Bool = true) {
         
@@ -239,9 +255,15 @@ class SambaDownloadTracker: NSObject {
                 return
             }
             
+            if let drmRequest = media.drmRequest {
+                let assetDelegate = AssetLoaderDelegate(asset: AVURLAsset(url: localFileLocation), assetName: media.id, drmRequest: drmRequest)
+                assetDelegate.deletePersistedConentKeyForAsset()
+            }
+            
             try FileManager.default.removeItem(at: localFileLocation)
-                
+            
             OfflineUtils.removeMediaLocation(from: media)
+            
             sambaMediasDownloaded.removeAll(where: {$0.id == media.id})
             OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
             
@@ -513,7 +535,14 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
         
     }
     
+}
+
+extension SambaDownloadTracker: AVAssetResourceLoaderDelegate {
     
+    func resourceLoader(_ resourceLoader: AVAssetResourceLoader, shouldWaitForLoadingOfRequestedResource loadingRequest: AVAssetResourceLoadingRequest) -> Bool {
+        print("e")
+        return true
+    }
 }
 
 
