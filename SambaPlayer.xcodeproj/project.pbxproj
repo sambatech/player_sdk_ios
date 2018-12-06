@@ -30,6 +30,7 @@
 		6BAFD2BB21529247004882A3 /* SambaCastChannel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */; };
 		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
 		6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BE215424ED004882A3 /* CastPlayer.swift */; };
+		6BDDE87221B99B5E0002A688 /* AESAssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDDE87121B99B5E0002A688 /* AESAssetLoaderDelegate.swift */; };
 		6BF484EE21B00CAD0014E371 /* OfflineUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */; };
 		6BF484F021B025B40014E371 /* SambaOfflineMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */; };
 		6BF484F221B0520A0014E371 /* SambaTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484F121B0520A0014E371 /* SambaTrack.swift */; };
@@ -173,6 +174,7 @@
 		6BAFD2BA21529247004882A3 /* SambaCastChannel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCastChannel.swift; sourceTree = "<group>"; };
 		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
 		6BAFD2BE215424ED004882A3 /* CastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastPlayer.swift; sourceTree = "<group>"; };
+		6BDDE87121B99B5E0002A688 /* AESAssetLoaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESAssetLoaderDelegate.swift; sourceTree = "<group>"; };
 		6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineUtils.swift; sourceTree = "<group>"; };
 		6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaOfflineMedia.swift; sourceTree = "<group>"; };
 		6BF484F121B0520A0014E371 /* SambaTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaTrack.swift; sourceTree = "<group>"; };
@@ -365,6 +367,7 @@
 				6BF484F121B0520A0014E371 /* SambaTrack.swift */,
 				6BF484F321B052F50014E371 /* DownloadData.swift */,
 				6BF484F521B054480014E371 /* DownloadRequest.swift */,
+				6BDDE87121B99B5E0002A688 /* AESAssetLoaderDelegate.swift */,
 			);
 			name = Model;
 			sourceTree = "<group>";
@@ -782,6 +785,7 @@
 				9A5267FA1D22D5BD00C9C015 /* Helpers.swift in Sources */,
 				9AF325F81D14B5B900B6E450 /* UILabel+GMFLabels.m in Sources */,
 				6BF484F421B052F50014E371 /* DownloadData.swift in Sources */,
+				6BDDE87221B99B5E0002A688 /* AESAssetLoaderDelegate.swift in Sources */,
 				6BF484F821B190730014E371 /* SambaDownloadManager.swift in Sources */,
 				6BF484F221B0520A0014E371 /* SambaTrack.swift in Sources */,
 				9AF325F41D14B5B900B6E450 /* UIButton+GMFTintableButton.m in Sources */,

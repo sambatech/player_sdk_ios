@@ -78,6 +78,17 @@ public class OfflineUtils {
         return urlString
     }
     
+    
+    static func m3u8ContainsAES128(url: URL?) -> Bool {
+        guard let url = url,
+            url.pathExtension.contains("m3u8"),
+            let text = try? String(contentsOf: url, encoding: .utf8)
+            else { return false }
+        
+        return text.contains("METHOD=AES-128")
+    }
+    
+    
     static func extractM3u8(url: URL?) -> [SambaPlayer.Output]  {
         guard let url = url,
             url.pathExtension.contains("m3u8"),

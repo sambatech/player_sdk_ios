@@ -69,6 +69,7 @@
 
 // Reset the playback state to enable playing a new video in an existing player instance.
 - (void)reset;
+- (void)destroyInternal;
 
 // Handling playback.
 - (void)play;

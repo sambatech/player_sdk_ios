@@ -35,6 +35,7 @@ class SambaDownloadTracker: NSObject {
     fileprivate var sambaMediasPaused: [SambaMediaConfig] = []
     
     private var _decryptDelegate: AssetLoaderDelegate?
+    private var _decryptDelegateAES: AESAssetLoaderDelegate?
     
     // MARK: Intialization
     
@@ -163,13 +164,16 @@ class SambaDownloadTracker: NSObject {
         
         
         let downloadUrl = track.output.url
-//        var components = URLComponents(url: downloadUrl, resolvingAgainstBaseURL: true)
-//        components?.scheme = "fakehttps"
         
         let urlAsset = AVURLAsset(url: downloadUrl)
         
         if sambaMedia.drmRequest != nil {
             _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!)
+        } else {
+            var components = URLComponents(url: downloadUrl, resolvingAgainstBaseURL: true)
+            let scheme = components?.scheme
+            components?.scheme = "fakehttps"
+            _decryptDelegateAES = AESAssetLoaderDelegate(asset: AVURLAsset(url: (components?.url)!), assetName: sambaMedia.id, previousScheme: scheme!)
         }
         
         sambaMedia.offlineUrl = downloadUrl.absoluteString
