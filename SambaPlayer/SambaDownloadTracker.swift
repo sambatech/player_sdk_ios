@@ -109,7 +109,19 @@ class SambaDownloadTracker: NSObject {
                 
                 strongSelf.cancelDownload(for: media.id)
             }
-//            NotificationCenter.default.post(name: .AssetPersistenceManagerDidRestoreState, object: nil)
+        }
+        
+        progressiveDownloadURLSession.getAllTasks { [weak self] tasksArray in
+            
+            guard let strongSelf = self else {return}
+            
+            for task in tasksArray {
+                guard let assetDownloadTask = task as? URLSessionDownloadTask, let media = strongSelf.sambaMediasDownloading.first(where: {$0.id == assetDownloadTask.taskDescription}) else { break }
+                
+                strongSelf.activeDownloadsMap[assetDownloadTask] = media
+                
+                strongSelf.cancelDownload(for: media.id)
+            }
         }
     }
     
