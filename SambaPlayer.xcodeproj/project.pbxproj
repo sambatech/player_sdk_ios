@@ -31,6 +31,7 @@
 		6BAFD2BD2152A689004882A3 /* CastModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BC2152A689004882A3 /* CastModel.swift */; };
 		6BAFD2BF215424ED004882A3 /* CastPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BAFD2BE215424ED004882A3 /* CastPlayer.swift */; };
 		6BDDE87221B99B5E0002A688 /* AESAssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDDE87121B99B5E0002A688 /* AESAssetLoaderDelegate.swift */; };
+		6BDDE87421BAE3940002A688 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BDDE87321BAE3940002A688 /* Extensions.swift */; };
 		6BF484EE21B00CAD0014E371 /* OfflineUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */; };
 		6BF484F021B025B40014E371 /* SambaOfflineMedia.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */; };
 		6BF484F221B0520A0014E371 /* SambaTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BF484F121B0520A0014E371 /* SambaTrack.swift */; };
@@ -175,6 +176,7 @@
 		6BAFD2BC2152A689004882A3 /* CastModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastModel.swift; sourceTree = "<group>"; };
 		6BAFD2BE215424ED004882A3 /* CastPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CastPlayer.swift; sourceTree = "<group>"; };
 		6BDDE87121B99B5E0002A688 /* AESAssetLoaderDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AESAssetLoaderDelegate.swift; sourceTree = "<group>"; };
+		6BDDE87321BAE3940002A688 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6BF484ED21B00CAD0014E371 /* OfflineUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineUtils.swift; sourceTree = "<group>"; };
 		6BF484EF21B025B40014E371 /* SambaOfflineMedia.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaOfflineMedia.swift; sourceTree = "<group>"; };
 		6BF484F121B0520A0014E371 /* SambaTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaTrack.swift; sourceTree = "<group>"; };
@@ -470,6 +472,7 @@
 				6B43787E2139ABE700A7C3EC /* Plugins */,
 				9A52680C1D230C0500C9C015 /* Exportable.modulemap */,
 				C78A47831FA3992700D3136D /* SambaPlayerControls.swift */,
+				6BDDE87321BAE3940002A688 /* Extensions.swift */,
 			);
 			path = SambaPlayer;
 			sourceTree = "<group>";
@@ -774,6 +777,7 @@
 				9AF325E71D14B5B900B6E450 /* GMFPlayerView.m in Sources */,
 				C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */,
 				9A5268041D22D5BD00C9C015 /* TrackingVOD.swift in Sources */,
+				6BDDE87421BAE3940002A688 /* Extensions.swift in Sources */,
 				9A5268061D2304EC00C9C015 /* SambaMedia.swift in Sources */,
 				6BF484FA21B191810014E371 /* SambaDownloadTracker.swift in Sources */,
 				9AF325E21D14B5B900B6E450 /* GMFPlayerOverlayView.m in Sources */,

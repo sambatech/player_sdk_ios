@@ -191,6 +191,7 @@ private extension AssetLoaderDelegate {
 					print("Unable to set contentType on contentInformationRequest.")
                     let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
 					resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
 					return
 				}
 			}
@@ -212,6 +213,7 @@ private extension AssetLoaderDelegate {
                             print("Error loading contents of content key file.")
                             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                             resourceLoadingRequest.finishLoading(with: error)
+                            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                             return
                         }
                         
@@ -225,6 +227,7 @@ private extension AssetLoaderDelegate {
                         clearCurrentTimeForContentKey()
                         let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
+                        NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                         return
                     }
                 }
@@ -239,6 +242,7 @@ private extension AssetLoaderDelegate {
             print("Error loading application certificate.")
             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -246,6 +250,7 @@ private extension AssetLoaderDelegate {
             print("Error retrieving Asset ID.")
              let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -269,6 +274,7 @@ private extension AssetLoaderDelegate {
         } catch {
             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -287,6 +293,7 @@ private extension AssetLoaderDelegate {
             print("Error retrieving CKC from KSM.")
             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -308,6 +315,7 @@ private extension AssetLoaderDelegate {
             if let error = error {
                 print("Error creating persistent content key: \(error)")
                 resourceLoadingRequest.finishLoading(with: error)
+                NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                 return
             }
             
@@ -318,6 +326,7 @@ private extension AssetLoaderDelegate {
                 if persistentContentKeyURL == documentURL {
                     print("failed to create the URL for writing the persistent content key")
                     resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                     return
                 }
                 
@@ -331,6 +340,7 @@ private extension AssetLoaderDelegate {
                         print("no data is being requested in loadingRequest")
                         let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
+                        NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                         return
                     }
                     
@@ -347,6 +357,7 @@ private extension AssetLoaderDelegate {
                     print("failed writing persisting key to path: \(persistentContentKeyURL) with error: \(error)")
                     clearCurrentTimeForContentKey()
                     resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                     return
                 }
                 
@@ -357,6 +368,7 @@ private extension AssetLoaderDelegate {
                 print("no data is being requested in loadingRequest")
                 let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                 resourceLoadingRequest.finishLoading(with: error)
+                NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                 return
             }
             

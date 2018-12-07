@@ -181,6 +181,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         notificationCenter.addObserver(self, selector: #selector(captionsCastTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: castPlayerController!)
         
+        
+    }
+    
+    
+    @objc func handleDrmError() {
+        _errorManager?.handle(true)
     }
     
     // SambaCast Delegate
@@ -917,6 +923,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         nc.addObserver(self, selector: #selector(captionsTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(handleDrmError), name:  Notification.Name.SambaDRMErrorNotification, object: nil)
 		
 		loadAsset(asset, autoPlay)
         
@@ -1185,7 +1193,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				self.showError(error)
 			
 			case .critical:
-				self.destroy(withError: error)
+                if error.code == -5 {
+                    self.destroy()
+                    self.showError(error)
+                } else {
+                    self.destroy(withError: error)
+                }
+				
 			
 			default: break
 			}
@@ -1215,8 +1229,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
 		guard ref == nil else { return }
-		attachVC(screen, parent)
-		ref = screen
+        attachVC(screen, parent)
+        ref = screen
 	}
 	
 	private func destroyScreen(_ ref: inout UIViewController?, callback: (() -> Void)? = nil) {
@@ -1788,7 +1802,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			player.delegate = self
 		}
 		
-		func handle() {
+        func handle(_ isFromDRM: Bool = false) {
 			hasError = true
 			
 			guard !(timer?.isValid ?? false) else { return }
@@ -1801,7 +1815,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			}
 
 			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
-			code = error?.code ?? SambaPlayerError.unknown.code
+            code = isFromDRM ? -5 : error?.code ?? SambaPlayerError.unknown.code
             
 			var msg = "Ocorreu um erro! Tente novamente."
 			
@@ -1941,6 +1955,9 @@ Player error list
 	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", .critical)
 	/// Trying to access an internal player instance that's not loaded yet
 	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", .critical)
+    
+    public static let drmNotPermition = SambaPlayerError(-5, "Drm error", .critical)
+    
 	/// Unknown error
 	public static let unknown = SambaPlayerError(-1, "Unknown error", .critical)
 	

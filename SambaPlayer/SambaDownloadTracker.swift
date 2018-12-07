@@ -696,10 +696,3 @@ extension SambaDownloadTracker: AVAssetResourceLoaderDelegate {
 }
 
 
-extension Notification.Name {
-    
-    public static let SambaDownloadStateChanged = Notification.Name(rawValue: "SambaDownloadStateChangedNotification")
-    
-    static let SambaDidRestoreState = Notification.Name(rawValue: "SambaDidRestoreState")
-}
-
