@@ -11,6 +11,9 @@ import AVFoundation
 
 class AssetLoaderDelegate: NSObject {
     
+    
+    static let licenseExpirationTimeInMinute = Double(2)
+    
     /// The URL scheme for FPS content.
     static let customScheme = "^skd|^http"
     
@@ -98,6 +101,9 @@ class AssetLoaderDelegate: NSObject {
     }
     
     public func deletePersistedConentKeyForAsset() {
+        
+        clearCurrentTimeForContentKey()
+        
         guard let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() else {
             return
         }
@@ -109,6 +115,29 @@ class AssetLoaderDelegate: NSObject {
         } catch {
             print("An error occured removing the persisted content key: \(error)")
         }
+    }
+    
+    public func saveCurrentTimeForContentKey() {
+        UserDefaults.standard.set(Date(), forKey: "\(assetName)-Key-Time")
+    }
+    
+    public func clearCurrentTimeForContentKey() {
+         UserDefaults.standard.removeObject(forKey: "\(assetName)-Key-Time")
+    }
+    
+    public func isContentKeyExpired() -> Bool {
+        
+        guard let date = UserDefaults.standard.object(forKey: "\(assetName)-Key-Time") as? Date else {
+            return true
+        }
+        
+        let interval = Double(date.timeIntervalSinceNow) * -1
+        
+        guard (interval / 60)  <= AssetLoaderDelegate.licenseExpirationTimeInMinute else {
+            return true
+        }
+        
+        return false
     }
     
 }
@@ -160,7 +189,7 @@ private extension AssetLoaderDelegate {
 				}
 				else {
 					print("Unable to set contentType on contentInformationRequest.")
-					let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -1, userInfo: nil)
+                    let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
 					resourceLoadingRequest.finishLoading(with: error)
 					return
 				}
@@ -170,44 +199,52 @@ private extension AssetLoaderDelegate {
         // Check if we have an existing key on disk for this asset.
         if let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() {
             
-            // Verify the file does actually exist on disk.
-            if FileManager.default.fileExists(atPath: filePathURLForPersistedContentKey.path) {
-                
-                do {
-                    // Load the contents of the persistedContentKey file.
-                    let persistedContentKeyData = try Data(contentsOf: filePathURLForPersistedContentKey)
+            
+            if !isContentKeyExpired() {
+                // Verify the file does actually exist on disk.
+                if FileManager.default.fileExists(atPath: filePathURLForPersistedContentKey.path) {
                     
-                    guard let dataRequest = resourceLoadingRequest.dataRequest else {
-                        print("Error loading contents of content key file.")
-                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -2, userInfo: nil)
+                    do {
+                        // Load the contents of the persistedContentKey file.
+                        let persistedContentKeyData = try Data(contentsOf: filePathURLForPersistedContentKey)
+                        
+                        guard let dataRequest = resourceLoadingRequest.dataRequest else {
+                            print("Error loading contents of content key file.")
+                            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
+                            resourceLoadingRequest.finishLoading(with: error)
+                            return
+                        }
+                        
+                        // Pass the persistedContentKeyData into the dataRequest so complete the content key request.
+                        dataRequest.respond(with: persistedContentKeyData)
+                        resourceLoadingRequest.finishLoading()
+                        return
+                        
+                    } catch {
+                        print("Error initializing Data from contents of URL: \(error.localizedDescription)")
+                        clearCurrentTimeForContentKey()
+                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
                         return
                     }
-                    
-                    // Pass the persistedContentKeyData into the dataRequest so complete the content key request.
-                    dataRequest.respond(with: persistedContentKeyData)
-                    resourceLoadingRequest.finishLoading()
-                    return
-                    
-                } catch let error as NSError {
-                    print("Error initializing Data from contents of URL: \(error.localizedDescription)")
-                    resourceLoadingRequest.finishLoading(with: error)
-                    return
                 }
+            } else {
+               deletePersistedConentKeyForAsset()
             }
+            
         }
         
         // Get the application certificate.
         guard let applicationCertificate = fetchApplicationCertificate() else {
             print("Error loading application certificate.")
-            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -3, userInfo: nil)
+            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
             return
         }
         
         guard let assetIDData = assetIDString.data(using: String.Encoding.utf8) else {
             print("Error retrieving Asset ID.")
-            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -4, userInfo: nil)
+             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
             return
         }
@@ -229,8 +266,8 @@ private extension AssetLoaderDelegate {
              using the information we obtained earlier.
              */
             spcData = try resourceLoadingRequest.streamingContentKeyRequestData(forApp: applicationCertificate, contentIdentifier: assetIDData, options: resourceLoadingRequestOptions)
-        } catch let error as NSError {
-            print("Error obtaining key request data: \(error.domain) reason: \(String(describing: error.localizedFailureReason))")
+        } catch {
+            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
             return
         }
@@ -292,12 +329,13 @@ private extension AssetLoaderDelegate {
                     
                     guard let dataRequest = resourceLoadingRequest.dataRequest else {
                         print("no data is being requested in loadingRequest")
-                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -6, userInfo: nil)
+                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
                         return
                     }
                     
                     // Provide data to the loading request.
+                    saveCurrentTimeForContentKey()
                     dataRequest.respond(with: persistentContentKeyData)
                     resourceLoadingRequest.finishLoading()  // Treat the processing of the request as complete.
                     
@@ -307,6 +345,7 @@ private extension AssetLoaderDelegate {
                     
                 } catch let error as NSError {
                     print("failed writing persisting key to path: \(persistentContentKeyURL) with error: \(error)")
+                    clearCurrentTimeForContentKey()
                     resourceLoadingRequest.finishLoading(with: error)
                     return
                 }
@@ -316,7 +355,7 @@ private extension AssetLoaderDelegate {
         else {
             guard let dataRequest = resourceLoadingRequest.dataRequest else {
                 print("no data is being requested in loadingRequest")
-                let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -6, userInfo: nil)
+                let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                 resourceLoadingRequest.finishLoading(with: error)
                 return
             }
