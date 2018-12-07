@@ -16,8 +16,8 @@ class StartDownloadHelper {
     static func prepare(request: SambaDownloadRequest, successCallback: @escaping (SambaDownloadRequest) -> Void, errorCallback: @escaping (Error?,String) -> Void) {
         
         getSambaTracksFrom(request: request, onSuccess: { (sambatracks) in
-            request.sambaVideoTracks = sambatracks.filter{!$0.isAudio}
-            request.sambaAudioTracks = sambatracks.filter{$0.isAudio}
+            request.sambaVideoTracks = sambatracks.filter{!$0.isProgressive}
+            request.sambaAudioTracks = sambatracks.filter{$0.isProgressive}
             successCallback(request)
         },
         onError: { (error) in
@@ -43,7 +43,7 @@ class StartDownloadHelper {
                         
                         tracks = outputs.map({ (item) in
                             let sizeInMb =  OfflineUtils.getSizeInMB(bitrate: item.bandwidth, duration: CLong(media.duration))
-                            let sambaTrack = SambaTrack(title: item.label, sizeInMb: sizeInMb, width: item.width, height: item.height, isAudio: media.isAudio, output: item)
+                            let sambaTrack = SambaTrack(title: item.label, sizeInMb: sizeInMb, width: item.width, height: item.height, isProgressive: false, output: item)
                             
                             return sambaTrack
                         })
@@ -55,9 +55,10 @@ class StartDownloadHelper {
                 } else {
                     do {
                         let output = SambaPlayer.Output(url: url, label: media.title, width: 0, height: 0, bandwidth: media.bitrate ?? 0)
+                        
                     
                         let sizeInMb =  OfflineUtils.getSizeInMB(bitrate: output.bandwidth, duration: CLong(media.duration))
-                        let sambaTrack = SambaTrack(title: output.label, sizeInMb: sizeInMb, width: output.width, height: output.height, isAudio: media.isAudio, output: output)
+                        let sambaTrack = SambaTrack(title: output.label, sizeInMb: sizeInMb, width: output.width, height: output.height, isProgressive: true, output: output)
                     
                         tracks = [sambaTrack]
                     } catch {

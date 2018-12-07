@@ -13,7 +13,7 @@ public struct SambaTrack {
     public var sizeInMb: Double
     public var width: Int
     public var height: Int
-    public var isAudio: Bool
+    public var isProgressive: Bool
     var output: SambaPlayer.Output
 }
 

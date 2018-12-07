@@ -1108,12 +1108,14 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             let drmRequest = m.drmRequest {
             // must retain a strong reference to it (weak init reference)
             _decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
-        } else if let m = media as? SambaMediaConfig, m.isOffline {
-            var component = URLComponents(url: asset.url, resolvingAgainstBaseURL: true)
-            let scheme = component?.scheme
-            component?.scheme = "fakehttps"
-            _decryptAESDelegate = AESAssetLoaderDelegate(asset: AVURLAsset(url: (component?.url)!), assetName: m.id, previousScheme: scheme!)
         }
+//
+//        else if let m = media as? SambaMediaConfig, m.isOffline {
+//            var component = URLComponents(url: asset.url, resolvingAgainstBaseURL: true)
+//            let scheme = component?.scheme
+//            component?.scheme = "fakehttps"
+//            _decryptAESDelegate = AESAssetLoaderDelegate(asset: AVURLAsset(url: (component?.url)!), assetName: m.id, previousScheme: scheme!)
+//        }
 		
 		return asset
 	}

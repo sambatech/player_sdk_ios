@@ -191,13 +191,15 @@ public class OfflineUtils {
             }
             
             if bookmarkDataIsStale {
-                fatalError("Bookmark data is stale!")
+                print("Bookmark data is stale!")
             }
             
             return AVURLAsset(url: url)
         } catch {
-            fatalError("Failed to create URL from bookmark with error: \(error)")
+            print("Failed to create URL from bookmark with error: \(error)")
         }
+        
+        return nil
     }
     
     static func sendNotification(with downloadState: DownloadState) {

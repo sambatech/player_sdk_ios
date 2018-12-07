@@ -13,6 +13,7 @@ class SambaDownloadTracker: NSObject {
     // MARK: Properties
     
     private static let DOWNLOAD_ID = "SAMBA_PLAYER_DOWNLOAD_ID"
+    private static let DOWNLOAD_PROGRESSIVE_ID = "SAMBA_PLAYER_DOWNLOAD_PROGRESSIVE_ID"
     
     static let sharedInstance = SambaDownloadTracker()
     
@@ -22,8 +23,10 @@ class SambaDownloadTracker: NSObject {
     /// The AVAssetDownloadURLSession to use for managing AVAssetDownloadTasks.
     fileprivate var assetDownloadURLSession: AVAssetDownloadURLSession!
     
+    fileprivate var progressiveDownloadURLSession: URLSession!
+    
     /// Internal map of AVAssetDownloadTask to its corresponding Asset.
-    fileprivate var activeDownloadsMap = [AVAssetDownloadTask: SambaMediaConfig]()
+    fileprivate var activeDownloadsMap = [URLSessionTask: SambaMediaConfig]()
     
     /// Internal map of AVAssetDownloadTask to its resoled AVMediaSelection
     fileprivate var mediaSelectionMap = [AVAssetDownloadTask: AVMediaSelection]()
@@ -37,6 +40,8 @@ class SambaDownloadTracker: NSObject {
     private var _decryptDelegate: AssetLoaderDelegate?
     private var _decryptDelegateAES: AESAssetLoaderDelegate?
     
+    private var _downloadProgressiveDelegate: DownloadProgressiveDelegate?
+    
     // MARK: Intialization
     
     override private init() {
@@ -44,15 +49,16 @@ class SambaDownloadTracker: NSObject {
         super.init()
         
         let backgroundConfiguration = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_ID)
-        backgroundConfiguration.allowsCellularAccess = true
-        backgroundConfiguration.httpMaximumConnectionsPerHost = 1
-        backgroundConfiguration.shouldUseExtendedBackgroundIdleMode = true
-        if #available(iOS 11.0, *) {
-            backgroundConfiguration.waitsForConnectivity = true
-        } 
         
         assetDownloadURLSession = AVAssetDownloadURLSession(configuration: backgroundConfiguration,
                                                             assetDownloadDelegate: self, delegateQueue: OperationQueue.main)
+        
+        
+        
+        let backgroundConfigurationProgressive = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_PROGRESSIVE_ID)
+        
+        _downloadProgressiveDelegate = DownloadProgressiveDelegate(master: self)
+        progressiveDownloadURLSession = URLSession(configuration: backgroundConfigurationProgressive, delegate: _downloadProgressiveDelegate, delegateQueue: OperationQueue.main)
         
         sambaMediasDownloading = OfflineUtils.getPersistDownloadingMedias() ?? []
         sambaMediasDownloaded = OfflineUtils.getPersistDownloadedMedias() ?? []
@@ -165,23 +171,32 @@ class SambaDownloadTracker: NSObject {
         
         let downloadUrl = track.output.url
         
-        let urlAsset = AVURLAsset(url: downloadUrl)
         
-        if sambaMedia.drmRequest != nil {
-            _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!)
+        var task: URLSessionTask!
+        
+        if !track.isProgressive {
+            let urlAsset = AVURLAsset(url: downloadUrl)
+            task = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset,
+                                                                           assetTitle: sambaMedia.title,
+                                                                           assetArtworkData: nil,
+                                                                           options: nil)
+            if sambaMedia.drmRequest != nil {
+                _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!)
+            }
+            
+            //        else {
+            //            var components = URLComponents(url: downloadUrl, resolvingAgainstBaseURL: true)
+            //            let scheme = components?.scheme
+            //            components?.scheme = "fakehttps"
+            //            _decryptDelegateAES = AESAssetLoaderDelegate(asset: AVURLAsset(url: (components?.url)!), assetName: sambaMedia.id, previousScheme: scheme!)
+            //        }
+            
         } else {
-            var components = URLComponents(url: downloadUrl, resolvingAgainstBaseURL: true)
-            let scheme = components?.scheme
-            components?.scheme = "fakehttps"
-            _decryptDelegateAES = AESAssetLoaderDelegate(asset: AVURLAsset(url: (components?.url)!), assetName: sambaMedia.id, previousScheme: scheme!)
+           task = progressiveDownloadURLSession.downloadTask(with: downloadUrl)
         }
         
         sambaMedia.offlineUrl = downloadUrl.absoluteString
         
-        guard let task = assetDownloadURLSession.makeAssetDownloadTask(asset: urlAsset,
-                                                                       assetTitle: sambaMedia.title,
-                                                                       assetArtworkData: nil,
-                                                                       options: nil) else { return }
         task.taskDescription = sambaMedia.id
         
         
@@ -287,7 +302,7 @@ class SambaDownloadTracker: NSObject {
         
         guard let _ = sambaMediasDownloading.first(where: {$0.id == mediaId}) else {return}
         
-        var task: AVAssetDownloadTask?
+        var task: URLSessionTask?
         
         for (taskKey, mediaDownloading) in activeDownloadsMap where mediaDownloading.id == mediaId {
             task = taskKey
@@ -388,8 +403,127 @@ class SambaDownloadTracker: NSObject {
             // At this point all media options have been downloaded.
             return (nil, nil)
     }
+
     
 }
+
+
+
+//MARK: - Delegate Download Progressive
+class DownloadProgressiveDelegate: NSObject, URLSessionDownloadDelegate {
+    
+    var master: SambaDownloadTracker!
+    
+    init(master: SambaDownloadTracker) {
+        self.master = master;
+    }
+    
+    /// Tells the delegate that the task finished transferring data.
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+       
+        guard let task = task as? URLSessionDownloadTask, let media = master.activeDownloadsMap.removeValue(forKey: task) else { return }
+        
+        master.sambaMediasDownloading.removeAll(where: {$0.id == media.id})
+        OfflineUtils.persistDownloadingMedias(master.sambaMediasDownloading)
+        
+        // Prepare the basic userInfo dictionary that will be posted as part of our notification.
+        var downloadState: DownloadState!
+        var isError = true
+        
+        if let error = error as NSError? {
+            switch (error.domain, error.code) {
+            case (NSURLErrorDomain, NSURLErrorCancelled):
+                print("Downloading was canceled with erro domain")
+                isError = false
+            case (NSURLErrorDomain, NSURLErrorUnknown):
+                print("Downloading HLS streams is not supported in the simulator.")
+                
+            default:
+                print("An unexpected error occured \(error.domain)")
+            }
+            
+            master.deleteMediaDownload(media, isError, false)
+            
+            downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
+            
+        } else {
+            downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+            
+        }
+        
+        OfflineUtils.sendNotification(with: downloadState)
+        
+    }
+    
+    
+   
+    
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+         print("a")
+    }
+    
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)  {
+        
+        guard let media = master.activeDownloadsMap[downloadTask] else {
+            return
+        }
+        
+        do {
+            
+            let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            
+            
+            let extensionFile = URL(string: media.offlineUrl ?? "")?.pathExtension ?? "mp3"
+            
+            let destinationUrl = documentsUrl.appendingPathComponent("\(media.id).\(extensionFile)")
+            guard let dataFromURL = try? Data(contentsOf: location) else {
+               master.deleteMediaDownload(media, true)
+               return
+            }
+            
+            try dataFromURL.write(to: destinationUrl, options: .atomic)
+            
+            let bookmark = try destinationUrl.bookmarkData()
+            
+            OfflineUtils.saveMediaLocation(with: media, location: bookmark)
+            media.isOffline = true
+            
+            if !master.sambaMediasDownloaded.contains(where: {$0.id == media.id}) {
+                master.sambaMediasDownloaded.append(media)
+            } else {
+                let newMedia = master.sambaMediasDownloaded.filter({$0.id == media.id})
+                newMedia.forEach({$0.isOffline = true})
+            }
+            
+            
+            OfflineUtils.persistDownloadedMedias(master.sambaMediasDownloaded)
+            
+        } catch {
+            print("Failed to create bookmark for location: \(location)")
+            master.deleteMediaDownload(media, true)
+        }
+    }
+    
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
+                    didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        guard let media = master.activeDownloadsMap[downloadTask],
+            !master.sambaMediasPaused.contains(where: {$0.id == media.id}) else { return }
+        
+        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        //        let totalSize = ByteCountFormatter.string(fromByteCount: totalBytesExpectedToWrite,
+        //                                                  countStyle: .file)
+        
+        let downloadState = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: progress, media: media, sambaSubtitle: nil)
+        
+        OfflineUtils.sendNotification(with: downloadState)
+    }
+    
+}
+
 
 
 //MARK: - Delegate Download Asset
