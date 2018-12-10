@@ -17,7 +17,9 @@ public struct SambaTrack {
     var output: SambaPlayer.Output
 }
 
-public struct SambaSubtitle {
-    var title: String
+public struct SambaSubtitle: Codable {
+    public var title: String
+    
+    var mediaID: String
     var caption: SambaMediaCaption
 }

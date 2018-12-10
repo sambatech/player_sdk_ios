@@ -74,6 +74,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	public var isAudio = false
     
     public var isOffline = false
+    public var isCaptionsOffline = false
 	
 	/// Indicates if the media has DVR support
 	public var isDvr = false

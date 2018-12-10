@@ -25,7 +25,7 @@ public class SambaDownloadRequest {
     
     
     public var sambaTrackForDownload: SambaTrack?
-    public var sambaSubtitlesForDownload: SambaSubtitle?
+    public var sambaSubtitleForDownload: SambaSubtitle?
     
     public init(mediaId: String, projectHash: String) {
         self.mediaId = mediaId

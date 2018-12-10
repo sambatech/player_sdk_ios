@@ -18,6 +18,13 @@ class StartDownloadHelper {
         getSambaTracksFrom(request: request, onSuccess: { (sambatracks) in
             request.sambaVideoTracks = sambatracks.filter{!$0.isProgressive}
             request.sambaAudioTracks = sambatracks.filter{$0.isProgressive}
+            
+            if let media = request.sambaMedia as? SambaMediaConfig, let captions = media.captions, !captions.isEmpty {
+                request.sambaSubtitles = captions.filter{!$0.url.isEmpty}.map({ (caption) -> SambaSubtitle in
+                    return SambaSubtitle(title: caption.label, mediaID: media.id, caption: caption)
+                })
+            }
+            
             successCallback(request)
         },
         onError: { (error) in

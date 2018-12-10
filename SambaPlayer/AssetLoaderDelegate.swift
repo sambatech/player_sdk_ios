@@ -11,9 +11,6 @@ import AVFoundation
 
 class AssetLoaderDelegate: NSObject {
     
-    
-    static let licenseExpirationTimeInMinute = Double(2)
-    
     /// The URL scheme for FPS content.
     static let customScheme = "^skd|^http"
     
@@ -102,7 +99,7 @@ class AssetLoaderDelegate: NSObject {
     
     public func deletePersistedConentKeyForAsset() {
         
-        clearCurrentTimeForContentKey()
+        OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
         
         guard let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() else {
             return
@@ -115,29 +112,6 @@ class AssetLoaderDelegate: NSObject {
         } catch {
             print("An error occured removing the persisted content key: \(error)")
         }
-    }
-    
-    public func saveCurrentTimeForContentKey() {
-        UserDefaults.standard.set(Date(), forKey: "\(assetName)-Key-Time")
-    }
-    
-    public func clearCurrentTimeForContentKey() {
-         UserDefaults.standard.removeObject(forKey: "\(assetName)-Key-Time")
-    }
-    
-    public func isContentKeyExpired() -> Bool {
-        
-        guard let date = UserDefaults.standard.object(forKey: "\(assetName)-Key-Time") as? Date else {
-            return true
-        }
-        
-        let interval = Double(date.timeIntervalSinceNow) * -1
-        
-        guard (interval / 60)  <= AssetLoaderDelegate.licenseExpirationTimeInMinute else {
-            return true
-        }
-        
-        return false
     }
     
 }
@@ -201,7 +175,7 @@ private extension AssetLoaderDelegate {
         if let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() {
             
             
-            if !isContentKeyExpired() {
+            if !OfflineUtils.isContentKeyExpired(for: assetName) {
                 // Verify the file does actually exist on disk.
                 if FileManager.default.fileExists(atPath: filePathURLForPersistedContentKey.path) {
                     
@@ -224,7 +198,7 @@ private extension AssetLoaderDelegate {
                         
                     } catch {
                         print("Error initializing Data from contents of URL: \(error.localizedDescription)")
-                        clearCurrentTimeForContentKey()
+                        OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
                         let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
                         NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
@@ -345,7 +319,7 @@ private extension AssetLoaderDelegate {
                     }
                     
                     // Provide data to the loading request.
-                    saveCurrentTimeForContentKey()
+                    OfflineUtils.saveCurrentTimeForContentKey(for: assetName)
                     dataRequest.respond(with: persistentContentKeyData)
                     resourceLoadingRequest.finishLoading()  // Treat the processing of the request as complete.
                     
@@ -355,7 +329,7 @@ private extension AssetLoaderDelegate {
                     
                 } catch let error as NSError {
                     print("failed writing persisting key to path: \(persistentContentKeyURL) with error: \(error)")
-                    clearCurrentTimeForContentKey()
+                    OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
                     resourceLoadingRequest.finishLoading(with: error)
                     NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                     return

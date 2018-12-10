@@ -83,4 +83,8 @@ public class SambaDownloadManager{
         return SambaDownloadTracker.sharedInstance.getAllDownloadedMedia()
     }
     
+    func updateMedia(for media: SambaMediaConfig) {
+        SambaDownloadTracker.sharedInstance.updateMedia(for: media)
+    }
+    
 }

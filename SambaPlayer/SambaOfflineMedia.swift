@@ -23,6 +23,7 @@ class SambaOfflineMedia: NSObject, Codable {
     public var isLive = false
     public var isAudio = false
     public var isOffline = false
+    public var isCaptionsOffline = false
     public var isDvr = false
     public var theme: UInt = 0x72BE44
     public var themeColorHex: String = "#72BE44"
@@ -58,6 +59,7 @@ class SambaOfflineMedia: NSObject, Codable {
         case isLive
         case isAudio
         case isOffline
+        case isCaptionsOffline
         case isDvr
         case theme
         case themeColorHex
@@ -98,6 +100,7 @@ class SambaOfflineMedia: NSObject, Codable {
         isLive = try container.decode(Bool.self, forKey: .isLive)
         isAudio = try container.decode(Bool.self, forKey: .isAudio)
         isOffline = try container.decode(Bool.self, forKey: .isOffline)
+        isCaptionsOffline = try container.decode(Bool.self, forKey: .isCaptionsOffline)
         isDvr = try container.decode(Bool.self, forKey: .isDvr)
         theme = try container.decode(UInt.self, forKey: .theme)
         themeColorHex = try container.decode(String.self, forKey: .themeColorHex)
@@ -137,6 +140,7 @@ class SambaOfflineMedia: NSObject, Codable {
         try container.encode(isLive, forKey: .isLive)
         try container.encode(isAudio, forKey: .isAudio)
         try container.encode(isOffline, forKey: .isOffline)
+        try container.encode(isCaptionsOffline, forKey: .isCaptionsOffline)
         try container.encode(isDvr, forKey: .isDvr)
         try container.encode(theme, forKey: .theme)
         try container.encode(themeColorHex, forKey: .themeColorHex)
@@ -178,6 +182,7 @@ class SambaOfflineMedia: NSObject, Codable {
         sambaOfflineMedia.isLive = media.isLive
         sambaOfflineMedia.isAudio = media.isAudio
         sambaOfflineMedia.isOffline = media.isOffline
+        sambaOfflineMedia.isCaptionsOffline = media.isCaptionsOffline
         sambaOfflineMedia.isDvr = media.isDvr
         sambaOfflineMedia.theme = media.theme
         sambaOfflineMedia.themeColorHex = media.themeColorHex
@@ -219,6 +224,7 @@ class SambaOfflineMedia: NSObject, Codable {
         media.isLive = isLive
         media.isAudio = isAudio
         media.isOffline = isOffline
+        media.isCaptionsOffline = isCaptionsOffline
         media.isDvr = isDvr
         media.theme = theme
         media.themeColorHex = themeColorHex

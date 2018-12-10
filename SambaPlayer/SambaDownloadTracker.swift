@@ -14,6 +14,7 @@ class SambaDownloadTracker: NSObject {
     
     private static let DOWNLOAD_ID = "SAMBA_PLAYER_DOWNLOAD_ID"
     private static let DOWNLOAD_PROGRESSIVE_ID = "SAMBA_PLAYER_DOWNLOAD_PROGRESSIVE_ID"
+    private static let DOWNLOAD_SUBTITLE_ID = "SAMBA_PLAYER_DOWNLOAD_SUBTITLE_ID"
     
     static let sharedInstance = SambaDownloadTracker()
     
@@ -24,9 +25,11 @@ class SambaDownloadTracker: NSObject {
     fileprivate var assetDownloadURLSession: AVAssetDownloadURLSession!
     
     fileprivate var progressiveDownloadURLSession: URLSession!
+    fileprivate var subtitlesDownloadURLSession: URLSession!
     
     /// Internal map of AVAssetDownloadTask to its corresponding Asset.
     fileprivate var activeDownloadsMap = [URLSessionTask: SambaMediaConfig]()
+    fileprivate var captionsForDownloadsMap = [URLSessionTask: SambaSubtitle]()
     
     /// Internal map of AVAssetDownloadTask to its resoled AVMediaSelection
     fileprivate var mediaSelectionMap = [AVAssetDownloadTask: AVMediaSelection]()
@@ -34,13 +37,18 @@ class SambaDownloadTracker: NSObject {
     fileprivate var sambaMediasDownloading: [SambaMediaConfig]!
     fileprivate var sambaMediasDownloaded: [SambaMediaConfig]!
     
+    fileprivate var sambaSubtitlesDownloading: [SambaSubtitle]!
+    fileprivate var sambaSubtitlesDownloaded: [SambaSubtitle]!
+    
     
     fileprivate var sambaMediasPaused: [SambaMediaConfig] = []
+    fileprivate var sambaSubtitlesPaused: [SambaSubtitle] = []
     
     private var _decryptDelegate: AssetLoaderDelegate?
     private var _decryptDelegateAES: AESAssetLoaderDelegate?
     
     private var _downloadProgressiveDelegate: DownloadProgressiveDelegate?
+    private var _downloadSubtitlesDelegate: DownloadSubtitlesDelegate?
     
     // MARK: Intialization
     
@@ -60,12 +68,24 @@ class SambaDownloadTracker: NSObject {
         _downloadProgressiveDelegate = DownloadProgressiveDelegate(master: self)
         progressiveDownloadURLSession = URLSession(configuration: backgroundConfigurationProgressive, delegate: _downloadProgressiveDelegate, delegateQueue: OperationQueue.main)
         
+        
+        let backgroundConfigurationSubtitle = URLSessionConfiguration.background(withIdentifier: SambaDownloadTracker.DOWNLOAD_SUBTITLE_ID)
+        
+        _downloadSubtitlesDelegate = DownloadSubtitlesDelegate(master: self)
+        subtitlesDownloadURLSession = URLSession(configuration: backgroundConfigurationSubtitle, delegate: _downloadSubtitlesDelegate, delegateQueue: OperationQueue.main)
+        
+        
+        
         sambaMediasDownloading = OfflineUtils.getPersistDownloadingMedias() ?? []
         sambaMediasDownloaded = OfflineUtils.getPersistDownloadedMedias() ?? []
         
+        sambaSubtitlesDownloaded = OfflineUtils.getPersistDownloadedSubtitles() ?? []
+        sambaSubtitlesDownloading = OfflineUtils.getPersistDownloadingSubtitles() ?? []
+        
+        
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         
-         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
         
@@ -221,6 +241,13 @@ class SambaDownloadTracker: NSObject {
         
         OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
         
+        
+        if let subtitle = request.sambaSubtitleForDownload, let subURL = URL(string: subtitle.caption.url) {
+            let subtitleTask = subtitlesDownloadURLSession.downloadTask(with: subURL)
+            subtitleTask.taskDescription = "SUB_\(subtitle.mediaID)"
+            captionsForDownloadsMap[subtitleTask] = subtitle
+        }
+        
         task.resume()
         
         OfflineUtils.sendNotification(with: downloadState)
@@ -258,12 +285,22 @@ class SambaDownloadTracker: NSObject {
         
         guard let media = sambaMediasDownloaded.first(where: {$0.id == mediaId}) else {return}
         
+        if let subtitle = sambaSubtitlesDownloaded.first(where: {$0.mediaID == mediaId}) {
+            deleteSubtitleDownload(subtitle)
+        }
+        
         deleteMediaDownload(media)
     }
     
     func deleteAllMedias() {
         guard let medias = sambaMediasDownloaded, !medias.isEmpty else {
             return
+        }
+        
+        if let subtitles = sambaSubtitlesDownloaded, !subtitles.isEmpty {
+            subtitles.forEach { (subtitle) in
+                deleteSubtitleDownload(subtitle)
+            }
         }
         
         medias.forEach { (media) in
@@ -310,21 +347,82 @@ class SambaDownloadTracker: NSObject {
         }
     }
     
+    
+    fileprivate func deleteSubtitleDownload(_ subtitle: SambaSubtitle, _ isError: Bool = false, _ isNotify: Bool = true) {
+        
+        do {
+            guard let localFileLocation = OfflineUtils.loadURLForOfflineSubtitle(with: subtitle) else {
+                return
+            }
+            
+            
+            try FileManager.default.removeItem(at: localFileLocation)
+            
+            OfflineUtils.removeSubtitleLocation(from: subtitle)
+            
+            sambaSubtitlesDownloaded.removeAll(where: {$0.mediaID == subtitle.mediaID})
+            OfflineUtils.persistDownloadedSubtitles(sambaSubtitlesDownloaded)
+            
+            if isNotify, let media = sambaMediasDownloaded.first(where: {$0.id == subtitle.mediaID}) {
+                let downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.DELETED , totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+                
+                OfflineUtils.sendNotification(with: downloadState)
+            }
+            
+        } catch {
+            print("An error occured deleting the file: \(error)")
+        }
+    }
+    
     func cancelDownload(for mediaId: String) {
         
-        guard let _ = sambaMediasDownloading.first(where: {$0.id == mediaId}) else {return}
-        
-        var task: URLSessionTask?
-        
-        for (taskKey, mediaDownloading) in activeDownloadsMap where mediaDownloading.id == mediaId {
-            task = taskKey
-            break
+        if  sambaMediasDownloading.contains(where: {$0.id == mediaId})  {
+            var task: URLSessionTask?
+            
+            for (taskKey, mediaDownloading) in activeDownloadsMap where mediaDownloading.id == mediaId {
+                task = taskKey
+                break
+            }
+            
+            task?.cancel()
+            
+            sambaMediasDownloading.removeAll(where: {$0.id == mediaId})
+            OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
+            
+            
+            // Remove Subtitles
+            var taskSub: URLSessionTask?
+            
+            for (taskKey, subtitleDownloading) in captionsForDownloadsMap where subtitleDownloading.mediaID == mediaId {
+                taskSub = taskKey
+                break
+            }
+            
+            taskSub?.cancel()
+            
+            sambaSubtitlesDownloading.removeAll(where: {$0.mediaID == mediaId})
+            OfflineUtils.persistDownloadingSubtitles(sambaSubtitlesDownloading)
+            
+            
+        } else if sambaSubtitlesDownloading.contains(where: {$0.mediaID == mediaId}) {
+            var task: URLSessionTask?
+            
+            for (taskKey, subtitleDownloading) in captionsForDownloadsMap where subtitleDownloading.mediaID == mediaId {
+                task = taskKey
+                break
+            }
+            
+            task?.cancel()
+            
+            sambaSubtitlesDownloading.removeAll(where: {$0.mediaID == mediaId})
+            OfflineUtils.persistDownloadingSubtitles(sambaSubtitlesDownloading)
+            
+            guard let media = sambaMediasDownloaded.first(where: {$0.id == mediaId}) else {return}
+            
+            deleteMediaDownload(media, false, false)
         }
         
-        task?.cancel()
-        
-        sambaMediasDownloading.removeAll(where: {$0.id == mediaId})
-        OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
+       
     }
     
     func cancelAllDownloads() {
@@ -336,38 +434,76 @@ class SambaDownloadTracker: NSObject {
     }
     
     func pauseDownload(for mediaId: String) {
-         guard !activeDownloadsMap.isEmpty, !sambaMediasPaused.contains(where: {$0.id == mediaId}),
-            let values = activeDownloadsMap.first(where: {$1.id == mediaId})
+         guard !activeDownloadsMap.isEmpty || !captionsForDownloadsMap.isEmpty && (!sambaMediasPaused.contains(where: {$0.id == mediaId}) || !sambaSubtitlesPaused.contains(where: {$0.mediaID == mediaId}))
             else {return}
         
-        let task = values.key
-        let media = values.value
         
-        task.suspend()
-        
-        sambaMediasPaused.append(media)
-        
-        let downloadState = DownloadState.from(state: DownloadState.State.PAUSED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+        if let pairMedia = activeDownloadsMap.first(where: {$1.id == mediaId}) {
+            let task = pairMedia.key
+            let media = pairMedia.value
             
-        OfflineUtils.sendNotification(with: downloadState)
+            task.suspend()
+            
+            sambaMediasPaused.append(media)
+            
+            let downloadState = DownloadState.from(state: DownloadState.State.PAUSED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+            
+            OfflineUtils.sendNotification(with: downloadState)
+        } else if let pairSubtitle = captionsForDownloadsMap.first(where: {$1.mediaID == mediaId}) {
+            let task = pairSubtitle.key
+            let subtitle = pairSubtitle.value
+            
+            guard let media = sambaMediasDownloaded.first(where: {$0.id == mediaId}) else {
+                deleteMedia(for: mediaId)
+                return
+            }
+            
+            task.suspend()
+            
+            sambaSubtitlesPaused.append(subtitle)
+            
+            let downloadState = DownloadState.from(state: DownloadState.State.PAUSED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media, sambaSubtitle: subtitle )
+            
+            OfflineUtils.sendNotification(with: downloadState)
+        }
+        
+        
         
     }
     
     func resumeDownload(for mediaId: String) {
-        guard !activeDownloadsMap.isEmpty, sambaMediasPaused.contains(where: {$0.id == mediaId}),
-            let values = activeDownloadsMap.first(where: {$1.id == mediaId})
-            else {return}
+        guard !activeDownloadsMap.isEmpty || !captionsForDownloadsMap.isEmpty && (sambaMediasPaused.contains(where: {$0.id == mediaId}) || sambaSubtitlesPaused.contains(where: {$0.mediaID == mediaId})) else {return}
         
-        let task = values.key
-        let media = values.value
         
-        task.resume()
-        
-        sambaMediasPaused.removeAll(where: {$0.id == mediaId})
-        
-        let downloadState = DownloadState.from(state: DownloadState.State.RESUMED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+        if let pairMedia = activeDownloadsMap.first(where: {$1.id == mediaId}) {
+            let task = pairMedia.key
+            let media = pairMedia.value
             
-        OfflineUtils.sendNotification(with: downloadState)
+            task.resume()
+            
+            sambaMediasPaused.removeAll(where: {$0.id == mediaId})
+            
+            let downloadState = DownloadState.from(state: DownloadState.State.RESUMED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media)
+            
+            OfflineUtils.sendNotification(with: downloadState)
+        } else if let pairSubtitle = captionsForDownloadsMap.first(where: {$1.mediaID == mediaId}) {
+            let task = pairSubtitle.key
+            let subtitle = pairSubtitle.value
+            
+            task.resume()
+            
+            sambaSubtitlesPaused.removeAll(where: {$0.mediaID == subtitle.mediaID})
+            
+            guard let media = sambaMediasDownloaded.first(where: {$0.id == mediaId}) else {
+                deleteMedia(for: mediaId)
+                return
+            }
+            
+            
+            let downloadState = DownloadState.from(state: DownloadState.State.RESUMED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 0, media: media, sambaSubtitle: subtitle)
+            
+            OfflineUtils.sendNotification(with: downloadState)
+        }
         
     }
     
@@ -386,6 +522,18 @@ class SambaDownloadTracker: NSObject {
         medias.forEach { media in
             resumeDownload(for: media.id)
         }
+    }
+    
+    func updateMedia(for media: SambaMediaConfig) {
+        
+        guard let oldMediaIndex = sambaMediasDownloaded.firstIndex(where: {$0.id == media.id}) else {
+            return
+        }
+        
+        sambaMediasDownloaded[oldMediaIndex] = media
+        
+        OfflineUtils.persistDownloadedMedias(sambaMediasDownloaded)
+        
     }
 
     
@@ -457,14 +605,17 @@ class DownloadProgressiveDelegate: NSObject, URLSessionDownloadDelegate {
             master.deleteMediaDownload(media, isError, false)
             
             downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
-            
+            OfflineUtils.sendNotification(with: downloadState)
         } else {
-            downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+            if let pairSub = master.captionsForDownloadsMap.first(where: {$1.mediaID == media.id}) {
+                let taskSub = pairSub.key
+                taskSub.resume()
+            } else {
+                 downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+                 OfflineUtils.sendNotification(with: downloadState)
+            }
             
         }
-        
-        OfflineUtils.sendNotification(with: downloadState)
-        
     }
     
     
@@ -537,6 +688,139 @@ class DownloadProgressiveDelegate: NSObject, URLSessionDownloadDelegate {
 }
 
 
+//MARK: - Delegate Download Subtitles
+class DownloadSubtitlesDelegate: NSObject, URLSessionDownloadDelegate {
+    
+    var master: SambaDownloadTracker!
+    
+    init(master: SambaDownloadTracker) {
+        self.master = master;
+    }
+    
+    /// Tells the delegate that the task finished transferring data.
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        
+        guard let task = task as? URLSessionDownloadTask, let subtitle = master.captionsForDownloadsMap.removeValue(forKey: task) else { return }
+        
+        master.sambaSubtitlesDownloading.removeAll(where: {$0.mediaID == subtitle.mediaID})
+        OfflineUtils.persistDownloadingSubtitles(master.sambaSubtitlesDownloading)
+        
+        
+        guard let media = master.sambaMediasDownloaded.first(where: {$0.id == subtitle.mediaID}) else {
+            master.deleteSubtitleDownload(subtitle)
+            return
+        }
+        
+        // Prepare the basic userInfo dictionary that will be posted as part of our notification.
+        var downloadState: DownloadState!
+        var isError = true
+        
+        if let error = error as NSError? {
+            switch (error.domain, error.code) {
+            case (NSURLErrorDomain, NSURLErrorCancelled):
+                print("Downloading was canceled with erro domain")
+                isError = false
+            case (NSURLErrorDomain, NSURLErrorUnknown):
+                print("Downloading HLS streams is not supported in the simulator.")
+                
+            default:
+                print("An unexpected error occured \(error.domain)")
+            }
+            
+            master.deleteSubtitleDownload(subtitle)
+            master.deleteMediaDownload(media, isError, false)
+            
+            downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media, sambaSubtitle: subtitle)
+            
+        } else {
+            downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media, sambaSubtitle: subtitle)
+            
+        }
+        
+        OfflineUtils.sendNotification(with: downloadState)
+        
+    }
+    
+    
+    
+    
+    func urlSession(_ session: URLSession, didBecomeInvalidWithError error: Error?) {
+        print("a")
+    }
+    
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL)  {
+        
+        guard let subtitle = master.captionsForDownloadsMap[downloadTask] else {
+            return
+        }
+        
+        guard let media = master.sambaMediasDownloaded.first(where: {$0.id == subtitle.mediaID}) else {
+            master.deleteMedia(for: subtitle.mediaID)
+            return
+        }
+        
+        
+        do {
+            
+            let documentsUrl =  FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+            
+            
+            let extensionFile = URL(string: subtitle.caption.url)?.pathExtension ?? "srt"
+            
+            let destinationUrl = documentsUrl.appendingPathComponent("\(media.id)_SUBTITLE_\(subtitle.caption.language).\(extensionFile)")
+            guard let dataFromURL = try? Data(contentsOf: location) else {
+                master.deleteMediaDownload(media, true)
+                return
+            }
+            
+            try dataFromURL.write(to: destinationUrl, options: .atomic)
+            
+            let bookmark = try destinationUrl.bookmarkData()
+            
+            OfflineUtils.saveSubtitleLocation(with: subtitle, location: bookmark)
+            
+            if !master.sambaSubtitlesDownloaded.contains(where: {$0.mediaID == subtitle.mediaID}) {
+                master.sambaSubtitlesDownloaded.append(subtitle)
+            }
+            
+            OfflineUtils.persistDownloadedSubtitles(master.sambaSubtitlesDownloaded)
+            
+            let medias = master.sambaMediasDownloaded.filter({$0.id == media.id})
+            medias.forEach({$0.isCaptionsOffline = true})
+            
+            OfflineUtils.persistDownloadedMedias(master.sambaMediasDownloaded)
+            
+        } catch {
+            print("Failed to create bookmark for subtitle: \(location)")
+            master.deleteMediaDownload(media, true)
+        }
+    }
+    
+    
+    func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask,
+                    didWriteData bytesWritten: Int64, totalBytesWritten: Int64,
+                    totalBytesExpectedToWrite: Int64) {
+        guard let subtitle = master.captionsForDownloadsMap[downloadTask],
+            !master.sambaSubtitlesPaused.contains(where: {$0.mediaID == subtitle.mediaID}) else { return }
+        
+        
+        guard let media = master.sambaMediasDownloaded.first(where: {$0.id == subtitle.mediaID}) else {
+            master.deleteMedia(for: subtitle.mediaID)
+            return
+        }
+        
+        let progress = Float(totalBytesWritten) / Float(totalBytesExpectedToWrite)
+        
+        
+        let downloadState = DownloadState.from(state: DownloadState.State.IN_PROGRESS, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: progress, media: media, sambaSubtitle: subtitle)
+        
+        OfflineUtils.sendNotification(with: downloadState)
+    }
+    
+}
+
+
 
 //MARK: - Delegate Download Asset
 extension SambaDownloadTracker: AVAssetDownloadDelegate {
@@ -568,10 +852,16 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
                             print("An unexpected error occured \(error.domain)")
                     }
                     
+                    if let subPair = captionsForDownloadsMap.first(where: {$1.mediaID ==  media.id}) {
+                        _ = captionsForDownloadsMap.removeValue(forKey: subPair.key)
+                    }
+            
+                    
                     deleteMediaDownload(media, isError, false)
 
                     downloadState = DownloadState.from(state: isError ? DownloadState.State.FAILED : DownloadState.State.CANCELED, totalDownloadSize: 0, downloadPercentage: 0, media: media)
                     
+                    OfflineUtils.sendNotification(with: downloadState)
                 } else {
                     let mediaSelectionPair = nextMediaSelection(task.urlAsset)
         
@@ -623,13 +913,20 @@ extension SambaDownloadTracker: AVAssetDownloadDelegate {
                         OfflineUtils.persistDownloadingMedias(sambaMediasDownloading)
                         
                         task.resume()
+                        
+                        OfflineUtils.sendNotification(with: downloadState)
     
                     } else {
-                         downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+                        
+                        if let pairSub = captionsForDownloadsMap.first(where: {$1.mediaID == media.id}) {
+                            let taskSub = pairSub.key
+                            taskSub.resume()
+                        } else {
+                            downloadState = DownloadState.from(state: DownloadState.State.COMPLETED, totalDownloadSize: media.downloadData?.totalDownloadSizeInMB ?? 0, downloadPercentage: 100, media: media)
+                            OfflineUtils.sendNotification(with: downloadState)
+                        }
                     }
                 }
-        
-                OfflineUtils.sendNotification(with: downloadState)
     
     }
     

@@ -49,7 +49,28 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     public func prepareOfflineMedia(media: SambaMedia, onComplete: @escaping (SambaMedia?) -> Void, onError: @escaping (Error?, URLResponse?) -> Void) {
         
         if media.isOffline {
-            onComplete(media)
+            
+            let sambaMediaConfig = media as! SambaMediaConfig
+            
+            if sambaMediaConfig.drmRequest != nil && OfflineUtils.isContentKeyExpired(for: sambaMediaConfig.id) {
+                requestMedia(SambaMediaRequest(projectHash: sambaMediaConfig.projectHash, mediaId: sambaMediaConfig.id), onComplete: { (media) in
+                    media?.isOffline = true
+                    media?.isCaptionsOffline = sambaMediaConfig.isCaptionsOffline
+                    
+                    let config = media as! SambaMediaConfig
+                    
+                    if config.drmRequest != nil {
+                        config.drmRequest?.token = sambaMediaConfig.drmRequest?.token
+                    }
+                    
+                    SambaDownloadManager.sharedInstance.updateMedia(for: config)
+                    onComplete(media)
+                }) { (error, response) in
+                    onComplete(media)
+                }
+            } else {
+               onComplete(media)
+            }
         } else {
             onError(nil, nil)
         }

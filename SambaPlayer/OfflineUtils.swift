@@ -10,9 +10,17 @@ import Foundation
 
 public class OfflineUtils {
     
+    
+    static let licenseExpirationTimeInMinute = Double(2)
+    
     private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
+    
+    private static let SUBTITLES_KEY_DOWNLOADING = "SUBTITLES_KEY_DOWNLOADING"
+    private static let SUBTITLES_KEY_DOWNLOADED = "SUBTITLES_KEY_DOWNLOADED"
+    
     private static let MEDIAS_LOCATION_KEY = "MEDIAS_LOCATION_KEY"
+    private static let SUBTITLE_LOCATION_KEY = "SUBTITLE_LOCATION_KEY"
     
     private init(){}
     
@@ -57,6 +65,49 @@ public class OfflineUtils {
     
     static func getPersistDownloadingMedias() -> [SambaMediaConfig]? {
         return getPersistedMedias(key: MEDIAS_KEY_DOWNLOADING)
+    }
+    
+    
+    
+    private static func persistSubtitles(_ captions: [SambaSubtitle], key: String) {
+       
+        let jsonData = try? JSONEncoder().encode(captions)
+        
+        guard let data = jsonData else {return}
+        
+        UserDefaults.standard.set(data, forKey: key)
+    }
+    
+    private static func getPersistedSubtitles(key: String) -> [SambaSubtitle]? {
+        let jsonData = UserDefaults.standard.data(forKey: key)
+        
+        guard let data = jsonData else {
+            return nil
+        }
+        
+        let captionsOffline = try? JSONDecoder().decode([SambaSubtitle].self, from: data)
+        
+        guard let captions = captionsOffline else {
+            return nil
+        }
+        
+        return captions
+    }
+    
+    static func persistDownloadingSubtitles(_ captions: [SambaSubtitle]) {
+        persistSubtitles(captions, key: SUBTITLES_KEY_DOWNLOADING)
+    }
+    
+    static func persistDownloadedSubtitles(_ captions: [SambaSubtitle]) {
+         persistSubtitles(captions, key: SUBTITLES_KEY_DOWNLOADED)
+    }
+    
+    static func getPersistDownloadingSubtitles() -> [SambaSubtitle]? {
+        return getPersistedSubtitles(key: SUBTITLES_KEY_DOWNLOADING)
+    }
+    
+    static func getPersistDownloadedSubtitles() -> [SambaSubtitle]? {
+        return getPersistedSubtitles(key: SUBTITLES_KEY_DOWNLOADED)
     }
     
     
@@ -176,8 +227,47 @@ public class OfflineUtils {
         return UserDefaults.standard.data(forKey: "\(media.id)_\(MEDIAS_LOCATION_KEY)")
     }
     
+    
+    static func saveSubtitleLocation(with subtitle: SambaSubtitle, location: Data) {
+        UserDefaults.standard.set(location, forKey: "\(subtitle.mediaID)_SUBKEY_\(subtitle.caption.language)_\(SUBTITLE_LOCATION_KEY)")
+    }
+    
+    static func getSubtitleLocation(from subtitle: SambaSubtitle) -> Data? {
+        return UserDefaults.standard.data(forKey: "\(subtitle.mediaID)_SUBKEY_\(subtitle.caption.language)_\(SUBTITLE_LOCATION_KEY)")
+    }
+    
+    
+    static func removeSubtitleLocation(from subtitle: SambaSubtitle) {
+        UserDefaults.standard.removeObject(forKey: "\(subtitle.mediaID)_SUBKEY_\(subtitle.caption.language)_\(SUBTITLE_LOCATION_KEY)")
+    }
+    
     static func removeMediaLocation(from media: SambaMediaConfig) {
         UserDefaults.standard.removeObject(forKey: "\(media.id)_\(MEDIAS_LOCATION_KEY)")
+    }
+    
+    static func loadURLForOfflineSubtitle(with subtitle: SambaSubtitle) -> URL? {
+        guard let localFileLocation = getSubtitleLocation(from: subtitle) else {
+            return nil
+        }
+        
+        var bookmarkDataIsStale = false
+        do {
+            guard let url = try URL(resolvingBookmarkData: localFileLocation,
+                                    bookmarkDataIsStale: &bookmarkDataIsStale) else {
+                                        print("Failed to create URL from bookmark!")
+                                        return nil
+            }
+            
+            if bookmarkDataIsStale {
+                print("Bookmark data is stale!")
+            }
+            
+            return url
+        } catch {
+            print("Failed to create URL from bookmark with error: \(error)")
+        }
+        
+        return nil
     }
     
     static func localAssetForMedia(withMedia media: SambaMediaConfig) -> AVURLAsset? {
@@ -204,6 +294,29 @@ public class OfflineUtils {
     
     static func sendNotification(with downloadState: DownloadState) {
         NotificationCenter.default.post(name: .SambaDownloadStateChanged, object: downloadState, userInfo: nil)
+    }
+    
+    static func saveCurrentTimeForContentKey(for assetID: String) {
+        UserDefaults.standard.set(Date(), forKey: "\(assetID)-Key-Time")
+    }
+    
+    static func clearCurrentTimeForContentKey(for assetID: String) {
+        UserDefaults.standard.removeObject(forKey: "\(assetID)-Key-Time")
+    }
+    
+    static func isContentKeyExpired(for assetID: String) -> Bool {
+        
+        guard let date = UserDefaults.standard.object(forKey: "\(assetID)-Key-Time") as? Date else {
+            return true
+        }
+        
+        let interval = Double(date.timeIntervalSinceNow) * -1
+        
+        guard (interval / 60)  <= OfflineUtils.licenseExpirationTimeInMinute else {
+            return true
+        }
+        
+        return false
     }
     
 }
