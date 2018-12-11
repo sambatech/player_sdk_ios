@@ -143,6 +143,20 @@ class SambaDownloadTracker: NSObject {
                 strongSelf.cancelDownload(for: media.id)
             }
         }
+        
+        
+        subtitlesDownloadURLSession.getAllTasks { [weak self] tasksArray in
+            
+            guard let strongSelf = self else {return}
+            
+            for task in tasksArray {
+                guard let assetDownloadTask = task as? URLSessionDownloadTask, let subtitle = strongSelf.sambaSubtitlesDownloading.first(where: {"SUB_\($0.mediaID)" == assetDownloadTask.taskDescription}) else { break }
+                
+                strongSelf.captionsForDownloadsMap[assetDownloadTask] = subtitle
+                
+                strongSelf.cancelDownload(for: subtitle.mediaID)
+            }
+        }
     }
     
     
