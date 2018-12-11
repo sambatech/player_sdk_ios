@@ -48,7 +48,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	func changeCaption(_ value: Int) {
 		guard value != currentIndex,
 			value < _captionsRequest.count else { return }
-		
+        
 		reset(value)
 		
 		// disable
@@ -58,16 +58,22 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		}
 		
 		view.isHidden = false
-		
-		Helpers.requestURL(_captionsRequest[value].url, { (response: String?) in
-			guard let response = response else { return }
-			#if DEBUG
-				print("parsing captions...")
-			#endif
-			self.parse(response)
-		}) { (error, response) in
-			print(error ?? "error undefined", response ?? "response undefined")
-		}
+        
+        if  _player.media.isOffline,
+            let captionURL = URL(string: _captionsRequest[value].url),
+            let response = try? String(contentsOf: captionURL) {
+            self.parse(response)
+        } else {
+            Helpers.requestURL(_captionsRequest[value].url, { (response: String?) in
+                guard let response = response else { return }
+                #if DEBUG
+                print("parsing captions...")
+                #endif
+                self.parse(response)
+            }) { (error, response) in
+                print(error ?? "error undefined", response ?? "response undefined")
+            }
+        }
 	}
 	
 	// PLAYER DELEGATE
@@ -109,7 +115,7 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 	}
 	
 	private func load() {
-		let media = _player.media
+        let media = _player.media
 		
 		guard let captions = media.captions,
 			captions.count > 0 else { return }

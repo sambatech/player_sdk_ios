@@ -401,7 +401,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 //        if !media.isLive {
 //            options.append(.speed)
 //        }
-        if media.captions?.count ?? 0 > 0 {
+        if (media.captions?.count ?? 0 > 0 && !media.isOffline)
+            || (media.captions?.count ?? 0 > 0 && media.isOffline && media.isCaptionsOffline)   {
             options.append(.captions)
         }
         let optionsMenu = OptionsMenuView.init()
@@ -478,6 +479,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				dispatchError(SambaPlayerError.rootedDevice)
 				return
 			}
+            
+            prepareOfflineCaptions()
 			
 			let playerExists = _player != nil
 			
@@ -1557,7 +1560,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if !media.isLive {
             options.append(.speed)
         }
-        if media.captions?.count ?? 0 > 0 {
+        if (media.captions?.count ?? 0 > 0 && !media.isOffline)
+            || (media.captions?.count ?? 0 > 0 && media.isOffline && media.isCaptionsOffline) {
             options.append(.captions)
         }
         let optionsMenu = OptionsMenuView.init()
@@ -1690,6 +1694,33 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             configureTopBar(outputsCount: _outputManager?.menuItems.count ?? 0)
         }
         
+    }
+    
+    
+    func prepareOfflineCaptions() {
+        guard media.isOffline else {
+            return
+        }
+        
+        let config  = media as! SambaMediaConfig
+        
+        guard media.isCaptionsOffline, let offlineCaption = SambaDownloadManager.sharedInstance.getOfflineCaption(for: config.id) else {
+            media.captions = nil
+            return
+        }
+        
+        var newCaptions = [SambaMediaCaption]()
+        
+        newCaptions.append(offlineCaption)
+        newCaptions.append(SambaMediaCaption(
+            url: "",
+            label: "Desativar",
+            language: "",
+            cc: false,
+            isDefault: true
+        ))
+        
+        media.captions = newCaptions
     }
 	
 	private class OutputManager : SambaPlayerDelegate {

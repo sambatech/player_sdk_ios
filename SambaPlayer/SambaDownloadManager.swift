@@ -87,4 +87,8 @@ public class SambaDownloadManager{
         SambaDownloadTracker.sharedInstance.updateMedia(for: media)
     }
     
+    func getOfflineCaption(for mediaID: String) -> SambaMediaCaption? {
+        return SambaDownloadTracker.sharedInstance.getOfflineCaption(for: mediaID)
+    }
+    
 }

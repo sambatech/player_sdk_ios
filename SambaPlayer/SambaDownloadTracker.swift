@@ -316,6 +316,21 @@ class SambaDownloadTracker: NSObject {
         return sambaMediasDownloaded
     }
     
+    func getOfflineCaption(for mediaID: String) -> SambaMediaCaption? {
+        guard let subtitles = sambaSubtitlesDownloaded, !subtitles.isEmpty,
+        let subtitle = sambaSubtitlesDownloaded.first(where: {$0.mediaID == mediaID}) else {
+            return nil
+        }
+        
+        return SambaMediaCaption(
+            url: OfflineUtils.loadURLForOfflineSubtitle(with: subtitle)?.absoluteString ?? subtitle.caption.url,
+            label: subtitle.caption.label,
+            language: subtitle.caption.language,
+            cc: subtitle.caption.cc,
+            isDefault: subtitle.caption.isDefault
+        )
+    }
+    
     fileprivate func deleteMediaDownload(_ media: SambaMediaConfig, _ isError: Bool = false, _ isNotify: Bool = true) {
         
         do {
