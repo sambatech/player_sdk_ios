@@ -1118,7 +1118,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if let m = media as? SambaMediaConfig,
             let drmRequest = m.drmRequest {
             // must retain a strong reference to it (weak init reference)
-            _decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
+            _decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest, isForPersist: media.isOffline)
         }
 //
 //        else if let m = media as? SambaMediaConfig, m.isOffline {

@@ -227,7 +227,7 @@ class SambaDownloadTracker: NSObject {
                                                                            assetArtworkData: nil,
                                                                            options: nil)
             if sambaMedia.drmRequest != nil {
-                _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!)
+                _decryptDelegate = AssetLoaderDelegate(asset: urlAsset, assetName: sambaMedia.id, drmRequest: sambaMedia.drmRequest!, isForPersist: true)
             }
             
             //        else {

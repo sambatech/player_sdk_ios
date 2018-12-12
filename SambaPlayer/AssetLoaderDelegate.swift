@@ -35,7 +35,9 @@ class AssetLoaderDelegate: NSObject {
     /// The document URL to use for saving persistent content key.
     fileprivate let documentURL: URL
     
-	init(asset: AVURLAsset, assetName: String, drmRequest: DrmRequest) {
+    fileprivate let isForPersist: Bool
+    
+    init(asset: AVURLAsset, assetName: String, drmRequest: DrmRequest, isForPersist: Bool = false) {
         // Determine the library URL.
         guard let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { fatalError("Unable to determine library URL") }
         documentURL = URL(fileURLWithPath: documentPath)
@@ -43,6 +45,7 @@ class AssetLoaderDelegate: NSObject {
         self.asset = asset
         self.assetName = assetName
 		self.drmRequest = drmRequest
+        self.isForPersist = isForPersist
         
         super.init()
 		
@@ -154,7 +157,7 @@ private extension AssetLoaderDelegate {
 		var shouldPersist = false
 		
 		if #available(iOS 9.0, *) {
-			shouldPersist = asset.resourceLoader.preloadsEligibleContentKeys
+			shouldPersist = isForPersist
         
 			// Check if this reuqest is the result of a potential AVAssetDownloadTask.
 			if shouldPersist {
