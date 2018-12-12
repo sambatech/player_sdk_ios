@@ -11,7 +11,7 @@ import Foundation
 public class OfflineUtils {
     
     
-    static let licenseExpirationTimeInMinute = Double(2)
+    private static let licenseExpirationTimeInMinute = Double(43200)
     
     private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
