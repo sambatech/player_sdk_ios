@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class OfflineUtils {
+class OfflineUtils {
     
     
     private static let licenseExpirationTimeInMinute = Double(43200)
@@ -271,7 +271,7 @@ public class OfflineUtils {
     }
     
     static func localAssetForMedia(withMedia media: SambaMediaConfig) -> AVURLAsset? {
-        guard let localFileLocation = getMediaLocation(from: media) as? Data else { return nil }
+        guard let localFileLocation = getMediaLocation(from: media) else { return nil }
         
         var bookmarkDataIsStale = false
         do {
