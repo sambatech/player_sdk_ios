@@ -50,6 +50,8 @@ class SambaDownloadTracker: NSObject {
     private var _downloadProgressiveDelegate: DownloadProgressiveDelegate?
     private var _downloadSubtitlesDelegate: DownloadSubtitlesDelegate?
     
+    private(set) var maximumDurationTimeForLicensesOfProtectedContentInMinutes: Double?
+    
     // MARK: Intialization
     
     override private init() {
@@ -113,7 +115,14 @@ class SambaDownloadTracker: NSObject {
         }
     }
     
-    func restoreTasks() {
+    func config(maximumDurationTimeForLicensesOfProtectedContentInMinutes time: Int? = nil) {
+        
+        if let time = time {
+            self.maximumDurationTimeForLicensesOfProtectedContentInMinutes = Double(time)
+        } else {
+            self.maximumDurationTimeForLicensesOfProtectedContentInMinutes = nil
+        }
+        
         guard !didRestorePersistenceManager else { return }
         
         didRestorePersistenceManager = true

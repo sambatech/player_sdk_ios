@@ -12,15 +12,10 @@ public class SambaDownloadManager{
     
     public static var sharedInstance = SambaDownloadManager()
     
+    private init() {}
     
-    private init() {
-        
-        
-        
-    }
-    
-    public func config() {
-        SambaDownloadTracker.sharedInstance.restoreTasks()
+    public func config(maximumDurationTimeForLicensesOfProtectedContentInMinutes time: Int? = nil ) {
+        SambaDownloadTracker.sharedInstance.config(maximumDurationTimeForLicensesOfProtectedContentInMinutes: time)
     }
     
     public func prepareDownload(with request: SambaDownloadRequest, successCallback: @escaping (_ request: SambaDownloadRequest) -> Void, errorCallback: @escaping (_ error: Error?, _ msg: String) -> Void) {

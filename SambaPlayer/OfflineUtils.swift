@@ -11,7 +11,7 @@ import Foundation
 class OfflineUtils {
     
     
-    private static let licenseExpirationTimeInMinute = Double(43200)
+    private static let licenseExpirationTimeInMinute = Double(21600)
     
     private static let MEDIAS_KEY_DOWNLOADED = "MEDIAS_KEY_DOWNLOADED"
     private static let MEDIAS_KEY_DOWNLOADING = "MEDIAS_KEY_DOWNLOADING"
@@ -312,7 +312,10 @@ class OfflineUtils {
         
         let interval = Double(date.timeIntervalSinceNow) * -1
         
-        guard (interval / 60)  <= OfflineUtils.licenseExpirationTimeInMinute else {
+        
+        let expirationTimeLimit = SambaDownloadTracker.sharedInstance.maximumDurationTimeForLicensesOfProtectedContentInMinutes ?? OfflineUtils.licenseExpirationTimeInMinute
+        
+        guard (interval / 60)  <= expirationTimeLimit else {
             return true
         }
         
