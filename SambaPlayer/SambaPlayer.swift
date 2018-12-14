@@ -29,6 +29,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	private var _state = kGMFPlayerStateEmpty
 	private var _thumb: UIButton?
 	private var _decryptDelegate: AssetLoaderDelegate?
+    private var _decryptAESDelegate: AESAssetLoaderDelegate?
 	private var _disabled = false
 	private var _errorManager: ErrorManager?
 	private var _outputManager: OutputManager?
@@ -180,6 +181,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         notificationCenter.addObserver(self, selector: #selector(captionsCastTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: castPlayerController!)
         
+        
+    }
+    
+    
+    @objc func handleDrmError() {
+        _errorManager?.handle(true)
     }
     
     // SambaCast Delegate
@@ -394,7 +401,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 //        if !media.isLive {
 //            options.append(.speed)
 //        }
-        if media.captions?.count ?? 0 > 0 {
+        if (media.captions?.count ?? 0 > 0 && !media.isOffline)
+            || (media.captions?.count ?? 0 > 0 && media.isOffline && media.isCaptionsOffline)   {
             options.append(.captions)
         }
         let optionsMenu = OptionsMenuView.init()
@@ -471,6 +479,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				dispatchError(SambaPlayerError.rootedDevice)
 				return
 			}
+            
+            prepareOfflineCaptions()
 			
 			let playerExists = _player != nil
 			
@@ -678,6 +688,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
+        
+        _player?.destroyInternal()
 		_player = nil
         
         // Cast
@@ -888,12 +900,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
         _player = gmf
+		
+    
+        _outputManager = OutputManager(self, media.isOffline ? asset.url :  nil)
+        _captionsScreen = CaptionsScreen(player: self)
         
-		
-	
-		_outputManager = OutputManager(self)
-		_captionsScreen = CaptionsScreen(player: self)
-		
+    
 		configUI()
 		DispatchQueue.main.async { self.destroyThumb() } // antecipates thumb destroy
         attachVC(_player!, nil, nil) { self.updateFullscreen(nil, false) }
@@ -914,6 +926,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         nc.addObserver(self, selector: #selector(captionsTouchHandler),
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: _player!)
+        
+        nc.addObserver(self, selector: #selector(handleDrmError), name:  Notification.Name.SambaDRMErrorNotification, object: nil)
 		
 		loadAsset(asset, autoPlay)
         
@@ -1062,6 +1076,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	private func decideUrl() -> URL? {
+        
+        if  media.isOffline, let offlineURL = media.offlineUrl {
+            return URL(string: offlineURL)
+        }
+        
 		var urlOpt = media.url
 		
 		// outputs
@@ -1088,12 +1107,26 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 //        let headers = ["teste-header" : "teste value"]
 //        let asset = AVURLAsset(url: url, options: ["AVURLAssetHTTPHeaderFieldsKey" : headers])
-		let asset = AVURLAsset(url: url)
-		if let m = media as? SambaMediaConfig,
-			let drmRequest = m.drmRequest {
-			// must retain a strong reference to it (weak init reference)
-			_decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest)
-		}
+		
+        let asset: AVURLAsset!
+        if media.isOffline {
+           asset = OfflineUtils.localAssetForMedia(withMedia: media as! SambaMediaConfig)
+        } else {
+           asset = AVURLAsset(url: url)
+        }
+        
+        if let m = media as? SambaMediaConfig,
+            let drmRequest = m.drmRequest {
+            // must retain a strong reference to it (weak init reference)
+            _decryptDelegate = AssetLoaderDelegate(asset: asset, assetName: m.id, drmRequest: drmRequest, isForPersist: media.isOffline)
+        }
+//
+//        else if let m = media as? SambaMediaConfig, m.isOffline {
+//            var component = URLComponents(url: asset.url, resolvingAgainstBaseURL: true)
+//            let scheme = component?.scheme
+//            component?.scheme = "fakehttps"
+//            _decryptAESDelegate = AESAssetLoaderDelegate(asset: AVURLAsset(url: (component?.url)!), assetName: m.id, previousScheme: scheme!)
+//        }
 		
 		return asset
 	}
@@ -1163,7 +1196,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				self.showError(error)
 			
 			case .critical:
-				self.destroy(withError: error)
+                if error.code == -5 {
+                    self.destroy()
+                    self.showError(error)
+                } else {
+                    self.destroy(withError: error)
+                }
+				
 			
 			default: break
 			}
@@ -1193,8 +1232,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	private func showScreen(_ screen: UIViewController, _ ref: inout UIViewController?, _ parent: UIViewController? = nil) {
 		guard ref == nil else { return }
-		attachVC(screen, parent)
-		ref = screen
+        attachVC(screen, parent)
+        ref = screen
 	}
 	
 	private func destroyScreen(_ ref: inout UIViewController?, callback: (() -> Void)? = nil) {
@@ -1220,7 +1259,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
 		if let manager = _outputManager,
 			let url = url ??
-				URL(string: manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
+                URL(string: media.isOffline ? manager.getOfflineURL()?.absoluteString ?? ""  : manager.getMenuItem(manager.currentIndex)?.url.absoluteString ??
 				media.url ?? "") {
 			// try to connect again
 			loadAsset(createAsset(url), isCurrentMedia)
@@ -1442,7 +1481,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		}
 		
 		public let url: URL, label: String
-		
+        
+        public let width: Int
+        public let height: Int
+        
+        public let bandwidth: CLong
+        
+        
 		public static func ==(lhs: Output, rhs: Output) -> Bool {
 			return lhs.label == rhs.label && lhs.url.absoluteString == rhs.url.absoluteString
 		}
@@ -1515,7 +1560,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         if !media.isLive {
             options.append(.speed)
         }
-        if media.captions?.count ?? 0 > 0 {
+        if (media.captions?.count ?? 0 > 0 && !media.isOffline)
+            || (media.captions?.count ?? 0 > 0 && media.isOffline && media.isCaptionsOffline) {
             options.append(.captions)
         }
         let optionsMenu = OptionsMenuView.init()
@@ -1649,15 +1695,44 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
     }
+    
+    
+    func prepareOfflineCaptions() {
+        guard media.isOffline else {
+            return
+        }
+        
+        let config  = media as! SambaMediaConfig
+        
+        guard media.isCaptionsOffline, let offlineCaption = SambaDownloadManager.sharedInstance.getOfflineCaption(for: config.id) else {
+            media.captions = nil
+            return
+        }
+        
+        var newCaptions = [SambaMediaCaption]()
+        
+        newCaptions.append(offlineCaption)
+        newCaptions.append(SambaMediaCaption(
+            url: "",
+            label: "Desativar",
+            language: "",
+            cc: false,
+            isDefault: true
+        ))
+        
+        media.captions = newCaptions
+    }
 	
 	private class OutputManager : SambaPlayerDelegate {
 		
 		private let player: SambaPlayer
 		private var url: URL?
 		private var item: AVPlayerItem?
+        private var offlineURL: URL?
 		
-		init(_ player: SambaPlayer) {
+        init(_ player: SambaPlayer,_ offlineURL: URL? = nil) {
 			self.player = player
+            self.offlineURL = offlineURL
 			player.delegate = self
 		}
 		
@@ -1674,12 +1749,18 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			return index > -1 && index < menuItems.count ?
 				menuItems[index] : nil
 		}
+        
+        func getOfflineURL() -> URL? {
+            return offlineURL
+        }
 		
 		// PLAYER DELEGATE
 		
 		var menuItems = [Output]()
 		
         func onLoad() {
+            guard let media = player.media as? SambaMediaConfig, !media.isOffline else {return}
+            
             currentIndex = 0
             item = player._player?.player.player.currentItem
             url = (item?.asset as? AVURLAsset)?.url
@@ -1703,7 +1784,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			var outputs = Set<Output>()
 			var label: String?
 			
-			outputs.insert(Output(url: url, label: "Auto"))
+            outputs.insert(Output(url: url, label: "Auto", width: 0, height: 0,bandwidth: 0))
 			
 			for line in Helpers.matchesForRegexInText("[^\\r\\n]+", text: text) {
 				if line.hasPrefix("#EXT-X-STREAM-INF") {
@@ -1711,22 +1792,23 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 						line.range(of: "BANDWIDTH\\=\\d+", options: .regularExpression) {
 						
 						let kv = line.substring(with: range)
-						
+                    
 						if let rangeKv = kv.range(of: "\\d+$", options: .regularExpression),
 							let n = Int(kv.substring(with: rangeKv)) {
 							
 							label = "\(kv.contains("x") ? "\(n)p" : "\(n/1000)k")"
 						}
 					}
-				}
-				else if let labelString = label,
+				} else if let labelString = label,
 					line.hasSuffix(".m3u8"),
 					let url = URL(string: line.hasPrefix("http") ? line : baseUrl + line) {
 					
-					outputs.insert(Output(url: url, label: labelString))
+                    outputs.insert(Output(url: url, label: labelString, width: 0, height: 0, bandwidth: 0))
 					label = nil
 				}
 			}
+            
+            
 			
 			return outputs.sorted(by: { $0.hashValue < $1.hashValue })
 		}
@@ -1751,7 +1833,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			player.delegate = self
 		}
 		
-		func handle() {
+        func handle(_ isFromDRM: Bool = false) {
 			hasError = true
 			
 			guard !(timer?.isValid ?? false) else { return }
@@ -1764,19 +1846,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			}
 
 			error = playerInternal.player.error != nil ? playerInternal.player.error as NSError : nil
-			code = error?.code ?? SambaPlayerError.unknown.code
+            code = isFromDRM ? -5 : error?.code ?? SambaPlayerError.unknown.code
             
 			var msg = "Ocorreu um erro! Tente novamente."
 			
 			type = .recoverable
             
-            if Helpers.isConnectedToInternet() && code != NSURLErrorNotConnectedToInternet{ //11853
+            if (Helpers.isConnectedToInternet() && code != NSURLErrorNotConnectedToInternet) || media.isOffline { //11853
                 switch code {
                     case -11833,-5: // actual error: #EXT-X-KEY: invalid KEYFORMAT
                         type = .critical
                         msg = "Você não tem permissão para \(media.isAudio ? "ouvir este áudio" : "assistir este vídeo")."
                     default:
-                        if currentAutoRetryEachUrl < 1 {
+                        if currentAutoRetryEachUrl < 6 {
                             currentAutoRetryEachUrl += 1
                             player.retry()
                             return
@@ -1904,6 +1986,9 @@ Player error list
 	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", .critical)
 	/// Trying to access an internal player instance that's not loaded yet
 	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", .critical)
+    
+    public static let drmNotPermition = SambaPlayerError(-5, "Drm error", .critical)
+    
 	/// Unknown error
 	public static let unknown = SambaPlayerError(-1, "Unknown error", .critical)
 	

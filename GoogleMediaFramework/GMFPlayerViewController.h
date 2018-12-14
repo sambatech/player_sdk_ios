@@ -120,4 +120,6 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 
 - (void)reset;
 
+- (void)destroyInternal;
+
 @end

@@ -45,6 +45,36 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void) {
 		requestMedia(request, onComplete: onComplete, onError: nil)
 	}
+    
+    public func prepareOfflineMedia(media: SambaMedia, onComplete: @escaping (SambaMedia?) -> Void, onError: @escaping (Error?, URLResponse?) -> Void) {
+        
+        if media.isOffline {
+            
+            let sambaMediaConfig = media as! SambaMediaConfig
+            
+            if sambaMediaConfig.drmRequest != nil && OfflineUtils.isContentKeyExpired(for: sambaMediaConfig.id) {
+                requestMedia(SambaMediaRequest(projectHash: sambaMediaConfig.projectHash, mediaId: sambaMediaConfig.id), onComplete: { (media) in
+                    media?.isOffline = true
+                    media?.isCaptionsOffline = sambaMediaConfig.isCaptionsOffline
+                    
+                    let config = media as! SambaMediaConfig
+                    
+                    if config.drmRequest != nil {
+                        config.drmRequest?.token = sambaMediaConfig.drmRequest?.token
+                    }
+                    
+                    SambaDownloadManager.sharedInstance.updateMedia(for: config)
+                    onComplete(media)
+                }) { (error, response) in
+                    onComplete(media)
+                }
+            } else {
+               onComplete(media)
+            }
+        } else {
+            onError(nil, nil)
+        }
+    }
 	
 	/**
 	Requests and decodes a Base64 media data from the Samba Player API
@@ -227,9 +257,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 					
 					let urlNormalized = normalizeProtocol(url: url, apiProtocol: request.apiProtocol)
                     
-                    if let fileInfo = output["fileInfo"] as? NSDictionary, let duration = fileInfo["duration"] as? CLong {
-                        media.duration = Float(duration/1000)
+                    if let fileInfo = output["fileInfo"] as? NSDictionary {
+                        
+                        if let duration = fileInfo["duration"] as? CLong {
+                            media.duration = Float(duration/1000)
+                        }
+                        
+                        if let bitrate = fileInfo["bitrate"] as? CLong {
+                            media.bitrate = bitrate
+                        }
                     }
+                    
                     
 					mediaOutputs.append(SambaMediaOutput(
 						url: urlNormalized,

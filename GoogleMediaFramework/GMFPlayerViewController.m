@@ -452,6 +452,11 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
 	[(GMFPlayerOverlayView*)self.playerOverlayView reset];
 }
 
+- (void)destroyInternal {
+    [_player destroyInternal];
+
+}
+
 #pragma mark YTPlayerOverlayViewDelegate
 
 - (void)didPressPlay {

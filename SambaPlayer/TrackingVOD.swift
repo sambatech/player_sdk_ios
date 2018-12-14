@@ -147,7 +147,9 @@ class STTM {
 		print("send", url)
 		#endif
 		
-		Helpers.requestURL(url)
+        if Helpers.isConnectedToInternet() {
+            Helpers.requestURL(url)
+        }
 		
 		_targets.removeAll()
 	}
