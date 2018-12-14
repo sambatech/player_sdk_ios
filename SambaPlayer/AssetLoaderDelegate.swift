@@ -35,7 +35,9 @@ class AssetLoaderDelegate: NSObject {
     /// The document URL to use for saving persistent content key.
     fileprivate let documentURL: URL
     
-	init(asset: AVURLAsset, assetName: String, drmRequest: DrmRequest) {
+    fileprivate let isForPersist: Bool
+    
+    init(asset: AVURLAsset, assetName: String, drmRequest: DrmRequest, isForPersist: Bool = false) {
         // Determine the library URL.
         guard let documentPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).first else { fatalError("Unable to determine library URL") }
         documentURL = URL(fileURLWithPath: documentPath)
@@ -43,10 +45,12 @@ class AssetLoaderDelegate: NSObject {
         self.asset = asset
         self.assetName = assetName
 		self.drmRequest = drmRequest
+        self.isForPersist = isForPersist
         
         super.init()
 		
         self.asset.resourceLoader.setDelegate(self, queue: DispatchQueue(label: "\(assetName)-delegateQueue"))
+        self.asset.resourceLoader.preloadsEligibleContentKeys = true
     }
     
     
@@ -77,10 +81,6 @@ class AssetLoaderDelegate: NSObject {
 		
 		req.httpMethod = "POST"
 		req.httpBody = spcData
-        
-        if drmRequest.provider == "SAMBA_DRM", let token = drmRequest.token {
-             req.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        }
 		
 		let sem = DispatchSemaphore.init(value: 0)
 		
@@ -101,6 +101,9 @@ class AssetLoaderDelegate: NSObject {
     }
     
     public func deletePersistedConentKeyForAsset() {
+        
+        OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
+        
         guard let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() else {
             return
         }
@@ -154,7 +157,7 @@ private extension AssetLoaderDelegate {
 		var shouldPersist = false
 		
 		if #available(iOS 9.0, *) {
-			shouldPersist = asset.resourceLoader.preloadsEligibleContentKeys
+			shouldPersist = isForPersist
         
 			// Check if this reuqest is the result of a potential AVAssetDownloadTask.
 			if shouldPersist {
@@ -163,8 +166,9 @@ private extension AssetLoaderDelegate {
 				}
 				else {
 					print("Unable to set contentType on contentInformationRequest.")
-					let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -1, userInfo: nil)
+                    let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
 					resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
 					return
 				}
 			}
@@ -173,45 +177,57 @@ private extension AssetLoaderDelegate {
         // Check if we have an existing key on disk for this asset.
         if let filePathURLForPersistedContentKey = filePathURLForPersistedContentKey() {
             
-            // Verify the file does actually exist on disk.
-            if FileManager.default.fileExists(atPath: filePathURLForPersistedContentKey.path) {
-                
-                do {
-                    // Load the contents of the persistedContentKey file.
-                    let persistedContentKeyData = try Data(contentsOf: filePathURLForPersistedContentKey)
+            
+            if !OfflineUtils.isContentKeyExpired(for: assetName) {
+                // Verify the file does actually exist on disk.
+                if FileManager.default.fileExists(atPath: filePathURLForPersistedContentKey.path) {
                     
-                    guard let dataRequest = resourceLoadingRequest.dataRequest else {
-                        print("Error loading contents of content key file.")
-                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -2, userInfo: nil)
+                    do {
+                        // Load the contents of the persistedContentKey file.
+                        let persistedContentKeyData = try Data(contentsOf: filePathURLForPersistedContentKey)
+                        
+                        guard let dataRequest = resourceLoadingRequest.dataRequest else {
+                            print("Error loading contents of content key file.")
+                            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
+                            resourceLoadingRequest.finishLoading(with: error)
+                            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
+                            return
+                        }
+                        
+                        // Pass the persistedContentKeyData into the dataRequest so complete the content key request.
+                        dataRequest.respond(with: persistedContentKeyData)
+                        resourceLoadingRequest.finishLoading()
+                        return
+                        
+                    } catch {
+                        print("Error initializing Data from contents of URL: \(error.localizedDescription)")
+                        OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
+                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
+                        NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                         return
                     }
-                    
-                    // Pass the persistedContentKeyData into the dataRequest so complete the content key request.
-                    dataRequest.respond(with: persistedContentKeyData)
-                    resourceLoadingRequest.finishLoading()
-                    return
-                    
-                } catch let error as NSError {
-                    print("Error initializing Data from contents of URL: \(error.localizedDescription)")
-                    resourceLoadingRequest.finishLoading(with: error)
-                    return
                 }
+            } else {
+               deletePersistedConentKeyForAsset()
             }
+            
         }
         
         // Get the application certificate.
         guard let applicationCertificate = fetchApplicationCertificate() else {
             print("Error loading application certificate.")
-            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -3, userInfo: nil)
+            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
         guard let assetIDData = assetIDString.data(using: String.Encoding.utf8) else {
             print("Error retrieving Asset ID.")
-            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -4, userInfo: nil)
+             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -232,9 +248,10 @@ private extension AssetLoaderDelegate {
              using the information we obtained earlier.
              */
             spcData = try resourceLoadingRequest.streamingContentKeyRequestData(forApp: applicationCertificate, contentIdentifier: assetIDData, options: resourceLoadingRequestOptions)
-        } catch let error as NSError {
-            print("Error obtaining key request data: \(error.domain) reason: \(String(describing: error.localizedFailureReason))")
+        } catch {
+            let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -253,6 +270,7 @@ private extension AssetLoaderDelegate {
             print("Error retrieving CKC from KSM.")
             let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
             resourceLoadingRequest.finishLoading(with: error)
+            NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
             return
         }
         
@@ -274,6 +292,7 @@ private extension AssetLoaderDelegate {
             if let error = error {
                 print("Error creating persistent content key: \(error)")
                 resourceLoadingRequest.finishLoading(with: error)
+                NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                 return
             }
             
@@ -284,6 +303,7 @@ private extension AssetLoaderDelegate {
                 if persistentContentKeyURL == documentURL {
                     print("failed to create the URL for writing the persistent content key")
                     resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                     return
                 }
                 
@@ -295,12 +315,14 @@ private extension AssetLoaderDelegate {
                     
                     guard let dataRequest = resourceLoadingRequest.dataRequest else {
                         print("no data is being requested in loadingRequest")
-                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -6, userInfo: nil)
+                        let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                         resourceLoadingRequest.finishLoading(with: error)
+                        NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                         return
                     }
                     
                     // Provide data to the loading request.
+                    OfflineUtils.saveCurrentTimeForContentKey(for: assetName)
                     dataRequest.respond(with: persistentContentKeyData)
                     resourceLoadingRequest.finishLoading()  // Treat the processing of the request as complete.
                     
@@ -310,7 +332,9 @@ private extension AssetLoaderDelegate {
                     
                 } catch let error as NSError {
                     print("failed writing persisting key to path: \(persistentContentKeyURL) with error: \(error)")
+                    OfflineUtils.clearCurrentTimeForContentKey(for: assetName)
                     resourceLoadingRequest.finishLoading(with: error)
+                    NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                     return
                 }
                 
@@ -319,8 +343,9 @@ private extension AssetLoaderDelegate {
         else {
             guard let dataRequest = resourceLoadingRequest.dataRequest else {
                 print("no data is being requested in loadingRequest")
-                let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -6, userInfo: nil)
+                let error = NSError(domain: AssetLoaderDelegate.errorDomain, code: -5, userInfo: nil)
                 resourceLoadingRequest.finishLoading(with: error)
+                NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
                 return
             }
             

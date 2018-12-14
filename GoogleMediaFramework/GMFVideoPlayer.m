@@ -689,6 +689,7 @@ BOOL _assetReplaced = NO;
   _manuallyPaused = NO;
   [self stopPlaybackStatusPoller];
   [_player pause];
+    [_player replaceCurrentItemWithPlayerItem:nil];
   [self setAndObservePlayer:nil playerItem:nil];
   _lastReportedPlaybackTime = 0;
   _lastReportedBufferTime = 0;
@@ -697,6 +698,12 @@ BOOL _assetReplaced = NO;
 - (void)reset {
   [self clearPlayer];
   [self setState:kGMFPlayerStateEmpty];
+}
+
+- (void)destroyInternal {
+    if (_player != nil) {
+        [_player replaceCurrentItemWithPlayerItem:nil];
+    }
 }
 
 #pragma mark Utils and Misc.
