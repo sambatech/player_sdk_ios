@@ -15,3 +15,7 @@ extension Notification.Name {
     static let SambaDRMErrorNotification = Notification.Name(rawValue: "SambaDRMErrorNotification")
     
 }
+
+@objc extension NSNotification {
+    public static let SambaDownloadStateChanged = Notification.Name.SambaDownloadStateChanged
+}
