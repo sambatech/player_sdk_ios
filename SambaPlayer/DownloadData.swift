@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct DownloadData: Codable {
+public class DownloadData: NSObject, Codable {
     public var mediaId: String
     public var mediaTitle: String
     public var totalDownloadSizeInMB: Double
@@ -29,7 +29,7 @@ public struct DownloadData: Codable {
         self.sambaSubtitle = sambaSubtitle
     }
     
-    public init(from decoder: Decoder) throws {
+    required public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         mediaId = try container.decode(String.self, forKey: .mediaId)
@@ -49,7 +49,7 @@ public struct DownloadData: Codable {
 }
 
 
-public struct DownloadState {
+public class DownloadState: NSObject {
     public var downloadPercentage: Float
     public var downloadData: DownloadData
     public var state: State
@@ -63,6 +63,12 @@ public struct DownloadState {
         case DELETED
         case PAUSED
         case RESUMED
+    }
+    
+    init(downloadPercentage: Float, downloadData: DownloadData, state: State) {
+        self.downloadPercentage = downloadPercentage
+        self.downloadData = downloadData
+        self.state = state
     }
     
     static func from(state: DownloadState.State,

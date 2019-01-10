@@ -8,11 +8,11 @@
 
 import Foundation
 
-public class SambaDownloadManager{
+public class SambaDownloadManager: NSObject {
     
     public static var sharedInstance = SambaDownloadManager()
     
-    private init() {}
+    private override init() {}
     
     public func config(maximumDurationTimeForLicensesOfProtectedContentInMinutes time: Int? = nil ) {
         SambaDownloadTracker.sharedInstance.config(maximumDurationTimeForLicensesOfProtectedContentInMinutes: time)

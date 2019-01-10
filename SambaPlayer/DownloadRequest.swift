@@ -9,7 +9,7 @@
 import Foundation
 
 
-public class SambaDownloadRequest {
+public class SambaDownloadRequest: NSObject {
     
     public var mediaId: String
     public var projectHash: String
