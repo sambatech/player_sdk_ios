@@ -773,9 +773,9 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				self._isFullscreen = false
 				
 				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
-                player.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
+                // player.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
 				self.attachVC(player)
-				callback()
+				// callback()
 			}
 		}
 		
