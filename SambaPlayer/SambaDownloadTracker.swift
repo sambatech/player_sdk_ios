@@ -85,11 +85,11 @@ class SambaDownloadTracker: NSObject {
         sambaSubtitlesDownloading = OfflineUtils.getPersistDownloadingSubtitles() ?? []
         
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillResignActive), name: UIApplication.didBecomeActiveNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(applicationWillTerminate), name: UIApplication.willTerminateNotification, object: nil)
         
     }
     
@@ -590,7 +590,7 @@ class SambaDownloadTracker: NSObject {
             guard #available(iOS 10.0, *),
                 let assetCache = asset.assetCache else { return (nil, nil) }
             
-            let mediaCharacteristics = [AVMediaCharacteristicAudible, AVMediaCharacteristicLegible]
+            let mediaCharacteristics = [AVMediaCharacteristic.audible, AVMediaCharacteristic.legible]
             
             for mediaCharacteristic in mediaCharacteristics {
                 if let mediaSelectionGroup = asset.mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic) {
@@ -599,7 +599,7 @@ class SambaDownloadTracker: NSObject {
                     if savedOptions.count < mediaSelectionGroup.options.count {
                         // There are still media options left to download.
                         for option in mediaSelectionGroup.options {
-                            if !savedOptions.contains(option) && option.mediaType != AVMediaTypeClosedCaption {
+                            if !savedOptions.contains(option) && option.mediaType != AVMediaType.closedCaption {
                                 // This option has not been download.
                                 return (mediaSelectionGroup, option)
                             }

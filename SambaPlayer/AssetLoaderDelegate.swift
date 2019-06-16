@@ -287,14 +287,18 @@ private extension AssetLoaderDelegate {
              
              The value of AVAssetResourceLoadingContentInformationRequest.contentType must be set to AVStreamingKeyDeliveryPersistentContentKeyType when responding with data created with this method.
              */
-            let persistentContentKeyData = resourceLoadingRequest.persistentContentKey(fromKeyVendorResponse: ckcData, options: nil, error: &error)
             
-            if let error = error {
+            let persistentContentKeyData: Data!
+            
+            do {
+                persistentContentKeyData = try resourceLoadingRequest.persistentContentKey(fromKeyVendorResponse: ckcData, options: nil)
+            } catch {
                 print("Error creating persistent content key: \(error)")
                 resourceLoadingRequest.finishLoading(with: error)
-                NotificationCenter.default.post(name: Notification.Name.SambaDRMErrorNotification, object: nil)
+                NotificationCenter.default.post(name:Notification.Name.SambaDRMErrorNotification, object: nil)
                 return
             }
+            
             
             // Save the persistentContentKeyData onto disk for use in the future.
             do {

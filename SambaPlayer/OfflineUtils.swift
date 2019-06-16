@@ -252,8 +252,10 @@ class OfflineUtils {
         
         var bookmarkDataIsStale = false
         do {
-            guard let url = try URL(resolvingBookmarkData: localFileLocation,
-                                    bookmarkDataIsStale: &bookmarkDataIsStale) else {
+            let optionalURL = try? URL(resolvingBookmarkData: localFileLocation,
+                                 bookmarkDataIsStale: &bookmarkDataIsStale)
+            
+            guard let url = optionalURL else {
                                         print("Failed to create URL from bookmark!")
                                         return nil
             }
@@ -275,7 +277,7 @@ class OfflineUtils {
         
         var bookmarkDataIsStale = false
         do {
-            guard let url = try URL(resolvingBookmarkData: localFileLocation,
+            guard let url = try? URL(resolvingBookmarkData: localFileLocation,
                                     bookmarkDataIsStale: &bookmarkDataIsStale) else {
                                         fatalError("Failed to create URL from bookmark!")
             }
