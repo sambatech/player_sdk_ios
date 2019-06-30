@@ -783,6 +783,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                 player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
                 // player.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
                 self.attachVC(player)
+                self._fullscreenAnimating = false
                 // callback()
             }
         }
@@ -1916,7 +1917,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                 })
                 player._errorScreen = nil
             }
-//            player.destroyScreen(&player._errorScreen)
 		}
 		
 		func onLoad() {
