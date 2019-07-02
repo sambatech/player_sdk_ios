@@ -286,7 +286,7 @@ extension String {
 			return nil
 		}
 		
-		return self[range]
+        return String(self[range])
 	}
 }
 

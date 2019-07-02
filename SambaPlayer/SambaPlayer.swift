@@ -672,8 +672,16 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			showError(error)
 		}
 		else {
-			destroyScreen(&_errorScreen)
-			destroyScreen(&_captionsScreen)
+
+            if let errorScreen = _errorScreen {
+                detachVC(errorScreen, nil, true, callback: nil)
+                _errorScreen = nil
+            }
+            
+            if let captionsScreen = _captionsScreen {
+                detachVC(captionsScreen, nil, true, callback: nil)
+                _captionsScreen = nil
+            }
 		}
 		
 		reset(false)
@@ -732,91 +740,92 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			let player = _player else { return }
         
         guard !SambaCast.sharedInstance.isCastDialogShowing else { return }
-		
+
         if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
             guard let parentView = _parentView ?? parent?.view,
                 let castPlayer = castPlayerController else { return }
-        
+
             var f = castPlayer.view.frame
             f.size.width = size?.width ?? parentView.frame.width
             castPlayer.view.frame = f
             castPlayer.view.setNeedsDisplay()
             return
         }
-        
-		if media.isAudio {
-			guard let parentView = _parentView ?? parent?.view else { return }
-			var f = player.view.frame
-			f.size.width = size?.width ?? parentView.frame.width
-			player.view.frame = f
-			player.view.setNeedsDisplay()
-			return
-		}
-		
-		let callback = {
-			self._fullscreenAnimating = false
-			
-			if let menu = self._currentMenu {
-				self.showMenu(menu, true)
-			}
-            
+
+        if media.isAudio {
+            guard let parentView = _parentView ?? parent?.view else { return }
+            var f = player.view.frame
+            f.size.width = size?.width ?? parentView.frame.width
+            player.view.frame = f
+            player.view.setNeedsDisplay()
+            return
+        }
+
+        let callback = {
+            self._fullscreenAnimating = false
+
+            if let menu = self._currentMenu {
+                self.showMenu(menu, true)
+            }
+
             self.presentOptionsAlert()
             self.prepareOptionsMenuAfterFullScreen()
-		}
-		
-		let exitFullscreen = {
+        }
+
+        let exitFullscreen = {
             self.prepareAlertForFullScreen()
             self.prepareOptionsMenuBeforeFullScreen()
-			self._fullscreenAnimating = true
-			
-			self.detachVC(player, nil, animated) {
-				self._isFullscreen = false
-				
-				player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
+            self._fullscreenAnimating = true
+
+            self.detachVC(player, nil, animated) {
+                self._isFullscreen = false
+
+                player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMinimizeButtonImage())
                 // player.addActionButton(with: nil, name: "CAST_BUTTON", target: nil, selector: nil)
-				self.attachVC(player)
-				// callback()
-			}
-		}
-		
-		if let menu = _currentMenu {
-			hideMenu(menu, true)
-		}
-		
-		if forcePortrait {
-			exitFullscreen()
-			return
-		}
-		
-		//po "fullscreen=\(_isFullscreen) parent=\(player.parent != nil) landscape=\(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) landscape.status=\(UIApplication.shared.statusBarOrientation.isLandscape) portrait=\(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) portrait.status=\(UIApplication.shared.statusBarOrientation.isPortrait)"
-		
-		let isValidDeviceOrientation = UIDeviceOrientationIsValidInterfaceOrientation(UIDevice.current.orientation)
-		
-		if _isFullscreen {
-			// if UI will change to portrait
-			if isValidDeviceOrientation ?
-				UIDeviceOrientationIsPortrait(UIDevice.current.orientation) :
-				UIInterfaceOrientationIsPortrait(UIApplication.shared.statusBarOrientation) {
-				exitFullscreen()
-			}
-		}
-		// if UI will change to landscape
-		else if isValidDeviceOrientation ?
-			UIDeviceOrientationIsLandscape(UIDevice.current.orientation) :
-			UIInterfaceOrientationIsLandscape(UIApplication.shared.statusBarOrientation) {
+                self.attachVC(player)
+                self._fullscreenAnimating = false
+                // callback()
+            }
+        }
+
+        if let menu = _currentMenu {
+            hideMenu(menu, true)
+        }
+
+        if forcePortrait {
+            exitFullscreen()
+            return
+        }
+
+        //po "fullscreen=\(_isFullscreen) parent=\(player.parent != nil) landscape=\(UIDeviceOrientationIsLandscape(UIDevice.current.orientation)) landscape.status=\(UIApplication.shared.statusBarOrientation.isLandscape) portrait=\(UIDeviceOrientationIsPortrait(UIDevice.current.orientation)) portrait.status=\(UIApplication.shared.statusBarOrientation.isPortrait)"
+
+        let isValidDeviceOrientation = UIDevice.current.orientation.isValidInterfaceOrientation
+
+        if _isFullscreen {
+            // if UI will change to portrait
+            if isValidDeviceOrientation ?
+                UIDevice.current.orientation.isPortrait :
+                UIApplication.shared.statusBarOrientation.isPortrait {
+                exitFullscreen()
+            }
+        }
+        // if UI will change to landscape
+        else if isValidDeviceOrientation ?
+            UIDevice.current.orientation.isLandscape :
+            UIApplication.shared.statusBarOrientation.isLandscape {
             self.prepareAlertForFullScreen()
             self.prepareOptionsMenuBeforeFullScreen()
-			_fullscreenAnimating = true
-			_isFullscreen = true
-			
-			player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
-			detachVC(player)
-			
-			DispatchQueue.main.async {
+            _fullscreenAnimating = true
+            _isFullscreen = true
+
+            player.getControlsView().setMinimizeButtonImage(GMFResources.playerBarMaximizeButtonImage())
+            detachVC(player)
+
+            DispatchQueue.main.async {
                 player.removeActionButton(byName: "CAST_BUTTON")
-				self.present(player, animated: animated, completion: callback)
-			}
-		}
+                self.present(player, animated: animated, completion: callback)
+            }
+        }
 	}
 	
 	public override func viewDidAppear(_ animated: Bool) {
@@ -1064,7 +1073,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			                     height: playSize.height))
 		}
 		
-		thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), for: UIControlState())
+        thumb.setImage(UIGraphicsGetImageFromCurrentImageContext(), for: UIControl.State())
 		UIGraphicsEndImageContext()
 		
 		thumb.addTarget(self, action: #selector(thumbTouchHandler), for: .touchUpInside)
@@ -1234,16 +1243,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		guard ref == nil else { return }
         attachVC(screen, parent)
         ref = screen
-	}
-	
-	private func destroyScreen(_ ref: inout UIViewController?, callback: (() -> Void)? = nil) {
-		guard let screen = ref else {
-			callback?()
-			return
-		}
-		
-		detachVC(screen, nil, true, callback: callback)
-		ref = nil
 	}
 	
 	/**
@@ -1434,15 +1433,15 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		}
 		
 		DispatchQueue.main.async {
-			parent.addChildViewController(target)
-			target.didMove(toParentViewController: parent)
+            parent.addChild(target)
+            target.didMove(toParent: parent)
             target.view.frame = parentView.bounds
 			parentView.addSubview(target.view)
 			
 			// always try to keep error screen above all views
 			if let errorView = self._errorScreen?.view,
 				let errorParentView = errorView.superview {
-				errorParentView.bringSubview(toFront: errorView)
+                errorParentView.bringSubviewToFront(errorView)
 			}
 			
 			parentView.setNeedsDisplay()
@@ -1457,7 +1456,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 			}
 			else {
 				vc.view.removeFromSuperview()
-				vc.removeFromParentViewController()
+                vc.removeFromParent()
 				callback?()
 			}
 		}
@@ -1911,9 +1910,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             currentAutoRetryEachUrl = 0
 			player._disabled = false
 			
-			player.destroyScreen(&player._errorScreen) {
-				self.player.updateFullscreen(nil, false)
-			}
+            
+            if let errorScreen = player._errorScreen {
+                player.detachVC(errorScreen, nil, true, callback: {
+                    self.player.updateFullscreen(nil, false)
+                })
+                player._errorScreen = nil
+            }
 		}
 		
 		func onLoad() {

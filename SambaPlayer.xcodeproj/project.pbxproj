@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		37AE000E22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */; };
 		6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B15BE8021512EEE002C41CF /* SambaCast.swift */; };
 		6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */; };
 		6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */; };
@@ -103,7 +104,6 @@
 		9AB0CB9B1DD5195F00D1BEDA /* GMFHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */; };
 		9AB0CB9D1DD51FAD00D1BEDA /* GMFHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AC577B31F26867E005D35AE /* GMFAdsSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AC577B21F26867E005D35AE /* GMFAdsSettings.m */; };
-		9AE43F1A1F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */; };
 		9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		9AEE0BF21EC382500007E60B /* retry@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BEF1EC382500007E60B /* retry@3x.png */; };
 		9AEE0BF31EC382500007E60B /* retry@1x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9AEE0BF01EC382500007E60B /* retry@1x.png */; };
@@ -152,6 +152,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInteractiveMediaAds.framework; path = Frameworks/GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
 		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -304,6 +305,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				37AE000E22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 				6B3CC8C8214FE48300FAC5A4 /* libc++.tbd in Frameworks */,
 				6B3CC8C1214FD61100FAC5A4 /* UIKit.framework in Frameworks */,
 				6B3CC8BF214FD60200FAC5A4 /* SystemConfiguration.framework in Frameworks */,
@@ -319,7 +321,6 @@
 				6B3CC8AB214FD52800FAC5A4 /* AVFoundation.framework in Frameworks */,
 				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
 				6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */,
-				9AE43F1A1F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework in Frameworks */,
 				9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -488,6 +489,7 @@
 		9AE43F181F2A8BA2001DD6D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */,
 				6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */,
 				6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */,
 				6B3CC8BE214FD60200FAC5A4 /* SystemConfiguration.framework */,
@@ -868,6 +870,7 @@
 				OTHER_CODE_SIGN_FLAGS = "--deep";
 				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -918,6 +921,7 @@
 				OTHER_LDFLAGS = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -954,7 +958,7 @@
 				PRODUCT_NAME = SambaPlayer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -986,7 +990,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.sambatech.SambaPlayer;
 				PRODUCT_NAME = SambaPlayer;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.2;
 			};
 			name = Release;
 		};
