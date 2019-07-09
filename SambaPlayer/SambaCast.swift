@@ -9,9 +9,9 @@
 import Foundation
 import GoogleCast
 
-public class SambaCast: NSObject {
+@objc public class SambaCast: NSObject {
     
-    public static var sharedInstance = SambaCast()
+    @objc public static var sharedInstance = SambaCast()
     
     fileprivate var internalDelegates: [SambaCastDelegate] = []
     fileprivate var delegates: [SambaCastDelegate] = []
@@ -43,7 +43,7 @@ public class SambaCast: NSObject {
     
     //MARK: - Public Methods
     
-    public func subscribe(delegate: SambaCastDelegate)  {
+    @objc public func subscribe(delegate: SambaCastDelegate)  {
         let index = delegates.index(where: {$0 === delegate})
         
         guard index == nil else {
@@ -54,7 +54,7 @@ public class SambaCast: NSObject {
         
     }
     
-    public func unSubscribe(delegate: SambaCastDelegate)  {
+    @objc public func unSubscribe(delegate: SambaCastDelegate)  {
         
         guard let index = delegates.index(where: {$0 === delegate}) else {
             return
@@ -84,7 +84,7 @@ public class SambaCast: NSObject {
         internalDelegates.remove(at: index)
     }
     
-    public func config() {
+    @objc public func config() {
         let criteria = GCKDiscoveryCriteria(applicationID: Helpers.settings["cast_application_id_prod"]!)
         let options = GCKCastOptions(discoveryCriteria: criteria)
         options.stopReceiverApplicationWhenEndingSession = true
@@ -101,22 +101,22 @@ public class SambaCast: NSObject {
                                                object: GCKCastContext.sharedInstance())
     }
     
-    public func isCasting() -> Bool {
+    @objc public func isCasting() -> Bool {
         return GCKCastContext.sharedInstance().sessionManager.hasConnectedCastSession()
     }
     
-    public func presentCastInstruction(with button: SambaCastButton) {
+    @objc public func presentCastInstruction(with button: SambaCastButton) {
         self.buttonForIntrucions = button
         NotificationCenter.default.addObserver(self, selector: #selector(self.castDeviceDidChange),
                                                name: NSNotification.Name.gckCastStateDidChange,
                                                object: GCKCastContext.sharedInstance())
     }
     
-    public func stopCasting() {
+    @objc public func stopCasting() {
         GCKCastContext.sharedInstance().sessionManager.endSessionAndStopCasting(true)
     }
     
-    public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil, completion: @escaping (SambaCastCompletionType, Error?) -> Void) {
+    @objc public func loadMedia(with media: SambaMedia, currentTime: CLong = 0, captionTheme: String? = nil, completion: @escaping (SambaCastCompletionType, Error?) -> Void) {
         guard hasCastSession() else { return }
         let castModel = CastModel.castModelFrom(media: media, currentTime: currentTime, captionTheme: captionTheme)
         guard let jsonCastModel = castModel.toStringJson() else { return }
@@ -430,7 +430,7 @@ extension SambaCast: SambaCastChannelDelegate {
 
 //MARK: - Enums
 
-public enum SambaCastCompletionType {
+@objc public enum SambaCastCompletionType: Int {
     case loaded
     case resumed
     case error
