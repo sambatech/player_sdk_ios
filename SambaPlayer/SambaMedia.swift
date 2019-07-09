@@ -107,7 +107,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	- parameter title: Media's title
 	- parameter thumb: URL of the thumb
 	*/
-	public init(_ url: String, title: String? = nil, thumb: UIImage? = nil) {
+	@objc public init(_ url: String, title: String? = nil, thumb: UIImage? = nil) {
 		self.title = title ?? ""
 		self.url = url
 		self.thumb = thumb
@@ -120,7 +120,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	
 	- parameter media: Another media object to create a clone
 	*/
-	public init(media: SambaMedia) {
+	@objc public init(media: SambaMedia) {
 		url = media.url
 		backupUrls = media.backupUrls
 		title = media.title
@@ -154,7 +154,7 @@ Output entity
 	/// Is it the default output?
 	public let isDefault: Bool
 	
-	public init(url: String, label: String, isDefault: Bool) {
+	@objc public init(url: String, label: String, isDefault: Bool) {
 		self.url = url
 		self.label = label
 		self.isDefault = isDefault
@@ -176,7 +176,7 @@ Caption entity
 	/// Is it the default caption?
 	public let isDefault: Bool
 	
-	public init(url: String, label: String, language: String, cc: Bool, isDefault: Bool) {
+	@objc public init(url: String, label: String, language: String, cc: Bool, isDefault: Bool) {
 		self.url = url
 		self.label = label
 		self.language = language
@@ -196,7 +196,7 @@ Configuration for captions
 	/// Initial caption by identifier (e.g. pt-br)
 	public let language: String?
 	
-	public init(color: UInt = 0xFFCC00, size: Int = 24, language: String? = nil) {
+	@objc public init(color: UInt = 0xFFCC00, size: Int = 24, language: String? = nil) {
 		self.color = color
 		self.size = size
 		self.language = language
@@ -244,7 +244,7 @@ Configuration for captions
 	
 	- parameter media: The ID of the media
 	*/
-	public override init(media: SambaMedia) {
+	@objc public override init(media: SambaMedia) {
 		super.init(media: media)
 		
 		if let m = media as? SambaMediaConfig {

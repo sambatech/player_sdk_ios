@@ -44,7 +44,7 @@ import Foundation
 	- parameter streamUrl: URL for live content
 	- parameter backupUrls: Optional URL list for backup/fallback purposes
 	*/
-	public init(projectHash: String, streamUrl: String, backupUrls: [String]? = nil) {
+	@objc public init(projectHash: String, streamUrl: String, backupUrls: [String]? = nil) {
 		self.projectHash = projectHash
 		self.streamUrl = streamUrl
 		
@@ -54,14 +54,14 @@ import Foundation
 	/**
 	Convenience constructor, please refer to its original version.
 	*/
-	public convenience init(projectHash: String, streamUrl: String, backupUrls: String...) {
+    public convenience init(projectHash: String, streamUrl: String, backupUrls: String...) {
 		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls: backupUrls)
 	}
 	
 	/**
 	Convenience constructor, please refer to its original version.
 	*/
-	public convenience init(projectHash: String, streamUrl: String) {
+	@objc public convenience init(projectHash: String, streamUrl: String) {
 		self.init(projectHash: projectHash, streamUrl: streamUrl, backupUrls: [String]())
 	}
 	
@@ -73,7 +73,7 @@ import Foundation
 	- parameter streamUrl: URL for live content
 	- parameter backupUrls: Optional URL list for backup/fallback purposes
 	*/
-	public init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: [String]? = nil) {
+	@objc public init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: [String]? = nil) {
 		self.projectHash = projectHash
 		self.isLiveAudio = isLiveAudio
 		self.streamUrl = streamUrl
@@ -84,7 +84,7 @@ import Foundation
 	/**
 	Convenience constructor, please refer to its original version.
 	*/
-	public convenience init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: String...) {
+    public convenience init(projectHash: String, isLiveAudio: Bool, streamUrl: String, backupUrls: String...) {
 		self.init(projectHash: projectHash, isLiveAudio: isLiveAudio, streamUrl: streamUrl, backupUrls: backupUrls)
 	}
 	
@@ -94,7 +94,7 @@ import Foundation
 	- parameter projectHash: The project hash the media belongs to
 	- parameter streamName: Name of the media stream for live content
 	*/
-	public init(projectHash: String, streamName: String) {
+	@objc public init(projectHash: String, streamName: String) {
 		self.projectHash = projectHash
 		self.streamName = streamName
 	}
@@ -105,7 +105,7 @@ import Foundation
 	- parameter projectHash: The project hash the media belongs to
 	- parameter mediaId: The ID of the media
 	*/
-	public init(projectHash: String, mediaId: String) {
+	@objc public init(projectHash: String, mediaId: String) {
 		self.projectHash = projectHash
 		self.mediaId = mediaId
 	}
@@ -116,7 +116,7 @@ import Foundation
 	- parameter projectHash: The project hash the media belongs to
 	- parameter liveChannelId: The ID of the live channel
 	*/
-	public init(projectHash: String, liveChannelId: String) {
+	@objc public init(projectHash: String, liveChannelId: String) {
 		self.projectHash = projectHash
 		self.liveChannelId = liveChannelId
 	}
