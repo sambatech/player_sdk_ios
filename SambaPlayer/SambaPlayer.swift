@@ -430,13 +430,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	// MARK: Properties
 	
 	/// Stores the delegated methods for the player events
-	public var delegate: SambaPlayerDelegate = FakeListener() {
+	@objc public var delegate: SambaPlayerDelegate = FakeListener() {
 		didSet {
 			_delegates.append(delegate)
 		}
 	}
     
-    public func unsubscribeDelegate(_ delegate: SambaPlayerDelegate) {
+    @objc public func unsubscribeDelegate(_ delegate: SambaPlayerDelegate) {
         let indexToRemove = _delegates.index(where: {$0 === delegate})
         
         if indexToRemove != nil {
@@ -446,7 +446,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     }
 	
 	/// Current media time
-	public var currentTime: Float {
+	@objc public var currentTime: Float {
         
         if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
             return Float(castPlayerController?.currentMediaTime() ?? 0)
@@ -457,7 +457,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	/// Current media duration
-	public var duration: Float {
+	@objc public var duration: Float {
         if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
             return Float(castPlayerController?.totalMediaTime() ?? 0)
         } else {
@@ -466,12 +466,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	/// Outputs available
-	public var outputs: [Output] {
-		return _outputManager?.menuItems.filter({ $0.label.lowercased() != "auto" }) ?? [Output]()
-	}
+    public var outputs: [Output] {
+        return _outputManager?.menuItems.filter({ $0.label.lowercased() != "auto" }) ?? [Output]()
+    }
 	
 	/// Current media
-	public var media: SambaMedia = SambaMedia() {
+	@objc public var media: SambaMedia = SambaMedia() {
 		didSet {
 			// check jailbreak
 			if let m = media as? SambaMediaConfig,
@@ -512,19 +512,19 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	/// Whether media is playing or not
-	public var isPlaying: Bool {
+	@objc public var isPlaying: Bool {
 		return _state == kGMFPlayerStatePlaying || _state == kGMFPlayerStateBuffering
 	}
 	
 	/// Whether controls should be visible or not
-	public var controlsVisible = true {
+	@objc public var controlsVisible = true {
 		didSet {
 			(_player?.playerOverlayView() as? GMFPlayerOverlayView)?.isHidden = !controlsVisible
 		}
 	}
 	
 	/// Whether player shoud be fullscreen or not
-	public var fullscreen = false {
+	@objc public var fullscreen = false {
 		didSet {
 			UIDevice.current.setValue(self.fullscreen ? UIInterfaceOrientation.landscapeLeft.rawValue :
 				UIInterfaceOrientation.portrait.rawValue, forKey: "orientation")
@@ -532,7 +532,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
 	
 	/// Sets playback speed (values can vary from -1 to 2)
-	public var rate: Float {
+	@objc public var rate: Float {
 		set(value) {
             _player?.player.rate = value
 		}
@@ -544,7 +544,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	/**
 	Default initializer
 	*/
-	public init() {
+	@objc public init() {
 		super.init(nibName: nil, bundle: nil)
 		_errorManager = ErrorManager(self)
 	}
@@ -554,7 +554,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	- parameter parentViewController: The view-controller in which the player view-controller and view should be embedded
 	*/
-	public convenience init(parentViewController: UIViewController) {
+	@objc public convenience init(parentViewController: UIViewController) {
 		self.init(parentViewController: parentViewController, andParentView: parentViewController.view)
 	}
 	
@@ -564,20 +564,20 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	- parameter parentViewController: The view-controller in which the player view-controller should be embedded
 	- parameter parentView: The view in which the player view should be embedded
 	*/
-	public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
+	@objc public convenience init(parentViewController: UIViewController, andParentView parentView: UIView) {
 		self.init()
 		_parentView = parentView
 		attachVC(self, parentViewController, parentView)
 	}
 	
-	public required init?(coder aDecoder: NSCoder) {
+	@objc public required init?(coder aDecoder: NSCoder) {
 	    fatalError("init(coder:) has not been implemented")
 	}
 	
 	/**
 	Plays the media
 	*/
-	public func play() {
+	@objc public func play() {
 		if _disabled { return }
 		
 		guard let player = _player else {
@@ -605,7 +605,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	/**
 	Pauses the media
 	*/
-	public func pause() {
+	@objc public func pause() {
         if isChromecastEnable && SambaCast.sharedInstance.isCasting() {
             castPlayerController?.pause()
         } else {
@@ -617,7 +617,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	/**
 	Stops the media returning it to its initial time
 	*/
-	public func stop() {
+	@objc public func stop() {
 		// avoid dispatching events
 		_stopping = true
 		
@@ -632,7 +632,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	- parameter pos: Time in seconds
 	*/
-    public func seek(_ pos: Float) {
+    @objc public func seek(_ pos: Float) {
 		_player?.player.seek(toTime: TimeInterval(pos))
     }
 	
@@ -643,7 +643,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	- parameter value: Index of the output, -1 for auto switch.
 	*/
-	public func switchOutput(_ value: Int) {
+	@objc public func switchOutput(_ value: Int) {
 		_outputManager?.currentIndex = value + 1
 	}
 	
@@ -654,7 +654,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	- parameter value: Index of the caption
 	*/
-	public func changeCaption(_ value: Int) {
+	@objc public func changeCaption(_ value: Int) {
 		guard let screen = _captionsScreen as? CaptionsScreen else { return }
 		screen.changeCaption(value)
 	}
@@ -666,7 +666,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	- parameter error: (optional) Error type to show
 	*/
-	public func destroy(withError error: SambaPlayerError? = nil) {
+	@objc public func destroy(withError error: SambaPlayerError? = nil) {
 		if let error = error {
 			_disabled = true
 			showError(error)
@@ -714,7 +714,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		for delegate in _delegates { delegate.onDestroy?() }
 	}
     
-    public func hide(_ control: SambaPlayerControls) {
+    @objc public func hide(_ control: SambaPlayerControls) {
         if !_hiddenPlayerControls.contains(control) {
             _hiddenPlayerControls.insert(control)
         }
@@ -726,7 +726,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	
 	// MARK: Overrides
 	
-	public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
+	@objc public override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
 		return .allButUpsideDown
 	}
 	
@@ -1982,27 +1982,27 @@ Player error list
 */
 @objc public class SambaPlayerError : NSObject, Error {
 	/// URL format is invalid
-	public static let invalidUrl = SambaPlayerError(1, "Invalid URL format", .critical)
+	@objc public static let invalidUrl = SambaPlayerError(1, "Invalid URL format", .critical)
 	/// Some error occurred when creating internal player
-	public static let creatingPlayer = SambaPlayerError(2, "Error creating player", .critical)
+	@objc public static let creatingPlayer = SambaPlayerError(2, "Error creating player", .critical)
 	/// Trying to play a secure media on a rooted device
-	public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", .critical)
+	@objc public static let rootedDevice = SambaPlayerError(3, "Specified media cannot play on a rooted device", .critical)
 	/// Trying to access an internal player instance that's not loaded yet
-	public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", .critical)
+	@objc public static let playerNotLoaded = SambaPlayerError(4, "Player is not loaded", .critical)
     
-    public static let drmNotPermition = SambaPlayerError(-5, "Drm error", .critical)
+    @objc public static let drmNotPermition = SambaPlayerError(-5, "Drm error", .critical)
     
 	/// Unknown error
-	public static let unknown = SambaPlayerError(-1, "Unknown error", .critical)
+	@objc public static let unknown = SambaPlayerError(-1, "Unknown error", .critical)
 	
 	/// The error code
-	public let code: Int
+	@objc public let code: Int
 	/// Whether error should destroy player or not
-	public var criticality: SambaPlayerErrorCriticality
+	@objc public var criticality: SambaPlayerErrorCriticality
 	/// The error message
-	public var message: String
+	@objc public var message: String
 	/// The error cause
-	public var cause: NSError?
+	@objc public var cause: NSError?
 	
 	/**
 	Creates a new error entity
@@ -2012,7 +2012,7 @@ Player error list
 	- parameter critical: Whether error should destroy player or not
 	- parameter cause: The error cause
 	*/
-	public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = .minor,
+	@objc public init(_ code: Int, _ message: String = "", _ criticality: SambaPlayerErrorCriticality = .minor,
 	            _ cause: NSError? = nil) {
 		self.code = code
 		self.message = message
@@ -2021,7 +2021,7 @@ Player error list
 	}
 
 	/// Retrieves the error description
-	public var localizedDescription: String {
+	@objc public var localizedDescription: String {
 		return message
 	}
 	

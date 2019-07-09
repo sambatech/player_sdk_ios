@@ -42,11 +42,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	- parameter request: The request to the API
 	- parameter onComplete: The callback when the request completes that brings the media object to use with the player
 	*/
-	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void) {
+	@objc public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void) {
 		requestMedia(request, onComplete: onComplete, onError: nil)
 	}
     
-    public func prepareOfflineMedia(media: SambaMedia, onComplete: @escaping (SambaMedia?) -> Void, onError: @escaping (Error?, URLResponse?) -> Void) {
+    @objc public func prepareOfflineMedia(media: SambaMedia, onComplete: @escaping (SambaMedia?) -> Void, onError: @escaping (Error?, URLResponse?) -> Void) {
         
         if media.isOffline {
             
@@ -83,7 +83,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 	- parameter onComplete: The callback when the request completes that brings the media object to use with the player
 	- parameter onError: The callback for any error during the API request
 	*/
-	public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void, onError: ((Error?, URLResponse?) -> Void)? = nil) {
+	@objc public func requestMedia(_ request: SambaMediaRequest, onComplete: @escaping (SambaMedia?) -> Void, onError: ((Error?, URLResponse?) -> Void)? = nil) {
 		
 		let endpointOpt: String?
 		
