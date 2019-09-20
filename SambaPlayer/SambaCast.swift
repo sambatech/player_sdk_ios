@@ -44,7 +44,7 @@ import GoogleCast
     //MARK: - Public Methods
     
     @objc public func subscribe(delegate: SambaCastDelegate)  {
-        let index = delegates.index(where: {$0 === delegate})
+        let index = delegates.firstIndex(where: {$0 === delegate})
         
         guard index == nil else {
             return
@@ -56,7 +56,7 @@ import GoogleCast
     
     @objc public func unSubscribe(delegate: SambaCastDelegate)  {
         
-        guard let index = delegates.index(where: {$0 === delegate}) else {
+        guard let index = delegates.firstIndex(where: {$0 === delegate}) else {
             return
         }
         
@@ -65,7 +65,7 @@ import GoogleCast
     
     
     func subscribeInternal(delegate: SambaCastDelegate)  {
-        let index = internalDelegates.index(where: {$0 === delegate})
+        let index = internalDelegates.firstIndex(where: {$0 === delegate})
         
         guard index == nil else {
             return
@@ -77,7 +77,7 @@ import GoogleCast
     
     func unSubscribeInternal(delegate: SambaCastDelegate)  {
         
-        guard let index = internalDelegates.index(where: {$0 === delegate}) else {
+        guard let index = internalDelegates.firstIndex(where: {$0 === delegate}) else {
             return
         }
         

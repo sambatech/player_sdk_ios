@@ -129,13 +129,13 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 			if let mediaId = request.mediaId,
 					let m = mediaId.range(of: "\\d(?=[a-zA-Z]*$)", options: .regularExpression),
 					let delimiter = Int(mediaId[m]) {
-				tokenBase64 = responseText.substring(with: responseText.characters.index(responseText.startIndex, offsetBy: delimiter)..<responseText.characters.index(responseText.endIndex, offsetBy: -delimiter))
+				tokenBase64 = responseText.substring(with: responseText.index(responseText.startIndex, offsetBy: delimiter)..<responseText.index(responseText.endIndex, offsetBy: -delimiter))
 			}
 			
 			tokenBase64 = tokenBase64.replacingOccurrences(of: "-", with: "+")
 				.replacingOccurrences(of: "_", with: "/")
 			
-			switch tokenBase64.characters.count % 4 {
+			switch tokenBase64.count % 4 {
 			case 2:
 				tokenBase64 += "=="
 			case 3:
