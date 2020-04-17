@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import BitmovinAnalyticsCollector
 
 /// Responsible for managing media playback
 public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDelegate, SambaCastDelegate {
@@ -53,7 +54,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     
     public var isChromecastEnable = false
     
-    
+//    private var avPlayer: AVPlayer?
+    private var avPlayerAnalyticsCollector: AVPlayerCollector?
+    private var bitmovinAnalyticsConfig: BitmovinAnalyticsConfig?
+
     private func getCastCaptionFormat() -> String? {
         guard let mCaptionScreen = _captionsScreen as? CaptionsScreen,
         mCaptionScreen.hasCaptions,
@@ -548,7 +552,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		super.init(nibName: nil, bundle: nil)
 		_errorManager = ErrorManager(self)
 	}
-	
+
 	/**
 	Convenience initializer
 	
@@ -697,9 +701,12 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
         
+        // aqui - luis
+        self.avPlayerAnalyticsCollector!.detachPlayer()
+
         _player?.destroyInternal()
 		_player = nil
-        
+
         // Cast
         if let mCastPlayer = castPlayer {
             mCastPlayer.destroy()
@@ -909,12 +916,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
         _player = gmf
-		
-    
+        self.initBitmovinAnalytics()
+
+        self.avPlayerAnalyticsCollector!.attachPlayer(player: (self._player?.player.player)!)
+
         _outputManager = OutputManager(self, media.isOffline ? asset.url :  nil)
         _captionsScreen = CaptionsScreen(player: self)
-        
-    
+
 		configUI()
 		DispatchQueue.main.async { self.destroyThumb() } // antecipates thumb destroy
         attachVC(_player!, nil, nil) { self.updateFullscreen(nil, false) }
@@ -962,14 +970,35 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
 	}
-	
+
+    func initBitmovinAnalytics() {
+        bitmovinAnalyticsConfig = BitmovinAnalyticsConfig(key: "d4b4a5aa-efc6-4672-91de-af9fe1dbdb9f") // TODO: carregar do info.plst
+        bitmovinAnalyticsConfig?.videoId = self.media.downloadData?.sambaMedia!.id
+        bitmovinAnalyticsConfig?.title = self.media.downloadData?.sambaMedia!.title
+        bitmovinAnalyticsConfig?.customerUserId = "customUserId1" // TODO: onde conseguimos o user id?
+        bitmovinAnalyticsConfig?.experimentName = "experiment-1" // TODO: o que salvar aqui?
+        bitmovinAnalyticsConfig?.cdnProvider = CdnProvider.akamai
+//        bitmovinAnalyticsConfig?.heartbeatInterval = 0
+
+        if let clientId = self.media.downloadData?.sambaMedia!.clientId,
+           let projectId = self.media.downloadData?.sambaMedia!.projectId,
+           let categoryId = self.media.downloadData?.sambaMedia!.clientId {
+            bitmovinAnalyticsConfig?.customData1 = String(clientId)
+            bitmovinAnalyticsConfig?.customData2 = String(projectId)
+            bitmovinAnalyticsConfig?.customData3 = String(categoryId)
+        }
+
+        // TODO:
+//        bitmovinAnalyticsConfig?.customData5 = avPlayerAnalyticsCollector = AVPlayerCollector(config: bitmovinAnalyticsConfig!)
+    }
+
 	private func configUI() {
 		guard let player = _player else { return }
-		
+
 		player.controlTintColor = UIColor(media.theme)
 		player.backgroundColor = media.isAudio ? UIColor(0x434343) : UIColor.black
 	}
-	
+
 	private func postConfigUI() {
 		guard let player = _player else { return }
 		
@@ -1728,7 +1757,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		private var url: URL?
 		private var item: AVPlayerItem?
         private var offlineURL: URL?
-		
+//        private var avPlayer: AVPlayer?
+//        private var avPlayerAnalyticsCollector: AVPlayerCollector?
+//        private var bitmovinAnalyticsConfig: BitmovinAnalyticsConfig?
+
         init(_ player: SambaPlayer,_ offlineURL: URL? = nil) {
 			self.player = player
             self.offlineURL = offlineURL
@@ -1759,14 +1791,26 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		
         func onLoad() {
             guard let media = player.media as? SambaMediaConfig, !media.isOffline else {return}
-            
+
             currentIndex = 0
             item = player._player?.player.player.currentItem
             url = (item?.asset as? AVURLAsset)?.url
             menuItems = extractM3u8()
             self.player.configureTopBar(outputsCount: self.menuItems.count)
+            
+            // aqui - luis
+//            self.avPlayer = player._player?.player.player
+//            initBitmovinAnalytics()
+//            self.avPlayerAnalyticsCollector!.attachPlayer(player: self.avPlayer!)
         }
-        
+
+        // aqui - luis
+//        func initBitmovinAnalytics() {
+//            bitmovinAnalyticsConfig = BitmovinAnalyticsConfig(key: "9ae0b480-f2ee-4c10-bc3c-cb88e982e0ac")
+//            bitmovinAnalyticsConfig?.videoId = self.player.
+//            avPlayerAnalyticsCollector = AVPlayerCollector(config: bitmovinAnalyticsConfig!)
+//        }
+
 		func onReset() {
 			url = nil
 			item = nil

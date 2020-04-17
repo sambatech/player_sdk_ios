@@ -149,10 +149,13 @@
 		C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */; };
 		C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */; };
 		C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7ED78131F97C9A400BB05E2 /* Images.xcassets */; };
+		D28F6CD78277971E94F0EDC4 /* Pods_SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62165929BD8CE11C3655E2AB /* Pods_SambaPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInteractiveMediaAds.framework; path = Frameworks/GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
+		423E0CD17C1EA70553DD3C23 /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
+		62165929BD8CE11C3655E2AB /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
 		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -298,6 +301,7 @@
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D821A1AED2BFEED6CA1DB741 /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,6 +326,7 @@
 				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
 				6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */,
 				9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */,
+				D28F6CD78277971E94F0EDC4 /* Pods_SambaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,6 +512,7 @@
 				6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */,
 				9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */,
 				9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */,
+				62165929BD8CE11C3655E2AB /* Pods_SambaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -519,6 +525,7 @@
 				9AF325B21D14B59700B6E450 /* GoogleMediaFramework */,
 				9A91E8C11D14BC5F00C30DD3 /* Products */,
 				9A5267EE1D22D5BD00C9C015 /* SambaPlayer */,
+				B233F16934CC041BA16126A5 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -577,6 +584,16 @@
 			name = Drm;
 			sourceTree = "<group>";
 		};
+		B233F16934CC041BA16126A5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D821A1AED2BFEED6CA1DB741 /* Pods-SambaPlayer.debug.xcconfig */,
+				423E0CD17C1EA70553DD3C23 /* Pods-SambaPlayer.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -618,6 +635,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AF324E11D14356E00B6E450 /* Build configuration list for PBXNativeTarget "SambaPlayer" */;
 			buildPhases = (
+				04413A1EA38CFA01238E3780 /* [CP] Check Pods Manifest.lock */,
 				9AF324D41D14356E00B6E450 /* Sources */,
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
@@ -658,6 +676,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -737,6 +756,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		04413A1EA38CFA01238E3780 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SambaPlayer-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		9ABF4A1A20FCD58A005D85E9 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 12;
@@ -931,6 +972,7 @@
 		};
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D821A1AED2BFEED6CA1DB741 /* Pods-SambaPlayer.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
@@ -964,6 +1006,7 @@
 		};
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 423E0CD17C1EA70553DD3C23 /* Pods-SambaPlayer.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				APPLICATION_EXTENSION_API_ONLY = NO;
