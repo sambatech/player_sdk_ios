@@ -8,6 +8,7 @@
 #import "IMAStreamRequest.h"
 
 @class IMAAdDisplayContainer;
+@class IMAPictureInPictureProxy;
 @protocol IMAVideoDisplay;
 
 /**
@@ -63,6 +64,9 @@
                            videoDisplay:(id<IMAVideoDisplay>)videoDisplay
                   pictureInPictureProxy:(IMAPictureInPictureProxy *)pictureInPictureProxy;
 
+/**
+ * :nodoc:
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

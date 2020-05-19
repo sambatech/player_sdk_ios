@@ -59,6 +59,7 @@
  */
 - (void)streamManager:(IMAStreamManager *)streamManager didReceiveAdError:(IMAAdError *)error;
 
+@optional
 
 /**
  *  Called when the ad is playing to give updates about ad progress.
@@ -136,6 +137,18 @@
  */
 - (IMACuepoint *)previousCuepointForStreamTime:(NSTimeInterval)streamTime;
 
+/**
+ * Replaces all of the ad tag parameters used for upcoming ad requests for a
+ * live stream.
+ * Note that this call is a no-op for VOD streams.
+ *
+ *  @param adTagParameters   the new ad tag parameters for the current stream.
+ */
+- (void)replaceAdTagParameters:(NSDictionary<NSString *, NSString *> *)adTagParameters;
+
+/**
+ * :nodoc:
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 /**

@@ -12,41 +12,6 @@
 @protocol IMAVideoDisplay;
 
 /**
- *  The inventory unit (iu).
- */
-extern NSString *const kIMAStreamParamIU;
-
-/**
- *  The description url (description_url).
- */
-extern NSString *const kIMAStreamParamDescriptionURL;
-
-/**
- *  The custom parameters (cust_params).
- */
-extern NSString *const kIMAStreamParamCustomParameters;
-
-/**
- *  Tag for child detection parameter (tfcd).
- */
-extern NSString *const kIMAStreamParamTFCD;
-
-/**
- *  The ad holiday parameter (dai-ah). This can be set to either 0 or 1.
- */
-extern NSString *const kIMAStreamParamAdHoliday;
-
-/**
- *  The order variant parameter (dai-ov).
- */
-extern NSString *const kIMAStreamParamOrderVariant;
-
-/**
- *  The order type parameter (dai-ot).
- */
-extern NSString *const kIMAStreamParamOrderType;
-
-/**
  *  Data class describing the stream request.
  */
 @interface IMAStreamRequest : NSObject
@@ -73,14 +38,12 @@ extern NSString *const kIMAStreamParamOrderType;
  *  The stream request authorization token. This is used in place of the API key for stricter
  *  content authorization. The publisher can control individual content streams authorized based
  *  on this token.
- *  :nodoc:
  */
 @property(nonatomic, copy) NSString *authToken;
 
 /**
  *  The ID to be used to debug the stream with the stream activity monitor. This is used to provide
  *  a convenient way to allow publishers to find a stream log in the stream activity monitor tool.
- *  :nodoc:
  */
 @property(nonatomic, copy) NSString *streamActivityMonitorID;
 
@@ -93,7 +56,7 @@ extern NSString *const kIMAStreamParamOrderType;
  *  See <a href="//support.google.com/dfp_premium/answer/7320898">
  *  Override Stream Variant Parameters</a> for more information.
  */
-@property(nonatomic, copy) NSDictionary *adTagParameters;
+@property(nonatomic, copy) NSDictionary<NSString *, NSString *> *adTagParameters;
 
 /**
  *  The suffix that the SDK will append to the query of the stream manifest URL. Do not include the
@@ -103,6 +66,17 @@ extern NSString *const kIMAStreamParamOrderType;
  */
 @property(nonatomic, copy) NSString *manifestURLSuffix;
 
+/**
+ *  Specifies the universal link to the content's screen. If provided, this parameter is passed to
+ *  the OM SDK. See <a
+ *  href="//developer.apple.com/documentation/uikit/inter-process_communication/allowing_apps_and_websites_to_link_to_your_content">Apple
+ *  documentation</a> for more information.
+ */
+@property(nonatomic, copy) NSURL *contentURL;
+
+/**
+ * :nodoc:
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

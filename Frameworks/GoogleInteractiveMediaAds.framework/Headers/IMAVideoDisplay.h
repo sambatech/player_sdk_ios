@@ -7,6 +7,7 @@
 //  Declares a simple video display class used for ad playback.
 
 #import "IMAAdPlaybackInfo.h"
+
 @protocol IMAVideoDisplay;
 
 /**
@@ -15,11 +16,19 @@
 @protocol IMAVideoDisplayDelegate<NSObject>
 
 /**
- *  Informs the SDK the ad has started playback.
+ *  Informs the SDK that the ad has loaded.
+ *
+ *  @param videoDisplay the IMAVideoDisplay that loaded the ad
+ */
+- (void)videoDisplayDidLoad:(id<IMAVideoDisplay>)videoDisplay;
+
+/**
+ *  Informs the SDK the ad has started playback. This must be called at most once per loadStream:
+ *  or loadUrl: call.
  *
  *  @param videoDisplay the IMAVideoDisplay that started ad playback
  */
-- (void)videoDisplayDidPlay:(id<IMAVideoDisplay>)videoDisplay;
+- (void)videoDisplayDidStart:(id<IMAVideoDisplay>)videoDisplay;
 
 /**
  *  Informs the SDK the ad has paused.
@@ -36,11 +45,12 @@
 - (void)videoDisplayDidResume:(id<IMAVideoDisplay>)videoDisplay;
 
 /**
- *  Informs the SDK the ad has started playback.
+ *  Informs the SDK the ad has resumed playback.
  *
- *  @param videoDisplay the IMAVideoDisplay that started ad playback
+ *  @param videoDisplay the IMAVideoDisplay that resumed ad playback
  */
-- (void)videoDisplayDidStart:(id<IMAVideoDisplay>)videoDisplay;
+- (void)videoDisplayDidPlay:(id<IMAVideoDisplay>)videoDisplay
+    DEPRECATED_MSG_ATTRIBUTE("Use videoDisplayDidResume: instead.");
 
 /**
  *  Informs the SDK the ad has completed playback.
@@ -60,8 +70,9 @@
  *  Informs the SDK the ad playback failed due to an error.
  *
  *  @param videoDisplay the IMAVideoDisplay that failed to play the ad
+ *  @param error the error that caused the video display to fail to play the ad
  */
-- (void)videoDisplayDidReceiveError:(id<IMAVideoDisplay>)videoDisplay;
+- (void)videoDisplay:(id<IMAVideoDisplay>)videoDisplay didReceiveError:(NSError *)error;
 
 /**
  *  Informs the SDK the ad was skipped.
@@ -76,13 +87,6 @@
  *  @param videoDisplay the IMAVideoDisplay that showed the skip button
  */
 - (void)videoDisplayDidShowSkip:(id<IMAVideoDisplay>)videoDisplay;
-
-/**
- *  Informs the SDK that the ad has loaded.
- *
- *  @param videoDisplay the IMAVideoDisplay that loaded the ad
- */
-- (void)videoDisplayDidLoad:(id<IMAVideoDisplay>)videoDisplay;
 
 /**
  *  Informs the SDK that the ad volume was changed.
@@ -110,7 +114,7 @@
  *  @param metadata     the metadata dictionary received with the timed metadata event
  */
 - (void)videoDisplay:(id<IMAVideoDisplay>)videoDisplay
-    didReceiveTimedMetadata:(NSDictionary *)metadata;
+    didReceiveTimedMetadata:(NSDictionary<NSString *, NSString *> *)metadata;
 
 @optional
 
@@ -167,8 +171,8 @@
  *                    subtitle key/value pairs. Here's an example NSDictionary for English:
  *
  *                    "language" -> "en"
- *                    "webvtt" -> "https://somedomain/vtt/en.vtt"
- *                    "ttml" -> "https://somedomain/ttml/en.ttml"
+ *                    "webvtt" -> "https://somedomain.com/vtt/en.vtt"
+ *                    "ttml" -> "https://somedomain.com/ttml/en.ttml"
  */
 - (void)loadStream:(NSURL *)streamURL withSubtitles:(NSArray *)subtitles;
 
@@ -177,7 +181,8 @@
  *
  *  @param url  the media URL of the ad to be played
  */
-- (void)loadUrl:(NSURL *)url;
+- (void)loadUrl:(NSURL *)url
+    DEPRECATED_MSG_ATTRIBUTE("Unused, use loadStream:withSubtitles: for media loading.");
 
 /**
  *  Called to inform the VideoDisplay to play.
@@ -193,5 +198,12 @@
  *  Called to remove all video assets from the player.
  */
 - (void)reset;
+
+/**
+ *  Called to inform that the stream needs to be seeked to the given time.
+ *
+ *  @param time  the time to which the stream should be seeked
+ */
+- (void)seekStreamToTime:(NSTimeInterval)time;
 
 @end

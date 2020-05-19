@@ -11,7 +11,7 @@
  *  The default value of |bitrate property|, causes the effective bitrate to
  *  be automatically selected.
  */
-extern const int kIMAAutodetectBitrate;
+extern const NSInteger kIMAAutodetectBitrate;
 
 #pragma mark IMAWebOpenerDelegate
 
@@ -69,13 +69,13 @@ extern const int kIMAAutodetectBitrate;
 @interface IMAAdsRenderingSettings : NSObject
 
 /**
- *  If specified, the SDK will prioritize the media with MIME type on the list.
+ *  If specified, the SDK will play the media with MIME type on the list.
  *  List of strings specifying the MIME types. When nil or empty, the SDK will
- *  use it's default list of MIME types supported on iOS.
+ *  use its default list of MIME types supported on iOS.
  *  Example: @[ @"video/mp4", @"application/x-mpegURL" ]
  *  The property is an empty array by default.
  */
-@property(nonatomic, copy) NSArray *mimeTypes;
+@property(nonatomic, copy) NSArray<NSString *> *mimeTypes;
 
 /**
  *  Maximum recommended bitrate. The value is in kbit/s.
@@ -84,7 +84,15 @@ extern const int kIMAAutodetectBitrate;
  *  Default value, |kIMAAutodetectBitrate|, means the bitrate will be selected
  *  by the SDK, using the currently detected network speed (cellular or Wi-Fi).
  */
-@property(nonatomic) int bitrate;
+@property(nonatomic) NSInteger bitrate;
+
+/**
+ *  Timeout (in seconds) when loading a video ad media file. If loading takes
+ *  longer than this timeout, the ad playback is canceled and the next ad in the
+ *  pod plays, if available. Use -1 for the default of 8 seconds.
+ */
+@property(nonatomic) NSTimeInterval loadVideoTimeout;
+
 
 /**
  *  For VMAP and ad rules playlists, only play ad breaks scheduled after this time (in seconds).
@@ -96,13 +104,15 @@ extern const int kIMAAutodetectBitrate;
 /**
  *  Specifies the list of UI elements that should be visible.
  *  This property may be ignored for AdSense/AdX ads. For valid values, see
- *  <a href="../Enums/IMAUiElementType.html">IMAUiElementType</a>.
+ *  <a href="../Enums/IMAUiElementType.html">IMAUiElementType</a>. This field
+ *  is ignored on tvOS, where UI elements are unavailable.
  */
-@property(nonatomic, copy) NSArray *uiElements;
+@property(nonatomic, copy) NSArray<NSNumber *> *uiElements;
 
 /**
  *  Whether or not to disable ad UI for non TrueView ads. Check Ad.getDisableUi to check if this
  *  request was honored. Default is false.
+ *  :nodoc:
  */
 @property(nonatomic) BOOL disableUi;
 
@@ -111,12 +121,14 @@ extern const int kIMAAutodetectBitrate;
  *  in-app browser.
  *  When nil, tapping the video ad "Learn More" button or companion ads
  *  will result in opening Safari browser. If provided, in-app browser will
- *  be used, allowing the user to stay in the app and return easily.
+ *  be used, allowing the user to stay in the app and return easily. This field
+ *  is ignored on tvOS, where Safari is not available.
  */
 @property(nonatomic, weak) UIViewController *webOpenerPresentingController;
 
 /**
  *  The IMAWebOpenerDelegate to be notified when in-app or external browser opens/closes.
+ *  This field is ignored on tvOS, where Safari is not available.
  */
 @property(nonatomic, weak) id<IMAWebOpenerDelegate> webOpenerDelegate;
 
