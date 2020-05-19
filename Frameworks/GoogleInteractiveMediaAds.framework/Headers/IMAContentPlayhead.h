@@ -11,7 +11,7 @@
 /**
  *  Property name used for key value observation.
  */
-static NSString *const kIMAPropertyCurrentTime = @"currentTime";
+extern NSString *const kIMAPropertyCurrentTime;
 
 /**
  *  Defines an interface for a class that tracks video content progress and
