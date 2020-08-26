@@ -590,7 +590,6 @@
 				D821A1AED2BFEED6CA1DB741 /* Pods-SambaPlayer.debug.xcconfig */,
 				423E0CD17C1EA70553DD3C23 /* Pods-SambaPlayer.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

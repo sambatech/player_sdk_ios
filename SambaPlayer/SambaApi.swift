@@ -177,7 +177,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		let apiConfig = json["apiConfig"]!! as AnyObject
 		let project = json["project"]!! as AnyObject
 		
-		media.projectHash = project["playerHash"] as! String
+        // aqui
+        media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
         media.clientId = project["clientId"] as! Int
 		media.isAudio = request.isLiveAudio || qualifier.lowercased() == "audio"

@@ -36,7 +36,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	private var _outputManager: OutputManager?
     private let _rateOutputs: [Float] = [2.0, 1.5, 1.0, 0.5, 0.25]
     private var _hiddenPlayerControls: Set<SambaPlayerControls> = [] {
-        didSet{
+        didSet {
             guard let player = _player else {
                 return
             }
@@ -44,10 +44,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
     }
     private var _wasPlaying = false
-    
-    
+
     //MARK: Chromecast
-    
     private var castPlayerController: GMFPlayerViewController?
     private var castPlayer: CastPlayer?
     private var castPlayerState = kGMFPlayerStateEmpty
@@ -55,8 +53,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     public var isChromecastEnable = false
     
 //    private var avPlayer: AVPlayer?
-    private var avPlayerAnalyticsCollector: AVPlayerCollector?
-    private var bitmovinAnalyticsConfig: BitmovinAnalyticsConfig?
+    private var bitmovinAvPlayerAnalyticsCollector: AVPlayerCollector?
 
     private func getCastCaptionFormat() -> String? {
         guard let mCaptionScreen = _captionsScreen as? CaptionsScreen,
@@ -72,7 +69,13 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         return "[\(currentCaption.language),ffcc00,42]"
     }
     
-    
+    // MARK: Bitmovin
+    private var _userId = ""
+    var userId : String {
+        get { return _userId }
+        set { self._userId = newValue }
+    }
+
     private func configUICast() {
         guard isChromecastEnable, let player = castPlayerController else { return }
         
@@ -700,9 +703,8 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
-        
-        // aqui - luis
-        self.avPlayerAnalyticsCollector!.detachPlayer()
+
+        self.endBitmovinAnalytics()
 
         _player?.destroyInternal()
 		_player = nil
@@ -916,9 +918,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
         
         _player = gmf
-        self.initBitmovinAnalytics()
-
-        self.avPlayerAnalyticsCollector!.attachPlayer(player: (self._player?.player.player)!)
 
         _outputManager = OutputManager(self, media.isOffline ? asset.url :  nil)
         _captionsScreen = CaptionsScreen(player: self)
@@ -945,7 +944,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                        name: NSNotification.Name.gmfPlayerDidPressCaptions, object: _player!)
         
         nc.addObserver(self, selector: #selector(handleDrmError), name:  Notification.Name.SambaDRMErrorNotification, object: nil)
-		
+
 		loadAsset(asset, autoPlay)
         
         if isChromecastEnable {
@@ -969,27 +968,31 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             }
         }
         
+        self.initBitmovinAnalytics()
 	}
 
     func initBitmovinAnalytics() {
-        bitmovinAnalyticsConfig = BitmovinAnalyticsConfig(key: "d4b4a5aa-efc6-4672-91de-af9fe1dbdb9f") // TODO: carregar do info.plst
-        bitmovinAnalyticsConfig?.videoId = self.media.downloadData?.sambaMedia!.id
-        bitmovinAnalyticsConfig?.title = self.media.downloadData?.sambaMedia!.title
-        bitmovinAnalyticsConfig?.customerUserId = "customUserId1" // TODO: onde conseguimos o user id?
-        bitmovinAnalyticsConfig?.experimentName = "experiment-1" // TODO: o que salvar aqui?
-        bitmovinAnalyticsConfig?.cdnProvider = CdnProvider.akamai
-//        bitmovinAnalyticsConfig?.heartbeatInterval = 0
+        if let m = self.media as? SambaMediaConfig,
+           let p = self._player?.player.player {
+            let bitmovinKey = Helpers.readStringFromPList(key: "BitmovinKey")
 
-        if let clientId = self.media.downloadData?.sambaMedia!.clientId,
-           let projectId = self.media.downloadData?.sambaMedia!.projectId,
-           let categoryId = self.media.downloadData?.sambaMedia!.clientId {
-            bitmovinAnalyticsConfig?.customData1 = String(clientId)
-            bitmovinAnalyticsConfig?.customData2 = String(projectId)
-            bitmovinAnalyticsConfig?.customData3 = String(categoryId)
+            let config = BitmovinAnalyticsConfig(key: bitmovinKey)
+            config.videoId = m.id
+            config.title = m.title
+            config.customerUserId = self.userId
+            config.cdnProvider = CdnProvider.akamai
+            config.customData1 = String(m.clientId)
+            config.customData2 = String(m.projectId)
+            config.customData3 = String(m.categoryId)
+            config.customData5 = String(m.environment?.description ?? "")
+
+            self.bitmovinAvPlayerAnalyticsCollector = AVPlayerCollector(config: config)
+            self.bitmovinAvPlayerAnalyticsCollector!.attachPlayer(player: p)
         }
+    }
 
-        // TODO:
-//        bitmovinAnalyticsConfig?.customData5 = avPlayerAnalyticsCollector = AVPlayerCollector(config: bitmovinAnalyticsConfig!)
+    func endBitmovinAnalytics() {
+        self.bitmovinAvPlayerAnalyticsCollector?.detachPlayer()
     }
 
 	private func configUI() {
@@ -1757,9 +1760,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		private var url: URL?
 		private var item: AVPlayerItem?
         private var offlineURL: URL?
-//        private var avPlayer: AVPlayer?
-//        private var avPlayerAnalyticsCollector: AVPlayerCollector?
-//        private var bitmovinAnalyticsConfig: BitmovinAnalyticsConfig?
 
         init(_ player: SambaPlayer,_ offlineURL: URL? = nil) {
 			self.player = player
@@ -1797,19 +1797,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             url = (item?.asset as? AVURLAsset)?.url
             menuItems = extractM3u8()
             self.player.configureTopBar(outputsCount: self.menuItems.count)
-            
-            // aqui - luis
-//            self.avPlayer = player._player?.player.player
-//            initBitmovinAnalytics()
-//            self.avPlayerAnalyticsCollector!.attachPlayer(player: self.avPlayer!)
         }
-
-        // aqui - luis
-//        func initBitmovinAnalytics() {
-//            bitmovinAnalyticsConfig = BitmovinAnalyticsConfig(key: "9ae0b480-f2ee-4c10-bc3c-cb88e982e0ac")
-//            bitmovinAnalyticsConfig?.videoId = self.player.
-//            avPlayerAnalyticsCollector = AVPlayerCollector(config: bitmovinAnalyticsConfig!)
-//        }
 
 		func onReset() {
 			url = nil

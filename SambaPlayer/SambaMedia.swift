@@ -232,6 +232,8 @@ Configuration for captions
 	
     public var bitrate: CLong?
     
+    public var environment: SambaEnvironment?
+    
 	/**
 	Default initializer
 	*/
@@ -259,6 +261,7 @@ Configuration for captions
 			drmRequest = m.drmRequest
 			blockIfRooted = m.blockIfRooted
             bitrate = m.bitrate
+            environment = m.environment
 		}
 	}
 }

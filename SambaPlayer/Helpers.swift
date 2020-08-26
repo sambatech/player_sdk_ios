@@ -14,7 +14,18 @@ class Helpers {
 	static let requestTimeout = TimeInterval(30)
     
     static let imageCache = NSCache<NSString, UIImage>()
-	
+    
+    static func readStringFromPList(key: String) -> String {
+        if let path = Bundle.main.path(forResource: "info", ofType: "plist") {
+            let dictRoot = NSDictionary(contentsOfFile: path)
+            if let dict = dictRoot {
+                return dict[key] as! String
+            }
+        }
+        
+        return ""
+    }
+
 	static func matchesForRegexInText(_ regex: String!, text: String!) -> [String] {
 		do {
 			let regex = try NSRegularExpression(pattern: regex, options: [])
