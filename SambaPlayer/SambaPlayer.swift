@@ -974,7 +974,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     func initBitmovinAnalytics() {
         if let m = self.media as? SambaMediaConfig,
            let p = self._player?.player.player {
-            let bitmovinKey = Helpers.readStringFromPList(key: "BitmovinKey")
+            let bitmovinKey = Helpers.settings["bitmovinKey"]!
 
             let config = BitmovinAnalyticsConfig(key: bitmovinKey)
             config.videoId = m.id
