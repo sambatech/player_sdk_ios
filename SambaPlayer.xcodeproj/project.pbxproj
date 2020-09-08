@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		37AE000E22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */; };
+		53187F10B49ADBC2EFC82741 /* Pods_SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */; };
 		6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B15BE8021512EEE002C41CF /* SambaCast.swift */; };
 		6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */; };
 		6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */; };
@@ -16,7 +17,6 @@
 		6B3CC8AF214FD55200FAC5A4 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8AE214FD55100FAC5A4 /* CoreGraphics.framework */; };
 		6B3CC8B1214FD56600FAC5A4 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B0214FD56600FAC5A4 /* CoreText.framework */; };
 		6B3CC8B3214FD59B00FAC5A4 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B2214FD59B00FAC5A4 /* Foundation.framework */; };
-		6B3CC8B5214FD5B200FAC5A4 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */; };
 		6B3CC8B7214FD5C500FAC5A4 /* MediaAccessibility.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B6214FD5C500FAC5A4 /* MediaAccessibility.framework */; };
 		6B3CC8B9214FD5DB00FAC5A4 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B8214FD5DA00FAC5A4 /* MediaPlayer.framework */; };
 		6B3CC8BB214FD5E500FAC5A4 /* MediaToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8BA214FD5E500FAC5A4 /* MediaToolbox.framework */; };
@@ -145,17 +145,16 @@
 		9AF325F91D14B5B900B6E450 /* GMFSlider.h in Headers */ = {isa = PBXBuildFile; fileRef = 9AF325D51D14B5B900B6E450 /* GMFSlider.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF325FA1D14B5B900B6E450 /* GMFSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AF325D61D14B5B900B6E450 /* GMFSlider.m */; };
 		9AF57B7E1DA42DFB0062E54A /* AssetLoaderDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */; };
-		BB6D608DE90C8AD840718197 /* Pods_SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E6AF05270F4FD2F0C7B0961 /* Pods_SambaPlayer.framework */; };
 		C78A47841FA3992700D3136D /* SambaPlayerControls.swift in Sources */ = {isa = PBXBuildFile; fileRef = C78A47831FA3992700D3136D /* SambaPlayerControls.swift */; };
 		C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */; };
 		C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */; };
 		C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7ED78131F97C9A400BB05E2 /* Images.xcassets */; };
-		D1A5697624F832360080EEB3 /* BitmovinAnalyticsCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D1A5697524F832360080EEB3 /* BitmovinAnalyticsCollector.framework */; };
+		D1C23AC22507B45C001C4AB7 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInteractiveMediaAds.framework; path = Frameworks/GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
-		53CB99D9232EAAF634A10331 /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
 		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
@@ -189,8 +188,7 @@
 		6BF484F721B190730014E371 /* SambaDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaDownloadManager.swift; sourceTree = "<group>"; };
 		6BF484F921B191810014E371 /* SambaDownloadTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaDownloadTracker.swift; sourceTree = "<group>"; };
 		6BF484FB21B1A1380014E371 /* StartDownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDownloadHelper.swift; sourceTree = "<group>"; };
-		84BEED8F85AA233C6FD577D6 /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
-		8E6AF05270F4FD2F0C7B0961 /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -299,11 +297,11 @@
 		9AF325D61D14B5B900B6E450 /* GMFSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFSlider.m; path = GoogleMediaFramework/GMFSlider.m; sourceTree = "<group>"; };
 		9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetLoaderDelegate.swift; sourceTree = "<group>"; };
+		B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		C78A47831FA3992700D3136D /* SambaPlayerControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaPlayerControls.swift; sourceTree = "<group>"; };
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		D1A5697524F832360080EEB3 /* BitmovinAnalyticsCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BitmovinAnalyticsCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -315,13 +313,12 @@
 				6B3CC8C8214FE48300FAC5A4 /* libc++.tbd in Frameworks */,
 				6B3CC8C1214FD61100FAC5A4 /* UIKit.framework in Frameworks */,
 				6B3CC8BF214FD60200FAC5A4 /* SystemConfiguration.framework in Frameworks */,
-				D1A5697624F832360080EEB3 /* BitmovinAnalyticsCollector.framework in Frameworks */,
 				6B3CC8BD214FD5F500FAC5A4 /* QuartzCore.framework in Frameworks */,
 				6B3CC8BB214FD5E500FAC5A4 /* MediaToolbox.framework in Frameworks */,
 				6B3CC8B9214FD5DB00FAC5A4 /* MediaPlayer.framework in Frameworks */,
 				6B3CC8B7214FD5C500FAC5A4 /* MediaAccessibility.framework in Frameworks */,
-				6B3CC8B5214FD5B200FAC5A4 /* GoogleCast.framework in Frameworks */,
 				6B3CC8B3214FD59B00FAC5A4 /* Foundation.framework in Frameworks */,
+				D1C23AC22507B45C001C4AB7 /* GoogleCast.framework in Frameworks */,
 				6B3CC8B1214FD56600FAC5A4 /* CoreText.framework in Frameworks */,
 				6B3CC8AF214FD55200FAC5A4 /* CoreGraphics.framework in Frameworks */,
 				6B3CC8AD214FD54100FAC5A4 /* CoreBluetooth.framework in Frameworks */,
@@ -329,7 +326,7 @@
 				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
 				6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */,
 				9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */,
-				BB6D608DE90C8AD840718197 /* Pods_SambaPlayer.framework in Frameworks */,
+				53187F10B49ADBC2EFC82741 /* Pods_SambaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -339,8 +336,8 @@
 		59E7429E375F88F973D596F7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				53CB99D9232EAAF634A10331 /* Pods-SambaPlayer.debug.xcconfig */,
-				84BEED8F85AA233C6FD577D6 /* Pods-SambaPlayer.release.xcconfig */,
+				1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */,
+				B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -506,7 +503,6 @@
 		9AE43F181F2A8BA2001DD6D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				D1A5697524F832360080EEB3 /* BitmovinAnalyticsCollector.framework */,
 				37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */,
 				6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */,
 				6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */,
@@ -525,7 +521,7 @@
 				6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */,
 				9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */,
 				9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */,
-				8E6AF05270F4FD2F0C7B0961 /* Pods_SambaPlayer.framework */,
+				73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -638,7 +634,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AF324E11D14356E00B6E450 /* Build configuration list for PBXNativeTarget "SambaPlayer" */;
 			buildPhases = (
-				04413A1EA38CFA01238E3780 /* [CP] Check Pods Manifest.lock */,
+				6C7E3B2FA4FC68D1271774A9 /* [CP] Check Pods Manifest.lock */,
 				9AF324D41D14356E00B6E450 /* Sources */,
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
@@ -759,7 +755,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		04413A1EA38CFA01238E3780 /* [CP] Check Pods Manifest.lock */ = {
+		6C7E3B2FA4FC68D1271774A9 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -975,7 +971,7 @@
 		};
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 53CB99D9232EAAF634A10331 /* Pods-SambaPlayer.debug.xcconfig */;
+			baseConfigurationReference = 1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -989,6 +985,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector.framework/Headers",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
@@ -1008,7 +1008,7 @@
 		};
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 84BEED8F85AA233C6FD577D6 /* Pods-SambaPlayer.release.xcconfig */;
+			baseConfigurationReference = B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1022,6 +1022,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/Frameworks",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"${PODS_CONFIGURATION_BUILD_DIR}/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector.framework/Headers",
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
