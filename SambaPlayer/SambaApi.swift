@@ -176,8 +176,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		let playerConfig = json["playerConfig"]!! as AnyObject
 		let apiConfig = json["apiConfig"]!! as AnyObject
 		let project = json["project"]!! as AnyObject
-		
-        // aqui
+
         media.projectHash = project["playerHash"] as! String
 		media.projectId = project["id"] as! Int
         media.clientId = project["clientId"] as! Int
