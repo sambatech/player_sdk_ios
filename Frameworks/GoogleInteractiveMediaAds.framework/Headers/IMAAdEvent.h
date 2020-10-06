@@ -22,6 +22,10 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
    */
   kIMAAdEvent_AD_BREAK_READY,
   /**
+   *  Ad break will not play back any ads.
+   */
+  kIMAAdEvent_AD_BREAK_FETCH_ERROR,
+  /**
    *  Ad break ended (only used for dynamic ad insertion).
    */
   kIMAAdEvent_AD_BREAK_ENDED,
@@ -29,6 +33,17 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
    *  Ad break started (only used for dynamic ad insertion).
    */
   kIMAAdEvent_AD_BREAK_STARTED,
+  /**
+   *  Ad period ended (only used for dynamic ad insertion).
+   */
+  kIMAAdEvent_AD_PERIOD_ENDED,
+  /**
+   *  Ad period started is fired when an ad period starts. This includes the
+   *  entire ad break including slate as well. This event will be fired even for
+   *  ads that are being replayed or when seeking to the middle of an ad break.
+   *  (only used for dynamic ad insertion).
+   */
+  kIMAAdEvent_AD_PERIOD_STARTED,
   /**
    *  All ads managed by the ads manager have completed.
    */
@@ -80,7 +95,7 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
    */
   kIMAAdEvent_STARTED,
   /**
-   *  Stream has loaded (only used for dynamic ad insertion).
+   *  Stream request has loaded (only used for dynamic ad insertion).
    */
   kIMAAdEvent_STREAM_LOADED,
   /**
@@ -103,7 +118,7 @@ typedef NS_ENUM(NSInteger, IMAAdEventType){
 /**
  *  The key for the time in seconds when the AD_BREAK_READY event fired.
  */
-static NSString *const kIMAAdBreakTime = @"kIMAAdBreakTime";
+extern NSString *const kIMAAdBreakTime;
 
 #pragma mark - IMAAdEvent
 
@@ -131,8 +146,11 @@ static NSString *const kIMAAdBreakTime = @"kIMAAdBreakTime";
 /**
  *  Extra data about the ad. Can be nil.
  */
-@property(nonatomic, copy, readonly) NSDictionary *adData;
+@property(nonatomic, copy, readonly) NSDictionary<NSString *, id> *adData;
 
+/**
+ * :nodoc:
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 @end

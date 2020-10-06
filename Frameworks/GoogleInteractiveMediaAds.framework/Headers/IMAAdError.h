@@ -41,9 +41,10 @@ typedef NS_ENUM(NSInteger, IMAErrorCode){
    */
   kIMAError_VAST_MALFORMED_RESPONSE = 100,
   /**
-   *  The ad response was not understood and cannot be parsed.
+   *  Trafficking error. Video player received an ad type that it was not expecting and/or cannot
+   *  display.
    */
-  kIMAError_UNKNOWN_AD_RESPONSE = 200,
+  kIMAError_VAST_TRAFFICKING_ERROR = 200,
   /**
    *  The VAST URI provided, or a VAST URI provided in a subsequent Wrapper
    *  element, was either unavailable or reached a timeout, as defined by the
@@ -66,7 +67,7 @@ typedef NS_ENUM(NSInteger, IMAErrorCode){
   kIMAError_VIDEO_PLAY_ERROR = 400,
   /**
    *  Failed to load media assets from a VAST response.
-   *  The default timeout for media loading is 15 seconds.
+   *  The default timeout for media loading is 8 seconds.
    */
   kIMAError_VAST_MEDIA_LOAD_TIMEOUT = 402,
   /**
@@ -126,7 +127,7 @@ typedef NS_ENUM(NSInteger, IMAErrorCode){
   /**
    *  The version of the runtime is too old.
    */
-  kIMAError_IOS_RUNTIME_TOO_OLD = 1103,
+  kIMAError_OS_RUNTIME_TOO_OLD = 1103,
   /**
    *  Another VideoAdsManager is still using the video. It must be unloaded
    *  before another ad can play on the same element.
@@ -165,6 +166,9 @@ typedef NS_ENUM(NSInteger, IMAErrorCode){
  */
 @property(nonatomic, copy, readonly) NSString *message;
 
+/**
+ * :nodoc:
+ */
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
