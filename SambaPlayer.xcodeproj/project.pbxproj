@@ -254,7 +254,6 @@
 		9AB0CB9A1DD5195F00D1BEDA /* GMFHelpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFHelpers.m; path = GoogleMediaFramework/GMFHelpers.m; sourceTree = "<group>"; };
 		9AB0CB9C1DD519F100D1BEDA /* GMFHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = GMFHelpers.h; path = GoogleMediaFramework/GMFHelpers.h; sourceTree = "<group>"; };
 		9AC577B21F26867E005D35AE /* GMFAdsSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFAdsSettings.m; path = GoogleMediaFramework/GMFAdsSettings.m; sourceTree = "<group>"; };
-		9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		9AEE0BEF1EC382500007E60B /* retry@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@3x.png"; sourceTree = "<group>"; };
 		9AEE0BF01EC382500007E60B /* retry@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "retry@1x.png"; sourceTree = "<group>"; };
@@ -302,6 +301,7 @@
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D1FF42F624734E9B0077BB66 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = Frameworks/GoogleCast.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -321,6 +321,7 @@
 				D1C23AC22507B45C001C4AB7 /* GoogleCast.framework in Frameworks */,
 				6B3CC8B1214FD56600FAC5A4 /* CoreText.framework in Frameworks */,
 				6B3CC8AF214FD55200FAC5A4 /* CoreGraphics.framework in Frameworks */,
+				D1FF42F724734E9B0077BB66 /* GoogleCast.framework in Frameworks */,
 				6B3CC8AD214FD54100FAC5A4 /* CoreBluetooth.framework in Frameworks */,
 				6B3CC8AB214FD52800FAC5A4 /* AVFoundation.framework in Frameworks */,
 				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
@@ -503,6 +504,7 @@
 		9AE43F181F2A8BA2001DD6D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D1FF42F624734E9B0077BB66 /* GoogleCast.framework */,
 				37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */,
 				6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */,
 				6B3CC8C0214FD61000FAC5A4 /* UIKit.framework */,
