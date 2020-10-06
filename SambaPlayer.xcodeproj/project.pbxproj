@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		37AE000E22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */; };
-		53187F10B49ADBC2EFC82741 /* Pods_SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */; };
+		40CE7C81E1D565F1FFE40405 /* Pods_SambaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB08546B05CD59647DAAAF9B /* Pods_SambaPlayer.framework */; };
 		6B15BE8121512EEE002C41CF /* SambaCast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B15BE8021512EEE002C41CF /* SambaCast.swift */; };
 		6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */; };
 		6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8A8214FD51500FAC5A4 /* AudioToolbox.framework */; };
@@ -153,7 +153,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
+		002C98A36F9360D4CDE5D46C /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.debug.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
 		37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleInteractiveMediaAds.framework; path = Frameworks/GoogleInteractiveMediaAds.framework; sourceTree = "<group>"; };
 		6B15BE8021512EEE002C41CF /* SambaCast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaCast.swift; sourceTree = "<group>"; };
 		6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
@@ -188,7 +188,7 @@
 		6BF484F721B190730014E371 /* SambaDownloadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaDownloadManager.swift; sourceTree = "<group>"; };
 		6BF484F921B191810014E371 /* SambaDownloadTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaDownloadTracker.swift; sourceTree = "<group>"; };
 		6BF484FB21B1A1380014E371 /* StartDownloadHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartDownloadHelper.swift; sourceTree = "<group>"; };
-		73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		812EA1AC5417B7C3925B2B88 /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		9A0617A91F448A6A00345EFC /* player_control_realtime@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@3x.png"; sourceTree = "<group>"; };
 		9A0617AA1F448A6A00345EFC /* player_control_realtime@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@2x.png"; sourceTree = "<group>"; };
 		9A0617AB1F448A6A00345EFC /* player_control_realtime@1x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "player_control_realtime@1x.png"; sourceTree = "<group>"; };
@@ -297,11 +297,11 @@
 		9AF325D61D14B5B900B6E450 /* GMFSlider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = GMFSlider.m; path = GoogleMediaFramework/GMFSlider.m; sourceTree = "<group>"; };
 		9AF3263D1D14B87E00B6E450 /* SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9AF57B7D1DA42DFB0062E54A /* AssetLoaderDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetLoaderDelegate.swift; sourceTree = "<group>"; };
-		B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SambaPlayer.release.xcconfig"; path = "Target Support Files/Pods-SambaPlayer/Pods-SambaPlayer.release.xcconfig"; sourceTree = "<group>"; };
 		C78A47831FA3992700D3136D /* SambaPlayerControls.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SambaPlayerControls.swift; sourceTree = "<group>"; };
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DB08546B05CD59647DAAAF9B /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -326,7 +326,7 @@
 				6B3CC8A9214FD51500FAC5A4 /* AudioToolbox.framework in Frameworks */,
 				6B3CC8A7214FD4FD00FAC5A4 /* Accelerate.framework in Frameworks */,
 				9AE43F1C1F2A8BB9001DD6D2 /* WebKit.framework in Frameworks */,
-				53187F10B49ADBC2EFC82741 /* Pods_SambaPlayer.framework in Frameworks */,
+				40CE7C81E1D565F1FFE40405 /* Pods_SambaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,8 +336,8 @@
 		59E7429E375F88F973D596F7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */,
-				B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */,
+				002C98A36F9360D4CDE5D46C /* Pods-SambaPlayer.debug.xcconfig */,
+				812EA1AC5417B7C3925B2B88 /* Pods-SambaPlayer.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -521,7 +521,7 @@
 				6B3CC8A6214FD4FD00FAC5A4 /* Accelerate.framework */,
 				9AE43F1B1F2A8BB9001DD6D2 /* WebKit.framework */,
 				9AE43F191F2A8BA3001DD6D2 /* GoogleInteractiveMediaAds.framework */,
-				73DEB745F32675FD3CC594E5 /* Pods_SambaPlayer.framework */,
+				DB08546B05CD59647DAAAF9B /* Pods_SambaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -634,7 +634,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9AF324E11D14356E00B6E450 /* Build configuration list for PBXNativeTarget "SambaPlayer" */;
 			buildPhases = (
-				6C7E3B2FA4FC68D1271774A9 /* [CP] Check Pods Manifest.lock */,
+				1822156E16F72EFD8F27162D /* [CP] Check Pods Manifest.lock */,
 				9AF324D41D14356E00B6E450 /* Sources */,
 				9AF324D51D14356E00B6E450 /* Frameworks */,
 				9AF324D61D14356E00B6E450 /* Headers */,
@@ -755,7 +755,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		6C7E3B2FA4FC68D1271774A9 /* [CP] Check Pods Manifest.lock */ = {
+		1822156E16F72EFD8F27162D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -971,7 +971,7 @@
 		};
 		9AF324E21D14356E00B6E450 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1FEEE1A875232BFA0F1E6B5C /* Pods-SambaPlayer.debug.xcconfig */;
+			baseConfigurationReference = 002C98A36F9360D4CDE5D46C /* Pods-SambaPlayer.debug.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -1008,7 +1008,7 @@
 		};
 		9AF324E31D14356E00B6E450 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B67E3519C015F90B0AC2E464 /* Pods-SambaPlayer.release.xcconfig */;
+			baseConfigurationReference = 812EA1AC5417B7C3925B2B88 /* Pods-SambaPlayer.release.xcconfig */;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = NO;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
