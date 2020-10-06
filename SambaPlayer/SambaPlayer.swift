@@ -51,8 +51,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     private var castPlayerState = kGMFPlayerStateEmpty
     
     public var isChromecastEnable = false
-    
-//    private var avPlayer: AVPlayer?
+
     private var bitmovinAvPlayerAnalyticsCollector: AVPlayerCollector?
 
     private func getCastCaptionFormat() -> String? {
