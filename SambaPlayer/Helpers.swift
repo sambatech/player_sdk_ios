@@ -14,7 +14,7 @@ class Helpers {
 	static let requestTimeout = TimeInterval(30)
     
     static let imageCache = NSCache<NSString, UIImage>()
-	
+
 	static func matchesForRegexInText(_ regex: String!, text: String!) -> [String] {
 		do {
 			let regex = try NSRegularExpression(pattern: regex, options: [])

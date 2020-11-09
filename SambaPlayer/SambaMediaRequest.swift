@@ -123,7 +123,7 @@ import Foundation
 }
 
 /// Samba Player API environment list
-@objc public enum SambaEnvironment: Int {
+@objc public enum SambaEnvironment: Int, CustomStringConvertible {
 	/// Production environment
 	case prod
 	/// Staging environment
@@ -132,13 +132,28 @@ import Foundation
 	case test
 	/// Local environment
 	case local
+    
+    public var description: String {
+        get {
+            switch self {
+                case .prod:
+                  return "prod"
+                case .staging:
+                  return "staging"
+                case .test:
+                  return "test"
+                case .local:
+                  return "local"
+            }
+        }
+    }
 }
 
 /// Samba Player API protocol list
 public enum SambaProtocol: String {
 	/// Insecure
 	case http
-	
+
 	///Secure
 	case https
 }
