@@ -1,0 +1,6 @@
+framework module BitmovinAnalyticsCollector {
+  umbrella header "BitmovinAnalyticsCollector-umbrella.h"
+
+  export *
+  module * { export * }
+}
