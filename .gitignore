@@ -17,10 +17,6 @@ DerivedData
 .idea/
 *.hmap
 
-#CocoaPods
-Pods
-Podfile.lock
-
 # Carthage
 Carthage
 Cartfile.*

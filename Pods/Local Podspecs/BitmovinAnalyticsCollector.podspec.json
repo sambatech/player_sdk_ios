@@ -1,0 +1,57 @@
+{
+  "name": "BitmovinAnalyticsCollector",
+  "version": "1.17.0",
+  "summary": "iOS library that allows you to monitor your iOS video playback with Bitmovin Analytics",
+  "description": "iOS library that allows you to monitor your iOS video playback with Bitmovin Analytics. This SDK can monitor an AVPlayer or a Bitmovin Player",
+  "homepage": "https://github.com/bitmovin/bitmovin-analytics-collector-ios",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "Bitmovin Inc": "admin@bitmovin.com"
+  },
+  "source": {
+    "git": "https://github.com/bitmovin/bitmovin-analytics-collector-ios.git",
+    "tag": "1.17.0"
+  },
+  "platforms": {
+    "ios": "9.0",
+    "tvos": "9.0"
+  },
+  "swift_versions": "5.0",
+  "pod_target_xcconfig": {
+    "FRAMEWORK_SEARCH_PATHS": "\"${PODS_ROOT}\"/*",
+    "OTHER_LDFLAGS": "$(inherited) -ObjC",
+    "ENABLE_BITCOD": "YES"
+  },
+  "subspecs": [
+    {
+      "name": "Core",
+      "source_files": "BitmovinAnalyticsCollector/Classes/Collector/**/*.{swift}"
+    },
+    {
+      "name": "BitmovinPlayer",
+      "source_files": "BitmovinAnalyticsCollector/Classes/BitmovinPlayer/**/*.{swift}",
+      "tvos": {
+        "dependencies": {
+          "BitmovinPlayer": [
+            "~>2.51"
+          ]
+        }
+      },
+      "ios": {
+        "dependencies": {
+          "BitmovinPlayer": [
+            "~>2.51"
+          ]
+        }
+      }
+    },
+    {
+      "name": "AVPlayer",
+      "source_files": "BitmovinAnalyticsCollector/Classes/AVPlayer/**/*.{swift}"
+    }
+  ],
+  "swift_version": "5.0"
+}
