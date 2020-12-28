@@ -149,6 +149,7 @@
 		C7ED780E1F97C83100BB05E2 /* OptionsMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */; };
 		C7ED78101F97C83D00BB05E2 /* OptionsMenuView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */; };
 		C7ED78141F97C9A400BB05E2 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7ED78131F97C9A400BB05E2 /* Images.xcassets */; };
+		D178257B259A036600B30E4C /* BitmovinAnalyticsCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D178257A259A036600B30E4C /* BitmovinAnalyticsCollector.framework */; };
 		D1C23AC22507B45C001C4AB7 /* GoogleCast.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6B3CC8B4214FD5B200FAC5A4 /* GoogleCast.framework */; };
 /* End PBXBuildFile section */
 
@@ -301,6 +302,7 @@
 		C7ED780D1F97C83100BB05E2 /* OptionsMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsMenuView.swift; sourceTree = "<group>"; };
 		C7ED780F1F97C83D00BB05E2 /* OptionsMenuView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = OptionsMenuView.xib; sourceTree = "<group>"; };
 		C7ED78131F97C9A400BB05E2 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		D178257A259A036600B30E4C /* BitmovinAnalyticsCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = BitmovinAnalyticsCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D1FF42F624734E9B0077BB66 /* GoogleCast.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GoogleCast.framework; path = Frameworks/GoogleCast.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -313,6 +315,7 @@
 				6B3CC8C8214FE48300FAC5A4 /* libc++.tbd in Frameworks */,
 				6B3CC8C1214FD61100FAC5A4 /* UIKit.framework in Frameworks */,
 				6B3CC8BF214FD60200FAC5A4 /* SystemConfiguration.framework in Frameworks */,
+				D178257B259A036600B30E4C /* BitmovinAnalyticsCollector.framework in Frameworks */,
 				6B3CC8BD214FD5F500FAC5A4 /* QuartzCore.framework in Frameworks */,
 				6B3CC8BB214FD5E500FAC5A4 /* MediaToolbox.framework in Frameworks */,
 				6B3CC8B9214FD5DB00FAC5A4 /* MediaPlayer.framework in Frameworks */,
@@ -503,6 +506,7 @@
 		9AE43F181F2A8BA2001DD6D2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D178257A259A036600B30E4C /* BitmovinAnalyticsCollector.framework */,
 				D1FF42F624734E9B0077BB66 /* GoogleCast.framework */,
 				37AE000D22B5B1CB00261B39 /* GoogleInteractiveMediaAds.framework */,
 				6B3CC8C7214FE48200FAC5A4 /* libc++.tbd */,
