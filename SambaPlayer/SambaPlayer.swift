@@ -8,7 +8,6 @@
 
 import Foundation
 import UIKit
-import BitmovinAnalyticsCollector
 
 /// Responsible for managing media playback
 public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDelegate, SambaCastDelegate {
@@ -52,8 +51,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
     
     public var isChromecastEnable = false
 
-    private var bitmovinAvPlayerAnalyticsCollector: AVPlayerCollector?
-
     private func getCastCaptionFormat() -> String? {
         guard let mCaptionScreen = _captionsScreen as? CaptionsScreen,
         mCaptionScreen.hasCaptions,
@@ -66,13 +63,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         let currentCaption = mCaptions[currentCaptionIndex]
         
         return "[\(currentCaption.language),ffcc00,42]"
-    }
-    
-    // MARK: Bitmovin
-    private var _userId = ""
-    var userId : String {
-        get { return _userId }
-        set { self._userId = newValue }
     }
 
     private func configUICast() {
@@ -703,8 +693,6 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		NotificationCenter.default.removeObserver(self)
 		_isFullscreen = false
 
-        self.endBitmovinAnalytics()
-
         _player?.destroyInternal()
 		_player = nil
 
@@ -966,33 +954,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
                }
             }
         }
-        
-        self.initBitmovinAnalytics()
 	}
-
-    func initBitmovinAnalytics() {
-        if let m = self.media as? SambaMediaConfig,
-           let p = self._player?.player.player {
-            let bitmovinKey = Helpers.settings["bitmovinKey"]!
-
-            let config = BitmovinAnalyticsConfig(key: bitmovinKey)
-            config.videoId = m.id
-            config.title = m.title
-            config.customerUserId = self.userId
-            config.cdnProvider = CdnProvider.akamai
-            config.customData1 = String(m.clientId)
-            config.customData2 = String(m.projectId)
-            config.customData3 = String(m.categoryId)
-            config.customData5 = String(m.environment?.description ?? "")
-
-            self.bitmovinAvPlayerAnalyticsCollector = AVPlayerCollector(config: config)
-            self.bitmovinAvPlayerAnalyticsCollector!.attachPlayer(player: p)
-        }
-    }
-
-    func endBitmovinAnalytics() {
-        self.bitmovinAvPlayerAnalyticsCollector?.detachPlayer()
-    }
 
 	private func configUI() {
 		guard let player = _player else { return }
