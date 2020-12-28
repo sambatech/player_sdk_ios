@@ -981,6 +981,7 @@
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator14.3]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -992,6 +993,7 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_LDFLAGS = (
@@ -1018,6 +1020,7 @@
 				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator14.3]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -1029,6 +1032,7 @@
 				);
 				INFOPLIST_FILE = SambaPlayer/Info.plist;
 				INSTALL_PATH = "@rpath";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULEMAP_FILE = SambaPlayer/Exportable.modulemap;
 				OTHER_LDFLAGS = (

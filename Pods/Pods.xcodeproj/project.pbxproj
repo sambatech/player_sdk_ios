@@ -71,7 +71,7 @@
 		22DC2AB93707F07FDF2B5792893432C4 /* BitmovinAnalyticsConfig.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BitmovinAnalyticsConfig.swift; path = BitmovinAnalyticsCollector/Classes/Collector/analytics/BitmovinAnalyticsConfig.swift; sourceTree = "<group>"; };
 		2E2A7A0200AF8237F1914D91B6031B3E /* EventData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = EventData.swift; path = BitmovinAnalyticsCollector/Classes/Collector/data/EventData.swift; sourceTree = "<group>"; };
 		3620F6B1FBD94C1C52C071E21A32CEF8 /* StateMachineDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StateMachineDelegate.swift; path = BitmovinAnalyticsCollector/Classes/Collector/stateMachines/StateMachineDelegate.swift; sourceTree = "<group>"; };
-		3689D4F47595DAC1053AFD16570CE0CC /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_SambaPlayer.framework; path = "Pods-SambaPlayer.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3689D4F47595DAC1053AFD16570CE0CC /* Pods_SambaPlayer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SambaPlayer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		3A4BCE5E40A1CA146CDAF4591251ABAF /* PlayerState.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayerState.swift; path = BitmovinAnalyticsCollector/Classes/Collector/stateMachines/PlayerState.swift; sourceTree = "<group>"; };
 		3B366BBAECC495FD462EA20176648F40 /* LicenseCallData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LicenseCallData.swift; path = BitmovinAnalyticsCollector/Classes/Collector/data/LicenseCallData.swift; sourceTree = "<group>"; };
 		3D278C3104E464F2FB95CC894657B87B /* AnalyticsAdBreak.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnalyticsAdBreak.swift; path = BitmovinAnalyticsCollector/Classes/Collector/ads/AnalyticsAdBreak.swift; sourceTree = "<group>"; };
@@ -93,7 +93,7 @@
 		9231D19F0FC73B250BCAAF587BCBD53B /* DrmPerformanceInfo.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DrmPerformanceInfo.swift; path = BitmovinAnalyticsCollector/Classes/Collector/data/DrmPerformanceInfo.swift; sourceTree = "<group>"; };
 		92E109EBFC8701DE1A1CAA74EAB2026F /* PlayerType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = PlayerType.swift; path = BitmovinAnalyticsCollector/Classes/Collector/enums/PlayerType.swift; sourceTree = "<group>"; };
 		980CB1C76C0DEE8CA6089F72AA5A5285 /* AnalyticsAdQuartile.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AnalyticsAdQuartile.swift; path = BitmovinAnalyticsCollector/Classes/Collector/ads/AnalyticsAdQuartile.swift; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A1AE3FE7436D25E8321475B4E325A3F6 /* CdnProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CdnProvider.swift; path = BitmovinAnalyticsCollector/Classes/Collector/enums/CdnProvider.swift; sourceTree = "<group>"; };
 		A1C9B4208572A38118FA0BD3EF208082 /* StreamType.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StreamType.swift; path = BitmovinAnalyticsCollector/Classes/Collector/enums/StreamType.swift; sourceTree = "<group>"; };
 		A729E9769ECE3FAB33FE96B6FD0CD312 /* RebufferingTimeoutHandler.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = RebufferingTimeoutHandler.swift; path = BitmovinAnalyticsCollector/Classes/Collector/stateMachines/util/RebufferingTimeoutHandler.swift; sourceTree = "<group>"; };
@@ -112,7 +112,7 @@
 		E5EFDFC81A94648AC2E2B58A6324E393 /* VideoStartFailedReason.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = VideoStartFailedReason.swift; path = BitmovinAnalyticsCollector/Classes/Collector/enums/VideoStartFailedReason.swift; sourceTree = "<group>"; };
 		E6550F592865CDCD86DD554C4E3017EE /* BitmovinAnalyticsCollector-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "BitmovinAnalyticsCollector-prefix.pch"; sourceTree = "<group>"; };
 		EA9018197112D4BEB0CFFA40CA5E7725 /* Pods-SambaPlayer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-SambaPlayer.debug.xcconfig"; sourceTree = "<group>"; };
-		EFE3FE8843D99EE4E0FB66E2C4C00849 /* BitmovinAnalyticsCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = BitmovinAnalyticsCollector.framework; path = BitmovinAnalyticsCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EFE3FE8843D99EE4E0FB66E2C4C00849 /* BitmovinAnalyticsCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BitmovinAnalyticsCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F08585A3F13490E5CD93F87F33A852DA /* AdEventData.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AdEventData.swift; path = BitmovinAnalyticsCollector/Classes/Collector/data/AdEventData.swift; sourceTree = "<group>"; };
 		F7A8A1AE420B8AEFFCCF2CB0BC872231 /* ErrorCode.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ErrorCode.swift; path = BitmovinAnalyticsCollector/Classes/Collector/util/ErrorCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -276,7 +276,6 @@
 				80B465B2451ED40AD7B208B4701F7B98 /* Core */,
 				575744CE8405DB9722C4D649895C96E4 /* Support Files */,
 			);
-			name = BitmovinAnalyticsCollector;
 			path = BitmovinAnalyticsCollector;
 			sourceTree = "<group>";
 		};
@@ -460,6 +459,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator14.3]" = arm64;
 				GCC_PREFIX_HEADER = "Target Support Files/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
@@ -533,8 +533,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
@@ -618,6 +617,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator14.3]" = arm64;
 				GCC_PREFIX_HEADER = "Target Support Files/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector-prefix.pch";
 				INFOPLIST_FILE = "Target Support Files/BitmovinAnalyticsCollector/BitmovinAnalyticsCollector-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
