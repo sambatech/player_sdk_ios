@@ -16,7 +16,5 @@
 	<string>http://web1.qa.sambatech.com:13000/v1/</string>
 	<key>playerapi_endpoint_local</key>
 	<string>http://192.168.0.127:8080/player-api/v1/</string>
-	<key>bitmovinKey</key>
-	<string>d4b4a5aa-efc6-4672-91de-af9fe1dbdb9f</string>
 </dict>
 </plist>
