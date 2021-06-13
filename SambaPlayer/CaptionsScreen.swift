@@ -126,10 +126,10 @@ class CaptionsScreen : UIViewController, SambaPlayerDelegate {
 		_captionsRequest = captions
 		
 		if let lang = config.language?.lowercased().replacingOccurrences(of: "_", with: "-"),
-			let indexConfig = _captionsRequest.index(where: { $0.language.lowercased().replacingOccurrences(of: "_", with: "-") == lang }) {
+			let indexConfig = _captionsRequest.firstIndex(where: { $0.language.lowercased().replacingOccurrences(of: "_", with: "-") == lang }) {
 			index = indexConfig
 		}
-		else if let indexApi = _captionsRequest.index(where: { $0.isDefault }) {
+		else if let indexApi = _captionsRequest.firstIndex(where: { $0.isDefault }) {
 			index = indexApi
 		}
 		else {

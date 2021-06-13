@@ -45,7 +45,7 @@ class Helpers {
 	static func getSessionId() -> String {
 		func getSessionComponent() -> String {
 			let n = String(format: "%x", Int(arc4random()>>16) + Int(UInt16.max))
-			return n.substring(from: n.characters.index(n.startIndex, offsetBy: 1))
+			return n.substring(from: n.index(n.startIndex, offsetBy: 1))
 		}
 		
 		var s = ""
