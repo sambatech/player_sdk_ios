@@ -20,6 +20,7 @@
 @implementation GMFTopBarView {
   UIImageView *_backgroundView;
   UILabel *_videoTitle;
+  NSString *_videoTitlePosition;
   UIImageView *_logoImageView;
   NSMutableArray *_actionButtons;
 }
@@ -36,6 +37,19 @@
     [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:16.0]];
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
+      if (_videoTitlePosition == @"0")
+    {
+        [_videoTitle setTextAlignment:UITextAlignmentLeft];
+    }
+      if (_videoTitlePosition == @"1")
+    {
+        [_videoTitle setTextAlignment:UITextAlignmentCenter];
+    }
+      if (_videoTitlePosition == @"2")
+    {
+        [_videoTitle setTextAlignment:UITextAlignmentCenter];
+    }
+      
     [self addSubview:_videoTitle];
     
     _logoImageView = [[UIImageView alloc] init];

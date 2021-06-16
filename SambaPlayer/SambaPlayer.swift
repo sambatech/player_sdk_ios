@@ -98,6 +98,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         
         if media.isAudio {
             player.videoTitle = ""
+            player.videoTitlePosition = "0"
             player.showBackground()
             player.getControlsView().hideFullscreenButton()
             player.getControlsView().showPlayButton()
@@ -109,6 +110,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             // video only features
         else {
             player.videoTitle = media.title
+            player.videoTitlePosition = media.titlePosition
             player.showBackground()
             player.getControlsView().hideFullscreenButton()
             player.getControlsView().hidePlayButton()
@@ -970,6 +972,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         player.removeActionButton(byName: "Live")
 		if media.isAudio {
 			player.videoTitle = ""
+            player.videoTitlePosition = "0"
 			player.showBackground()
 			player.getControlsView().hideFullscreenButton()
 			player.getControlsView().showPlayButton()
@@ -998,6 +1001,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 		// video only features
 		else {
 			player.videoTitle = media.title
+            player.videoTitlePosition = media.titlePosition
 			player.showBackground()
 			player.getControlsView().showFullscreenButton()
 			player.getControlsView().hidePlayButton()
@@ -1612,21 +1616,29 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
         }
     }
     
-    func didTouchClose(){
+    func didTouchClose()
+    {
         closeOptionsMenu()
     }
     
-    func closeOptionsMenu() {
+    func closeOptionsMenu()
+    {
         destroyOptionsMenu()
-        if self._wasPlaying {
+        if self._wasPlaying
+        {
             self.play()
-            DispatchQueue.main.async {
-                if self._player?.playerOverlay() != nil {
+            DispatchQueue.main.async
+            {
+                if self._player?.playerOverlay() != nil
+                {
                      self._player?.playerOverlay().hidePlayerControls(animated: true)
                 }
             }
-        } else {
-            if self._player?.playerOverlay() != nil {
+        }
+        else
+        {
+            if self._player?.playerOverlay() != nil
+            {
                 self._player?.playerOverlay().showPlayerControls(animated: true)
             }
         }

@@ -26,6 +26,9 @@
 // It is displayed to the right of the logo.
 - (void)setVideoTitle:(NSString *)videoTitle;
 
+// Set video title position.
+- (void)setVideoTitlePosition:(NSString *)videoTitlePosition;
+
 // Hides the background gradient bar
 - (void)hideBackground;
 

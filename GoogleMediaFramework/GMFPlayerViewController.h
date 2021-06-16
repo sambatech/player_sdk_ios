@@ -58,6 +58,9 @@ extern NSString * const kGMFPlayerPlaybackWillFinishReasonUserInfoKey;
 // Default: No title.
 @property(nonatomic, strong) NSString *videoTitle;
 
+// Default: left
+@property(nonatomic, strong) NSString *videoTitlePosition;
+
 // Default: No logo.
 @property(nonatomic, strong) UIImage *logoImage;
 

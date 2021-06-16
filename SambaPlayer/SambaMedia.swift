@@ -15,6 +15,7 @@ If `outputs` field is nil, `url` field will be used instead.
 	
 	/// Media's title
 	public var title = ""
+    public var titlePosition = ""
 	
 	/// Current media URL
 	public var url: String? {

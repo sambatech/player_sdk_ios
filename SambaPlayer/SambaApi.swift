@@ -185,6 +185,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 		if let title = json["title"] as? String {
 			media.title = title
 		}
+        
+        if let titlePosition = json["titlePosition"] as? String {
+            media.titlePosition = titlePosition
+        }
 		
 		if let id = json["id"] as? String {
 			media.id = id
