@@ -1433,6 +1433,11 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
             parent.addChild(target)
             target.didMove(toParent: parent)
             target.view.frame = parentView.bounds
+            
+            if #available(iOS 11.0, *) {
+                target.view.insetsLayoutMarginsFromSafeArea = true
+            }
+            
 			parentView.addSubview(target.view)
 			
 			// always try to keep error screen above all views
@@ -1440,6 +1445,10 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 				let errorParentView = errorView.superview {
                 errorParentView.bringSubviewToFront(errorView)
 			}
+            
+            if #available(iOS 11.0, *) {
+                parentView.insetsLayoutMarginsFromSafeArea = true
+            }
 			
 			parentView.setNeedsDisplay()
 			callback?()
