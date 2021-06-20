@@ -22,7 +22,7 @@
 #import "UILabel+GMFLabels.h"
 #import "UIButton+GMFTintableButton.h"
 
-static const CGFloat kGMFBarPaddingX = 8;
+static const CGFloat kGMFBarPaddingX = 16;
 
 @implementation GMFPlayerControlsView {
   UIImageView *_backgroundView;
@@ -93,7 +93,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[_timeSeparator setFont:[UIFont fontWithName:@"Arial" size:14.0]];
 	[_timeSeparator setTextAlignment:NSTextAlignmentCenter];
 	[_timeSeparator setIsAccessibilityElement:NO];
-	[_timeSeparator setText:@"/"];
+	[_timeSeparator setText:@" - "];
 	[self addSubview:_timeSeparator];
 
     // Seekbar
@@ -102,7 +102,7 @@ static const CGFloat kGMFBarPaddingX = 8;
     [_scrubber setAccessibilityLabel:
         NSLocalizedStringFromTable(@"Seek bar", @"GoogleMediaFramework", nil)];
     [self setSeekbarThumbToDefaultImage];
-    [_scrubber setMaximumTrackTintColor:[UIColor colorWithWhite:122/255.0 alpha:1.0]];
+    [_scrubber setMaximumTrackTintColor:[UIColor colorWithWhite:0.0/255.0 alpha:1.0]];
     [_scrubber addTarget:self
                   action:@selector(didScrubbingProgress:)
         forControlEvents:UIControlEventValueChanged];
@@ -245,7 +245,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 - (void)showFullscreenButton {
 	[self removeConstraint:_minimizeHideConstraint];
 	[self removeConstraint:_scrubberRightConstraint];
-	_scrubberRightConstraint.constant = -kGMFBarPaddingX;
+	_scrubberRightConstraint.constant = -20;
 	[self addConstraint:_scrubberRightConstraint];
 }
 
@@ -279,7 +279,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	[self removeConstraint:_totalSecsHideConstraint];
 	[self removeConstraint:_currentSecsHideConstraint];
 	[self removeConstraint:_scrubberLeftConstraint];
-	_scrubberLeftConstraint.constant = kGMFBarPaddingX;
+	_scrubberLeftConstraint.constant = 20;
 	[self addConstraint:_scrubberLeftConstraint];
 }
 
@@ -415,7 +415,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 	
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", _padding.origin.y, _padding.size.height]
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", 10, _padding.size.height]
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
@@ -551,8 +551,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 
 - (void)applyControlTintColor:(UIColor *)color { //SDK Samba customization
   [_scrubber setMinimumTrackTintColor:color];
-  //[_scrubber setThumbTintColor:color];
-  //[_minimizeButton GMF_applyTintColor:color];
+
 }
 
 #pragma mark Private Methods
