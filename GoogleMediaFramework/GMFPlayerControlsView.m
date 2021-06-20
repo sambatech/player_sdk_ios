@@ -106,6 +106,7 @@ static const CGFloat kGMFBarPaddingX = 8;
     [_scrubber addTarget:self
                   action:@selector(didScrubbingProgress:)
         forControlEvents:UIControlEventValueChanged];
+    [_scrubber setLayoutMargins:UIEdgeInsetsMake(0, 0, 40, 0)];
     // Scrubbing starts as soon as the user touches the scrubber.
     [_scrubber addTarget:self
                   action:@selector(didScrubbingStart:)

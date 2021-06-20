@@ -125,6 +125,7 @@ If `outputs` field is nil, `url` field will be used instead.
 		url = media.url
 		backupUrls = media.backupUrls
 		title = media.title
+        titlePosition = media.titlePosition
 		outputs = media.outputs
 		captions = media.captions
 		adUrl = media.adUrl
