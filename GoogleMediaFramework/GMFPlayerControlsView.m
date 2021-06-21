@@ -434,7 +434,7 @@ static const CGFloat kGMFBarPaddingX = 16;
                    _scrubberBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
                                             attribute:NSLayoutAttributeBottom
                                             relatedBy:NSLayoutRelationEqual
-                                            toItem:self
+                                            toItem:_backgroundView
                                             attribute:NSLayoutAttributeNotAnAttribute
                                             multiplier:1.0f
                                                 constant:-15]];
