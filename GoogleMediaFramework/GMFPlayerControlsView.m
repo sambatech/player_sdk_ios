@@ -435,7 +435,7 @@ static const CGFloat kGMFBarPaddingX = 16;
                                             attribute:NSLayoutAttributeBottom
                                             relatedBy:NSLayoutRelationEqual
                                             toItem:_backgroundView
-                                            attribute:NSLayoutAttributeNotAnAttribute
+                                            attribute:NSLayoutAttributeBottom
                                             multiplier:1.0f
                                                 constant:-15]];
                  
