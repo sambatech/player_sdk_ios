@@ -37,11 +37,12 @@
     [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:16.0]];
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
-      if (_videoTitlePosition == @"1")
+      
+    if ([_videoTitlePosition  isEqual: @"1"])
     {
         [_videoTitle setTextAlignment:UITextAlignmentCenter];
     }
-      else if (_videoTitlePosition == @"2")
+    else if ([_videoTitlePosition  isEqual: @"2"])
     {
         [_videoTitle setTextAlignment:UITextAlignmentCenter];
     }
@@ -100,11 +101,11 @@
                                                          metrics:metrics
                                                            views:viewsDictionary]];
     
-    constraints = [constraints arrayByAddingObjectsFromArray:
-                   [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoTitle]|"
-                                                           options:NSLayoutFormatAlignAllCenterY
-                                                           metrics:metrics
-                                                             views:viewsDictionary]];
+    //constraints = [constraints arrayByAddingObjectsFromArray:
+      //             [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoTitle]|"
+        //                                                   options:NSLayoutFormatAlignAllCenterY
+          //                                                 metrics:metrics
+            //                                                 views:viewsDictionary]];
   
   // Make the logo at most as wide the height of the bar.
   constraints = [constraints arrayByAddingObject:
