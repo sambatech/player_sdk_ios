@@ -45,6 +45,7 @@ static const CGFloat kGMFBarPaddingX = 16;
   NSLayoutConstraint* _totalSecsHideConstraint;
   NSLayoutConstraint* _currentSecsHideConstraint;
   NSLayoutConstraint* _scrubberRightConstraint;
+  NSLayoutConstraint* _scrubberBottomConstraint;
   NSLayoutConstraint* _scrubberLeftConstraint;
   BOOL _userScrubbing;
   CGRect _padding;
@@ -93,7 +94,7 @@ static const CGFloat kGMFBarPaddingX = 16;
 	[_timeSeparator setFont:[UIFont fontWithName:@"Arial" size:14.0]];
 	[_timeSeparator setTextAlignment:NSTextAlignmentCenter];
 	[_timeSeparator setIsAccessibilityElement:NO];
-	[_timeSeparator setText:@" - "];
+	[_timeSeparator setText:@"/"];
 	[self addSubview:_timeSeparator];
 
     // Seekbar
@@ -102,11 +103,10 @@ static const CGFloat kGMFBarPaddingX = 16;
     [_scrubber setAccessibilityLabel:
         NSLocalizedStringFromTable(@"Seek bar", @"GoogleMediaFramework", nil)];
     [self setSeekbarThumbToDefaultImage];
-    [_scrubber setMaximumTrackTintColor:[UIColor colorWithWhite:0.0/255.0 alpha:1.0]];
+    [_scrubber setMaximumTrackTintColor:[UIColor colorWithWhite:122/255.0 alpha:1.0]];
     [_scrubber addTarget:self
                   action:@selector(didScrubbingProgress:)
         forControlEvents:UIControlEventValueChanged];
-    [_scrubber setLayoutMargins:UIEdgeInsetsMake(0, 0, 40, 0)];
     // Scrubbing starts as soon as the user touches the scrubber.
     [_scrubber addTarget:self
                   action:@selector(didScrubbingStart:)
@@ -428,7 +428,26 @@ static const CGFloat kGMFBarPaddingX = 16;
                                                  toItem:_captionsButton
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
-                                               constant:-kGMFBarPaddingX]];
+                                               constant:-8]];
+    
+  constraints = [constraints arrayByAddingObject:
+                   _scrubberBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
+                                            attribute:NSLayoutAttributeBottom
+                                            relatedBy:NSLayoutRelationEqual
+                                            toItem:nil
+                                            attribute:NSLayoutAttributeNotAnAttribute
+                                            multiplier:1.0f
+                                                constant:-15]];
+                 
+                 //[NSLayoutConstraint
+                   //                           constraintWithItem:_scrubber
+                     //                         attribute:NSLayoutAttributeBottom
+                       //                       relatedBy:NSLayoutRelationEqual
+                         //                     toItem:parent
+                           //                   attribute:NSLayoutAttributeBottom
+                             //                 multiplier:1.0f
+                               //               constant:-15]];
+    
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
   constraints = [constraints arrayByAddingObject:
@@ -438,7 +457,7 @@ static const CGFloat kGMFBarPaddingX = 16;
                                                  toItem:_totalSecondsLabel
                                               attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
-                                               constant:kGMFBarPaddingX]];
+                                               constant:8]];
 	
   // Make the total seconds label occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
