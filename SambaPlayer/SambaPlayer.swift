@@ -900,7 +900,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 
         
 
-        guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 0, y: 0, width: 0, height: 0),
+        guard let gmf = GMFPlayerViewController(controlsPadding: CGRect(x: 10, y: 10, width: 10, height: 10),
                                                     andInitedBlock: postConfigUI) else {
                                                         dispatchError(SambaPlayerError.creatingPlayer)
                                                         return
