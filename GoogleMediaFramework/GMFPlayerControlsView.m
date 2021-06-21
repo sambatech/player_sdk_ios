@@ -22,7 +22,7 @@
 #import "UILabel+GMFLabels.h"
 #import "UIButton+GMFTintableButton.h"
 
-static const CGFloat kGMFBarPaddingX = 16;
+static const CGFloat kGMFBarPaddingX = 8;
 
 @implementation GMFPlayerControlsView {
   UIImageView *_backgroundView;
@@ -415,10 +415,11 @@ static const CGFloat kGMFBarPaddingX = 16;
 	
   // Make the scrubber occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", 10, _padding.size.height]
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", _padding.origin.y, _padding.size.height]
                                                          options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
+    
   
   // Position the scrubber kGMFBarPaddingX to the left of the total seconds label.
   constraints = [constraints arrayByAddingObject:
@@ -430,23 +431,11 @@ static const CGFloat kGMFBarPaddingX = 16;
                                              multiplier:1.0f
                                                constant:-8]];
     
-  constraints = [constraints arrayByAddingObject:
-                   _scrubberBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
-                                            attribute:NSLayoutAttributeBottom
-                                            relatedBy:NSLayoutRelationEqual
-                                            toItem:_backgroundView
-                                            attribute:NSLayoutAttributeBottom
-                                            multiplier:1.0f
-                                                constant:-15]];
-                 
-                 //[NSLayoutConstraint
-                   //                           constraintWithItem:_scrubber
-                     //                         attribute:NSLayoutAttributeBottom
-                       //                       relatedBy:NSLayoutRelationEqual
-                         //                     toItem:parent
-                           //                   attribute:NSLayoutAttributeBottom
-                             //                 multiplier:1.0f
-                               //               constant:-15]];
+  constraints = [constraints arrayByAddingObjectsFromArray:
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-%.0f-[_scrubber]-%.0f-|", -20, _padding.size.height]
+                                                         options:NSLayoutFormatAlignAllBaseline
+                                                         metrics:nil
+                                                           views:viewsDictionary]];
     
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
