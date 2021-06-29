@@ -199,14 +199,6 @@
                                              multiplier:1.0f
                                                constant:0.0f]];
     
-    constraints = [constraints arrayByAddingObject:
-                   [NSLayoutConstraint constraintWithItem:_videoTitle
-                                                attribute:NSLayoutAttributeRight
-                                                relatedBy:NSLayoutRelationEqual
-                                                   toItem:button
-                                                attribute:NSLayoutAttributeLeft
-                                               multiplier:1.0f
-                                                 constant:40.0f]];
   
   // Ensure that the button's width is equal to the top bar's height.
   constraints = [constraints arrayByAddingObject:
@@ -235,7 +227,7 @@
                                                    toItem:button.superview
                                                 attribute:NSLayoutAttributeLeft
                                                multiplier:1.0f
-                                                 constant:3.0f]];
+                                                 constant:15.0f]];
 
   [self addConstraints:constraints];
 }
