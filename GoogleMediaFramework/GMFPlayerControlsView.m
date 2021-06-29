@@ -432,8 +432,8 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                constant:-8]];
     
   constraints = [constraints arrayByAddingObjectsFromArray:
-                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-20-[_scrubber]"]
-                                                         options:NSLayoutFormatAlignAllBottom
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-20-[_scrubber]", -20, _padding.size.height]
+                                                         options:NSLayoutFormatAlignAllBaseline
                                                          metrics:nil
                                                            views:viewsDictionary]];
     
