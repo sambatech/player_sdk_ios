@@ -80,7 +80,7 @@
   
   // Lay out the elements next to each other.
   NSArray *constraints = [NSLayoutConstraint
-      constraintsWithVisualFormat:@"H:|-space-[_videoTitle]-30-|"
+      constraintsWithVisualFormat:@"H:|-space-[_videoTitle]-50-|"
                           options:NSLayoutFormatAlignAllCenterY
                           metrics:metrics
                             views:viewsDictionary];
