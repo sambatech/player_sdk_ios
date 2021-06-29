@@ -34,9 +34,11 @@
     [self addSubview:_backgroundView];
 
     _videoTitle = [UILabel GMF_clearLabelForPlayerControls];
-    [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:22.0]];
+    [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:16.0]];
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
+      
+      _videoTitle.backgroundColor = [UIColor.blueColor];
       
     if ([_videoTitlePosition  isEqual: @"1"])
     {
