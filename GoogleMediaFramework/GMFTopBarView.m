@@ -197,7 +197,7 @@
                                                    toItem:button
                                                 attribute:NSLayoutAttributeLeft
                                                multiplier:1.0f
-                                                 constant:20.0f]];
+                                                 constant:40.0f]];
   
   // Ensure that the button's width is equal to the top bar's height.
   constraints = [constraints arrayByAddingObject:
