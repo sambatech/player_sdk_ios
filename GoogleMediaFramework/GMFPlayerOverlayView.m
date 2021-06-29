@@ -340,6 +340,10 @@
   [_topBarView setVideoTitle:videoTitle];
 }
 
+- (void)setVideoTitlePosition:(NSString *)videoTitlePosition {
+  [_topBarView setVideoTitlePosition:videoTitlePosition];
+}
+
 - (void)setLogoImage:(UIImage *)logoImage {
   [_topBarView setLogoImage:logoImage];
 }

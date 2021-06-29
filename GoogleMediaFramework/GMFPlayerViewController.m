@@ -335,6 +335,13 @@ NSString *const kActionButtonSelectorKey = @"kActionButtonSelectorKey";
   }
 }
 
+- (void) setVideoTitlePosition:(NSString *)videoTitlePosition {
+  _videoTitlePosition = videoTitlePosition;
+  if (self.playerOverlayView && [self.playerOverlayView respondsToSelector:@selector(setVideoTitlePosition:)]) {
+    [self.playerOverlayView setVideoTitlePosition:videoTitlePosition];
+  }
+}
+
 - (void) setLogoImage:(UIImage *)logoImage {
   _logoImage = logoImage;
   if (self.playerOverlayView && [self.playerOverlayView respondsToSelector:@selector(setLogoImage:)]) {

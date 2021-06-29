@@ -45,6 +45,7 @@
 - (void)removeActionButton:(UIButton *)button;
 - (void)applyControlTintColor:(UIColor *)color;
 - (void)setVideoTitle:(NSString *)videoTitle;
+- (void)setVideoTitlePosition:(NSString *)videoTitlePosition;
 - (void)setLogoImage:(UIImage *)logoImage;
 
 @end

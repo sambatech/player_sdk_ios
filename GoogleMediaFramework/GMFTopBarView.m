@@ -39,11 +39,11 @@
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
     _videoTitle.backgroundColor = [UIColor blueColor];
       
-    if ([_videoTitlePosition  isEqualToString: @"1"])
+    if ([_videoTitlePosition isEqualToString: @"1"])
     {
         _videoTitle.textAlignment = NSTextAlignmentCenter;
     }
-    else if ([_videoTitlePosition  isEqualToString: @"2"])
+    else if ([_videoTitlePosition isEqualToString: @"2"])
     {
         _videoTitle.textAlignment = NSTextAlignmentRight;
     }
