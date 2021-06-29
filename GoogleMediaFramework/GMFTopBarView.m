@@ -249,10 +249,6 @@
   [_videoTitle setText:videoTitle];
 }
 
-- (void)setVideoTitlePosition:(NSString *)videoTitlePosition {
-  [_videoTitlePosition setText:videoTitlePosition];
-}
-
 - (CGFloat)preferredHeight {
   return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.8; //SDK SambaPlayer
 }
