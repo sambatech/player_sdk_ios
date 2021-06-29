@@ -40,15 +40,15 @@
       
     if ([_videoTitlePosition  isEqual: @"1"])
     {
-        _videoTitle.textAlignment = UITextAlignmentCenter
+        _videoTitle.textAlignment = UITextAlignmentCenter;
     }
     else if ([_videoTitlePosition  isEqual: @"2"])
     {
-        _videoTitle.textAlignment = UITextAlignmentRight
+        _videoTitle.textAlignment = UITextAlignmentRight;
     }
     else
     {
-        _videoTitle.textAlignment = UITextAlignmentLeft
+        _videoTitle.textAlignment = UITextAlignmentLeft;
     }
       
     [self addSubview:_videoTitle];
