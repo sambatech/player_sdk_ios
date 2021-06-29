@@ -103,11 +103,7 @@
                                                          metrics:metrics
                                                            views:viewsDictionary]];
     
-  constraints = [constraints arrayByAddingObjectsFromArray:
-                   [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoTitle]|"
-                                                           options:NSLayoutFormatAlignAllCenterX
-                                                           metrics:metrics
-                                                             views:viewsDictionary]];
+  
   
   // Make the logo at most as wide the height of the bar.
   constraints = [constraints arrayByAddingObject:
