@@ -221,7 +221,7 @@
                                                    toItem:_backgroundView.superview
                                                 attribute:NSLayoutAttributeRight
                                                multiplier:1.0f
-                                                 constant:-30.0f]];
+                                                 constant:-10.0f]];
 
   [self addConstraints:constraints];
 }
