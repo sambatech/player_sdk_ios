@@ -38,6 +38,20 @@
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
     _videoTitle.backgroundColor = [UIColor blueColor];
+    _videoTitle.textAlignment = NSTextAlignmentCenter;
+      
+    //if ([_videoTitlePosition isEqualToString: @"1"])
+    //{
+    //    _videoTitle.textAlignment = NSTextAlignmentCenter;
+    //}
+    //else if ([_videoTitlePosition isEqualToString: @"2"])
+    //{
+    //    _videoTitle.textAlignment = NSTextAlignmentRight;
+    //}
+    //else
+    //{
+    //    _videoTitle.textAlignment = NSTextAlignmentNatural;
+    //}
       
     [self addSubview:_videoTitle];
     
@@ -143,7 +157,7 @@
   
   if ([_actionButtons count] == 1) {
     // If this is the first action button, position it in the right of the top bar.
-      CGFloat padding = [name  isEqual: @"Live"] ? -8.0 : 0.0;
+      CGFloat padding = [name  isEqual: @"Live"] ? -24.0 : 0.0;
     constraints = [constraints arrayByAddingObject:
                    [NSLayoutConstraint constraintWithItem:button
                                                 attribute:NSLayoutAttributeRight
@@ -236,18 +250,7 @@
 }
 
 - (void)setVideoTitlePosition:(NSString *)videoTitlePosition {
-    if ([_videoTitlePosition isEqualToString: @"1"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentCenter;
-    }
-    else if ([_videoTitlePosition isEqualToString: @"2"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentRight;
-    }
-    else
-    {
-        _videoTitle.textAlignment = NSTextAlignmentNatural;
-    }
+  [_videoTitlePosition setText:videoTitlePosition];
 }
 
 - (CGFloat)preferredHeight {
