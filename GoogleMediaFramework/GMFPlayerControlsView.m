@@ -429,7 +429,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_captionsButton
                                               attribute:NSLayoutAttributeLeft
                                              multiplier:1.0f
-                                               constant:-kGMFBarPaddingX]];
+                                               constant:-8]];
     
   constraints = [constraints arrayByAddingObject:
                  _scrubberBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
@@ -438,7 +438,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_captionsButton
                                               attribute:NSLayoutAttributeBottom
                                              multiplier:1.0f
-                                               constant:-kGMFBarPaddingX]];
+                                               constant:-12]];
     
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
@@ -449,7 +449,7 @@ static const CGFloat kGMFBarPaddingX = 8;
                                                  toItem:_totalSecondsLabel
                                               attribute:NSLayoutAttributeRight
                                              multiplier:1.0f
-                                               constant:kGMFBarPaddingX]];
+                                               constant:8]];
 	
   // Make the total seconds label occupy the full height of the view.
   constraints = [constraints arrayByAddingObjectsFromArray:
