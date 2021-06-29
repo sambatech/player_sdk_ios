@@ -431,14 +431,11 @@ static const CGFloat kGMFBarPaddingX = 8;
                                              multiplier:1.0f
                                                constant:-8]];
     
-  constraints = [constraints arrayByAddingObject:
-                 _scrubberBottomConstraint = [NSLayoutConstraint constraintWithItem:_scrubber
-                                              attribute:NSLayoutAttributeBottom
-                                              relatedBy:NSLayoutRelationEqual
-                                                 toItem:_captionsButton
-                                              attribute:NSLayoutAttributeBottom
-                                             multiplier:1.0f
-                                               constant:-12]];
+  constraints = [constraints arrayByAddingObjectsFromArray:
+                 [NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"V:|-20-[_scrubber]"]
+                                                         options:NSLayoutFormatAlignAllBottom
+                                                         metrics:nil
+                                                           views:viewsDictionary]];
     
   
   // Position the scrubber kGMFBarPaddingX to the right of the seconds played label.
