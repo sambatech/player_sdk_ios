@@ -157,7 +157,7 @@
   
   if ([_actionButtons count] == 1) {
     // If this is the first action button, position it in the right of the top bar.
-      CGFloat padding = [name  isEqual: @"Live"] ? -24.0 : 0.0;
+      CGFloat padding = [name  isEqual: @"Live"] ? -8.0 : -8.0;
     constraints = [constraints arrayByAddingObject:
                    [NSLayoutConstraint constraintWithItem:button
                                                 attribute:NSLayoutAttributeRight
