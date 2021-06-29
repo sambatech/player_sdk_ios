@@ -31,6 +31,8 @@
   if (self) {
     _backgroundView = [[UIImageView alloc] initWithImage:[GMFResources
                                                           playerTitleBarBackgroundImage]];
+      _backgroundView.backgroundColor = [UIColor redColor];
+      
     [self addSubview:_backgroundView];
 
     _videoTitle = [UILabel GMF_clearLabelForPlayerControls];
