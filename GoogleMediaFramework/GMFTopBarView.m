@@ -215,10 +215,19 @@
                    [NSLayoutConstraint constraintWithItem:_videoTitle
                                                 attribute:NSLayoutAttributeRight
                                                 relatedBy:NSLayoutRelationEqual
-                                                   toItem:button.superview
+                                                   toItem:_backgroundView.superview
                                                 attribute:NSLayoutAttributeLeft
                                                multiplier:1.0f
                                                  constant:30.0f]];
+    
+    constraints = [constraints arrayByAddingObject:
+                   [NSLayoutConstraint constraintWithItem:_videoTitle
+                                                attribute:NSLayoutAttributeLeft
+                                                relatedBy:NSLayoutRelationEqual
+                                                   toItem:_backgroundView.superview
+                                                attribute:NSLayoutAttributeRight
+                                               multiplier:1.0f
+                                                 constant:-30.0f]];
 
   [self addConstraints:constraints];
 }
