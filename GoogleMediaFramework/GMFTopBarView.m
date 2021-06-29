@@ -39,19 +39,6 @@
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
     _videoTitle.backgroundColor = [UIColor blueColor];
       
-    if ([_videoTitlePosition isEqualToString: @"1"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentCenter;
-    }
-    else if ([_videoTitlePosition isEqualToString: @"2"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentRight;
-    }
-    else
-    {
-        _videoTitle.textAlignment = NSTextAlignmentNatural;
-    }
-      
     [self addSubview:_videoTitle];
     
     _logoImageView = [[UIImageView alloc] init];
@@ -248,6 +235,21 @@
   [_videoTitle setText:videoTitle];
 }
 
+- (void)setVideoTitlePosition:(NSString *)videoTitlePosition {
+    if ([_videoTitlePosition isEqualToString: @"1"])
+    {
+        _videoTitle.textAlignment = NSTextAlignmentCenter;
+    }
+    else if ([_videoTitlePosition isEqualToString: @"2"])
+    {
+        _videoTitle.textAlignment = NSTextAlignmentRight;
+    }
+    else
+    {
+        _videoTitle.textAlignment = NSTextAlignmentNatural;
+    }
+}
+
 - (CGFloat)preferredHeight {
   return [[GMFResources playerTitleBarBackgroundImage] size].height * 1.8; //SDK SambaPlayer
 }
@@ -266,6 +268,7 @@
 
   [self setLogoImage:nil];
   [self setVideoTitle:@""];
+  [self setVideoTitlePosition:@"0"];
 }
 
 @end
