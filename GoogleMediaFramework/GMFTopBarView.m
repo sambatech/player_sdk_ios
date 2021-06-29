@@ -38,9 +38,19 @@
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
     _videoTitle.backgroundColor = [UIColor blueColor];
-    _videoTitle.textAlignment = NSTextAlignmentCenter;
       
-    
+    if ([_videoTitlePosition  isEqualToString: @"1"])
+    {
+        _videoTitle.textAlignment = NSTextAlignmentCenter;
+    }
+    else if ([_videoTitlePosition  isEqualToString: @"2"])
+    {
+        _videoTitle.textAlignment = NSTextAlignmentRight;
+    }
+    else
+    {
+        _videoTitle.textAlignment = NSTextAlignmentNatural;
+    }
       
     [self addSubview:_videoTitle];
     
@@ -93,7 +103,7 @@
                                                            views:viewsDictionary]];
     
   constraints = [constraints arrayByAddingObjectsFromArray:
-                   [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[_videoTitle]|"
+                   [NSLayoutConstraint constraintsWithVisualFormat:@"H:|[_videoTitle]|"
                                                            options:NSLayoutFormatAlignAllCenterX
                                                            metrics:metrics
                                                              views:viewsDictionary]];
