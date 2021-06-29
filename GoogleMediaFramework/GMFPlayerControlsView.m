@@ -245,7 +245,7 @@ static const CGFloat kGMFBarPaddingX = 8;
 - (void)showFullscreenButton {
 	[self removeConstraint:_minimizeHideConstraint];
 	[self removeConstraint:_scrubberRightConstraint];
-	_scrubberRightConstraint.constant = -20;
+	_scrubberRightConstraint.constant = -15;
 	[self addConstraint:_scrubberRightConstraint];
 }
 
