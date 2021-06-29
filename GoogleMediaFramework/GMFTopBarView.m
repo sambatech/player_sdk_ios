@@ -31,7 +31,6 @@
   if (self) {
     _backgroundView = [[UIImageView alloc] initWithImage:[GMFResources
                                                           playerTitleBarBackgroundImage]];
-      _backgroundView.backgroundColor = [UIColor redColor];
       
     [self addSubview:_backgroundView];
 
@@ -39,7 +38,6 @@
     [_videoTitle setFont:[UIFont fontWithName:_videoTitle.font.familyName size:16.0]];
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
-    _videoTitle.backgroundColor = [UIColor blueColor];
     _videoTitle.textAlignment = NSTextAlignmentCenter;
       
     //if ([_videoTitlePosition isEqualToString: @"1"])
