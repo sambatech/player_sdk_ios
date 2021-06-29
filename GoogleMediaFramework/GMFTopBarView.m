@@ -40,18 +40,7 @@
     _videoTitle.backgroundColor = [UIColor blueColor];
     _videoTitle.textAlignment = NSTextAlignmentCenter;
       
-    if ([_videoTitlePosition  isEqual: @"1"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentCenter;
-    }
-    else if ([_videoTitlePosition  isEqual: @"2"])
-    {
-        _videoTitle.textAlignment = NSTextAlignmentRight;
-    }
-    else
-    {
-        _videoTitle.textAlignment = NSTextAlignmentNatural;
-    }
+    
       
     [self addSubview:_videoTitle];
     
