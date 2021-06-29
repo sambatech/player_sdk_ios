@@ -108,15 +108,6 @@
                                                            options:NSLayoutFormatAlignAllCenterX
                                                            metrics:metrics
                                                              views:viewsDictionary]];
-    
-    constraints = [constraints arrayByAddingObject:
-                   [NSLayoutConstraint constraintWithItem:_videoTitle
-                                                attribute:NSLayoutAttributeRight
-                                                relatedBy:NSLayoutRelationEqual
-                                                   toItem:_videoTitle.superview
-                                                attribute:NSLayoutAttributeLeft
-                                               multiplier:1.0f
-                                                 constant:40.0f]];
   
   // Make the logo at most as wide the height of the bar.
   constraints = [constraints arrayByAddingObject:
@@ -227,7 +218,7 @@
                                                    toItem:button.superview
                                                 attribute:NSLayoutAttributeLeft
                                                multiplier:1.0f
-                                                 constant:15.0f]];
+                                                 constant:30.0f]];
 
   [self addConstraints:constraints];
 }
