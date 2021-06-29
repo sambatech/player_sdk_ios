@@ -38,6 +38,7 @@
 	_videoTitle.lineBreakMode = NSLineBreakByTruncatingTail;
 	_videoTitle.adjustsFontSizeToFitWidth = NO;
     _videoTitle.backgroundColor = [UIColor blueColor];
+    _videoTitle.textAlignment = NSTextAlignmentCenter;
       
     if ([_videoTitlePosition  isEqual: @"1"])
     {
