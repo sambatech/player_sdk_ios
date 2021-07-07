@@ -58,8 +58,7 @@ static const CGFloat kGMFBarPaddingX = 8;
   self = [super initWithFrame:CGRectZero];
   if (self) {
     _backgroundView = [[UIImageView alloc] initWithImage:[GMFResources playerBarBackgroundImage]];
-    
-      //[self addSubview:_backgroundView];
+    [self addSubview:_backgroundView];
 
 	// Current media time
     _secondsPlayedLabel = [UILabel GMF_clearLabelForPlayerControls];
