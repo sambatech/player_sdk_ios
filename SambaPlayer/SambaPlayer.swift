@@ -433,7 +433,7 @@ public class SambaPlayer : UIViewController, ErrorScreenDelegate, MenuOptionsDel
 	}
     
     @objc public func unsubscribeDelegate(_ delegate: SambaPlayerDelegate) {
-        let indexToRemove = _delegates.index(where: {$0 === delegate})
+        let indexToRemove = _delegates.firstIndex(where: {$0 === delegate})
         
         if indexToRemove != nil {
             _delegates.remove(at: indexToRemove!)
